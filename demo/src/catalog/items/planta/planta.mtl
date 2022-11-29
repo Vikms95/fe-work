@@ -1,0 +1,42 @@
+#20-20 Fusion v7.4.1.11
+
+#Laminate.Generic.Matte.None
+newmtl Textura_Tierra.001
+Ns 85.636971
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.085637 0.085637 0.085637
+map_Kd f2h_Planta/5e0c8d09-7eec-452b-b3f1-681017199682.jpg
+
+#Laminate.Generic.Glossy.None
+newmtl Hojas_Verde_Oscuro2.001
+Ns 728.028748
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.728029 0.728029 0.728029
+map_Kd f2h_Planta/a9c2d9e4-5ed8-49ea-93d5-c34de0757f0e.jpg
+
+#Laminate.Generic.Matte.None
+newmtl Textura_Ramas.001
+Ns 85.636971
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.085637 0.085637 0.085637
+map_Kd f2h_Planta/d9c22c74-b097-4e0d-a972-11f40d44e217.jpg
+
+#Laminate.Generic.Glossy.None
+newmtl Hojas_Verde_Claro.001
+Ns 728.028748
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.728029 0.728029 0.728029
+map_Kd f2h_Planta/e3f2576a-6a34-4fcb-8ae5-a9c95130d35b.jpg
+
+#Laminate.Generic.Matte.None
+newmtl 1161_Blanco.001
+Ns 85.636971
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.085637 0.085637 0.085637
+map_Kd f2h_Planta/f693a490-cd73-4909-b4c0-8c395bad7f3e.jpg
+
