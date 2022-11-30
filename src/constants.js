@@ -100,9 +100,9 @@ export const END_FITTING_IMAGE = 'END_FITTING_IMAGE';
 export const BEGIN_DRAGGING_HOLE = 'BEGIN_DRAGGING_HOLE';
 export const UPDATE_DRAGGING_HOLE = 'UPDATE_DRAGGING_HOLE';
 export const END_DRAGGING_HOLE = 'END_DRAGGING_HOLE';
-export const CACHE_FONDO = 'CACHE_FONDO'
-export const CACHE_ALTO = 'CACHE_ALTO'
-export const CACHE_ANGULO = 'CACHE_ANGULO'
+export const CACHE_FONDO = 'CACHE_FONDO';
+export const CACHE_ALTO = 'CACHE_ALTO';
+export const CACHE_ANGULO = 'CACHE_ANGULO';
 
 //ACTIONS vertices
 export const BEGIN_DRAGGING_VERTEX = 'BEGIN_DRAGGING_VERTEX';
@@ -332,7 +332,13 @@ export const KEYBOARD_BUTTON_CODE = {
   V: 86,
   CTRL: 17,
   ENTER: 13,
-  TAB: 9
+  TAB: 9,
+  ARROW_KEYS: [
+    38,
+    40,
+    37,
+    39,
+  ]
 };
 
 // Preferencias

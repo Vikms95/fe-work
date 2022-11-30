@@ -77,7 +77,6 @@ export default class MenuConstruccion extends Component {
   }
 
   render () {
-    console.log( this.props );
     const matcharray = ( text ) => {
       if ( text != '' && this.state.currentShowElement !== null ) {
         let array = this.state.currentShowElement;

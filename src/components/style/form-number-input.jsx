@@ -49,12 +49,6 @@ export default class FormNumberInput extends Component {
       this.state.inputElement.select();
     }
 
-    // Prevent arrow keys default actions when on line length input
-    if ( this.props.attributeName === 'lineLength' ) {
-      const input = document.querySelector( '.lineLength' );
-      input.addEventListener( 'keydown', this.preventArrowKeysAction );
-    }
-
     if ( this.props.attributeName === 'angulo' ) {
       this.setState( { showedValue: getCacheAngulo( this.props.stateRedux ) || this.props.value } );
     }
@@ -62,7 +56,8 @@ export default class FormNumberInput extends Component {
 
   componentDidUpdate () {
     if ( document.activeElement === this.state.inputElement ) {
-      if ( this.cursor.x !== this.props.stateRedux.getIn( [ 'mouse', 'x' ] ) || this.cursor.y !== this.props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
+      if ( this.cursor.x !== this.props.stateRedux.getIn( [ 'mouse', 'x' ] )
+        || this.cursor.y !== this.props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
         this.state.inputElement.select();
       }
     }
@@ -78,20 +73,24 @@ export default class FormNumberInput extends Component {
     }
   }
 
-  componentWillUnmount () {
-    const input = document.querySelector( '.lineLength' );
-    input.removeEventListener( 'keydown', this.preventArrowKeysAction );
-  }
-
-  preventArrowKeysAction ( e ) {
-    const keys = [ 37, 38, 39, 40 ];
-    if ( keys.includes( e.keyCode ) ) e.preventDefault();
-  }
-
-
   render () {
 
-    let { value, min, max, precision, onChange, onValid, onInvalid, style, placeholder, attributeName, mode, projectActions, unit } = this.props;
+    let {
+      value,
+      min,
+      max,
+      precision,
+      onChange,
+      onValid,
+      onInvalid,
+      style,
+      placeholder,
+      attributeName,
+      mode,
+      projectActions,
+      unit
+    } = this.props;
+
     let numericInputStyle = { ...STYLE_INPUT, ...style };
     if ( this.state.focus ) numericInputStyle.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
 
@@ -101,9 +100,12 @@ export default class FormNumberInput extends Component {
     if ( !isNaN( max ) && isFinite( max ) && this.state.showedValue > max ) this.setState( { showedValue: max } ); // value = max;
 
     let currValue = regexp.test( this.state.showedValue ) ? this.state.showedValue : parseFloat( this.state.showedValue ).toFixed( precision );
+
+    // Used to check whether we need to update the value when pressing ENTER or TAB
     let different = parseFloat( this.props.value ).toFixed( precision ) !== parseFloat( this.state.showedValue ).toFixed( precision );
 
-    let saveFn = ( e ) => {
+    // Function executed when ENTER or TAB are pressed
+    const saveFn = ( e ) => {
       e.stopPropagation();
       if ( this.state.valid ) {
         let savedValue = (
@@ -112,12 +114,13 @@ export default class FormNumberInput extends Component {
           ? parseFloat( this.state.showedValue )
           : 0;
 
+        const cachedAlto = document.querySelector( '.height' ).value;
         const cachedAngulo = document.querySelector( '.angulo' ).value;
         const cachedFondo = document.querySelector( '.thickness' ).value;
-        const cachedAlto = document.querySelector( '.height' ).value;
-        this.context.linesActions.cacheAngulo( cachedAngulo );
-        this.context.linesActions.cacheFondo( cachedFondo );
+
         this.context.linesActions.cacheAlto( cachedAlto );
+        this.context.linesActions.cacheFondo( cachedFondo );
+        this.context.linesActions.cacheAngulo( cachedAngulo );
 
         switch ( attributeName ) {
           case 'angulo':
@@ -141,12 +144,32 @@ export default class FormNumberInput extends Component {
       }
     };
 
+    const isSaveButtonPressed = ( keyCode ) => (
+      ( keyCode == KEYBOARD_BUTTON_CODE.ENTER ) ||
+      ( keyCode == KEYBOARD_BUTTON_CODE.TAB && different )
+    );
+
+    const isArrowPressedOnLength = ( keyCode ) => (
+      ( attributeName === 'lineLength' ) &&
+      ( KEYBOARD_BUTTON_CODE.ARROW_KEYS.includes( keyCode ) )
+    );
+
+    const isEscPressedWhileDrawing = ( keyCode ) => (
+      ( keyCode == KEYBOARD_BUTTON_CODE.ESC ) &&
+      ( this.props.mode === MODE_DRAWING_LINE )
+    );
+
+    const isEscPressed = ( keyCode ) => (
+      keyCode == KEYBOARD_BUTTON_CODE.ESC
+    );
+
     return (
       <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
 
         <input
           ref={ c => ( this.state.inputElement = c ) }
           className={ attributeName }
+          placeholder={ placeholder }
           type='number'
           value={ currValue }
           style={ { ...numericInputStyle, fontFamily: 'Calibri', fontWidth: 'lighter' } }
@@ -163,21 +186,27 @@ export default class FormNumberInput extends Component {
 
             this.setState( { valid } );
           } }
-          onFocus={ e => this.setState( { focus: true } ) }
-          onBlur={ e => this.setState( { focus: false } ) }
+          onFocus={ () => this.setState( { focus: true } ) }
+          onBlur={ () => this.setState( { focus: false } ) }
           onKeyDown={ e => {
-            var keyCode = e.keyCode || e.which;
-            if ( keyCode == KEYBOARD_BUTTON_CODE.ENTER || ( keyCode == KEYBOARD_BUTTON_CODE.TAB && different ) ) {
+
+            let keyCode = e.keyCode || e.which;
+
+            if ( isSaveButtonPressed( keyCode ) ) {
               saveFn( e );
 
-            } else if ( ( keyCode == KEYBOARD_BUTTON_CODE.ESC ) && ( this.props.mode === MODE_DRAWING_LINE ) ) {
+            } else if ( isArrowPressedOnLength( keyCode ) ) {
+              e.preventDefault();
+              console.log( "key!" );
 
+            } else if ( isEscPressedWhileDrawing( keyCode ) ) {
               this.props.projectActions.undo();
-            } else if ( keyCode == KEYBOARD_BUTTON_CODE.ESC ) {
+
+            } else if ( isEscPressed( keyCode ) ) {
+
               this.props.projectActions.unselectAll();
             }
           } }
-          placeholder={ placeholder }
         />
       </div>
     );
