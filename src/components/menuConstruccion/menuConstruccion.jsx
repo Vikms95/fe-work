@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import * as SharedStyle from '../../shared-style';
-import './style.css'
+import './style.css';
 
 import rectangulo from './../../assets/salgar/rectangulo.png';
 
@@ -25,7 +25,7 @@ let STYLE = {
   borderRightWidth: '2px',
   borderRightColor: SharedStyle.PRIMARY_COLOR.master,
   zIndex: '9005',
-}
+};
 
 const STYLE_TITLE_BAR = {
   height: '1.5em',
@@ -33,38 +33,38 @@ const STYLE_TITLE_BAR = {
   justifyContent: 'space-between',
   backgroundColor: SharedStyle.PRIMARY_COLOR.master,
   color: SharedStyle.COLORS.white,
-}
+};
 
 const STYLE_BUTTON_CLOSE = {
   margin: '0.3em 3px 0 0',
   height: '0.6em',
   cursor: 'pointer'
-}
+};
 
 const STYLE_IMAGE = {
   cursor: 'pointer',
   width: '80px', height: '80px',
-}
+};
 
 const STYLE_NAME = {
   fontSize: '0.75em',
   color: SharedStyle.PRIMARY_COLOR.master,
   minHeight: '20px',
-}
+};
 
 const STYLE_BREADCRUMB = {
   margin: '0 0 0 20px',
   paddingTop: '0.25em',
   fontSize: '0.75em',
-}
+};
 
 
-export default class MenuRooms extends Component {
+export default class MenuConstruccion extends Component {
 
-  constructor(props) {
-    super(props);
-    const doorsElements = this.props.catalog.getCategory('doors').elements.filter(element => element.info.visibility ? element.info.visibility.catalog : true);
-    const windowsElements = this.props.catalog.getCategory('windows').elements.filter(element => element.info.visibility ? element.info.visibility.catalog : true);
+  constructor ( props ) {
+    super( props );
+    const doorsElements = this.props.catalog.getCategory( 'doors' ).elements.filter( element => element.info.visibility ? element.info.visibility.catalog : true );
+    const windowsElements = this.props.catalog.getCategory( 'windows' ).elements.filter( element => element.info.visibility ? element.info.visibility.catalog : true );
     this.state = {
       currentShowElement: null,
       filterShowElement: null,
@@ -73,68 +73,68 @@ export default class MenuRooms extends Component {
       windows: windowsElements,
       hoverBreadcrumb: false,
       matchString: '',
-    }
+    };
   }
 
-  render() {
-
-    const matcharray = (text) => {
-      if (text != '' && this.state.currentShowElement !== null) {
-        let array = this.state.currentShowElement
+  render () {
+    console.log( this.props );
+    const matcharray = ( text ) => {
+      if ( text != '' && this.state.currentShowElement !== null ) {
+        let array = this.state.currentShowElement;
         let filtered = [];
-        let regexp = new RegExp(text, 'i');
-        for (let i = 0; i < array.length; i++) {
-          if (regexp.test(array[i].info.title)) {
-            filtered.push(array[i]);
+        let regexp = new RegExp( text, 'i' );
+        for ( let i = 0; i < array.length; i++ ) {
+          if ( regexp.test( array[ i ].info.title ) ) {
+            filtered.push( array[ i ] );
           }
         }
 
-        this.setState({
+        this.setState( {
           matchString: text,
           filterShowElement: filtered
-        });
+        } );
       } else {
-        this.setState({
+        this.setState( {
           filterShowElement: null
-        });
+        } );
 
       }
 
     };
 
     const closeMenuConstruccion = () => {
-      this.setState({ currentShowElement: null, breadcrumb: null, hoverBreadcrumb: false })
-      document.getElementById('menuConstruccion').style.display = 'none';
-    }
+      this.setState( { currentShowElement: null, breadcrumb: null, hoverBreadcrumb: false } );
+      document.getElementById( 'menuConstruccion' ).style.display = 'none';
+    };
 
     const selectDoors = () => {
       // TODO: Cambiar idioma
-      this.setState({
+      this.setState( {
         breadcrumb: 'Puertas',
         currentShowElement: this.state.doors,
-      })
-    }
+      } );
+    };
 
     const selectWindows = () => {
       // TODO: Cambiar idioma
-      this.setState({
+      this.setState( {
         breadcrumb: 'Ventanas',
         currentShowElement: this.state.windows,
-      })
-    }
+      } );
+    };
 
     const selectObstacule = () => {
       // TODO: Cambiar idioma
-      this.setState({
+      this.setState( {
         breadcrumb: 'Obstaculos',
         currentShowElement: [],
-      })
-    }
+      } );
+    };
 
-    const printItems = (elements) => {
-      return <div style={{ marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' }}>
+    const printItems = ( elements ) => {
+      return <div style={ { marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' } }>
         {
-          elements.map((element, key) => {
+          elements.map( ( element, key ) => {
             /*         return <div
                        key={key}
                        style={{ cursor: 'pointer' }}
@@ -145,116 +145,122 @@ export default class MenuRooms extends Component {
                        <img src={element.info.image} style={STYLE_IMAGE} />
                        <p style={STYLE_NAME}>{element.name}</p>
                      </div>*/
-            if (key % 2 === 0) {
+            if ( key % 2 === 0 ) {
               return <div
-                key={key}
-                style={{ cursor: 'pointer', paddingTop: '10px' }}
-                onClick={() => this.props.holesActions.selectToolDrawingHole(element.name)}
+                key={ key }
+                style={ { cursor: 'pointer', paddingTop: '10px' } }
+                onClick={ () => this.props.holesActions.selectToolDrawingHole( element.name ) }
               >
-                <div style={{ position: 'relative' }}>
-                  <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-1.5em', marginTop: '-0.5em' }} />
-                  <img src={element.info.image} style={STYLE_IMAGE} />
-                  <p style={STYLE_NAME}>{element.name}</p>
+                <div style={ { position: 'relative' } }>
+                  <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em', marginTop: '-0.5em' } } />
+                  <img src={ element.info.image } style={ STYLE_IMAGE } />
+                  <p style={ STYLE_NAME }>{ element.name }</p>
                 </div>
-              </div>
+              </div>;
             } else {
               return <div
-                key={key}
-                style={{ cursor: 'pointer', paddingTop: '10px' }}
-                onClick={() => this.props.holesActions.selectToolDrawingHole(element.name)}
+                key={ key }
+                style={ { cursor: 'pointer', paddingTop: '10px' } }
+                onClick={ () => this.props.holesActions.selectToolDrawingHole( element.name ) }
               >
-                <div style={{ position: 'relative' }}>
-                  <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-0.9em', marginTop: '-0.5em' }} />
-                  <img src={element.info.image} style={STYLE_IMAGE} />
-                  <p style={STYLE_NAME}>{element.name}</p>
+                <div style={ { position: 'relative' } }>
+                  <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-0.9em', marginTop: '-0.5em' } } />
+                  <img src={ element.info.image } style={ STYLE_IMAGE } />
+                  <p style={ STYLE_NAME }>{ element.name }</p>
                 </div>
-              </div>
+              </div>;
             }
-          })
+          } )
         }
-      </div>
-    }
+      </div>;
+    };
 
     return (
-      <aside id='menuConstruccion' style={STYLE}>
-        {/* Barra Inicial */}
-        <div style={STYLE_TITLE_BAR}>
+      <aside id='menuConstruccion' style={ STYLE }>
+        {/* Barra Inicial */ }
+        <div style={ STYLE_TITLE_BAR }>
           {
             this.state.breadcrumb === null ?
-              <p style={STYLE_BREADCRUMB}>
+              <p style={ STYLE_BREADCRUMB }>
                 Construcción
               </p>
               :
-              <p style={STYLE_BREADCRUMB}>
+              <p style={ STYLE_BREADCRUMB }>
                 <span
-                  style={this.state.hoverBreadcrumb ? { textDecoration: 'underline', cursor: 'pointer' } : {}}
-                  onMouseEnter={() => this.setState({ hoverBreadcrumb: true })}
-                  onMouseLeave={() => this.setState({ hoverBreadcrumb: false })}
-                  onClick={() => { this.setState({ currentShowElement: null, breadcrumb: null, hoverBreadcrumb: false }) }}
+                  style={ this.state.hoverBreadcrumb ? { textDecoration: 'underline', cursor: 'pointer' } : {} }
+                  onMouseEnter={ () => this.setState( { hoverBreadcrumb: true } ) }
+                  onMouseLeave={ () => this.setState( { hoverBreadcrumb: false } ) }
+                  onClick={ () => { this.setState( { currentShowElement: null, breadcrumb: null, hoverBreadcrumb: false } ); } }
                 >
                   Construcción
                 </span>
-                {` > ${this.state.breadcrumb}`}
+                { ` > ${ this.state.breadcrumb }` }
               </p>
 
           }
-          <img style={STYLE_BUTTON_CLOSE} src={close} onClick={closeMenuConstruccion} />
+          <img
+            style={ STYLE_BUTTON_CLOSE }
+            src={ close }
+            onClick={ () => {
+              closeMenuConstruccion();
+              this.props.handleToolbarButtons();
+            } } />
         </div>
-        {/* Search */}
-        <div style={{ margin: '0 20px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }} >
+        {/* Search */ }
+        <div style={ { margin: '0 20px' } }>
+          <div style={ { display: 'flex', flexDirection: 'column', marginTop: '10px' } } >
             <input
-              style={{ width: 'auto', height: '1.8em', color: SharedStyle.COLORS.grey, fontFamily: 'Calibri', fontWidth: 'lighter' }}
+              style={ { width: 'auto', height: '1.8em', color: SharedStyle.COLORS.grey, fontFamily: 'Calibri', fontWidth: 'lighter' } }
               type="text"
               placeholder='Buscar...'
-              onChange={(e) => { matcharray(e.target.value) }}
+              onChange={ ( e ) => { matcharray( e.target.value ); } }
             />
-            <div style={{ display: 'flex', justifyItems: 'center', width: '10em', height: '25px', cursor: 'pointer', }}>
-              <p style={{
+            <div style={ { display: 'flex', justifyItems: 'center', width: '10em', height: '25px', cursor: 'pointer', } }>
+              <p style={ {
                 fontSize: '0.75em',
                 color: SharedStyle.PRIMARY_COLOR.master,
                 width: '10em',
-              }}>Búsqueda Avanzada</p>
-              <img style={{ height: '0.65em', marginTop: '0.85em', marginLeft: '0.2em', }} src={flecha} />
+              } }>Búsqueda Avanzada</p>
+              <img style={ { height: '0.65em', marginTop: '0.85em', marginLeft: '0.2em', } } src={ flecha } />
             </div>
 
-            {/* Objects */}
+            {/* Objects */ }
             {
               this.state.currentShowElement === null ?
-                <div style={{ marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' }}>
-                  <div onClick={selectDoors} style={{ cursor: 'pointer', paddingTop: '10px' }}>
-                    <div style={{ position: 'relative' }}>
-                      <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-1.5em', marginTop: '-0.5em' }} />
-                      <img src={puertas} style={STYLE_IMAGE} />
-                      <p style={STYLE_NAME}>Puertas</p>
+                <div style={ { marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' } }>
+                  <div onClick={ selectDoors } style={ { cursor: 'pointer', paddingTop: '10px' } }>
+                    <div style={ { position: 'relative' } }>
+                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em', marginTop: '-0.5em' } } />
+                      <img src={ puertas } style={ STYLE_IMAGE } />
+                      <p style={ STYLE_NAME }>Puertas</p>
                     </div>
                   </div>
-                  <div onClick={selectWindows} style={{ cursor: 'pointer', paddingTop: '10px' }}>
-                    <div style={{ position: 'relative' }}>
-                      <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-0.9em', marginTop: '-0.5em' }} />
-                      <img src={ventanas} style={STYLE_IMAGE} />
-                      <p style={STYLE_NAME}>Ventanas</p>
+                  <div onClick={ selectWindows } style={ { cursor: 'pointer', paddingTop: '10px' } }>
+                    <div style={ { position: 'relative' } }>
+                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-0.9em', marginTop: '-0.5em' } } />
+                      <img src={ ventanas } style={ STYLE_IMAGE } />
+                      <p style={ STYLE_NAME }>Ventanas</p>
                     </div>
                   </div>
-                  <div onClick={selectObstacule} style={{ cursor: 'pointer', paddingTop: '10px' }}>
-                    <div style={{ position: 'relative' }}>
-                      <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-1.5em', marginTop: '-0.5em' }} />
-                      <img src={obstaculos} style={STYLE_IMAGE} />
-                      <p style={STYLE_NAME}>Obstaculos</p>
+                  <div onClick={ selectObstacule } style={ { cursor: 'pointer', paddingTop: '10px' } }>
+                    <div style={ { position: 'relative' } }>
+                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em', marginTop: '-0.5em' } } />
+                      <img src={ obstaculos } style={ STYLE_IMAGE } />
+                      <p style={ STYLE_NAME }>Obstaculos</p>
                     </div>
                   </div>
                 </div>
                 :
                 (
                   this.state.filterShowElement === null ?
-                    printItems(this.state.currentShowElement)
+                    printItems( this.state.currentShowElement )
                     :
-                    printItems(this.state.filterShowElement)
+                    printItems( this.state.filterShowElement )
                 )
             }
           </div>
         </div>
       </aside >
-    )
+    );
   }
 }

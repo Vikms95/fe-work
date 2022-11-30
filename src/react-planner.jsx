@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-         
+
 import Translator from './translator/translator';
 import Catalog from './catalog/catalog';
 import actions from './actions/export';
@@ -43,9 +43,9 @@ const wrapperStyle = {
   display: 'flex',
   flexFlow: 'row nowrap'
 };
-     
+
 class ReactPlanner extends Component {
-  constructor ( props) {                                  
+  constructor ( props ) {
     super( props );
     this.state = {
       contentW: props.width - toolbarW + 14.6,
@@ -71,11 +71,11 @@ class ReactPlanner extends Component {
     this.zoomOut = this.zoomOut.bind( this );
     this.panLeft = this.panLeft.bind( this );
     this.panRight = this.panRight.bind( this );
- 
+
     this.update2DView = this.update2DView.bind( this );
     this.update2DViewObject = this.update2DViewObject.bind( this );
     this.update2DViewOnState = this.update2DViewOnState.bind( this );
-    this.handleToolbarButtons = this.handleToolbarButtons.bind(this)
+    this.handleToolbarButtons = this.handleToolbarButtons.bind( this );
 
     this.getState = this.getState.bind( this );
   }
@@ -212,18 +212,18 @@ class ReactPlanner extends Component {
   //  console.log(menus)
   //}
 
-  handleToolbarButtons (menu) {
+  handleToolbarButtons ( menu ) {
     const menus = {
       menuRooms: false,
       menuMuebles: false,
       MenuConstruccion: false
+    };
+
+    if ( menu ) {
+      menus[ menu ] = true;
     }
 
-    if ( menu ){
-      menus[menu] = true
-    }
-
-    this.setState( {menus: menus } )
+    this.setState( { menus: menus } );
   }
 
   render () {
@@ -255,36 +255,48 @@ class ReactPlanner extends Component {
         <div style={ { ...wrapperStyle, height } }>
 
 
-            <Toolbar
-              width={ toolbarW }
-              height={ toolbarH }
+          <Toolbar
+            width={ toolbarW }
+            height={ toolbarH }
+            state={ extractedState }
+            menus={ this.state.menus }
+            handleToolbarButtons={ this.handleToolbarButtons }
+            { ...props }
+          />
+
+          <div style={ { position: 'relative' } }>
+
+            <MenuRooms
+              state={ state }
+              handleToolbarButtons={ this.handleToolbarButtons }
+              { ...props }
+            />
+            <MenuConstruccion
+              state={ state }
+              handleToolbarButtons={ this.handleToolbarButtons }
+              { ...props }
+            />
+            <MenuMuebles
+              state={ state }
+              handleToolbarButtons={ this.handleToolbarButtons }
+              { ...props }
+            />
+            <LoginComponent state={ extractedState } { ...props } />
+            <RegisterComponent state={ state } { ...props } />
+            <MenuPreferencias state={ state } { ...props } />
+
+            <Content
+              style={ { position: 'absolute', zIndex: '0' } }
+              width={ contentW }
+              height={ contentH }
               state={ extractedState }
-              menus={ this.state.menus }
-              handleToolbarButtons={ this.handleToolbarButtons}
+              refViewer2D={ this.refViewer }
+              update2DView={ update2DView }
+              onWheel={ event => event.preventDefault() }
               { ...props }
             />
 
-            <div style={ { position: 'relative' } }>
-
-              <MenuRooms state={ state } { ...props } />
-              <MenuConstruccion state={ state } { ...props } />
-              <MenuMuebles state={ state } { ...props } />
-              <LoginComponent state={ extractedState } { ...props } />
-              <RegisterComponent state={ state } { ...props } />
-              <MenuPreferencias state={ state } { ...props } />
-
-              <Content
-                style={ { position: 'absolute', zIndex: '0' } }
-                width={ contentW }
-                height={ contentH }
-                state={ extractedState }
-                refViewer2D={ this.refViewer }
-                update2DView={ update2DView }
-                onWheel={ event => event.preventDefault() }
-                { ...props }
-              />
-
-            </div>
+          </div>
 
 
           <Sidebar

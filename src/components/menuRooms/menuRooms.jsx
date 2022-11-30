@@ -221,7 +221,7 @@ export default class MenuRooms extends Component {
             src={ close }
             onClick={ () => {
               this.closeMenuRooms();
-              this.resetToolbarButtonsHighlight();
+              this.props.handleToolbarButtons();
             } } />
         </div>
         {/* Estructuras */ }

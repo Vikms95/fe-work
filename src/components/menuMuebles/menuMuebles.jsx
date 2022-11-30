@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import * as SharedStyle from '../../shared-style';
-import './style.css'
+import './style.css';
 
 // Imports de imagenes
 import close from './../../assets/generalItems/deleteCross.png';
@@ -54,7 +54,7 @@ let STYLE = {
   borderRightWidth: '2px',
   borderRightColor: SharedStyle.PRIMARY_COLOR.master,
   zIndex: '9005',
-}
+};
 
 const STYLE_TITLE_BAR = {
   minHeight: '1.5em',
@@ -63,25 +63,25 @@ const STYLE_TITLE_BAR = {
   justifyContent: 'space-between',
   backgroundColor: SharedStyle.PRIMARY_COLOR.master,
   color: SharedStyle.COLORS.white,
-}
+};
 
 const STYLE_TITLE = {
   margin: '0 0 0 20px',
   paddingTop: '0.3em',
   fontSize: '0.75em',
-}
+};
 
 const STYLE_BUTTON_CLOSE = {
   margin: '0.3em 3px 0 0',
   height: '0.6em',
   cursor: 'pointer'
-}
+};
 
 const STYLE_IMAGE = {
   cursor: 'pointer',
   width: '80px',
   height: '80px',
-}
+};
 
 const STYLE_NAME = {
   fontSize: '0.75em',
@@ -90,7 +90,7 @@ const STYLE_NAME = {
   marginTop: '10px',
   minHeight: '20px',
 
-}
+};
 
 const STYLE_BREADCRUMB = {
   margin: '0 10px 0 20px',
@@ -98,13 +98,13 @@ const STYLE_BREADCRUMB = {
   fontSize: '0.75em',
   textOverflow: 'ellipsis',
   overflow: 'hidden',
-}
+};
 
 export default class MenuMuebles extends Component {
 
-  constructor(props) {
-    super(props);
-    const mueblesElements = this.props.catalog.getCategory('muebles').elements.filter(element => element.info.visibility ? element.info.visibility.catalog : true);
+  constructor ( props ) {
+    super( props );
+    const mueblesElements = this.props.catalog.getCategory( 'muebles' ).elements.filter( element => element.info.visibility ? element.info.visibility.catalog : true );
     /*this.state = {
       currentShowElement: mueblesElements,
       filterShowElement: null,
@@ -121,39 +121,39 @@ export default class MenuMuebles extends Component {
       mamparas: null,
       platosDucha: null,
       accesorios: null,
-    }
+    };
   }
 
-  render() {
-
-    const matcharray = (text) => {
-      if (text != '' && this.state.currentShowElement !== null) {
-        console.log('enter')
-        let array = this.state.currentShowElement
+  render () {
+    console.log( this.props );
+    const matcharray = ( text ) => {
+      if ( text != '' && this.state.currentShowElement !== null ) {
+        console.log( 'enter' );
+        let array = this.state.currentShowElement;
         let filtered = [];
-        let regexp = new RegExp(text, 'i');
-        for (let i = 0; i < array.length; i++) {
-          if (regexp.test(array[i].info.title)) {
-            filtered.push(array[i]);
+        let regexp = new RegExp( text, 'i' );
+        for ( let i = 0; i < array.length; i++ ) {
+          if ( regexp.test( array[ i ].info.title ) ) {
+            filtered.push( array[ i ] );
           }
         }
 
-        this.setState({
+        this.setState( {
           matchString: text,
           filterShowElement: filtered
-        });
+        } );
       } else {
-        this.setState({
+        this.setState( {
           filterShowElement: null
-        });
+        } );
 
       }
 
     };
 
     const closeMenuMuebles = () => {
-      document.getElementById('menuMuebles').style.display = 'none';
-    }
+      document.getElementById( 'menuMuebles' ).style.display = 'none';
+    };
 
     /*  const printItems = (elements) => {
         return <div style={{ marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' }}>
@@ -174,68 +174,68 @@ export default class MenuMuebles extends Component {
         </div>
       }*/
 
-    const printItems = (elements) => {
-      return <div style={{ marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' }}>
+    const printItems = ( elements ) => {
+      return <div style={ { marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' } }>
         {
-          elements.map((element, key) => {
-            if (key % 2 === 0) {
+          elements.map( ( element, key ) => {
+            if ( key % 2 === 0 ) {
               return <div
-                key={key}
-                style={{ cursor: 'pointer', paddingTop: '10px' }}
-                onClick={element.action ? element.action : null}
+                key={ key }
+                style={ { cursor: 'pointer', paddingTop: '10px' } }
+                onClick={ element.action ? element.action : null }
               >
-                <div style={{ position: 'relative' }}>
-                  <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-1.5em' }} />
-                  <img src={element.image} style={STYLE_IMAGE} />
-                  <p style={STYLE_NAME}>{element.name}</p>
+                <div style={ { position: 'relative' } }>
+                  <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em' } } />
+                  <img src={ element.image } style={ STYLE_IMAGE } />
+                  <p style={ STYLE_NAME }>{ element.name }</p>
                 </div>
-              </div>
+              </div>;
             } else {
               return <div
-                key={key}
-                style={{ cursor: 'pointer', paddingTop: '10px' }}
-                onClick={element.action ? element.action : null}
+                key={ key }
+                style={ { cursor: 'pointer', paddingTop: '10px' } }
+                onClick={ element.action ? element.action : null }
               >
-                <div style={{ position: 'relative' }}>
-                  <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-0.9em' }} />
-                  <img src={element.image} style={STYLE_IMAGE} />
-                  <p style={STYLE_NAME}>{element.name}</p>
+                <div style={ { position: 'relative' } }>
+                  <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-0.9em' } } />
+                  <img src={ element.image } style={ STYLE_IMAGE } />
+                  <p style={ STYLE_NAME }>{ element.name }</p>
                 </div>
-              </div>
+              </div>;
             }
-          })
+          } )
 
         }
-      </div>
-    }
+      </div>;
+    };
 
 
     // SECTION MUEBLES
     const selectFusionChrome = () => {
       // TODO: Cambiar idioma
       let newBreadcrumb = () => {
-        const simbol = ' > '
-        const text1 = 'Muebles baño'
-        const text2 = 'Fusion Chrome'
+        const simbol = ' > ';
+        const text1 = 'Muebles baño';
+        const text2 = 'Fusion Chrome';
         return <span>
-          <span>{simbol}</span>
-          <span className={'breadcrumb2'}
-            onClick={() => { this.setState({ currentShowElement: elementsMueblesBanyo, breadcrumb: ' > Muebles baño', }) }}
+          <span>{ simbol }</span>
+          <span className={ 'breadcrumb2' }
+            onClick={ () => { this.setState( { currentShowElement: elementsMueblesBanyo, breadcrumb: ' > Muebles baño', } ); } }
           >
-            {text1}
+            { text1 }
           </span>
-          <span>{simbol}</span>
-          <span>{text2}</span>
-        </span>
-      }
+          <span>{ simbol }</span>
+          <span>{ text2 }</span>
+        </span>;
+      };
 
-      this.setState({
+      this.setState( {
         breadcrumb: newBreadcrumb(),
         currentShowElement: [
           { image: img_23275, name: '23275', },
         ],
-      })
-    }
+      } );
+    };
 
     const elementsMueblesBanyo = [
       { image: img_fusionChrome, name: 'Fusion Chrome', action: selectFusionChrome },
@@ -248,39 +248,39 @@ export default class MenuMuebles extends Component {
 
     const selectMueblesBanyo = () => {
       // TODO: Cambiar idioma
-      const text = ' > Muebles baño'
-      this.setState({
-        breadcrumb: <span>{text}</span>,
+      const text = ' > Muebles baño';
+      this.setState( {
+        breadcrumb: <span>{ text }</span>,
         currentShowElement: elementsMueblesBanyo
-      })
-    }
+      } );
+    };
 
     // SECTION LAVABO
     const selectLavabo2 = () => {
       // TODO: Cambiar idioma
       let newBreadcrumb = () => {
-        const simbol = ' > '
-        const text1 = 'Lavabos y Encimeras'
-        const text2 = 'Lavabos'
+        const simbol = ' > ';
+        const text1 = 'Lavabos y Encimeras';
+        const text2 = 'Lavabos';
         return <span>
-          <span>{simbol}</span>
-          <span className={'breadcrumb2'}
-            onClick={() => { this.setState({ currentShowElement: elementsLavabo, breadcrumb: ' > Lavabos', }) }}
+          <span>{ simbol }</span>
+          <span className={ 'breadcrumb2' }
+            onClick={ () => { this.setState( { currentShowElement: elementsLavabo, breadcrumb: ' > Lavabos', } ); } }
           >
-            {text1}
+            { text1 }
           </span>
-          <span>{simbol}</span>
-          <span>{text2}</span>
-        </span>
-      }
+          <span>{ simbol }</span>
+          <span>{ text2 }</span>
+        </span>;
+      };
 
-      this.setState({
+      this.setState( {
         breadcrumb: newBreadcrumb(),
         currentShowElement: [
           { image: img_18687, name: '18687', },
         ],
-      })
-    }
+      } );
+    };
 
     const elementsLavabo = [
       { image: img_lavabos2, name: 'Lavabos', action: selectLavabo2 },
@@ -290,39 +290,39 @@ export default class MenuMuebles extends Component {
 
     const selectLavabo = () => {
       // TODO: Cambiar idioma
-      const text = ' > Lavabos y Encimeras'
-      this.setState({
-        breadcrumb: <span>{text}</span>,
+      const text = ' > Lavabos y Encimeras';
+      this.setState( {
+        breadcrumb: <span>{ text }</span>,
         currentShowElement: elementsLavabo
-      })
-    }
+      } );
+    };
 
     // SECTION COMPAKT
     const selectCompakt46 = () => {
       // TODO: Cambiar idioma
       let newBreadcrumb = () => {
-        const simbol = ' > '
-        const text1 = 'Compakt'
-        const text2 = 'Compakt 46'
+        const simbol = ' > ';
+        const text1 = 'Compakt';
+        const text2 = 'Compakt 46';
         return <span>
-          <span>{simbol}</span>
-          <span className={'breadcrumb2'}
-            onClick={() => { this.setState({ currentShowElement: elementsCompakt, breadcrumb: ' > Compakt', }) }}
+          <span>{ simbol }</span>
+          <span className={ 'breadcrumb2' }
+            onClick={ () => { this.setState( { currentShowElement: elementsCompakt, breadcrumb: ' > Compakt', } ); } }
           >
-            {text1}
+            { text1 }
           </span>
-          <span>{simbol}</span>
-          <span>{text2}</span>
-        </span>
-      }
+          <span>{ simbol }</span>
+          <span>{ text2 }</span>
+        </span>;
+      };
 
-      this.setState({
+      this.setState( {
         breadcrumb: newBreadcrumb(),
         currentShowElement: [
           { image: img_24471, name: '24471', },
         ],
-      })
-    }
+      } );
+    };
 
     const elementsCompakt = [
       { image: img_compaktFondo46, name: 'Compakt Fondo 46', action: selectCompakt46 },
@@ -331,39 +331,39 @@ export default class MenuMuebles extends Component {
 
     const selectCompakt = () => {
       // TODO: Cambiar idioma
-      const text = ' > Compakt'
-      this.setState({
-        breadcrumb: <span>{text}</span>,
+      const text = ' > Compakt';
+      this.setState( {
+        breadcrumb: <span>{ text }</span>,
         currentShowElement: elementsCompakt
-      })
-    }
+      } );
+    };
 
     // SECTION MAMPARAS
     const selectFrontal = () => {
       // TODO: Cambiar idioma
       let newBreadcrumb = () => {
-        const simbol = ' > '
-        const text1 = 'Mamparas'
-        const text2 = 'Frontal'
+        const simbol = ' > ';
+        const text1 = 'Mamparas';
+        const text2 = 'Frontal';
         return <span>
-          <span>{simbol}</span>
-          <span className={'breadcrumb2'}
-            onClick={() => { this.setState({ currentShowElement: elementsMamparas, breadcrumb: ' > Mamparas', hoverBreadcrumb2: false }) }}
+          <span>{ simbol }</span>
+          <span className={ 'breadcrumb2' }
+            onClick={ () => { this.setState( { currentShowElement: elementsMamparas, breadcrumb: ' > Mamparas', hoverBreadcrumb2: false } ); } }
           >
-            {text1}
+            { text1 }
           </span>
-          <span>{simbol}</span>
-          <span>{text2}</span>
-        </span>
-      }
+          <span>{ simbol }</span>
+          <span>{ text2 }</span>
+        </span>;
+      };
 
-      this.setState({
+      this.setState( {
         breadcrumb: newBreadcrumb(),
         currentShowElement: [
           { image: img_22443, name: '22443', },
         ],
-      })
-    }
+      } );
+    };
 
     const elementsMamparas = [
       { image: img_frontal, name: 'Frontal', action: selectFrontal },
@@ -374,40 +374,40 @@ export default class MenuMuebles extends Component {
 
     const selectMamparas = () => {
       // TODO: Cambiar idioma
-      const text = ' > Mamparas'
-      this.setState({
-        breadcrumb: <span>{text}</span>,
+      const text = ' > Mamparas';
+      this.setState( {
+        breadcrumb: <span>{ text }</span>,
         currentShowElement: elementsMamparas
-      })
-    }
+      } );
+    };
 
     // SECTION PLATOS DUCHA
     const selectRioja = () => {
       // TODO: Cambiar idioma
       let newBreadcrumb = () => {
-        const simbol = ' > '
-        const text1 = 'Platos de ducha'
-        const text2 = 'Rioja'
+        const simbol = ' > ';
+        const text1 = 'Platos de ducha';
+        const text2 = 'Rioja';
 
         return <span>
-          <span>{simbol}</span>
-          <span className={'breadcrumb2'}
-            onClick={() => { this.setState({ currentShowElement: elementsPlatosDucha, breadcrumb: ' > Platos de ducha', hoverBreadcrumb2: false }) }}
+          <span>{ simbol }</span>
+          <span className={ 'breadcrumb2' }
+            onClick={ () => { this.setState( { currentShowElement: elementsPlatosDucha, breadcrumb: ' > Platos de ducha', hoverBreadcrumb2: false } ); } }
           >
-            {text1}
+            { text1 }
           </span>
-          <span>{simbol}</span>
-          <span>{text2}</span>
-        </span>
-      }
+          <span>{ simbol }</span>
+          <span>{ text2 }</span>
+        </span>;
+      };
 
-      this.setState({
+      this.setState( {
         breadcrumb: newBreadcrumb(),
         currentShowElement: [
           { image: img_23425, name: '23425', },
         ],
-      })
-    }
+      } );
+    };
 
     const elementsPlatosDucha = [
       { image: img_rioja, name: 'Rioja', action: selectRioja },
@@ -416,21 +416,21 @@ export default class MenuMuebles extends Component {
 
     const selectPlatosDucha = () => {
       // TODO: Cambiar idioma
-      const text = ' > Platos de ducha'
-      this.setState({
-        breadcrumb: <span>{text}</span>,
+      const text = ' > Platos de ducha';
+      this.setState( {
+        breadcrumb: <span>{ text }</span>,
         currentShowElement: elementsPlatosDucha
-      })
-    }
+      } );
+    };
 
     const selectAccesorios = () => {
       // TODO: Cambiar idioma
-      const text = ' > Accesorios'
-      this.setState({
-        breadcrumb: <span>{text}</span>,
+      const text = ' > Accesorios';
+      this.setState( {
+        breadcrumb: <span>{ text }</span>,
         currentShowElement: []
-      })
-    }
+      } );
+    };
 
     return (
       /* <aside id='menuMuebles' style={STYLE}>
@@ -442,24 +442,24 @@ Muebles
 <img style={STYLE_BUTTON_CLOSE} src={close} onClick={closeMenuMuebles} />
 </div>
 {*//* Search *//*}
-                                                                                                                                                                                                                                                                                                                                                                                                                                          <div style={{ margin: '0 20px 0 20px' }}>
-                                                                                                                                                                                                                                                                                                                                                                                                                                            <div style={{ display: 'flex', flexDirection: 'column', marginTop: '0.4em' }} >
-                                                                                                                                                                                                                                                                                                                                                                                                                                              <input
-                                                                                                                                                                                                                                                                                                                                                                                                                                                style={{ width: 'auto', height: '1.8em', color: SharedStyle.COLORS.grey, fontFamily: 'Calibri', fontWidth: 'lighter' }}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                type="text"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                placeholder='Buscar...'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                onChange={(e) => { matcharray(e.target.value) }}
-                                                                                                                                                                                                                                                                                                                                                                                                                                              />
-                                                                                                                                                                                                                                                                                                                                                                                                                                              <div style={{ display: 'flex', justifyItems: 'center', width: '10em', height: '25px', cursor: 'pointer' }}>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                <p style={{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                  fontSize: '0.75em',
-                                                                                                                                                                                                                                                                                                                                                                                                                                                  color: SharedStyle.PRIMARY_COLOR.master,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                  width: '10em',
-                                                                                                                                                                                                                                                                                                                                                                                                                                                }}>Búsqueda Avanzada</p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                <img style={{ height: '0.65em', marginTop: '0.85em', marginLeft: '0.2em', }} src={flecha} />
-                                                                                                                                                                                                                                                                                                                                                                                                                                              </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                    
-                                                                                                                                                                                                                                                                                                                                                                                                                                              {*//* Objects *//*}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div style={{ margin: '0 20px 0 20px' }}>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <div style={{ display: 'flex', flexDirection: 'column', marginTop: '0.4em' }} >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <input
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              style={{ width: 'auto', height: '1.8em', color: SharedStyle.COLORS.grey, fontFamily: 'Calibri', fontWidth: 'lighter' }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              type="text"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              placeholder='Buscar...'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              onChange={(e) => { matcharray(e.target.value) }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            />
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div style={{ display: 'flex', justifyItems: 'center', width: '10em', height: '25px', cursor: 'pointer' }}>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              <p style={{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                fontSize: '0.75em',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                color: SharedStyle.PRIMARY_COLOR.master,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                width: '10em',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              }}>Búsqueda Avanzada</p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              <img style={{ height: '0.65em', marginTop: '0.85em', marginLeft: '0.2em', }} src={flecha} />
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {*//* Objects *//*}
 {
 this.state.filterShowElement === null ?
 printItems(this.state.currentShowElement)
@@ -470,105 +470,112 @@ printItems(this.state.filterShowElement)
 </div>
 </div>
 </aside >*/
-      <aside id='menuMuebles' style={STYLE}>
-        {/* Barra Inicial */}
-        <div style={STYLE_TITLE_BAR}>
+      <aside id='menuMuebles' style={ STYLE }>
+        {/* Barra Inicial */ }
+        <div style={ STYLE_TITLE_BAR }>
           {
             this.state.breadcrumb === null ?
-              <p style={STYLE_BREADCRUMB}>
+              <p style={ STYLE_BREADCRUMB }>
                 Baño Salgar
               </p>
               :
-              <p style={STYLE_BREADCRUMB}>
+              <p style={ STYLE_BREADCRUMB }>
                 <span
-                  style={this.state.hoverBreadcrumb ? { textDecoration: 'underline', cursor: 'pointer' } : {}}
-                  onMouseEnter={() => this.setState({ hoverBreadcrumb: true })}
-                  onMouseLeave={() => this.setState({ hoverBreadcrumb: false })}
-                  onClick={() => { this.setState({ currentShowElement: null, breadcrumb: null, hoverBreadcrumb: false }) }}
+                  style={ this.state.hoverBreadcrumb ? { textDecoration: 'underline', cursor: 'pointer' } : {} }
+                  onMouseEnter={ () => this.setState( { hoverBreadcrumb: true } ) }
+                  onMouseLeave={ () => this.setState( { hoverBreadcrumb: false } ) }
+                  onClick={ () => { this.setState( { currentShowElement: null, breadcrumb: null, hoverBreadcrumb: false } ); } }
                 >
                   Baño Salgar
                 </span>
-                {this.state.breadcrumb}
+                { this.state.breadcrumb }
               </p>
           }
-          <img style={STYLE_BUTTON_CLOSE} src={close} onClick={closeMenuMuebles} />
+          <img
+            style={ STYLE_BUTTON_CLOSE }
+            src={ close }
+            onClick={ () => {
+              closeMenuMuebles();
+              this.props.handleToolbarButtons();
+            } }
+          />
         </div>
-        {/* Search */}
-        <div style={{ margin: '0 20px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }} >
+        {/* Search */ }
+        <div style={ { margin: '0 20px' } }>
+          <div style={ { display: 'flex', flexDirection: 'column', marginTop: '10px' } } >
             <input
-              style={{ width: 'auto', height: '1.8em', color: SharedStyle.COLORS.grey, fontFamily: 'Calibri', fontWidth: 'lighter' }}
+              style={ { width: 'auto', height: '1.8em', color: SharedStyle.COLORS.grey, fontFamily: 'Calibri', fontWidth: 'lighter' } }
               type="text"
               placeholder='Buscar...'
-              onChange={(e) => { matcharray(e.target.value) }}
+              onChange={ ( e ) => { matcharray( e.target.value ); } }
             />
-            <div style={{ display: 'flex', justifyItems: 'center', width: '10em', height: '25px', cursor: 'pointer', }}>
-              <p style={{
+            <div style={ { display: 'flex', justifyItems: 'center', width: '10em', height: '25px', cursor: 'pointer', } }>
+              <p style={ {
                 fontSize: '0.75em',
                 color: SharedStyle.PRIMARY_COLOR.master,
                 width: '10em',
-              }}>Búsqueda Avanzada</p>
-              <img style={{ height: '0.65em', marginTop: '0.85em', marginLeft: '0.2em', }} src={flecha} />
+              } }>Búsqueda Avanzada</p>
+              <img style={ { height: '0.65em', marginTop: '0.85em', marginLeft: '0.2em', } } src={ flecha } />
             </div>
 
-            {/* Objects */}
+            {/* Objects */ }
             {
               this.state.currentShowElement === null ?
-                <div style={{ marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' }}>
-                  <div onClick={selectMueblesBanyo} style={{ cursor: 'pointer', paddingTop: '10px' }}>
-                    <div style={{ position: 'relative' }}>
-                      <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-1.5em' }} />
-                      <img src={img_mueblesBanyo} style={STYLE_IMAGE} />
-                      <p style={STYLE_NAME}>Muebles Baño</p>
+                <div style={ { marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' } }>
+                  <div onClick={ selectMueblesBanyo } style={ { cursor: 'pointer', paddingTop: '10px' } }>
+                    <div style={ { position: 'relative' } }>
+                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em' } } />
+                      <img src={ img_mueblesBanyo } style={ STYLE_IMAGE } />
+                      <p style={ STYLE_NAME }>Muebles Baño</p>
                     </div>
                   </div>
-                  <div onClick={selectLavabo} style={{ cursor: 'pointer', paddingTop: '10px' }}>
-                    <div style={{ position: 'relative' }}>
-                      <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-0.9em' }} />
-                      <img src={img_lavabos} style={STYLE_IMAGE} />
-                      <p style={STYLE_NAME}>Lavabos y Encimeras</p>
+                  <div onClick={ selectLavabo } style={ { cursor: 'pointer', paddingTop: '10px' } }>
+                    <div style={ { position: 'relative' } }>
+                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-0.9em' } } />
+                      <img src={ img_lavabos } style={ STYLE_IMAGE } />
+                      <p style={ STYLE_NAME }>Lavabos y Encimeras</p>
                     </div>
                   </div>
-                  <div onClick={selectCompakt} style={{ cursor: 'pointer', paddingTop: '10px' }}>
-                    <div style={{ position: 'relative' }}>
-                      <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-1.5em' }} />
-                      <img src={img_compakt} style={STYLE_IMAGE} />
-                      <p style={STYLE_NAME}>Compakt</p>
+                  <div onClick={ selectCompakt } style={ { cursor: 'pointer', paddingTop: '10px' } }>
+                    <div style={ { position: 'relative' } }>
+                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em' } } />
+                      <img src={ img_compakt } style={ STYLE_IMAGE } />
+                      <p style={ STYLE_NAME }>Compakt</p>
                     </div>
                   </div>
-                  <div onClick={selectMamparas} style={{ cursor: 'pointer', paddingTop: '10px' }}>
-                    <div style={{ position: 'relative' }}>
-                      <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-0.9em' }} />
-                      <img src={img_mamparas} style={STYLE_IMAGE} />
-                      <p style={STYLE_NAME}>Mamparas</p>
+                  <div onClick={ selectMamparas } style={ { cursor: 'pointer', paddingTop: '10px' } }>
+                    <div style={ { position: 'relative' } }>
+                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-0.9em' } } />
+                      <img src={ img_mamparas } style={ STYLE_IMAGE } />
+                      <p style={ STYLE_NAME }>Mamparas</p>
                     </div>
                   </div>
-                  <div onClick={selectPlatosDucha} style={{ cursor: 'pointer', paddingTop: '10px' }}>
-                    <div style={{ position: 'relative' }}>
-                      <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-1.5em' }} />
-                      <img src={img_platosDucha} style={STYLE_IMAGE} />
-                      <p style={STYLE_NAME}>Platos de ducha</p>
+                  <div onClick={ selectPlatosDucha } style={ { cursor: 'pointer', paddingTop: '10px' } }>
+                    <div style={ { position: 'relative' } }>
+                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em' } } />
+                      <img src={ img_platosDucha } style={ STYLE_IMAGE } />
+                      <p style={ STYLE_NAME }>Platos de ducha</p>
                     </div>
                   </div>
-                  <div onClick={selectAccesorios} style={{ cursor: 'pointer', paddingTop: '10px' }}>
-                    <div style={{ position: 'relative' }}>
-                      <img className={'rectangulo'} src={rectangulo} style={{ marginLeft: '-0.9em' }} />
-                      <img src={img_accesorios} style={STYLE_IMAGE} />
-                      <p style={STYLE_NAME}>Accesorios</p>
+                  <div onClick={ selectAccesorios } style={ { cursor: 'pointer', paddingTop: '10px' } }>
+                    <div style={ { position: 'relative' } }>
+                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-0.9em' } } />
+                      <img src={ img_accesorios } style={ STYLE_IMAGE } />
+                      <p style={ STYLE_NAME }>Accesorios</p>
                     </div>
                   </div>
                 </div>
                 :
                 (
                   this.state.filterShowElement === null ?
-                    printItems(this.state.currentShowElement)
+                    printItems( this.state.currentShowElement )
                     :
-                    printItems(this.state.filterShowElement)
+                    printItems( this.state.filterShowElement )
                 )
             }
           </div>
         </div>
       </aside >
-    )
+    );
   }
 }

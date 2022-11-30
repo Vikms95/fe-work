@@ -2,9 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\components",
-    "\\src\\components\\toolbar-wrapper"
+    "\\src\\components"
   ],
-  "SelectedNode": "\\src\\components\\toolbar-wrapper\\export.js",
+  "SelectedNode": "\\src\\components\\topbar",
   "PreviewInSolutionExplorer": false
 }
