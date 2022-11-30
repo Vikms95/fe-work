@@ -8,6 +8,7 @@ import ProjectConfigurator from './configurator/project-configurator';
 
 import * as constants from '../constants';
 
+//
 export default function Content (
   {
     width,
