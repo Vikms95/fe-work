@@ -83,14 +83,9 @@ const mapButtonsCb = ( el, ind ) => {
 };
 
 export default class Toolbar extends Component {
-
   constructor ( props ) {
     super( props );
-    this.state = {
-      menuRooms: false,
-      menuConstruccion: false,
-      menuMuebles: false,
-    };
+    this.state = {};
   }
 
   shouldComponentUpdate ( nextProps, nextState ) {
@@ -98,14 +93,22 @@ export default class Toolbar extends Component {
       this.props.height !== nextProps.height ||
       this.props.width !== nextProps.width ||
       this.props.state.alterate !== nextProps.state.alterate ||
-      this.state.menuRooms !== nextState.menuRooms ||
-      this.state.menuConstruccion !== nextState.menuConstruccion ||
-      this.state.menuMuebles !== nextState.menuMuebles;
+      this.props.menus.menuRooms !== nextProps.menus.menuRooms ||
+      this.props.menus.menuConstruccion !== nextProps.menus.menuConstruccion ||
+      this.props.menus.menuMuebles !== nextProps.menus.menuMuebles;
   }
 
   render () {
     let {
-      props: { state, width, height, toolbarButtons, allowProjectFileSupport },
+      props: {
+        state,
+        width,
+        height,
+        toolbarButtons,
+        allowProjectFileSupport,
+        menus,
+        handleToolbarButtons
+      },
       context: { projectActions, viewer3DActions, translator }
     } = this;
     let mode = state.get( 'mode' );
@@ -183,28 +186,31 @@ export default class Toolbar extends Component {
     // Listado de los menus que hay
     const allMenus = [ 'menuRooms', 'menuConstruccion', 'menuMuebles' ];
 
-    // Mostrara el menu pasado por params, ocultara el resto y cambia el estado para activarlo
     const showAndHideMenus = ( menuShow ) => {
-      allMenus.forEach( ( ele ) => {
-        if ( ele === menuShow ) {
-          // Si el elemento clickado y el que se está enseñando es el mismo, esconde el menu
-          if ( document.getElementById( ele ).style.display === 'block' ) {
+      let elementShown = false;
 
-            this.setState( { [ menuShow ]: false } );
+      allMenus.forEach( ( ele ) => {
+
+        if ( ele === menuShow ) {
+
+          if ( document.getElementById( ele ).style.display === 'block' ) {
             document.getElementById( ele ).style.display = 'none';
 
           } else {
-
-            this.setState( { [ menuShow ]: true } );
             document.getElementById( ele ).style.display = 'block';
-
+            elementShown = true;
           }
         } else {
-
-          this.setState( { [ ele ]: false } );
           document.getElementById( ele ).style.display = 'none';
         }
+
       } );
+
+      if ( elementShown ) {
+        handleToolbarButtons( menuShow );
+      } else {
+        handleToolbarButtons();
+      }
     };
 
 
@@ -213,7 +219,7 @@ export default class Toolbar extends Component {
         index: 0, condition: true,
         dom: <ToolbarButton
           index={ 0 }
-          active={ this.state.menuRooms }
+          active={ menus.menuRooms }
           tooltip={ 'Paredes' }
           onClick={ () => showAndHideMenus( 'menuRooms' ) }
           img={ paredes }
@@ -226,7 +232,7 @@ export default class Toolbar extends Component {
         dom: <ToolbarButton
           index={ 1 }
           className='toolbar-button'
-          active={ this.state.menuConstruccion }
+          active={ menus.menuConstruccion }
           tooltip={ 'Construccion' }
           onClick={ () => showAndHideMenus( 'menuConstruccion' ) }
           img={ construccion }
@@ -239,7 +245,7 @@ export default class Toolbar extends Component {
         dom: <ToolbarButton
           index={ 2 }
           className='toolbar-button'
-          active={ this.state.menuMuebles }
+          active={ menus.menuMuebles }
           tooltip={ 'Baño Salgar' }
           onClick={ () => showAndHideMenus( 'menuMuebles' ) }
           img={ img_salgar }

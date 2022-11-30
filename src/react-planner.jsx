@@ -54,6 +54,13 @@ class ReactPlanner extends Component {
       sideBarW: props.width - 257, // 257 from sideBar Width
       sideBarH: props.height - ( 82 + 120 ), // 72 from topBar Height and 130 from direction Height con los px de los borders
       directionW: props.width - 257, // 257 from direction Width
+
+      // Change them together instead of iterating
+      menus: {
+        menuRooms: false,
+        menuMuebles: false,
+        menuConstruccion: false,
+      }
     };
 
     this.refViewer = React.createRef();
@@ -68,6 +75,7 @@ class ReactPlanner extends Component {
     this.update2DView = this.update2DView.bind( this );
     this.update2DViewObject = this.update2DViewObject.bind( this );
     this.update2DViewOnState = this.update2DViewOnState.bind( this );
+    this.handleToolbarButtons = this.handleToolbarButtons.bind(this)
 
     this.getState = this.getState.bind( this );
   }
@@ -197,6 +205,27 @@ class ReactPlanner extends Component {
     return this.props.viewer2DActions.updateCameraView( value );
   }
 
+  //activateToolbarButton (menu) {
+  //  const menus = { ...this.state.menus }
+  //  menus[ menu ] = true;
+  //  this.setState( { menus } );
+  //  console.log(menus)
+  //}
+
+  handleToolbarButtons (menu) {
+    const menus = {
+      menuRooms: false,
+      menuMuebles: false,
+      MenuConstruccion: false
+    }
+
+    if ( menu ){
+      menus[menu] = true
+    }
+
+    this.setState( {menus: menus } )
+  }
+
   render () {
     const { update2DView } = this;
     const { width, height, state, stateExtractor, ...props } = this.props;
@@ -220,34 +249,51 @@ class ReactPlanner extends Component {
       // </div>
       <div>
         <MainComponent state={ state } { ...props } />
+
         <TopBar state={ extractedState } { ...props } />
+
         <div style={ { ...wrapperStyle, height } }>
-          <Toolbar width={ toolbarW } height={ toolbarH } state={ extractedState } { ...props } />
-          <div style={ { position: 'relative' } }>
-            <MenuRooms state={ state } { ...props } />
-            <MenuConstruccion state={ state } { ...props } />
-            <MenuMuebles state={ state } { ...props } />
-            <LoginComponent state={ extractedState } { ...props } />
-            <RegisterComponent state={ state } { ...props } />
-            <MenuPreferencias state={ state } { ...props } />
-            <Content
-              style={ { position: 'absolute', zIndex: '0' } }
-              width={ contentW }
-              height={ contentH }
+
+
+            <Toolbar
+              width={ toolbarW }
+              height={ toolbarH }
               state={ extractedState }
-              refViewer2D={ this.refViewer }
-              update2DView={ update2DView }
-              onWheel={ event => event.preventDefault() }
+              menus={ this.state.menus }
+              handleToolbarButtons={ this.handleToolbarButtons}
               { ...props }
             />
 
-          </div>
+            <div style={ { position: 'relative' } }>
+
+              <MenuRooms state={ state } { ...props } />
+              <MenuConstruccion state={ state } { ...props } />
+              <MenuMuebles state={ state } { ...props } />
+              <LoginComponent state={ extractedState } { ...props } />
+              <RegisterComponent state={ state } { ...props } />
+              <MenuPreferencias state={ state } { ...props } />
+
+              <Content
+                style={ { position: 'absolute', zIndex: '0' } }
+                width={ contentW }
+                height={ contentH }
+                state={ extractedState }
+                refViewer2D={ this.refViewer }
+                update2DView={ update2DView }
+                onWheel={ event => event.preventDefault() }
+                { ...props }
+              />
+
+            </div>
+
+
           <Sidebar
             state={ extractedState }
             width={ sideBarW }
             height={ sideBarH }
             { ...props }
           />
+
           {
             this.refViewer && (
               <Direction
