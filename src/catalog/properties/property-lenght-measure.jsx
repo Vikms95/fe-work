@@ -1,30 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { UNITS_LENGTH, UNIT_CENTIMETER } from './../../constants';
+import { UNIT_CENTIMETER } from './../../constants';
 import convert from 'convert-units';
-import { FormLabel, FormNumberInput, FormSelect } from '../../components/style/export';
+import { FormLabel, FormNumberInput } from '../../components/style/export';
 import { Map } from 'immutable';
 import { toFixedFloat } from '../../utils/math';
 import PropertyStyle from './shared-property-style';
 import { showMeasure } from './../../utils/changeUnit';
 
 import * as SharedStyle from '../../shared-style';
+import { Source } from 'three';
 
-import flecha from './../../assets/generalItems/flecha.png';
 
 const internalTableStyle = { borderCollapse: 'collapse' };
 const secondTdStyle = { padding: 0 };
 const unitContainerStyle = { width: '5em' };
 
-export default function PropertyLengthMeasure ( { value, onUpdate, onValid, configs, sourceElement, internalState, state, stateRedux, attributeName, mode, unit, projectActions }, { catalog } ) {
+export default function PropertyLengthMeasure (
+  {
+    unit,
+    mode,
+    state,
+    value,
+    onValid,
+    configs,
+    onUpdate,
+    stateRedux,
+    internalState,
+    attributeName,
+    sourceElement,
+    projectActions
+  }, { catalog } ) {
 
   let _unit = unit;
   let length = value.get( 'length' ) || 0;
-  /*let _length = value.get('_length') || length;*/
   let _length = showMeasure( length, _unit ) || value.get( '_length' );
-
-  /*let _unit = value.get('_unit') || UNIT_CENTIMETER;*/
-
 
   let { hook, label, ...configRest } = configs;
 
@@ -32,7 +42,10 @@ export default function PropertyLengthMeasure ( { value, onUpdate, onValid, conf
     let newLength = toFixedFloat( lengthInput );
 
     let merged = value.merge( {
-      length: unitInput !== UNIT_CENTIMETER ? convert( newLength ).from( unitInput ).to( UNIT_CENTIMETER ) : newLength,
+      length: ( unitInput !== UNIT_CENTIMETER )
+        ? convert( newLength ).from( unitInput ).to( UNIT_CENTIMETER )
+        : newLength,
+
       _length: lengthInput,
       _unit: unitInput
     } );
@@ -47,25 +60,37 @@ export default function PropertyLengthMeasure ( { value, onUpdate, onValid, conf
   };
 
   return (
-    <table className="PropertyLengthMeasure" style={ { ...PropertyStyle.tableStyle, paddingBottom: '10px', marginLeft: '-3px' } }>
+    <table
+      className="PropertyLengthMeasure"
+      style={ { ...PropertyStyle.tableStyle, paddingBottom: '10px', marginLeft: '-3px' } }
+    >
       <tbody>
         <tr>
-          <td style={ PropertyStyle.firstTdStyle }><FormLabel>{ label }</FormLabel></td>
+
+          <td style={ PropertyStyle.firstTdStyle }>
+
+            <FormLabel>
+              { label }
+            </FormLabel>
+
+          </td>
+
           <td style={ secondTdStyle }>
             <table style={ internalTableStyle }>
               <tbody>
                 <tr>
                   <td>
                     <FormNumberInput
-                      value={ _length }
-                      onChange={ event => update( event.target.value, _unit, event.target.isEnter ) }
-                      onValid={ onValid }
-                      unit={ _unit }
-                      attributeName={ attributeName }
                       mode={ mode }
-                      projectActions={ projectActions }
+                      unit={ _unit }
                       state={ state }
+                      value={ _length }
+                      onValid={ onValid }
                       stateRedux={ stateRedux }
+                      attributeName={ attributeName }
+                      sourceElement={ sourceElement }
+                      projectActions={ projectActions }
+                      onChange={ event => update( event.target.value, _unit, event.target.isEnter ) }
                       { ...configRest }
                     />
                   </td>

@@ -7,7 +7,18 @@ const tableStyle = { width: '100%' };
 const firstTdStyle = { width: '6em' };
 const inputStyle = { textAlign: 'left' };
 
-export default function LineAttributesEditor ( { element, onUpdate, attributeFormData, state, projectActions, position, mode, unit, ...rest }, { translator } ) {
+export default function LineAttributesEditor (
+  {
+    mode,
+    unit,
+    state,
+    element,
+    position,
+    onUpdate,
+    projectActions,
+    attributeFormData,
+    ...rest
+  }, { translator } ) {
 
   let name = attributeFormData.has( 'name' ) ? attributeFormData.get( 'name' ) : element.name;
   let vertexOne = attributeFormData.has( 'vertexOne' ) ? attributeFormData.get( 'vertexOne' ) : null;
@@ -18,94 +29,29 @@ export default function LineAttributesEditor ( { element, onUpdate, attributeFor
   if ( position === 1 ) {
     return (
       <div>
-        {/*<table style={tableStyle}>
-        <tbody>
-          <tr>
-            <td style={firstTdStyle}>{translator.t('Name')}</td>
-            <td>
-              <FormTextInput
-                value={name}
-                onChange={event => onUpdate('name', event.target.value)}
-                style={inputStyle}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td style={firstTdStyle}>X1</td>
-            <td>
-              <FormNumberInput
-                value={vertexOne.get('x')}
-                onChange={event => onUpdate('vertexOne', {'x': event.target.value})}
-                style={inputStyle}
-                state={state}
-                precision={2}
-                {...rest}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td style={firstTdStyle}>Y1</td>
-            <td>
-              <FormNumberInput
-                value={vertexOne.get('y')}
-                onChange={event => onUpdate('vertexOne', {'y': event.target.value})}
-                style={inputStyle}
-                state={state}
-                precision={2}
-                {...rest}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td style={firstTdStyle}>X2</td>
-            <td>
-              <FormNumberInput
-                value={vertexTwo.get('x')}
-                onChange={event => onUpdate('vertexTwo', {'x': event.target.value})}
-                style={inputStyle}
-                state={state}
-                precision={2}
-                {...rest}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td style={firstTdStyle}>Y2</td>
-            <td>
-              <FormNumberInput
-                value={vertexTwo.get('y')}
-                onChange={event => onUpdate('vertexTwo', {'y': event.target.value})}
-                style={inputStyle}
-                state={state}
-                precision={2}
-                {...rest}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>*/}
         <PropertyLengthMeasure
-          value={ lineLength }
-          onUpdate={ ( mapped, isEnter ) => onUpdate( 'lineLength', mapped, isEnter ) }
-          attributeName={ 'lineLength' }
-          configs={ { label: 'Ancho', min: 0, max: Infinity, precision: 2 } }
-          stateRedux={ state }
           mode={ mode }
           unit={ unit }
+          stateRedux={ state }
+          value={ lineLength }
+          sourceElement={ element }
+          attributeName={ 'lineLength' }
           projectActions={ projectActions }
+          configs={ { label: 'Ancho', min: 0, max: Infinity, precision: 2 } }
+          onUpdate={ ( mapped, isEnter ) => onUpdate( 'lineLength', mapped, isEnter ) }
         />
       </div>
     );
   } else if ( position === 2 ) {
     return <div >
       <PropertyNumber
-        value={ lineAngle }
-        onUpdate={ ( value, isEnter ) => onUpdate( 'lineAngle', value, isEnter ) }
-        state={ state }
-        attributeName='angulo'
         mode={ mode }
-        configs={ { label: 'Ángulo', min: 0, max: 360, precision: 0 } }
+        state={ state }
+        value={ lineAngle }
+        attributeName='angulo'
         projectActions={ projectActions }
+        configs={ { label: 'Ángulo', min: 0, max: 360, precision: 0 } }
+        onUpdate={ ( value, isEnter ) => onUpdate( 'lineAngle', value, isEnter ) }
         { ...rest }
       />
     </div >;

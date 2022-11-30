@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
-import { MdUpdate } from 'react-icons/md';
 import { KEYBOARD_BUTTON_CODE, MODE_DRAWING_LINE } from '../../constants';
-
 import { convertMeasureToOriginal } from './../../utils/changeUnit';
-import { getCacheAlto, getCacheAngulo, getCacheFondo } from '../../selectors/selectors';
+import { getCacheAngulo } from '../../selectors/selectors';
 
 const STYLE_INPUT = {
   display: 'block',
@@ -35,15 +33,12 @@ export default class FormNumberInput extends Component {
       x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
     };
-
-    // Mirar que sea una propiedad de las paredes
-    /*console.log('props.stateRedux', props.stateRedux.getIn(['scene', 'layers', 'layer-1']))*/
-
   }
 
-
   componentDidMount () {
-    if ( ( this.props.attributeName === 'lineLength' ) && ( this.props.mode === MODE_DRAWING_LINE ) ) {
+    if (
+      ( this.props.attributeName === 'lineLength' ) &&
+      ( this.props.mode === MODE_DRAWING_LINE ) ) {
       this.setState( { focus: true } );
       this.state.inputElement.focus();
       this.state.inputElement.select();
@@ -61,6 +56,7 @@ export default class FormNumberInput extends Component {
         this.state.inputElement.select();
       }
     }
+
     this.cursor = {
       x: this.props.stateRedux.getIn( [ 'mouse', 'x' ] ),
       y: this.props.stateRedux.getIn( [ 'mouse', 'y' ] ),
@@ -79,32 +75,39 @@ export default class FormNumberInput extends Component {
       value,
       min,
       max,
+      style,
+      onValid,
       precision,
       onChange,
-      onValid,
       onInvalid,
-      style,
       placeholder,
       attributeName,
-      mode,
-      projectActions,
-      unit
+      sourceElement
     } = this.props;
 
     let numericInputStyle = { ...STYLE_INPUT, ...style };
-    if ( this.state.focus ) numericInputStyle.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
-
     let regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
 
-    if ( !isNaN( min ) && isFinite( min ) && this.state.showedValue < min ) this.setState( { showedValue: min } ); // value = min;
-    if ( !isNaN( max ) && isFinite( max ) && this.state.showedValue > max ) this.setState( { showedValue: max } ); // value = max;
+    if ( this.state.focus ) {
+      numericInputStyle.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
+    }
 
-    let currValue = regexp.test( this.state.showedValue ) ? this.state.showedValue : parseFloat( this.state.showedValue ).toFixed( precision );
+    if ( !isNaN( min ) && isFinite( min ) && this.state.showedValue < min ) {
+      this.setState( { showedValue: min } );
+    };
 
-    // Used to check whether we need to update the value when pressing ENTER or TAB
-    let different = parseFloat( this.props.value ).toFixed( precision ) !== parseFloat( this.state.showedValue ).toFixed( precision );
+    if ( !isNaN( max ) && isFinite( max ) && this.state.showedValue > max ) {
+      this.setState( { showedValue: max } );
+    }
 
-    // Function executed when ENTER or TAB are pressed
+    let currValue = ( regexp.test( this.state.showedValue ) )
+      ? this.state.showedValue
+      : parseFloat( this.state.showedValue ).toFixed( precision );
+
+    let isDifferentValue =
+      ( parseFloat( this.props.value ).toFixed( precision ) ) !==
+      parseFloat( this.state.showedValue ).toFixed( precision );
+
     const saveFn = ( e ) => {
       e.stopPropagation();
       if ( this.state.valid ) {
@@ -144,9 +147,13 @@ export default class FormNumberInput extends Component {
       }
     };
 
+    const isEscPressed = ( keyCode ) => (
+      keyCode == KEYBOARD_BUTTON_CODE.ESC
+    );
+
     const isSaveButtonPressed = ( keyCode ) => (
       ( keyCode == KEYBOARD_BUTTON_CODE.ENTER ) ||
-      ( keyCode == KEYBOARD_BUTTON_CODE.TAB && different )
+      ( keyCode == KEYBOARD_BUTTON_CODE.TAB && isDifferentValue )
     );
 
     const isArrowPressedOnLength = ( keyCode ) => (
@@ -159,35 +166,30 @@ export default class FormNumberInput extends Component {
       ( this.props.mode === MODE_DRAWING_LINE )
     );
 
-    const isEscPressed = ( keyCode ) => (
-      keyCode == KEYBOARD_BUTTON_CODE.ESC
-    );
-
     return (
       <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
 
         <input
           ref={ c => ( this.state.inputElement = c ) }
-          className={ attributeName }
           placeholder={ placeholder }
+          className={ attributeName }
           type='number'
           value={ currValue }
           style={ { ...numericInputStyle, fontFamily: 'Calibri', fontWidth: 'lighter' } }
           onClick={ () => this.state.inputElement.select() }
-          onChange={ ( evt ) => {
-            let valid = regexp.test( evt.nativeEvent.target.value );
-            if ( valid ) {
-              this.setState( { showedValue: evt.nativeEvent.target.value } );
-              if ( onValid ) onValid( evt.nativeEvent );
-            }
-            else {
-              if ( onInvalid ) onInvalid( evt.nativeEvent );
-            }
-
-            this.setState( { valid } );
-          } }
           onFocus={ () => this.setState( { focus: true } ) }
           onBlur={ () => this.setState( { focus: false } ) }
+          onChange={ e => {
+            let valid = regexp.test( e.nativeEvent.target.value );
+            if ( valid ) {
+              this.setState( { showedValue: e.nativeEvent.target.value } );
+              if ( onValid ) onValid( e.nativeEvent );
+            }
+            else {
+              if ( onInvalid ) onInvalid( e.nativeEvent );
+            }
+            this.setState( { valid } );
+          } }
           onKeyDown={ e => {
 
             let keyCode = e.keyCode || e.which;
@@ -197,7 +199,8 @@ export default class FormNumberInput extends Component {
 
             } else if ( isArrowPressedOnLength( keyCode ) ) {
               e.preventDefault();
-              console.log( "key!" );
+              // Find the line pertaining this value
+              console.log( 'element is ', sourceElement );
 
             } else if ( isEscPressedWhileDrawing( keyCode ) ) {
               this.props.projectActions.undo();
