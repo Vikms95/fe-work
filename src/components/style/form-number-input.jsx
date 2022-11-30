@@ -23,7 +23,6 @@ const STYLE_INPUT = {
 };
 
 export default class FormNumberInput extends Component {
-
   constructor ( props, context ) {
     super( props, context );
     this.state = {
@@ -44,11 +43,16 @@ export default class FormNumberInput extends Component {
 
 
   componentDidMount () {
-    console.log( 'mount' );
     if ( ( this.props.attributeName === 'lineLength' ) && ( this.props.mode === MODE_DRAWING_LINE ) ) {
       this.setState( { focus: true } );
       this.state.inputElement.focus();
       this.state.inputElement.select();
+    }
+
+    // Prevent arrow keys default actions when on line length input
+    if ( this.props.attributeName === 'lineLength' ) {
+      const input = document.querySelector( '.lineLength' );
+      input.addEventListener( 'keydown', this.preventArrowKeysAction );
     }
 
     if ( this.props.attributeName === 'angulo' ) {
@@ -73,6 +77,17 @@ export default class FormNumberInput extends Component {
       this.setState( { showedValue: nextProps.value } );
     }
   }
+
+  componentWillUnmount () {
+    const input = document.querySelector( '.lineLength' );
+    input.removeEventListener( 'keydown', this.preventArrowKeysAction );
+  }
+
+  preventArrowKeysAction ( e ) {
+    const keys = [ 37, 38, 39, 40 ];
+    if ( keys.includes( e.keyCode ) ) e.preventDefault();
+  }
+
 
   render () {
 
@@ -132,7 +147,7 @@ export default class FormNumberInput extends Component {
         <input
           ref={ c => ( this.state.inputElement = c ) }
           className={ attributeName }
-          type="number"
+          type='number'
           value={ currValue }
           style={ { ...numericInputStyle, fontFamily: 'Calibri', fontWidth: 'lighter' } }
           onClick={ () => this.state.inputElement.select() }
