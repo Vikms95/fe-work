@@ -45,7 +45,11 @@ export default class FormNumberInput extends Component {
     }
 
     if ( this.props.attributeName === 'angulo' ) {
-      this.setState( { showedValue: getCacheAngulo( this.props.stateRedux ) || this.props.value } );
+      this.setState(
+        {
+          showedValue: getCacheAngulo( this.props.stateRedux ) ||
+            this.props.value
+        } );
     }
   }
 
@@ -138,6 +142,7 @@ export default class FormNumberInput extends Component {
         }
 
         let keyCode = e.keyCode || e.which;
+
         if ( attributeName === 'angulo' ) {
           onChange( { target: { value: savedValue, isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER } } );
           this.setState( { showedValue: getCacheAngulo( this.props.stateRedux ) } );
@@ -199,8 +204,40 @@ export default class FormNumberInput extends Component {
 
             } else if ( isArrowPressedOnLength( keyCode ) ) {
               e.preventDefault();
-              // Find the line pertaining this value
-              console.log( 'element is ', sourceElement );
+              // Find the vertices pertaining this line
+              const vertices = sourceElement.get( 'vertices' );
+              const firstVerticeID = vertices.first();
+              const layerID = this.props.stateRedux.getIn( [ 'scene', 'selectedLayer' ] );
+
+
+
+              // Get X and Y of one vertice
+              let x = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID, 'vertices', firstVerticeID, 'x' ] );
+              let y = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID, 'vertices', firstVerticeID, 'y' ] );
+
+              console.log( 'test keycode is ', keyCode );
+              switch ( keyCode ) {
+                case 39:
+                  //Right
+                  x += ( value / 10 ); break;
+                case 37:
+                  //Left
+                  x -= ( value / 10 ); break;
+
+                case 38:
+                  //Up
+                  y += ( value / 10 ); break;
+
+                case 40:
+                  // Down
+                  y -= ( value / 10 ); break;
+
+                default:
+                  return;
+              }
+
+
+              return this.context.linesActions.updateDrawingLine( x, y );
 
             } else if ( isEscPressedWhileDrawing( keyCode ) ) {
               this.props.projectActions.undo();

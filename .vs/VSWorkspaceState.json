@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\components"
+    "\\src\\components",
+    "\\src\\components\\sidebar"
   ],
-  "SelectedNode": "\\src\\components\\content.jsx",
+  "SelectedNode": "\\src\\components\\sidebar\\panel-layer-elements.jsx",
   "PreviewInSolutionExplorer": false
 }

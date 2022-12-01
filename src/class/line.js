@@ -32,7 +32,6 @@ import {
 import {
   getCacheAlto,
   getCacheFondo,
-  getCacheAngulo,
   getPrefsAlto,
   getPrefsFondo,
   setCacheAlto,
@@ -636,6 +635,7 @@ class Line {
     let lineID = state.getIn( [ 'scene', 'layers', layerID, 'selected', 'lines' ] ).first();
     //let line = state.getIn(['scene', 'layers', layerID, 'lines', lineID]);
     //let v2First = line.v2First || false;
+
 
     let { updatedState: stateLV, vertex } = Line.replaceVertex( state, layerID, lineID, 1, x, y );
     state = stateLV;

@@ -100,7 +100,6 @@ export default class ElementEditor extends Component {
         // instead of the one calculated by the mouse position
         _angleLine.angle = getCacheAngulo( state ) || _angleLine.angle;
 
-
         return new Map( {
           //vertexOne: v_a,
           //vertexTwo: v_b,
@@ -154,7 +153,10 @@ export default class ElementEditor extends Component {
     let mapped = {};
     for ( let name in catalogElement.properties ) {
       mapped[ name ] = new Map( {
-        currentValue: element.properties.has( name ) ? element.properties.get( name ) : fromJS( catalogElement.properties[ name ].defaultValue ),
+        currentValue: element.properties.has( name )
+          ? element.properties.get( name )
+          : fromJS( catalogElement.properties[ name ].defaultValue ),
+
         configs: catalogElement.properties[ name ]
       } );
     }
@@ -163,7 +165,6 @@ export default class ElementEditor extends Component {
   }
 
   updateAttribute ( attributeName, value, isEnter ) {
-
     let { attributesFormData } = this.state;
 
     switch ( this.props.element.prototype ) {
@@ -204,8 +205,6 @@ export default class ElementEditor extends Component {
           //    break;
           //  }
           default:
-            console.log( 'att namme ', attributeName );
-            console.log( 'att value ', value );
             {
               attributesFormData = attributesFormData.set( attributeName, value );
               this.setState( { attributesFormData } );
