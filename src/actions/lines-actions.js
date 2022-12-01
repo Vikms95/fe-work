@@ -28,7 +28,6 @@ export function selectToolDrawingLine ( sceneComponentType ) {
 }
 
 export function beginDrawingLine ( layerID, x, y, snapMask ) {
-  console.log( 'beginDrawingLine' );
   return {
     type: BEGIN_DRAWING_LINE,
     layerID, x, y, snapMask
@@ -43,7 +42,6 @@ export function updateDrawingLine ( x, y, snapMask ) {
 }
 
 export function endDrawingLine ( x, y, snapMask, continuous ) {
-  console.log( 'endDrawingLine' );
   return {
     type: END_DRAWING_LINE,
     x, y, snapMask, continuous
@@ -71,6 +69,16 @@ export function endDraggingLine ( x, y, snapMask ) {
   };
 }
 
+export function dragLine ( x, y, layerID, verticeID ) {
+  return {
+    type: DRAG_LINE,
+    x,
+    y,
+    layerID,
+    verticeID
+  };
+};
+
 export function cacheFondo ( fondo ) {
   return {
     type: CACHE_FONDO,
@@ -85,7 +93,6 @@ export function cacheAlto ( alto ) {
 }
 
 export function cacheAngulo ( angulo ) {
-  console.log( 'angulo' );
   return {
     type: CACHE_ANGULO,
     angulo

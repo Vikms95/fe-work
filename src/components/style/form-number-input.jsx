@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
 import { KEYBOARD_BUTTON_CODE, MODE_DRAWING_LINE } from '../../constants';
 import { convertMeasureToOriginal } from './../../utils/changeUnit';
-import { getCacheAngulo } from '../../selectors/selectors';
-import { projectActions, verticesActions } from '../../actions/export';
+import { getCacheAngulo, getLayerID, getLineVerticesID, getVerticeCoords } from '../../selectors/selectors';
+import { Line } from '../../class/export';
+
 
 const STYLE_INPUT = {
   display: 'block',
@@ -199,6 +200,7 @@ export default class FormNumberInput extends Component {
           onKeyDown={ e => {
 
             let keyCode = e.keyCode || e.which;
+            const state = this.props.stateRedux;
 
             if ( isSaveButtonPressed( keyCode ) ) {
               saveFn( e );
@@ -206,53 +208,20 @@ export default class FormNumberInput extends Component {
             } else if ( isArrowPressedOnLength( keyCode ) ) {
               e.preventDefault();
 
-              const layerID = this.props.stateRedux.getIn( [ 'scene', 'selectedLayer' ] );
-              // Find the vertices pertaining this line
-              const vertices = sourceElement.get( 'vertices' );
-              const vertice1ID = vertices.toJS()[ 0 ];
-              const vertice2ID = vertices.toJS()[ 1 ];
-              //Get X and Y of one vertice
-              let x1 = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID, 'vertices', vertice1ID, 'x' ] );
-              let y1 = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID, 'vertices', vertice1ID, 'y' ] );
+              const layerID = getLayerID( state );
+              const { vertice1ID, vertice2ID } = getLineVerticesID( sourceElement );
 
-              let x2 = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID, 'vertices', vertice2ID, 'x' ] );
-              let y2 = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID, 'vertices', vertice2ID, 'y' ] );
+              let { x: x1, y: y1 } = getVerticeCoords( state, layerID, vertice1ID );
+              let { x: x2, y: y2 } = getVerticeCoords( state, layerID, vertice2ID );
 
-              console.log( x1, y1 );
-              console.log( x2, y2 );
+              const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, value, keyCode );
 
-              switch ( keyCode ) {
-                case 39:
-                  //Right
-                  y2 = y1;
-                  x2 = x1 + ( value / 10 );
-                  break;
+              //this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
 
-                case 37:
-                  //Left
-                  y2 = y1;
-                  x2 = x1 - ( value / 10 );
-                  break;
+              this.context.verticesActions.beginDraggingVertex( layerID, vertice2ID, modifiedX, modifiedY );
+              this.context.verticesActions.updateDraggingVertex( modifiedX, modifiedY );
+              this.context.verticesActions.endDraggingVertex( modifiedX, modifiedY );
 
-                case 38:
-                  //Up
-                  x2 = x1;
-                  y2 = y1 + ( value / 10 );
-                  break;
-
-                case 40:
-                  // Down
-                  x2 = x1;
-                  y2 = y1 - ( value / 10 );
-                  break;
-
-                default:
-                  return;
-              }
-
-              this.context.verticesActions.beginDraggingVertex( layerID, vertice2ID, x2, y2 );
-              this.context.verticesActions.updateDraggingVertex( x2, y2 );
-              this.context.verticesActions.endDraggingVertex( x2, y2 );
               return;
 
             } else if ( isEscPressedWhileDrawing( keyCode ) ) {

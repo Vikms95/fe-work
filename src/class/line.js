@@ -982,6 +982,64 @@ class Line {
     return { updatedState: state };
   }
 
+  static translateRight ( x1, y1, x2, y2, length ) {
+    y2 = y1;
+    x2 = x1 + ( length / 10 );
+    return { x2, y2 };
+  }
+
+  static translateLeft ( x1, y1, x2, y2, length ) {
+    y2 = y1;
+    x2 = x1 - ( length / 10 );
+    return { x2, y2 };
+  }
+
+  static translateUp ( x1, y1, x2, y2, length ) {
+    x2 = x1;
+    y2 = y1 + ( length / 10 );
+    return { x2, y2 };
+  }
+
+  static translateDown ( x1, y1, x2, y2, length ) {
+    x2 = x1;
+    y2 = y1 - ( length / 10 );
+    return { x2, y2 };
+  }
+
+  static modifyCoordsOnKeyDown ( x1, x2, y1, y2, value, keyCode ) {
+    switch ( keyCode ) {
+      case 39:
+        //Right
+        y2 = y1;
+        x2 = x1 + ( value / 10 );
+        break;
+
+      case 37:
+        //Left
+        y2 = y1;
+        x2 = x1 - ( value / 10 );
+        break;
+
+      case 38:
+        //Up
+        x2 = x1;
+        y2 = y1 + ( value / 10 );
+        break;
+
+      case 40:
+        // Down
+        x2 = x1;
+        y2 = y1 - ( value / 10 );
+        break;
+
+      default:
+        return;
+    }
+    return { modifiedX: x2, modifiedY: y2 };
+  }
+
+
+
   // angle
   static setProperties ( state, layerID, lineID, properties ) {
     state = state.mergeIn( [ 'scene', 'layers', layerID, 'lines', lineID, 'properties' ], properties );

@@ -14,159 +14,159 @@ import { Layer, Line, Group, Hole } from '../class/export';
 
 class Vertex {
 
-  static add(state, layerID, x, y, relatedPrototype, relatedID) {
+  static add ( state, layerID, x, y, relatedPrototype, relatedID ) {
 
-    let vertex = state.getIn(['scene', 'layers', layerID, 'vertices']).find(vertex => GeometryUtils.samePoints(vertex, { x, y }));
+    let vertex = state.getIn( [ 'scene', 'layers', layerID, 'vertices' ] ).find( vertex => GeometryUtils.samePoints( vertex, { x, y } ) );
 
-    if (vertex) {
-      vertex = vertex.update(relatedPrototype, related => related.push(relatedID));
+    if ( vertex ) {
+      vertex = vertex.update( relatedPrototype, related => related.push( relatedID ) );
     }
     else {
-      vertex = new VertexModel({
+      vertex = new VertexModel( {
         id: IDBroker.acquireID(),
         name: 'Vertex',
         x, y,
-        [relatedPrototype]: new List([relatedID])
-      });
+        [ relatedPrototype ]: new List( [ relatedID ] )
+      } );
     }
 
-    state = state.setIn(['scene', 'layers', layerID, 'vertices', vertex.id], vertex);
+    state = state.setIn( [ 'scene', 'layers', layerID, 'vertices', vertex.id ], vertex );
 
     return { updatedState: state, vertex };
   }
 
-  static setAttributes(state, layerID, vertexID, vertexAttributes) {
-    state = state.mergeIn(['scene', 'layers', layerID, 'vertices', vertexID], vertexAttributes)
+  static setAttributes ( state, layerID, vertexID, vertexAttributes ) {
+    state = state.mergeIn( [ 'scene', 'layers', layerID, 'vertices', vertexID ], vertexAttributes );
 
     return { updatedState: state };
   }
 
-  static addElement(state, layerID, vertexID, elementPrototype, elementID) {
-    state = state.updateIn(['scene', 'layers', layerID, 'vertices', vertexID, elementPrototype], list => list.push(elementID));
+  static addElement ( state, layerID, vertexID, elementPrototype, elementID ) {
+    state = state.updateIn( [ 'scene', 'layers', layerID, 'vertices', vertexID, elementPrototype ], list => list.push( elementID ) );
     return { updatedState: state };
   }
 
-  static removeElement(state, layerID, vertexID, elementPrototype, elementID) {
-    let elementIndex = state.getIn(['scene', 'layers', layerID, 'vertices', vertexID, elementPrototype]).findIndex(el => el === elementID);
-    if (elementIndex !== -1) {
-      state = state.updateIn(['scene', 'layers', layerID, 'vertices', vertexID, elementPrototype], list => list.remove(elementIndex));
+  static removeElement ( state, layerID, vertexID, elementPrototype, elementID ) {
+    let elementIndex = state.getIn( [ 'scene', 'layers', layerID, 'vertices', vertexID, elementPrototype ] ).findIndex( el => el === elementID );
+    if ( elementIndex !== -1 ) {
+      state = state.updateIn( [ 'scene', 'layers', layerID, 'vertices', vertexID, elementPrototype ], list => list.remove( elementIndex ) );
     }
     return { updatedState: state };
   }
 
-  static select(state, layerID, vertexID) {
-    state = state.setIn(['scene', 'layers', layerID, 'vertices', vertexID, 'selected'], true);
-    state = state.updateIn(['scene', 'layers', layerID, 'selected', 'vertices'], elems => elems.push(vertexID));
+  static select ( state, layerID, vertexID ) {
+    state = state.setIn( [ 'scene', 'layers', layerID, 'vertices', vertexID, 'selected' ], true );
+    state = state.updateIn( [ 'scene', 'layers', layerID, 'selected', 'vertices' ], elems => elems.push( vertexID ) );
 
     return { updatedState: state };
   }
 
-  static unselect(state, layerID, vertexID) {
-    state = state.setIn(['scene', 'layers', layerID, 'vertices', vertexID, 'selected'], false);
-    state = state.updateIn(['scene', 'layers', layerID, 'selected', 'vertices'], elems => elems.filter(el => el.id !== vertexID));
+  static unselect ( state, layerID, vertexID ) {
+    state = state.setIn( [ 'scene', 'layers', layerID, 'vertices', vertexID, 'selected' ], false );
+    state = state.updateIn( [ 'scene', 'layers', layerID, 'selected', 'vertices' ], elems => elems.filter( el => el.id !== vertexID ) );
 
     return { updatedState: state };
   }
 
-  static remove(state, layerID, vertexID, relatedPrototype, relatedID, forceRemove) {
-    let vertex = state.getIn(['scene', 'layers', layerID, 'vertices', vertexID]);
+  static remove ( state, layerID, vertexID, relatedPrototype, relatedID, forceRemove ) {
+    let vertex = state.getIn( [ 'scene', 'layers', layerID, 'vertices', vertexID ] );
 
 
-    if (vertex) {
-      if (relatedPrototype && relatedID) vertex = vertex.update(relatedPrototype, related => {
-        let index = related.findIndex(ID => relatedID === ID);
-        return related.delete(index);
-      });
+    if ( vertex ) {
+      if ( relatedPrototype && relatedID ) vertex = vertex.update( relatedPrototype, related => {
+        let index = related.findIndex( ID => relatedID === ID );
+        return related.delete( index );
+      } );
 
       let inUse = vertex.areas.size || vertex.lines.size;
 
-      if (inUse && !forceRemove) {
-        state = state.setIn(['scene', 'layers', layerID, 'vertices', vertexID], vertex);
+      if ( inUse && !forceRemove ) {
+        state = state.setIn( [ 'scene', 'layers', layerID, 'vertices', vertexID ], vertex );
       }
       else {
-        state = state.deleteIn(['scene', 'layers', layerID, 'vertices', vertexID]);
+        state = state.deleteIn( [ 'scene', 'layers', layerID, 'vertices', vertexID ] );
       }
     }
 
     return { updatedState: state };
   }
 
-  static beginDraggingVertex(state, layerID, vertexID, x, y) {
+  static beginDraggingVertex ( state, layerID, vertexID, x, y ) {
 
-    let snapElements = SnapSceneUtils.sceneSnapElements(state.scene, new List(), state.snapMask);
-    let oldHoles = Hole.calcOldHolesByVertexID(state, layerID, vertexID);
+    let snapElements = SnapSceneUtils.sceneSnapElements( state.scene, new List(), state.snapMask );
+    let oldHoles = Hole.calcOldHolesByVertexID( state, layerID, vertexID );
 
-    state = state.merge({
+    state = state.merge( {
       mode: MODE_DRAGGING_VERTEX,
       snapElements,
-      draggingSupport: Map({
+      draggingSupport: Map( {
         layerID,
         vertexID,
         oldHoles,
-        previousMode: state.get('mode')
-      })
-    });
+        previousMode: state.get( 'mode' )
+      } )
+    } );
 
     return { updatedState: state };
   }
 
-  static updateDraggingVertex(state, x, y) {
+  static updateDraggingVertex ( state, x, y ) {
     let { draggingSupport, snapElements, scene } = state;
 
     let snap = null;
-    if (state.snapMask && !state.snapMask.isEmpty()) {
-      snap = SnapUtils.nearestSnap(snapElements, x, y, state.snapMask);
-      if (snap) ({ x, y } = snap.point);
+    if ( state.snapMask && !state.snapMask.isEmpty() ) {
+      snap = SnapUtils.nearestSnap( snapElements, x, y, state.snapMask );
+      if ( snap ) ( { x, y } = snap.point );
     }
 
-    let layerID = draggingSupport.get('layerID');
-    let vertexID = draggingSupport.get('vertexID');
-    let oldHoles = draggingSupport.get('oldHoles');
-    let xOld = state.getIn(['scene', 'layers', layerID, 'vertices', vertexID, 'x']);
-    let yOld = state.getIn(['scene', 'layers', layerID, 'vertices', vertexID, 'y']);
+    let layerID = draggingSupport.get( 'layerID' );
+    let vertexID = draggingSupport.get( 'vertexID' );
+    let oldHoles = draggingSupport.get( 'oldHoles' );
+    let xOld = state.getIn( [ 'scene', 'layers', layerID, 'vertices', vertexID, 'x' ] );
+    let yOld = state.getIn( [ 'scene', 'layers', layerID, 'vertices', vertexID, 'y' ] );
 
-    state = state.merge({
+    state = state.merge( {
       activeSnapElement: snap ? snap.snap : null,
-      scene: scene.mergeIn(['layers', layerID, 'vertices', vertexID], { x, y })
-    });
+      scene: scene.mergeIn( [ 'layers', layerID, 'vertices', vertexID ], { x, y } )
+    } );
 
-    let newHoles = Hole.calcNewHolesFromOldHoles(state, layerID, oldHoles);
+    let newHoles = Hole.calcNewHolesFromOldHoles( state, layerID, oldHoles );
 
-    if (!newHoles.valid) {
-      state = state.merge({
+    if ( !newHoles.valid ) {
+      state = state.merge( {
         activeSnapElement: snap ? snap.snap : null,
-        scene: scene.mergeIn(['layers', layerID, 'vertices', vertexID], { x: xOld, y: yOld })
-      });
+        scene: scene.mergeIn( [ 'layers', layerID, 'vertices', vertexID ], { x: xOld, y: yOld } )
+      } );
     }
     else {
-      state = Layer.reCalcVertexsBByVertexId(state, layerID, vertexID).updatedState;
-      state = Hole.updateHolesFromNewHoles(state, layerID, newHoles).updatedState;
-      state = Layer.detectAndUpdatePerimeters(state, layerID).updatedState;
+      state = Layer.reCalcVertexsBByVertexId( state, layerID, vertexID ).updatedState;
+      state = Hole.updateHolesFromNewHoles( state, layerID, newHoles ).updatedState;
+      state = Layer.detectAndUpdatePerimeters( state, layerID ).updatedState;
     }
 
     return { updatedState: state };
   }
 
-  static endDraggingVertex(state, x, y) {
+  static endDraggingVertex ( state, x, y ) {
     let { draggingSupport } = state;
-    let layerID = draggingSupport.get('layerID');
-    let vertexID = draggingSupport.get('vertexID');
-    let oldHoles = draggingSupport.get('oldHoles');
-    let lines = state.getIn(['scene', 'layers', layerID, 'vertices', vertexID, 'lines']);
+    let layerID = draggingSupport.get( 'layerID' );
+    let vertexID = draggingSupport.get( 'vertexID' );
+    let oldHoles = draggingSupport.get( 'oldHoles' );
+    let lines = state.getIn( [ 'scene', 'layers', layerID, 'vertices', vertexID, 'lines' ] );
 
-    if (lines) {
+    if ( lines ) {
       state = lines.reduce(
-        (reducedState, lineID) => {
-          if (!reducedState.getIn(['scene', 'layers', layerID, 'lines', lineID])) return reducedState;
+        ( reducedState, lineID ) => {
+          if ( !reducedState.getIn( [ 'scene', 'layers', layerID, 'lines', lineID ] ) ) return reducedState;
 
-          reducedState = Layer.removeZeroLengthLines(reducedState, layerID).updatedState;
-          reducedState = Layer.mergeEqualsVertices(reducedState, layerID, vertexID).updatedState;
+          reducedState = Layer.removeZeroLengthLines( reducedState, layerID ).updatedState;
+          reducedState = Layer.mergeEqualsVertices( reducedState, layerID, vertexID ).updatedState;
 
-          let newHoles = Hole.calcNewHolesFromOldHoles(reducedState, layerID, oldHoles);
+          let newHoles = Hole.calcNewHolesFromOldHoles( reducedState, layerID, oldHoles );
 
-          reducedState = Hole.updateHolesFromNewHoles(reducedState, layerID, newHoles).updatedState;
+          reducedState = Hole.updateHolesFromNewHoles( reducedState, layerID, newHoles ).updatedState;
 
-          reducedState = Layer.reCalcVertexsBByVertexId(reducedState, layerID, vertexID).updatedState;
+          reducedState = Layer.reCalcVertexsBByVertexId( reducedState, layerID, vertexID ).updatedState;
 
           /*
           let v_id0 = reducedState.getIn(['scene', 'layers', layerID, 'lines', lineID, 'vertices', 0]);
@@ -234,19 +234,21 @@ class Vertex {
       );
     }
 
-    state = Layer.detectAndUpdateAreas(state, layerID).updatedState;
-    state = Layer.detectAndUpdatePerimeters(state, layerID).updatedState;
+    state = Layer.detectAndUpdateAreas( state, layerID ).updatedState;
+    state = Layer.detectAndUpdatePerimeters( state, layerID ).updatedState;
 
-    state = state.merge({
-      mode: draggingSupport.get('previousMode'),
+    state = state.merge( {
+      mode: draggingSupport.get( 'previousMode' ),
       draggingSupport: null,
       activeSnapElement: null,
       snapElements: new List()
-    });
+    } );
 
     return { updatedState: state };
   }
 
 }
+
+
 
 export { Vertex as default };

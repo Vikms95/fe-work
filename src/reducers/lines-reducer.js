@@ -52,7 +52,6 @@ export default function ( state, action ) {
       return Line.cacheFondo( state, action.fondo ).updatedState;
 
     case CACHE_ANGULO:
-      console.log( 'angulo' );
       return Line.cacheAngulo( state, action.angulo ).updatedState;
 
     default:
