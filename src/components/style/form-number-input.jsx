@@ -4,6 +4,7 @@ import * as SharedStyle from '../../shared-style';
 import { KEYBOARD_BUTTON_CODE, MODE_DRAWING_LINE } from '../../constants';
 import { convertMeasureToOriginal } from './../../utils/changeUnit';
 import { getCacheAngulo } from '../../selectors/selectors';
+import { projectActions, verticesActions } from '../../actions/export';
 
 const STYLE_INPUT = {
   display: 'block',
@@ -204,40 +205,55 @@ export default class FormNumberInput extends Component {
 
             } else if ( isArrowPressedOnLength( keyCode ) ) {
               e.preventDefault();
+
+              const layerID = this.props.stateRedux.getIn( [ 'scene', 'selectedLayer' ] );
               // Find the vertices pertaining this line
               const vertices = sourceElement.get( 'vertices' );
-              const firstVerticeID = vertices.first();
-              const layerID = this.props.stateRedux.getIn( [ 'scene', 'selectedLayer' ] );
+              const vertice1ID = vertices.toJS()[ 0 ];
+              const vertice2ID = vertices.toJS()[ 1 ];
+              //Get X and Y of one vertice
+              let x1 = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID, 'vertices', vertice1ID, 'x' ] );
+              let y1 = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID, 'vertices', vertice1ID, 'y' ] );
 
+              let x2 = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID, 'vertices', vertice2ID, 'x' ] );
+              let y2 = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID, 'vertices', vertice2ID, 'y' ] );
 
+              console.log( x1, y1 );
+              console.log( x2, y2 );
 
-              // Get X and Y of one vertice
-              let x = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID, 'vertices', firstVerticeID, 'x' ] );
-              let y = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID, 'vertices', firstVerticeID, 'y' ] );
-
-              console.log( 'test keycode is ', keyCode );
               switch ( keyCode ) {
                 case 39:
                   //Right
-                  x += ( value / 10 ); break;
+                  y2 = y1;
+                  x2 = x1 + ( value / 10 );
+                  break;
+
                 case 37:
                   //Left
-                  x -= ( value / 10 ); break;
+                  y2 = y1;
+                  x2 = x1 - ( value / 10 );
+                  break;
 
                 case 38:
                   //Up
-                  y += ( value / 10 ); break;
+                  x2 = x1;
+                  y2 = y1 + ( value / 10 );
+                  break;
 
                 case 40:
                   // Down
-                  y -= ( value / 10 ); break;
+                  x2 = x1;
+                  y2 = y1 - ( value / 10 );
+                  break;
 
                 default:
                   return;
               }
 
-
-              return this.context.linesActions.updateDrawingLine( x, y );
+              this.context.verticesActions.beginDraggingVertex( layerID, vertice2ID, x2, y2 );
+              this.context.verticesActions.updateDraggingVertex( x2, y2 );
+              this.context.verticesActions.endDraggingVertex( x2, y2 );
+              return;
 
             } else if ( isEscPressedWhileDrawing( keyCode ) ) {
               this.props.projectActions.undo();
@@ -267,7 +283,9 @@ FormNumberInput.propTypes = {
 
 FormNumberInput.contextTypes = {
   translator: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired
+  linesActions: PropTypes.object.isRequired,
+  verticesActions: PropTypes.object.isRequired,
+  projectActions: PropTypes.object.isRequired
 };
 
 FormNumberInput.defaultProps = {
