@@ -22,7 +22,7 @@ export function endDraggingVertex ( x, y, snapMask ) {
   };
 }
 
-export function dragVertex ( layerID, verticeID, x, y ) {
+export function dragVertex ( x, y, layerID, verticeID  ) {
   return {
     type: DRAG_VERTEX,
     x, y, layerID, verticeID

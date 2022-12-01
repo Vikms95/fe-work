@@ -213,16 +213,9 @@ export default class FormNumberInput extends Component {
 
               let { x: x1, y: y1 } = getVerticeCoords( state, layerID, vertice1ID );
               let { x: x2, y: y2 } = getVerticeCoords( state, layerID, vertice2ID );
-
               const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, value, keyCode );
 
-              //this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
-
-              this.context.verticesActions.beginDraggingVertex( layerID, vertice2ID, modifiedX, modifiedY );
-              this.context.verticesActions.updateDraggingVertex( modifiedX, modifiedY );
-              this.context.verticesActions.endDraggingVertex( modifiedX, modifiedY );
-
-              return;
+              return this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
 
             } else if ( isEscPressedWhileDrawing( keyCode ) ) {
               this.props.projectActions.undo();
