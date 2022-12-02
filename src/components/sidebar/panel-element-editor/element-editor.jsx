@@ -171,44 +171,46 @@ export default class ElementEditor extends Component {
         break;
       }
       case 'lines': {
-        console.log( 'test att name ', attributeName );
-        console.log( 'test att value ', value );
+        switch ( attributeName ) {
+          //case 'lineLength':
+          //  {
+          //    let v_0 = attributesFormData.get('vertexOne');
+          //    let v_1 = attributesFormData.get('vertexTwo');
 
-        attributesFormData = attributesFormData.set( attributeName, value );
-        this.setState( { attributesFormData } );
-        if ( isEnter ) setCacheAngulo( this.props.state );
+          //    let [v_a, v_b] = GeometryUtils.orderVertices([v_0, v_1]);
 
+          //    let v_b_new = GeometryUtils.extendLine(v_a.x, v_a.y, v_b.x, v_b.y, value.get('length'), PRECISION);
+
+          //    attributesFormData = attributesFormData.withMutations(attr => {
+          //      attr.set(v_0 === v_a ? 'vertexTwo' : 'vertexOne', v_b.merge(v_b_new));
+          //      attr.set('lineLength', value);
+          //    });
+          //    break;
+          //  }
+          //case 'vertexOne':
+          //case 'vertexTwo':
+          //  {
+          //    attributesFormData = attributesFormData.withMutations(attr => {
+          //      attr.set(attributeName, attr.get(attributeName).merge(value));
+
+          //      let newDistance = GeometryUtils.verticesDistance(attr.get('vertexOne'), attr.get('vertexTwo'));
+
+          //      attr.mergeIn(['lineLength'], attr.get('lineLength').merge({
+          //        'length': newDistance,
+          //        '_length': convert(newDistance).from(this.context.catalog.unit).to(attr.get('lineLength').get('_unit'))
+          //      }));
+          //    });
+          //    break;
+          //  }
+          default:
+            {
+              attributesFormData = attributesFormData.set( attributeName, value );
+              this.setState( { attributesFormData } );
+              if ( isEnter ) setCacheAngulo( this.props.state );
+              break;
+            }
+        }
         break;
-        //case 'lineLength':
-        //  {
-        //    let v_0 = attributesFormData.get('vertexOne');
-        //    let v_1 = attributesFormData.get('vertexTwo');
-
-        //    let [v_a, v_b] = GeometryUtils.orderVertices([v_0, v_1]);
-
-        //    let v_b_new = GeometryUtils.extendLine(v_a.x, v_a.y, v_b.x, v_b.y, value.get('length'), PRECISION);
-
-        //    attributesFormData = attributesFormData.withMutations(attr => {
-        //      attr.set(v_0 === v_a ? 'vertexTwo' : 'vertexOne', v_b.merge(v_b_new));
-        //      attr.set('lineLength', value);
-        //    });
-        //    break;
-        //  }
-        //case 'vertexOne':
-        //case 'vertexTwo':
-        //  {
-        //    attributesFormData = attributesFormData.withMutations(attr => {
-        //      attr.set(attributeName, attr.get(attributeName).merge(value));
-
-        //      let newDistance = GeometryUtils.verticesDistance(attr.get('vertexOne'), attr.get('vertexTwo'));
-
-        //      attr.mergeIn(['lineLength'], attr.get('lineLength').merge({
-        //        'length': newDistance,
-        //        '_length': convert(newDistance).from(this.context.catalog.unit).to(attr.get('lineLength').get('_unit'))
-        //      }));
-        //    });
-        //    break;
-        //  }
       }
       case 'holes': {
         switch ( attributeName ) {

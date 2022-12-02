@@ -48,6 +48,7 @@ export default function LineAttributesEditor (
         mode={ mode }
         state={ state }
         value={ lineAngle }
+        attributeFormData={ attributeFormData }
         attributeName='angulo'
         projectActions={ projectActions }
         configs={ { label: 'Ángulo', min: 0, max: 360, precision: 0 } }

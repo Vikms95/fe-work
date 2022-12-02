@@ -49,9 +49,7 @@ export default class FormNumberInput extends Component {
     if ( this.props.attributeName === 'angulo' ) {
       this.setState(
         {
-          //showedValue: getCacheAngulo( this.props.stateRedux ) ||
-          //  this.props.value
-          showedValue: this.props.value
+          showedValue: getCacheAngulo( this.props.stateRedux ) || this.props.value
         } );
     }
   }
@@ -170,6 +168,7 @@ export default class FormNumberInput extends Component {
       if ( !modifiedX || !modifiedY ) return;
 
       this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
+
     };
 
     const isEscPressed = ( keyCode ) => (
@@ -216,7 +215,6 @@ export default class FormNumberInput extends Component {
             this.setState( { valid } );
           } }
           onKeyDown={ e => {
-
             let keyCode = e.keyCode || e.which;
 
             if ( isSaveButtonPressed( keyCode ) ) {
