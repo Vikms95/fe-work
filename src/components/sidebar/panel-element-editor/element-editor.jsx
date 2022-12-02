@@ -206,7 +206,11 @@ export default class ElementEditor extends Component {
             {
               attributesFormData = attributesFormData.set( attributeName, value );
               this.setState( { attributesFormData } );
-              if ( isEnter ) setCacheAngulo( this.props.state );
+
+              if ( isEnter ) {
+                const cachedAngulo = document.querySelector( '.angulo' ).value;
+                this.context.linesActions.cacheAngulo( cachedAngulo );
+              }
               break;
             }
         }

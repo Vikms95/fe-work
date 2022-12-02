@@ -124,12 +124,10 @@ export default class FormNumberInput extends Component {
           : 0;
 
         const cachedAlto = document.querySelector( '.height' ).value;
-        const cachedAngulo = document.querySelector( '.angulo' ).value;
         const cachedFondo = document.querySelector( '.thickness' ).value;
 
         this.context.linesActions.cacheAlto( cachedAlto );
         this.context.linesActions.cacheFondo( cachedFondo );
-        this.context.linesActions.cacheAngulo( cachedAngulo );
 
         switch ( attributeName ) {
           case 'angulo':
@@ -146,10 +144,26 @@ export default class FormNumberInput extends Component {
         let keyCode = e.keyCode || e.which;
 
         if ( attributeName === 'angulo' ) {
-          onChange( { target: { value: savedValue, isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER } } );
+          onChange(
+            {
+              target:
+              {
+                value: savedValue,
+                isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER
+              }
+            } );
+
           this.setState( { showedValue: getCacheAngulo( this.props.stateRedux ) } );
+
         } else {
-          onChange( { target: { value: convertMeasureToOriginal( savedValue, this.props.unit ), isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER } } );
+          onChange(
+            {
+              target:
+              {
+                value: convertMeasureToOriginal( savedValue, this.props.unit ),
+                isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER
+              }
+            } );
         }
       }
     };
@@ -157,6 +171,7 @@ export default class FormNumberInput extends Component {
     const onArrrowPress = ( e, keyCode ) => {
       e.preventDefault();
       const state = stateRedux;
+      console.log( 'test src before ', sourceElement );
 
       const layerID = getLayerID( state );
       const { vertice1ID, vertice2ID } = getLineVerticesID( sourceElement );
@@ -168,7 +183,10 @@ export default class FormNumberInput extends Component {
       if ( !modifiedX || !modifiedY ) return;
 
       this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
-
+      const hi = document.querySelector( '.angulo' );
+      const angle = Line.getAngleV0_pcl( layerID, sourceElement );
+      hi.value = angle;
+      console.log( 'test src after', sourceElement );
     };
 
     const isEscPressed = ( keyCode ) => (
