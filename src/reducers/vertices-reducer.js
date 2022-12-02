@@ -18,7 +18,6 @@ export default function ( state, action ) {
       return Vertex.endDraggingVertex( state, action.x, action.y ).updatedState;
 
     case DRAG_VERTEX:
-      console.log( "hi" );
       state = Vertex.beginDraggingVertex( state, action.layerID, action.verticeID, action.x, action.y ).updatedState;
       state = Vertex.updateDraggingVertex( state, action.x, action.y ).updatedState;
       return Vertex.endDraggingVertex( state, action.x, action.y ).updatedState;

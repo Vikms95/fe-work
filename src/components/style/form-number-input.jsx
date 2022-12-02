@@ -49,8 +49,9 @@ export default class FormNumberInput extends Component {
     if ( this.props.attributeName === 'angulo' ) {
       this.setState(
         {
-          showedValue: getCacheAngulo( this.props.stateRedux ) ||
-            this.props.value
+          //showedValue: getCacheAngulo( this.props.stateRedux ) ||
+          //  this.props.value
+          showedValue: this.props.value
         } );
     }
   }
@@ -79,6 +80,7 @@ export default class FormNumberInput extends Component {
 
     let {
       value,
+      stateRedux,
       min,
       max,
       style,
@@ -154,6 +156,22 @@ export default class FormNumberInput extends Component {
       }
     };
 
+    const onArrrowPress = ( e, keyCode ) => {
+      e.preventDefault();
+      const state = stateRedux;
+
+      const layerID = getLayerID( state );
+      const { vertice1ID, vertice2ID } = getLineVerticesID( sourceElement );
+      if ( vertice1ID === vertice2ID ) return;
+
+      let { x: x1, y: y1 } = getVerticeCoords( state, layerID, vertice1ID );
+      let { x: x2, y: y2 } = getVerticeCoords( state, layerID, vertice2ID );
+      const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, value, keyCode );
+      if ( !modifiedX || !modifiedY ) return;
+
+      this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
+    };
+
     const isEscPressed = ( keyCode ) => (
       keyCode == KEYBOARD_BUTTON_CODE.ESC
     );
@@ -200,28 +218,17 @@ export default class FormNumberInput extends Component {
           onKeyDown={ e => {
 
             let keyCode = e.keyCode || e.which;
-            const state = this.props.stateRedux;
 
             if ( isSaveButtonPressed( keyCode ) ) {
               saveFn( e );
 
             } else if ( isArrowPressedOnLength( keyCode ) ) {
-              e.preventDefault();
-
-              const layerID = getLayerID( state );
-              const { vertice1ID, vertice2ID } = getLineVerticesID( sourceElement );
-
-              let { x: x1, y: y1 } = getVerticeCoords( state, layerID, vertice1ID );
-              let { x: x2, y: y2 } = getVerticeCoords( state, layerID, vertice2ID );
-              const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, value, keyCode );
-
-              return this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
+              onArrrowPress( e, keyCode );
 
             } else if ( isEscPressedWhileDrawing( keyCode ) ) {
               this.props.projectActions.undo();
 
             } else if ( isEscPressed( keyCode ) ) {
-
               this.props.projectActions.unselectAll();
             }
           } }

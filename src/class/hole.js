@@ -120,7 +120,6 @@ class Hole {
   static calcOldHolesListByVertexID ( state, layerID, vertexID, oldHoles ) {
     let vertex = state.getIn( [ 'scene', 'layers', layerID, 'vertices', vertexID ] );
 
-    console.log( 'test vertex ', vertex );
     vertex.lines.forEach( lineID => {
       let line = state.getIn( [ 'scene', 'layers', layerID, 'lines', lineID ] );
 
