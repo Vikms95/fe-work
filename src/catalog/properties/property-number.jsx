@@ -33,6 +33,7 @@ export default function PropertyNumber ( { value, onUpdate, onValid, configs, so
               onValid={ onValid }
               mode={ mode }
               attributeName={ attributeName }
+              attributeFormData={ attributeFormData }
               stateRedux={ state }
               projectActions={ projectActions }
               min={ configs.min }
