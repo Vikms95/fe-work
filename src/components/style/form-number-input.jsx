@@ -171,22 +171,19 @@ export default class FormNumberInput extends Component {
     const onArrrowPress = ( e, keyCode ) => {
       e.preventDefault();
       const state = stateRedux;
-      console.log( 'test src before ', sourceElement );
 
       const layerID = getLayerID( state );
       const { vertice1ID, vertice2ID } = getLineVerticesID( sourceElement );
+
       if ( vertice1ID === vertice2ID ) return;
 
       let { x: x1, y: y1 } = getVerticeCoords( state, layerID, vertice1ID );
       let { x: x2, y: y2 } = getVerticeCoords( state, layerID, vertice2ID );
       const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, value, keyCode );
+
       if ( !modifiedX || !modifiedY ) return;
 
       this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
-      const hi = document.querySelector( '.angulo' );
-      const angle = Line.getAngleV0_pcl( layerID, sourceElement );
-      hi.value = angle;
-      console.log( 'test src after', sourceElement );
     };
 
     const isEscPressed = ( keyCode ) => (

@@ -113,6 +113,9 @@ class Line {
     let v10ID = line.vertices.get( !v2First1 ? 0 : 1 );
     let v11ID = line.vertices.get( !v2First1 ? 1 : 0 );
     let vertices = layer.vertices;
+
+    if ( !vertices ) return;
+
     let v10 = vertices.get( v10ID );
     let v11 = vertices.get( v11ID );
     let line2ID = Line.getLine01( v10, line.id );
