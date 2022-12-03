@@ -3,7 +3,20 @@ import PropTypes from 'prop-types';
 import { FormLabel, FormNumberInput } from '../../components/style/export';
 import PropertyStyle from './shared-property-style';
 
-export default function PropertyNumber ( { value, onUpdate, onValid, configs, sourceElement, attributeName, attributeFormData, internalState, mode, projectActions, state } ) {
+export default function PropertyNumber (
+  {
+    value,
+    onUpdate,
+    onValid,
+    configs,
+    sourceElement,
+    attributeName,
+    attributeFormData,
+    internalState,
+    mode,
+    projectActions,
+    state
+  } ) {
 
   let update = ( val, isEnter ) => {
     let number = parseFloat( val );
@@ -12,6 +25,7 @@ export default function PropertyNumber ( { value, onUpdate, onValid, configs, so
       number = 0;
     }
 
+    //TODO What does this do?
     if ( configs.hook ) {
       return configs.hook( number, sourceElement, internalState, state ).then( _val => {
         return onUpdate( _val, isEnter );

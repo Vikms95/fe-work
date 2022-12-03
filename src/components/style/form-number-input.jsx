@@ -46,12 +46,12 @@ export default class FormNumberInput extends Component {
       this.state.inputElement.select();
     }
 
-    if ( this.props.attributeName === 'angulo' ) {
-      this.setState(
-        {
-          showedValue: getCacheAngulo( this.props.stateRedux ) || this.props.value
-        } );
-    }
+    //if ( this.props.attributeName === 'angulo' ) {
+    //  this.setState(
+    //    {
+    //      showedValue: getCacheAngulo( this.props.stateRedux ) || this.props.value
+    //    } );
+    //}
   }
 
   componentDidUpdate () {
@@ -129,43 +129,19 @@ export default class FormNumberInput extends Component {
         this.context.linesActions.cacheAlto( cachedAlto );
         this.context.linesActions.cacheFondo( cachedFondo );
 
-        switch ( attributeName ) {
-          case 'angulo':
-            this.setState( { showedValue: getCacheAngulo( this.props.stateRedux ) } );
-            break;
-          case 'thickness':
-            this.setState( { showedValue: savedValue } );
-            break;
-          case 'height':
-            this.setState( { showedValue: savedValue } );
-            break;
-        }
-
         let keyCode = e.keyCode || e.which;
 
-        if ( attributeName === 'angulo' ) {
-          onChange(
-            {
-              target:
-              {
-                value: savedValue,
-                isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER
-              }
-            } );
+        console.debug( attributeName );
+        onChange( {
+          target: {
+            value: ( attributeName === 'angulo' )
+              ? savedValue
+              : convertMeasureToOriginal( savedValue, this.props.unit ),
 
-          this.setState( { showedValue: getCacheAngulo( this.props.stateRedux ) } );
-
-        } else {
-          onChange(
-            {
-              target:
-              {
-                value: convertMeasureToOriginal( savedValue, this.props.unit ),
-                isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER
-              }
-            } );
-        }
-      }
+            isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER
+          }
+        } );
+      };
     };
 
     const onArrrowPress = ( e, keyCode ) => {
@@ -240,13 +216,16 @@ export default class FormNumberInput extends Component {
 
             } else if ( isEscPressedWhileDrawing( keyCode ) ) {
               this.props.projectActions.undo();
+              this.context.linesActions.cacheFondo( '' );
+              this.context.linesActions.cacheAlto( '' );
+              this.context.linesActions.cacheAngulo( '' );
 
             } else if ( isEscPressed( keyCode ) ) {
               this.props.projectActions.unselectAll();
             }
           } }
         />
-      </div>
+      </div >
     );
   }
 }

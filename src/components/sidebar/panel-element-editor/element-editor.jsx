@@ -16,7 +16,7 @@ import {
 } from '../../../constants';
 
 import { PropertyLengthMeasure, PropertyNumber } from '../../../catalog/properties/export';
-import { getCacheAngulo, setCacheAngulo } from '../../../selectors/selectors';
+import { getCacheAngulo } from '../../../selectors/selectors';
 
 const PRECISION = 2;
 
@@ -56,14 +56,10 @@ export default class ElementEditor extends Component {
   }
 
   shouldComponentUpdate ( nextProps, nextState ) {
-    if (
-      this.state.attributesFormData.hashCode() !== nextState.attributesFormData.hashCode() ||
+    return this.state.attributesFormData.hashCode() !== nextState.attributesFormData.hashCode() ||
       this.state.propertiesFormData.hashCode() !== nextState.propertiesFormData.hashCode() ||
       this.state.isSelectAcabado !== nextState.isSelectAcabado ||
-      this.props.state.clipboardProperties.hashCode() !== nextProps.state.clipboardProperties.hashCode()
-    ) return true;
-
-    return false;
+      this.props.state.clipboardProperties.hashCode() !== nextProps.state.clipboardProperties.hashCode();
   }
 
   componentWillReceiveProps ( { element, layer, state } ) {
@@ -72,10 +68,14 @@ export default class ElementEditor extends Component {
     let selectedLayer = scene.getIn( [ 'layers', scene.get( 'selectedLayer' ) ] );
     let selected = selectedLayer.getIn( [ prototype, id ] );
 
-    if ( selectedLayer.hashCode() !== layer.hashCode() ) this.setState( {
-      attributesFormData: this.initAttrData( element, layer, state ),
-      propertiesFormData: this.initPropData( element, layer, state )
-    } );
+    // TODO Figure out what's the logic behind checking whether the
+    // layer passed as props is different from the selected ones
+    if ( selectedLayer.hashCode() !== layer.hashCode() ) {
+      this.setState( {
+        attributesFormData: this.initAttrData( element, layer, state ),
+        propertiesFormData: this.initPropData( element, layer, state )
+      } );
+    }
   }
 
   initAttrData ( element, layer, state ) {
@@ -89,7 +89,7 @@ export default class ElementEditor extends Component {
       case 'lines': {
         let v2First = element.v2First;
         let v_a = layer.vertices.get( element.vertices.get( !v2First ? 0 : 1 ) );
-        let v_b = layer.vertices.get( element.vertices.get( !v2First ? 1 : 1 ) );
+        let v_b = layer.vertices.get( element.vertices.get( 1 ) );
 
         let distance = GeometryUtils.pointsDistance( v_a.x, v_a.y, v_b.x, v_b.y );
         let _unit = element.misc.get( '_unitLength' ) || this.context.catalog.unit;
@@ -101,8 +101,6 @@ export default class ElementEditor extends Component {
         _angleLine.angle = getCacheAngulo( state ) || _angleLine.angle;
 
         return new Map( {
-          //vertexOne: v_a,
-          //vertexTwo: v_b,
           lineLength: new Map( { length: distance, _length, _unit } ),
           lineAngle: _angleLine.angle,
           isEndLine: false
@@ -170,52 +168,48 @@ export default class ElementEditor extends Component {
         attributesFormData = attributesFormData.set( attributeName, value );
         break;
       }
-      case 'lines': {
-        switch ( attributeName ) {
-          //case 'lineLength':
-          //  {
-          //    let v_0 = attributesFormData.get('vertexOne');
-          //    let v_1 = attributesFormData.get('vertexTwo');
+      case 'lines':
+        attributesFormData = attributesFormData.set( attributeName, value );
+        this.setState( { attributesFormData } );
 
-          //    let [v_a, v_b] = GeometryUtils.orderVertices([v_0, v_1]);
-
-          //    let v_b_new = GeometryUtils.extendLine(v_a.x, v_a.y, v_b.x, v_b.y, value.get('length'), PRECISION);
-
-          //    attributesFormData = attributesFormData.withMutations(attr => {
-          //      attr.set(v_0 === v_a ? 'vertexTwo' : 'vertexOne', v_b.merge(v_b_new));
-          //      attr.set('lineLength', value);
-          //    });
-          //    break;
-          //  }
-          //case 'vertexOne':
-          //case 'vertexTwo':
-          //  {
-          //    attributesFormData = attributesFormData.withMutations(attr => {
-          //      attr.set(attributeName, attr.get(attributeName).merge(value));
-
-          //      let newDistance = GeometryUtils.verticesDistance(attr.get('vertexOne'), attr.get('vertexTwo'));
-
-          //      attr.mergeIn(['lineLength'], attr.get('lineLength').merge({
-          //        'length': newDistance,
-          //        '_length': convert(newDistance).from(this.context.catalog.unit).to(attr.get('lineLength').get('_unit'))
-          //      }));
-          //    });
-          //    break;
-          //  }
-          default:
-            {
-              attributesFormData = attributesFormData.set( attributeName, value );
-              this.setState( { attributesFormData } );
-
-              if ( isEnter ) {
-                const cachedAngulo = document.querySelector( '.angulo' ).value;
-                this.context.linesActions.cacheAngulo( cachedAngulo );
-              }
-              break;
-            }
+        console.debug( "test triggered update" );
+        console.debug( 'test att name', attributeName );
+        if ( isEnter ) {
+          const cachedAngulo = document.querySelector( '.angulo' ).value;
+          this.context.linesActions.cacheAngulo( cachedAngulo );
         }
         break;
-      }
+
+      //case 'lineLength':
+      //  {
+      //    let v_0 = attributesFormData.get('vertexOne');
+      //    let v_1 = attributesFormData.get('vertexTwo');
+
+      //    let [v_a, v_b] = GeometryUtils.orderVertices([v_0, v_1]);
+
+      //    let v_b_new = GeometryUtils.extendLine(v_a.x, v_a.y, v_b.x, v_b.y, value.get('length'), PRECISION);
+
+      //    attributesFormData = attributesFormData.withMutations(attr => {
+      //      attr.set(v_0 === v_a ? 'vertexTwo' : 'vertexOne', v_b.merge(v_b_new));
+      //      attr.set('lineLength', value);
+      //    });
+      //    break;
+      //  }
+      //case 'vertexOne':
+      //case 'vertexTwo':
+      //  {
+      //    attributesFormData = attributesFormData.withMutations(attr => {
+      //      attr.set(attributeName, attr.get(attributeName).merge(value));
+
+      //      let newDistance = GeometryUtils.verticesDistance(attr.get('vertexOne'), attr.get('vertexTwo'));
+
+      //      attr.mergeIn(['lineLength'], attr.get('lineLength').merge({
+      //        'length': newDistance,
+      //        '_length': convert(newDistance).from(this.context.catalog.unit).to(attr.get('lineLength').get('_unit'))
+      //      }));
+      //    });
+      //    break;
+      //  }
       case 'holes': {
         switch ( attributeName ) {
           case 'offsetA':
