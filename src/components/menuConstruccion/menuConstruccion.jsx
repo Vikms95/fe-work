@@ -63,8 +63,27 @@ export default class MenuConstruccion extends Component {
 
   constructor ( props ) {
     super( props );
-    const doorsElements = this.props.catalog.getCategory( 'doors' ).elements.filter( element => element.info.visibility ? element.info.visibility.catalog : true );
-    const windowsElements = this.props.catalog.getCategory( 'windows' ).elements.filter( element => element.info.visibility ? element.info.visibility.catalog : true );
+
+    const doorsElements =
+      this.props
+        .catalog
+        .getCategory( 'doors' )
+        .elements
+        .filter( element => ( element.info.visibility )
+          ? element.info.visibility.catalog
+          : true
+        );
+
+    const windowsElements =
+      this.props
+        .catalog
+        .getCategory( 'windows' )
+        .elements
+        .filter( element => ( element.info.visibility )
+          ? element.info.visibility.catalog
+          : true
+        );
+
     this.state = {
       currentShowElement: null,
       filterShowElement: null,
@@ -133,46 +152,28 @@ export default class MenuConstruccion extends Component {
     const printItems = ( elements ) => {
       return <div style={ { marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' } }>
         {
-          elements.map( ( element, key ) => {
-            /*         return <div
-                       key={key}
-                       style={{ cursor: 'pointer' }}
-                       onClick={() => {
-                         this.props.holesActions.selectToolDrawingHole(element.name)
-                       }}
-                     >
-                       <img src={element.info.image} style={STYLE_IMAGE} />
-                       <p style={STYLE_NAME}>{element.name}</p>
-                     </div>*/
-            if ( key % 2 === 0 ) {
-              return <div
-                key={ key }
-                style={ { cursor: 'pointer', paddingTop: '10px' } }
-                onClick={ () => this.props.holesActions.selectToolDrawingHole( element.name ) }
-              >
-                <div style={ { position: 'relative' } }>
-                  <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em', marginTop: '-0.5em' } } />
-                  <img src={ element.info.image } style={ STYLE_IMAGE } />
-                  <p style={ STYLE_NAME }>{ element.name }</p>
-                </div>
-              </div>;
-            } else {
-              return <div
-                key={ key }
-                style={ { cursor: 'pointer', paddingTop: '10px' } }
-                onClick={ () => this.props.holesActions.selectToolDrawingHole( element.name ) }
-              >
-                <div style={ { position: 'relative' } }>
-                  <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-0.9em', marginTop: '-0.5em' } } />
-                  <img src={ element.info.image } style={ STYLE_IMAGE } />
-                  <p style={ STYLE_NAME }>{ element.name }</p>
-                </div>
-              </div>;
-            }
-          } )
+          elements.map( ( element, key ) => (
+            <div
+              key={ key }
+              style={ { cursor: 'pointer', paddingTop: '10px' } }
+              onClick={ () => this.props.holesActions.selectToolDrawingHole( element.name ) }
+            >
+              <div style={ { position: 'relative' } }>
+                <img
+                  className={ 'rectangulo' }
+                  src={ rectangulo }
+                  style={ { marginLeft: ( key % 2 === 0 ) ? '-1.5em' : '-0.9em', marginTop: '-0.5em' } }
+                />
+                <img src={ element.info.image } style={ STYLE_IMAGE } />
+                <p style={ STYLE_NAME }>{ element.name }</p>
+              </div>
+            </div>
+          ) )
         }
       </div>;
     };
+
+
 
     return (
       <aside id='menuConstruccion' style={ STYLE }>
@@ -251,10 +252,9 @@ export default class MenuConstruccion extends Component {
                 </div>
                 :
                 (
-                  this.state.filterShowElement === null ?
-                    printItems( this.state.currentShowElement )
-                    :
-                    printItems( this.state.filterShowElement )
+                  ( this.state.filterShowElement === null )
+                    ? printItems( this.state.currentShowElement )
+                    : printItems( this.state.filterShowElement )
                 )
             }
           </div>

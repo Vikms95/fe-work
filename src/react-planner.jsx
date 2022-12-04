@@ -224,7 +224,6 @@ class ReactPlanner extends Component {
     const { width, height, state, stateExtractor, ...props } = this.props;
     const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = this.state;
     let extractedState = stateExtractor( state );
-    debugger;
 
     return (
       // <div>
@@ -248,7 +247,6 @@ class ReactPlanner extends Component {
         <TopBar state={ extractedState } { ...props } />
 
         <div style={ { ...wrapperStyle, height } }>
-
 
           <Toolbar
             width={ toolbarW }

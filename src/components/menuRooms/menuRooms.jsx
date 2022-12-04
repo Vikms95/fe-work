@@ -73,6 +73,7 @@ export default class MenuRooms extends Component {
       cuandrada: { "unit": "cm", "layers": { "layer-1": { "id": "layer-1", "altitude": 0, "order": 0, "opacity": 1, "name": "default", "visible": true, "vertices": { "QxiT9e8xUS": { "id": "QxiT9e8xUS", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 299, "y": 1398, "lines": [ "DFYGWb3nO", "g_BqZIvuT" ], "areas": [] }, "yzWEBtD8p8": { "id": "yzWEBtD8p8", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 299, "y": 1899, "lines": [ "DFYGWb3nO", "isD-OgpkVK" ], "areas": [] }, "yWkihQYpdK": { "id": "yWkihQYpdK", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 800, "y": 1398, "lines": [ "g_BqZIvuT", "fA3Awp3xx0c" ], "areas": [] }, "BHqa1bJkEEx": { "id": "BHqa1bJkEEx", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 800, "y": 1899, "lines": [ "fA3Awp3xx0c", "isD-OgpkVK" ], "areas": [] } }, "lines": { "DFYGWb3nO": { "id": "DFYGWb3nO", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "QxiT9e8xUS", "yzWEBtD8p8" ], "holes": [] }, "g_BqZIvuT": { "id": "g_BqZIvuT", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "QxiT9e8xUS", "yWkihQYpdK" ], "holes": [] }, "fA3Awp3xx0c": { "id": "fA3Awp3xx0c", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "yWkihQYpdK", "BHqa1bJkEEx" ], "holes": [] }, "isD-OgpkVK": { "id": "isD-OgpkVK", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "yzWEBtD8p8", "BHqa1bJkEEx" ], "holes": [] } }, "holes": {}, "areas": { "uG5kJ9QHDU": { "id": "uG5kJ9QHDU", "type": "area", "prototype": "areas", "name": "Area", "misc": {}, "selected": false, "properties": { "patternColor": "#F5F4F4", "thickness": { "length": 0 }, "texture": "none" }, "visible": true, "vertices": [ "BHqa1bJkEEx", "yzWEBtD8p8", "QxiT9e8xUS", "yWkihQYpdK" ], "holes": [] } }, "items": {}, "selected": { "vertices": [], "lines": [], "holes": [], "areas": [], "items": [] } } }, "grids": { "h1": { "id": "h1", "type": "horizontal-streak", "properties": { "step": 20, "colors": [ "#808080", "#ddd", "#ddd", "#ddd", "#ddd" ] } }, "v1": { "id": "v1", "type": "vertical-streak", "properties": { "step": 20, "colors": [ "#808080", "#ddd", "#ddd", "#ddd", "#ddd" ] } } }, "selectedLayer": "layer-1", "groups": {}, "width": 3000, "height": 2000, "meta": {}, "guides": { "horizontal": {}, "vertical": {}, "circular": {} } }
     };
     this.dibujar = false;
+
     this.state = {
       cuadrada: false,
       recta: false,
@@ -87,7 +88,6 @@ export default class MenuRooms extends Component {
     this.toggleButtonHighlight = this.toggleButtonHighlight.bind( this );
     this.clearHighlights = this.clearHighlights.bind( this );
     this.clearHighlightsOnEscape = this.clearHighlightsOnEscape.bind( this );
-    this.resetToolbarButtonsHighlight = this.resetToolbarButtonsHighlight.bind( this );
   }
 
   clearHighlights () {
@@ -160,8 +160,6 @@ export default class MenuRooms extends Component {
     this.props.linesActions.selectToolDrawingLine( this.props.catalog.elements.wall.name );
   }
 
-
-
   loadProjectFromFile ( event ) {
     event.preventDefault();
     let roomName = event.target.getAttribute( 'roomjson' );
@@ -199,16 +197,6 @@ export default class MenuRooms extends Component {
 
     this.closeMenuRooms( event );
   };
-
-
-  resetToolbarButtonsHighlight () {
-    // Just select the elements with queryselector and
-    // reset its opacity
-    const buttons = Array.from( document.querySelectorAll( '.toolbar-image' ) );
-    buttons.forEach( button => {
-
-    } );
-  }
 
   render () {
     return (
