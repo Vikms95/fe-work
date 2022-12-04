@@ -205,13 +205,6 @@ class ReactPlanner extends Component {
     return this.props.viewer2DActions.updateCameraView( value );
   }
 
-  //activateToolbarButton (menu) {
-  //  const menus = { ...this.state.menus }
-  //  menus[ menu ] = true;
-  //  this.setState( { menus } );
-  //  console.log(menus)
-  //}
-
   handleToolbarButtons ( menu ) {
     const menus = {
       menuRooms: false,
@@ -231,6 +224,8 @@ class ReactPlanner extends Component {
     const { width, height, state, stateExtractor, ...props } = this.props;
     const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = this.state;
     let extractedState = stateExtractor( state );
+    debugger;
+
     return (
       // <div>
       //   <TopBar />

@@ -123,8 +123,45 @@ export default class FormNumberInput extends Component {
       ( parseFloat( this.props.value ).toFixed( precision ) ) !==
       parseFloat( this.state.showedValue ).toFixed( precision );
 
-    const saveFn = ( e ) => {
+
+    const onKeyDown = ( e ) => {
+      const keyCode = e.keyCode || e.which;
+
+      if ( isSaveButtonPressed( keyCode ) ) {
+        saveFn( e, keyCode );
+
+      } else if ( isArrowPressedOnLength( keyCode ) ) {
+        onArrrowPress( e, keyCode );
+
+      } else if ( isEscPressedWhileDrawing( keyCode ) ) {
+        this.props.projectActions.undo();
+        this.context.linesActions.cacheFondo( '' );
+        this.context.linesActions.cacheAlto( '' );
+        this.context.linesActions.cacheAngulo( '' );
+
+      } else if ( isEscPressed( keyCode ) ) {
+        this.props.projectActions.unselectAll();
+      }
+    };
+
+    const onInputChange = ( e ) => {
+      const valid = regexp.test( e.nativeEvent.target.value );
+      if ( valid ) {
+        this.setState( { showedValue: e.nativeEvent.target.value } );
+
+        if ( onValid ) onValid( e.nativeEvent );
+      }
+
+      else {
+        if ( onInvalid ) onInvalid( e.nativeEvent );
+
+      }
+      this.setState( { valid } );
+    };
+
+    const saveFn = ( e, keyCode ) => {
       e.stopPropagation();
+
       if ( this.state.valid ) {
         let savedValue = (
           this.state.showedValue !== '' &&
@@ -138,9 +175,6 @@ export default class FormNumberInput extends Component {
         this.context.linesActions.cacheAlto( inputAlto );
         this.context.linesActions.cacheFondo( inputFondo );
 
-        let keyCode = e.keyCode || e.which;
-
-        debugger;
         onChange( {
           target: {
             value: ( attributeName === 'angulo' )
@@ -170,6 +204,7 @@ export default class FormNumberInput extends Component {
       this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
     };
 
+
     const isEscPressed = ( keyCode ) => (
       keyCode == KEYBOARD_BUTTON_CODE.ESC
     );
@@ -189,6 +224,7 @@ export default class FormNumberInput extends Component {
       ( this.props.mode === MODE_DRAWING_LINE )
     );
 
+
     return (
       <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
 
@@ -199,40 +235,13 @@ export default class FormNumberInput extends Component {
           className={ attributeName }
           ref={ c => ( this.state.inputElement = c ) }
           style={ { ...numericInputStyle, fontFamily: 'Calibri', fontWidth: 'lighter' } }
+          onKeyDown={ onKeyDown }
+          onChange={ onInputChange }
           onClick={ () => this.state.inputElement.select() }
           onFocus={ () => this.setState( { focus: true } ) }
           onBlur={ () => this.setState( { focus: false } ) }
-          onChange={ e => {
-            let valid = regexp.test( e.nativeEvent.target.value );
-            if ( valid ) {
-              this.setState( { showedValue: e.nativeEvent.target.value } );
-              if ( onValid ) onValid( e.nativeEvent );
-            }
-            else {
-              if ( onInvalid ) onInvalid( e.nativeEvent );
-            }
-            this.setState( { valid } );
-          } }
-          onKeyDown={ e => {
-            let keyCode = e.keyCode || e.which;
-
-            if ( isSaveButtonPressed( keyCode ) ) {
-              saveFn( e );
-
-            } else if ( isArrowPressedOnLength( keyCode ) ) {
-              onArrrowPress( e, keyCode );
-
-            } else if ( isEscPressedWhileDrawing( keyCode ) ) {
-              this.props.projectActions.undo();
-              this.context.linesActions.cacheFondo( '' );
-              this.context.linesActions.cacheAlto( '' );
-              this.context.linesActions.cacheAngulo( '' );
-
-            } else if ( isEscPressed( keyCode ) ) {
-              this.props.projectActions.unselectAll();
-            }
-          } }
         />
+
       </div >
     );
   };
