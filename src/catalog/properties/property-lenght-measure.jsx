@@ -28,6 +28,7 @@ export default function PropertyLengthMeasure (
     stateRedux,
     internalState,
     attributeName,
+    attributeFormData,
     sourceElement,
     projectActions
   }, { catalog } ) {
@@ -90,6 +91,7 @@ export default function PropertyLengthMeasure (
                       attributeName={ attributeName }
                       sourceElement={ sourceElement }
                       projectActions={ projectActions }
+                      attributeFormData={ attributeFormData }
                       onChange={ event => update( event.target.value, _unit, event.target.isEnter ) }
                       { ...configRest }
                     />

@@ -96,10 +96,6 @@ export default class ElementEditor extends Component {
         let _length = convert( distance ).from( this.context.catalog.unit ).to( _unit );
         let _angleLine = Line.getAngleV0_pcl( layer, element );
 
-        // If there is a cached angle, use that angle 
-        // instead of the one calculated by the mouse position
-        _angleLine.angle = getCacheAngulo( state ) || _angleLine.angle;
-
         return new Map( {
           lineLength: new Map( { length: distance, _length, _unit } ),
           lineAngle: _angleLine.angle,
@@ -172,8 +168,6 @@ export default class ElementEditor extends Component {
         attributesFormData = attributesFormData.set( attributeName, value );
         this.setState( { attributesFormData } );
 
-        console.debug( "test triggered update" );
-        console.debug( 'test att name', attributeName );
         if ( isEnter ) {
           const cachedAngulo = document.querySelector( '.angulo' ).value;
           this.context.linesActions.cacheAngulo( cachedAngulo );
@@ -404,14 +398,14 @@ export default class ElementEditor extends Component {
         </div>
         {/* OTROS ATRIBUTOS */ }
         <AttributesEditor
+          mode={ mode }
+          position={ 1 }
+          state={ appState }
           element={ element }
           onUpdate={ this.updateAttribute }
           attributeFormData={ attributesFormData }
-          state={ appState }
-          unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
           projectActions={ this.context.projectActions }
-          position={ 1 }
-          mode={ mode }
+          unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
         />
 
         {/* <div style={attrPorpSeparatorStyle}>
@@ -432,29 +426,29 @@ export default class ElementEditor extends Component {
                 let label = this.state.propertiesFormData.getIn( [ propertyName, 'configs' ] ).label;
                 if ( configs.type === 'length-measure' ) {
                   return <PropertyLengthMeasure
-                    key={ propertyName }
-                    value={ this.state.propertiesFormData.getIn( [ propertyName, "currentValue" ] ) }
-                    onUpdate={ ( value, isEnter ) => this.updateProperty( propertyName, value, isEnter ) }
-                    configs={ { label: label, min: 0, max: Infinity, precision: 2 } }
-                    state={ this.state.propertiesFormData }
-                    stateRedux={ appState }
-                    unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
                     mode={ mode }
+                    key={ propertyName }
+                    stateRedux={ appState }
                     attributeName={ propertyName }
                     projectActions={ projectActions }
+                    state={ this.state.propertiesFormData }
+                    unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
+                    configs={ { label: label, min: 0, max: Infinity, precision: 2 } }
+                    value={ this.state.propertiesFormData.getIn( [ propertyName, "currentValue" ] ) }
+                    onUpdate={ ( value, isEnter ) => this.updateProperty( propertyName, value, isEnter ) }
                   />;
                 } else {
                   let { Editor } = catalog.getPropertyType( configs.type );
                   return <Editor
-                    key={ propertyName }
-                    propertyName={ propertyName }
-                    value={ currentValue }
                     configs={ configs }
-                    onUpdate={ value => this.updateProperty( propertyName, value ) }
+                    key={ propertyName }
+                    value={ currentValue }
                     stateRedux={ appState }
-                    unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
                     sourceElement={ element }
                     internalState={ this.state }
+                    propertyName={ propertyName }
+                    unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
+                    onUpdate={ value => this.updateProperty( propertyName, value ) }
                   />;
                 }
               }
@@ -462,19 +456,21 @@ export default class ElementEditor extends Component {
         }
 
         <AttributesEditor
+          mode={ mode }
+          position={ 2 }
+          state={ appState }
           element={ element }
           onUpdate={ this.updateAttribute }
           attributeFormData={ attributesFormData }
-          state={ appState }
           projectActions={ this.context.projectActions }
-          mode={ mode }
           unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
-          position={ 2 }
         />
 
         <div style={ { marginTop: '6px' } }>
           <div>
-            <div onClick={ showAndHideAcabado } style={ { display: 'flex', justifyItems: 'center', height: '25px', width: '5.5em', cursor: 'pointer', paddingBottom: '34px' } }>
+            <div
+              onClick={ showAndHideAcabado }
+              style={ { display: 'flex', justifyItems: 'center', height: '25px', width: '5.5em', cursor: 'pointer', paddingBottom: '34px' } }>
               <p style={ {
                 margin: '0',
                 fontSize: '0.75em',
@@ -494,14 +490,14 @@ export default class ElementEditor extends Component {
                       let { Editor } = catalog.getPropertyType( configs.type );
 
                       return <Editor
-                        key={ propertyName }
-                        propertyName={ propertyName }
-                        value={ currentValue }
-                        configs={ configs }
-                        onUpdate={ value => this.updateProperty( propertyName, value ) }
                         state={ appState }
+                        configs={ configs }
+                        key={ propertyName }
+                        value={ currentValue }
                         sourceElement={ element }
                         internalState={ this.state }
+                        propertyName={ propertyName }
+                        onUpdate={ value => this.updateProperty( propertyName, value ) }
                       />;
                     }
                   } )

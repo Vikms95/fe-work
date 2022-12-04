@@ -5,17 +5,17 @@ import PropertyStyle from './shared-property-style';
 
 export default function PropertyNumber (
   {
+    mode,
+    state,
     value,
-    onUpdate,
     onValid,
     configs,
-    sourceElement,
+    onUpdate,
     attributeName,
-    attributeFormData,
     internalState,
-    mode,
+    sourceElement,
     projectActions,
-    state
+    attributeFormData,
   } ) {
 
   let update = ( val, isEnter ) => {
@@ -36,22 +36,29 @@ export default function PropertyNumber (
   };
 
   return (
-    <table className="PropertyNumber" style={ { ...PropertyStyle.tableStyle, paddingBottom: '10px', marginLeft: '-3px' } }>
+    <table
+      className="PropertyNumber"
+      style={ { ...PropertyStyle.tableStyle, paddingBottom: '10px', marginLeft: '-3px' } }>
       <tbody>
         <tr>
-          <td style={ PropertyStyle.firstTdStyle }><FormLabel>{ configs.label }</FormLabel></td>
+          <td style={ PropertyStyle.firstTdStyle }>
+            <FormLabel>
+              { configs.label }
+            </FormLabel>
+          </td>
           <td>
             <FormNumberInput
-              value={ value }
-              onChange={ event => update( event.target.value, event.target.isEnter ) }
-              onValid={ onValid }
               mode={ mode }
-              attributeName={ attributeName }
-              attributeFormData={ attributeFormData }
-              stateRedux={ state }
-              projectActions={ projectActions }
+              value={ value }
               min={ configs.min }
-              max={ configs.max } />
+              onValid={ onValid }
+              max={ configs.max }
+              stateRedux={ state }
+              attributeName={ attributeName }
+              projectActions={ projectActions }
+              attributeFormData={ attributeFormData }
+              onChange={ event => update( event.target.value, event.target.isEnter ) }
+            />
           </td>
         </tr>
       </tbody>

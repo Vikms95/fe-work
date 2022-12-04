@@ -35,6 +35,11 @@ export default class FormNumberInput extends Component {
       x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
     };
+    this.resetAngleInput = this.resetAngleInput.bind( this );
+  }
+
+  resetAngleInput () {
+    this.setState( { showedValue: props.value } );
   }
 
   componentDidMount () {
@@ -46,12 +51,12 @@ export default class FormNumberInput extends Component {
       this.state.inputElement.select();
     }
 
-    //if ( this.props.attributeName === 'angulo' ) {
-    //  this.setState(
-    //    {
-    //      showedValue: getCacheAngulo( this.props.stateRedux ) || this.props.value
-    //    } );
-    //}
+    if ( this.props.attributeName === 'angulo' ) {
+      if ( getCacheAngulo( this.props.stateRedux ) ) {
+        this.setState( { showedValue: parseFloat( getCacheAngulo( this.props.stateRedux ) ) } );
+        document.addEventListener( 'mousemove', this.resetAngleInput );
+      }
+    }
   }
 
   componentDidUpdate () {
@@ -74,11 +79,13 @@ export default class FormNumberInput extends Component {
     }
   }
 
-  render () {
+  componentWillUnmount () {
+    document.removeEventListener( 'mousemove', this.resetAngleInput );
+  }
 
+  render () {
     let {
       value,
-      stateRedux,
       min,
       max,
       style,
@@ -86,9 +93,11 @@ export default class FormNumberInput extends Component {
       precision,
       onChange,
       onInvalid,
+      stateRedux,
       placeholder,
       attributeName,
-      sourceElement
+      sourceElement,
+
     } = this.props;
 
     let numericInputStyle = { ...STYLE_INPUT, ...style };
@@ -123,21 +132,20 @@ export default class FormNumberInput extends Component {
           ? parseFloat( this.state.showedValue )
           : 0;
 
-        const cachedAlto = document.querySelector( '.height' ).value;
-        const cachedFondo = document.querySelector( '.thickness' ).value;
+        const inputAlto = document.querySelector( '.height' ).value;
+        const inputFondo = document.querySelector( '.thickness' ).value;
 
-        this.context.linesActions.cacheAlto( cachedAlto );
-        this.context.linesActions.cacheFondo( cachedFondo );
+        this.context.linesActions.cacheAlto( inputAlto );
+        this.context.linesActions.cacheFondo( inputFondo );
 
         let keyCode = e.keyCode || e.which;
 
-        console.debug( attributeName );
+        debugger;
         onChange( {
           target: {
             value: ( attributeName === 'angulo' )
               ? savedValue
               : convertMeasureToOriginal( savedValue, this.props.unit ),
-
             isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER
           }
         } );
@@ -185,11 +193,11 @@ export default class FormNumberInput extends Component {
       <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
 
         <input
-          ref={ c => ( this.state.inputElement = c ) }
-          placeholder={ placeholder }
-          className={ attributeName }
           type='number'
           value={ currValue }
+          placeholder={ placeholder }
+          className={ attributeName }
+          ref={ c => ( this.state.inputElement = c ) }
           style={ { ...numericInputStyle, fontFamily: 'Calibri', fontWidth: 'lighter' } }
           onClick={ () => this.state.inputElement.select() }
           onFocus={ () => this.setState( { focus: true } ) }
@@ -227,7 +235,7 @@ export default class FormNumberInput extends Component {
         />
       </div >
     );
-  }
+  };
 }
 
 FormNumberInput.propTypes = {

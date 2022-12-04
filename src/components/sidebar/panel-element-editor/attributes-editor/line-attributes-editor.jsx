@@ -37,6 +37,7 @@ export default function LineAttributesEditor (
           sourceElement={ element }
           attributeName={ 'lineLength' }
           projectActions={ projectActions }
+          attributeFormData={ attributeFormData }
           configs={ { label: 'Ancho', min: 0, max: Infinity, precision: 2 } }
           onUpdate={ ( mapped, isEnter ) => onUpdate( 'lineLength', mapped, isEnter ) }
         />
@@ -48,9 +49,9 @@ export default function LineAttributesEditor (
         mode={ mode }
         state={ state }
         value={ lineAngle }
-        attributeFormData={ attributeFormData }
         attributeName='angulo'
         projectActions={ projectActions }
+        attributeFormData={ attributeFormData }
         configs={ { label: 'Ángulo', min: 0, max: 360, precision: 0 } }
         onUpdate={ ( value, isEnter ) => onUpdate( 'lineAngle', value, isEnter ) }
         { ...rest }
