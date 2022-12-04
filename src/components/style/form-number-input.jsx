@@ -39,7 +39,7 @@ export default class FormNumberInput extends Component {
   }
 
   resetAngleInput () {
-    this.setState( { showedValue: props.value } );
+    this.setState( { showedValue: this.props.value } );
   }
 
   componentDidMount () {

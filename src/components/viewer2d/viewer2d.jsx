@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { INITIAL_VALUE, fitSelection, ReactSVGPanZoom, TOOL_NONE, TOOL_PAN, TOOL_ZOOM_IN, TOOL_ZOOM_OUT, TOOL_AUTO } from 'react-svg-pan-zoom';
@@ -122,7 +122,7 @@ export default function Viewer2D (
     if ( !userZoom || !isFirstRender ) return;
 
     const windowWidthRatio = window.innerWidth / 1000;
-    const windowHeightRatio = window.innerHeight / 1000;
+    //const windowHeightRatio = window.innerHeight / 1000;
     const finalZoom = constants.BASE_ZOOM / userZoom;
 
 
@@ -200,7 +200,7 @@ export default function Viewer2D (
     viewerEvent.originalEvent.stopPropagation();
   };
 
-  let onMouseDown = viewerEvent => {
+  const onMouseDown = viewerEvent => {
     let event = viewerEvent.originalEvent;
 
     //workaround that allow imageful component to work
@@ -242,7 +242,7 @@ export default function Viewer2D (
     event.stopPropagation();
   };
 
-  let onMouseUp = viewerEvent => {
+  const onMouseUp = viewerEvent => {
     let event = viewerEvent.originalEvent;
 
     let evt = new Event( 'mouseup-planner-event' );
@@ -325,7 +325,7 @@ export default function Viewer2D (
     event.stopPropagation();
   };
 
-  let onChangeTool = ( tool ) => {
+  const onChangeTool = ( tool ) => {
     switch ( tool ) {
       case TOOL_NONE:
         projectActions.selectToolEdit();
@@ -365,59 +365,65 @@ export default function Viewer2D (
       display: 'grid',
       gridRowGap: '0',
       gridColumnGap: '0',
+      position: 'relative',
       gridTemplateColumns: `${ rulerSize }px ${ width - rulerSize }px`,
       gridTemplateRows: `${ rulerSize }px ${ height - rulerSize }px`,
-      position: 'relative'
     } }>
+
       <div style={ { gridColumn: 1, gridRow: 1, backgroundColor: rulerBgColor } }></div>
+
       <div style={ { gridRow: 1, gridColumn: 2, position: 'relative', overflow: 'hidden' } } id="rulerX">
-        { sceneWidth ? <RulerX
-          state={ state }
-          unitPixelSize={ rulerUnitPixelSize }
-          zoom={ sceneZoom }
-          mouseX={ state.mouse.get( 'x' ) }
-          width={ width - rulerSize }
-          zeroLeftPosition={ e || 0 }
-          backgroundColor={ rulerBgColor }
-          fontColor={ rulerFnColor }
-          markerColor={ rulerMkColor }
-          positiveUnitsNumber={ rulerXElements }
-          negativeUnitsNumber={ 0 }
-        /> : null }
+        { sceneWidth && (
+          <RulerX
+            state={ state }
+            zoom={ sceneZoom }
+            negativeUnitsNumber={ 0 }
+            fontColor={ rulerFnColor }
+            width={ width - rulerSize }
+            zeroLeftPosition={ e || 0 }
+            markerColor={ rulerMkColor }
+            backgroundColor={ rulerBgColor }
+            mouseX={ state.mouse.get( 'x' ) }
+            unitPixelSize={ rulerUnitPixelSize }
+            positiveUnitsNumber={ rulerXElements }
+          /> ) }
       </div>
+
       <div style={ { gridColumn: 1, gridRow: 2, position: 'relative', overflow: 'hidden' } } id="rulerY">
-        { sceneHeight ? <RulerY
-          state={ state }
-          unitPixelSize={ rulerUnitPixelSize }
-          zoom={ sceneZoom }
-          mouseY={ state.mouse.get( 'y' ) }
-          height={ height - rulerSize }
-          zeroTopPosition={ ( ( sceneHeight * sceneZoom ) + f ) || 0 }
-          backgroundColor={ rulerBgColor }
-          fontColor={ rulerFnColor }
-          markerColor={ rulerMkColor }
-          positiveUnitsNumber={ rulerYElements }
-          negativeUnitsNumber={ 0 }
-        /> : null }
+        { sceneHeight && (
+          <RulerY
+            state={ state }
+            zoom={ sceneZoom }
+            negativeUnitsNumber={ 0 }
+            fontColor={ rulerFnColor }
+            markerColor={ rulerMkColor }
+            height={ height - rulerSize }
+            backgroundColor={ rulerBgColor }
+            mouseY={ state.mouse.get( 'y' ) }
+            unitPixelSize={ rulerUnitPixelSize }
+            positiveUnitsNumber={ rulerYElements }
+            zeroTopPosition={ ( ( sceneHeight * sceneZoom ) + f ) || 0 }
+          /> ) }
       </div>
+
       <div>
         <div>
           <ReactSVGPanZoom
             ref={ refViewer2D }
             className='ReactSVGPanZoom'
-            style={ { gridColumn: 2, gridRow: 2 } }
-            width={ width - rulerSize }
-            height={ height - rulerSize }
-            value={ viewer2D.isEmpty() ? null : viewer2D.toJS() }
-            onChangeValue={ update2DView }
-            tool={ mode2Tool( mode ) }
-            onChangeTool={ onChangeTool }
-            detectAutoPan={ mode2DetectAutopan( mode ) }
-            onMouseDown={ onMouseDown }
-            onMouseMove={ onMouseMove }
-            onMouseUp={ onMouseUp }
-            miniaturePosition="none"
             toolbarPosition="none"
+            miniaturePosition="none"
+            width={ width - rulerSize }
+            tool={ mode2Tool( mode ) }
+            height={ height - rulerSize }
+            style={ { gridColumn: 2, gridRow: 2 } }
+            detectAutoPan={ mode2DetectAutopan( mode ) }
+            value={ viewer2D.isEmpty() ? null : viewer2D.toJS() }
+            onMouseUp={ onMouseUp }
+            onMouseMove={ onMouseMove }
+            onMouseDown={ onMouseDown }
+            onChangeTool={ onChangeTool }
+            onChangeValue={ update2DView }
           >
             <svg width={ getRejillaTotal2D( state ) / 10 } height={ getRejillaTotal2D( state ) / 10 }>
               <defs>
