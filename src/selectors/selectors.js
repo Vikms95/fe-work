@@ -1,5 +1,4 @@
 
-
 export const getLayerID = ( state ) => state.getIn( [ 'scene', 'selectedLayer' ] );
 export const getIsElementSelected = ( state ) => state.get( 'isElementSelected' );
 export const getIsGuia2D = ( state ) => state.getIn( [ 'prefs', 'GUIA2D' ] );

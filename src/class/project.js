@@ -20,7 +20,6 @@ import {
 import layer from './layer';
 import { Prefs } from '../proxies/export';
 import { projectActions } from '../actions/export';
-import { getCacheAlto, getCacheFondo } from '../selectors/selectors';
 
 class Project {
 
