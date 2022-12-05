@@ -204,34 +204,14 @@ class Project {
   }
 
   static undo ( state ) {
-    let newSceneHistory = null;
     let sceneHistory = state.sceneHistory;
     if ( state.scene === sceneHistory.last && sceneHistory.list.size > 1 ) {
       sceneHistory = history.historyPop( sceneHistory );
     }
 
-    //if ( fondo || alto ) {
-    //  const layerID = sceneHistory.last.get( 'selectedLayer' );
-    //  const lines = sceneHistory.last.getIn( [ 'layers', layerID, 'lines' ] );
-    //  const formattedLines = Object.entries( lines.toJS() );
-    //  const lineID = formattedLines.find( key => {
-    //    if ( key[ 1 ].selected === true ) return key[ 0 ];
-    //  } );
-
-    //  newSceneHistory =
-    //    sceneHistory.last.setIn( [ 'layers', layerID, 'lines', lineID[ 0 ], 'properties', 'thickness', 'length' ],
-    //      fondo && fondo / 10
-    //    );
-
-    //  newSceneHistory =
-    //    sceneHistory.last.setIn( [ 'layers', layerID, 'lines', lineID[ 0 ], 'properties', 'height', 'length' ],
-    //      alto && alto / 10
-    //    );
-    //}
-
     state = state.merge( {
       mode: MODE_IDLE,
-      scene: newSceneHistory || sceneHistory.last,
+      scene: sceneHistory.last,
       sceneHistory: history.historyPop( sceneHistory )
     } );
 
