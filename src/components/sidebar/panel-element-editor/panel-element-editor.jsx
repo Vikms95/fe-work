@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes, { element } from 'prop-types';
 import Panel from '../panel';
-import { Seq } from 'immutable';
+import { Seq, fromJS } from 'immutable';
 import ElementEditor from './element-editor';
 import {
   MODE_IDLE, MODE_2D_ZOOM_IN, MODE_2D_ZOOM_OUT, MODE_2D_PAN, MODE_3D_VIEW, MODE_3D_FIRST_PERSON,
@@ -9,6 +9,7 @@ import {
   MODE_DRAGGING_VERTEX, MODE_DRAGGING_ITEM, MODE_DRAGGING_HOLE, MODE_FITTING_IMAGE, MODE_UPLOADING_IMAGE,
   MODE_ROTATING_ITEM
 } from '../../../constants';
+import { isMultiplePrototypeSelection } from '../../../selectors/selectors';
 
 const validModesToShowPanel =
   [
@@ -30,7 +31,8 @@ export default function PanelElementEditor ( { state }, { projectActions, transl
     </div>;
   };
 
-  const lastElementSelectedID = state.get( 'selectedElementsHistory' ).first();
+  const lastElementSelectedID = fromJS( state.getIn( [ 'scene', 'selectedElementsHistory' ] ) ).first();
+  console.log( isMultiplePrototypeSelection( state ) );
 
   const layerRenderer = layer => Seq()
     .concat( layer.lines, layer.holes, layer.areas, layer.items )

@@ -1,4 +1,4 @@
-import { List, Set } from 'immutable';
+import { List, Set, fromJS } from 'immutable';
 import { Project, Area, Line, Hole, Item, Vertex, Perimeter } from './export';
 import {
   GraphInnerCycles,
@@ -38,11 +38,12 @@ class Layer {
     state = state.setIn( [ 'scene', 'layers', layerID, elementPrototype, elementID, 'selected' ], true );
     state = state.updateIn( [ 'scene', 'layers', layerID, 'selected', elementPrototype ], elems => elems.push( elementID ) );
 
-    // Vertices are not directly modified, so we do not want
-    // to track them
+    // Vertices are not directly modified, 
+    // so we do not want to track them
     if ( elementPrototype !== 'vertices' ) {
-      state = state.update( 'selectedElementsHistory', ( history ) => history.clear() );
-      state = state.update( 'selectedElementsHistory', ( history ) => history.push( elementID ) );
+
+      state = state.updateIn( [ 'scene', 'selectedElementsHistory' ], ( history ) => history.clear() );
+      state = state.updateIn( [ 'scene', 'selectedElementsHistory' ], ( history ) => fromJS(history).push( elementID ) );
     }
 
     return { updatedState: state };

@@ -16,7 +16,7 @@ import {
 } from '../../../constants';
 
 import { PropertyLengthMeasure, PropertyNumber } from '../../../catalog/properties/export';
-import { isMultipleSelection } from '../../../selectors/selectors';
+import { isMultiplePrototypeSelection, isMultipleSelection } from '../../../selectors/selectors';
 
 const PRECISION = 2;
 
@@ -367,6 +367,7 @@ export default class ElementEditor extends Component {
   }
 
   render () {
+
     let {
       state: { propertiesFormData, attributesFormData },
       context: { projectActions, linesActions, catalog, translator },
@@ -383,16 +384,13 @@ export default class ElementEditor extends Component {
       }
     };
 
+    if ( isMultiplePrototypeSelection( appState ) ) return null;
     return (
       <div style={ { marginTop: '2em' } }>
         {/* Imagen con nombre y descripcion */ }
         {/* TODO: Hacerlo dinamico */ }
         <div style={ { display: 'flex', flexDirection: 'column', alignContent: 'center', alignItems: 'center', marginBottom: '45px' } }>
-
-          { !isMultipleSelection( appState ) && (
-            <img style={ { height: '80px', width: '80px', paddingTop: '10px' } } src={ element.image } />
-          ) }
-
+          <img style={ { height: '80px', width: '80px', paddingTop: '10px' } } src={ element.image } />
           <p style={ { margin: '0', padding: '10px 0', fontSize: '0.8em', textAlign: 'center', color: SharedStyle.PRIMARY_COLOR.master, /*fontWeight: 'bold'*/ } }>
             { element.name }
           </p>

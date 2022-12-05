@@ -231,6 +231,7 @@ export class Scene extends Record( {
   meta: new Map(),   //additional info
   guides: new Map(),
   prefs: new Map(),
+  selectedElementsHistory: new List()
 }, 'Scene' ) {
   constructor ( json = {} ) {
     let layers = safeLoadMapList( json.layers, Layer, DefaultLayers );
@@ -336,9 +337,8 @@ export class State extends Record( {
   errors: new List(),
   warnings: new List(),
   clipboardProperties: new Map(),
-  isElementSelected: false,
-  selectedElementsHistory: new List(),
   alterate: false,
+  isElementSelected: false,
   userAuthenticated: false,
   misc: new Map()   //additional info
 }, 'State' ) {
