@@ -37,8 +37,11 @@ class Layer {
   static selectElement ( state, layerID, elementPrototype, elementID ) {
     state = state.setIn( [ 'scene', 'layers', layerID, elementPrototype, elementID, 'selected' ], true );
     state = state.updateIn( [ 'scene', 'layers', layerID, 'selected', elementPrototype ], elems => elems.push( elementID ) );
-    state = state.update( 'selectedElementsHistory', ( history ) => history.clear() );
-    state = state.update( 'selectedElementsHistory', ( history ) => history.push( elementID ) );
+
+    if ( elementPrototype !== 'vertices' ) {
+      state = state.update( 'selectedElementsHistory', ( history ) => history.clear() );
+      state = state.update( 'selectedElementsHistory', ( history ) => history.push( elementID ) );
+    }
 
     return { updatedState: state };
   }

@@ -33,9 +33,11 @@ export default function PanelElementEditor ( { state }, { projectActions, transl
   // Get the ID of the last element on the history of selected elements
   // Filter by if the element id is the same as the one first on the history
 
+  const lastElementSelectedID = state.get( 'selectedElementsHistory' ).first();
+
   const layerRenderer = layer => Seq()
     .concat( layer.lines, layer.holes, layer.areas, layer.items )
-    //.filter( element => element.selected )
+    .filter( element => element.id === lastElementSelectedID )
     .map( element => componentRenderer( element, layer ) )
     .valueSeq();
 
