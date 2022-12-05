@@ -95,6 +95,16 @@ export default class MenuConstruccion extends Component {
     };
   }
 
+  componentDidMount () {
+    document.addEventListener( 'click', () => {
+      const mode = this.props.state.getIn( [ 'react-planner', 'mode' ] );
+
+      if ( mode === 'MODE_IDLE' ) {
+        this.props.unselectAllSubmenuButtons();
+      }
+    } );
+  }
+
   render () {
     const matcharray = ( text ) => {
       if ( text != '' && this.state.currentShowElement !== null ) {
@@ -115,9 +125,7 @@ export default class MenuConstruccion extends Component {
         this.setState( {
           filterShowElement: null
         } );
-
       }
-
     };
 
     const closeMenuConstruccion = () => {
@@ -141,7 +149,7 @@ export default class MenuConstruccion extends Component {
       } );
     };
 
-    const selectObstacule = () => {
+    const selectObstacle = () => {
       // TODO: Cambiar idioma
       this.setState( {
         breadcrumb: 'Obstaculos',
@@ -160,10 +168,19 @@ export default class MenuConstruccion extends Component {
             >
               <div style={ { position: 'relative' } }>
                 <img
-                  className={ 'rectangulo' }
+                  className='rectangulo'
                   src={ rectangulo }
-                  style={ { marginLeft: ( key % 2 === 0 ) ? '-1.5em' : '-0.9em', marginTop: '-0.5em' } }
+                  style={
+                    {
+                      marginLeft: ( key % 2 === 0 ) ? '-1.5em' : '-0.9em',
+                      marginTop: '-0.5em',
+                    } }
+                  onClick={ e => {
+                    this.props.unselectAllSubmenuButtons();
+                    e.target.classList.add( 'active' );
+                  } }
                 />
+
                 <img src={ element.info.image } style={ STYLE_IMAGE } />
                 <p style={ STYLE_NAME }>{ element.name }</p>
               </div>
@@ -172,8 +189,6 @@ export default class MenuConstruccion extends Component {
         }
       </div>;
     };
-
-
 
     return (
       <aside id='menuConstruccion' style={ STYLE }>
@@ -204,6 +219,7 @@ export default class MenuConstruccion extends Component {
             onClick={ () => {
               closeMenuConstruccion();
               this.props.handleToolbarButtons();
+              this.props.unselectAllSubmenuButtons();
             } } />
         </div>
         {/* Search */ }
@@ -242,7 +258,7 @@ export default class MenuConstruccion extends Component {
                       <p style={ STYLE_NAME }>Ventanas</p>
                     </div>
                   </div>
-                  <div onClick={ selectObstacule } style={ { cursor: 'pointer', paddingTop: '10px' } }>
+                  <div onClick={ selectObstacle } style={ { cursor: 'pointer', paddingTop: '10px' } }>
                     <div style={ { position: 'relative' } }>
                       <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em', marginTop: '-0.5em' } } />
                       <img src={ obstaculos } style={ STYLE_IMAGE } />

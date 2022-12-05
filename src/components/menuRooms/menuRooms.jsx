@@ -210,6 +210,7 @@ export default class MenuRooms extends Component {
             onClick={ () => {
               this.closeMenuRooms();
               this.props.handleToolbarButtons();
+              this.props.unSelectAllSubmenuButtons();
             } } />
         </div>
         {/* Estructuras */ }

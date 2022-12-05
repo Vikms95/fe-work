@@ -124,6 +124,15 @@ export default class MenuMuebles extends Component {
     };
   }
 
+  componentDidMount () {
+    document.addEventListener( 'click', () => {
+      const mode = this.props.state.getIn( [ 'react-planner', 'mode' ] );
+      if ( mode === 'MODE_IDLE' ) {
+        this.props.unselectAllSubmenuButtons();
+      }
+    } );
+  }
+
   render () {
     const matcharray = ( text ) => {
       if ( text != '' && this.state.currentShowElement !== null ) {
@@ -177,33 +186,27 @@ export default class MenuMuebles extends Component {
       return <div style={ { marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' } }>
         {
           elements.map( ( element, key ) => {
-            if ( key % 2 === 0 ) {
-              return <div
-                key={ key }
-                style={ { cursor: 'pointer', paddingTop: '10px' } }
-                onClick={ element.action ? element.action : null }
-              >
-                <div style={ { position: 'relative' } }>
-                  <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em' } } />
-                  <img src={ element.image } style={ STYLE_IMAGE } />
-                  <p style={ STYLE_NAME }>{ element.name }</p>
-                </div>
-              </div>;
-            } else {
-              return <div
-                key={ key }
-                style={ { cursor: 'pointer', paddingTop: '10px' } }
-                onClick={ element.action ? element.action : null }
-              >
-                <div style={ { position: 'relative' } }>
-                  <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-0.9em' } } />
-                  <img src={ element.image } style={ STYLE_IMAGE } />
-                  <p style={ STYLE_NAME }>{ element.name }</p>
-                </div>
-              </div>;
-            }
-          } )
+            return <div
+              key={ key }
+              style={ { cursor: 'pointer', paddingTop: '10px' } }
+              onClick={ element.action ? element.action : null }
+            >
+              <div style={ { position: 'relative' } }>
+                <img
+                  className='rectangulo'
+                  src={ rectangulo }
+                  style={ { marginLeft: key % 2 === 0 ? '-1.5em' : '-0.9em' } }
+                  onClick={ e => {
+                    this.props.unselectAllSubmenuButtons();
+                    e.target.classList.add( 'active' );
+                  } }
+                />
 
+                <img src={ element.image } style={ STYLE_IMAGE } />
+                <p style={ STYLE_NAME }>{ element.name }</p>
+              </div>
+            </div>;
+          } )
         }
       </div>;
     };
@@ -441,24 +444,24 @@ Muebles
 <img style={STYLE_BUTTON_CLOSE} src={close} onClick={closeMenuMuebles} />
 </div>
 {*//* Search *//*}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              <div style={{ margin: '0 20px 0 20px' }}>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div style={{ display: 'flex', flexDirection: 'column', marginTop: '0.4em' }} >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <input
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    style={{ width: 'auto', height: '1.8em', color: SharedStyle.COLORS.grey, fontFamily: 'Calibri', fontWidth: 'lighter' }}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    type="text"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    placeholder='Buscar...'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    onChange={(e) => { matcharray(e.target.value) }}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <div style={{ display: 'flex', justifyItems: 'center', width: '10em', height: '25px', cursor: 'pointer' }}>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <p style={{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      fontSize: '0.75em',
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      color: SharedStyle.PRIMARY_COLOR.master,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      width: '10em',
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }}>Búsqueda Avanzada</p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <img style={{ height: '0.65em', marginTop: '0.85em', marginLeft: '0.2em', }} src={flecha} />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  {*//* Objects *//*}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      <div style={{ margin: '0 20px 0 20px' }}>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div style={{ display: 'flex', flexDirection: 'column', marginTop: '0.4em' }} >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <input
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            style={{ width: 'auto', height: '1.8em', color: SharedStyle.COLORS.grey, fontFamily: 'Calibri', fontWidth: 'lighter' }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            type="text"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            placeholder='Buscar...'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            onChange={(e) => { matcharray(e.target.value) }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          />
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <div style={{ display: 'flex', justifyItems: 'center', width: '10em', height: '25px', cursor: 'pointer' }}>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <p style={{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              fontSize: '0.75em',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              color: SharedStyle.PRIMARY_COLOR.master,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              width: '10em',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }}>Búsqueda Avanzada</p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <img style={{ height: '0.65em', marginTop: '0.85em', marginLeft: '0.2em', }} src={flecha} />
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          {*//* Objects *//*}
 {
 this.state.filterShowElement === null ?
 printItems(this.state.currentShowElement)
@@ -496,6 +499,7 @@ printItems(this.state.filterShowElement)
             onClick={ () => {
               closeMenuMuebles();
               this.props.handleToolbarButtons();
+              this.props.unselectAllSubmenuButtons();
             } }
           />
         </div>

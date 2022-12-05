@@ -221,7 +221,10 @@ export default class Toolbar extends Component {
           index={ 0 }
           active={ menus.menuRooms }
           tooltip={ 'Paredes' }
-          onClick={ () => showAndHideMenus( 'menuRooms' ) }
+          onClick={ () => {
+            this.props.unselectAllSubmenuButtons();
+            showAndHideMenus( 'menuRooms' );
+          } }
           img={ paredes }
           //TODO: Poner en el translator
           text={ 'Paredes' } >
@@ -234,7 +237,11 @@ export default class Toolbar extends Component {
           className='toolbar-button'
           active={ menus.menuConstruccion }
           tooltip={ 'Construccion' }
-          onClick={ () => showAndHideMenus( 'menuConstruccion' ) }
+          onClick={ () => {
+            this.props.unselectAllSubmenuButtons();
+            showAndHideMenus( 'menuConstruccion' );
+
+          } }
           img={ construccion }
           //TODO: Poner en el translator
           text={ 'Construccion' }>
@@ -247,7 +254,10 @@ export default class Toolbar extends Component {
           className='toolbar-button'
           active={ menus.menuMuebles }
           tooltip={ 'Baño Salgar' }
-          onClick={ () => showAndHideMenus( 'menuMuebles' ) }
+          onClick={ () => {
+            this.props.unselectAllSubmenuButtons();
+            showAndHideMenus( 'menuMuebles' );
+          } }
           img={ img_salgar }
           //TODO: Poner en el translator
           text={ 'Baño Salgar' }>

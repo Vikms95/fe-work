@@ -20,3 +20,7 @@
   .rectangulo:hover {
     opacity: 20%;
   }
+
+  .rectangulo.active {
+    opacity: 20%;
+  }

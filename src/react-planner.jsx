@@ -225,6 +225,12 @@ class ReactPlanner extends Component {
     const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = this.state;
     let extractedState = stateExtractor( state );
 
+    const unselectAllSubmenuButtons = () => (
+      Array.from(
+        document.querySelectorAll( '.rectangulo.active' ) )
+        .forEach( el => el.classList.remove( 'active' ) )
+    );
+
     return (
       // <div>
       //   <TopBar />
@@ -254,6 +260,7 @@ class ReactPlanner extends Component {
             state={ extractedState }
             menus={ this.state.menus }
             handleToolbarButtons={ this.handleToolbarButtons }
+            unselectAllSubmenuButtons={ unselectAllSubmenuButtons }
             { ...props }
           />
 
@@ -262,16 +269,19 @@ class ReactPlanner extends Component {
             <MenuRooms
               state={ state }
               handleToolbarButtons={ this.handleToolbarButtons }
+              unselectAllSubmenuButtons={ unselectAllSubmenuButtons }
               { ...props }
             />
             <MenuConstruccion
               state={ state }
               handleToolbarButtons={ this.handleToolbarButtons }
+              unselectAllSubmenuButtons={ unselectAllSubmenuButtons }
               { ...props }
             />
             <MenuMuebles
               state={ state }
               handleToolbarButtons={ this.handleToolbarButtons }
+              unselectAllSubmenuButtons={ unselectAllSubmenuButtons }
               { ...props }
             />
             <LoginComponent state={ extractedState } { ...props } />
