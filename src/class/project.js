@@ -20,6 +20,7 @@ import {
 import layer from './layer';
 import { Prefs } from '../proxies/export';
 import { projectActions } from '../actions/export';
+import { getSelectedElements } from '../selectors/selectors';
 
 class Project {
 
@@ -209,9 +210,6 @@ class Project {
       sceneHistory = history.historyPop( sceneHistory );
     }
 
-    //const fondo = getCacheFondo( state );
-    //const alto = getCacheAlto( state );
-
     //if ( fondo || alto ) {
     //  const layerID = sceneHistory.last.get( 'selectedLayer' );
     //  const lines = sceneHistory.last.getIn( [ 'layers', layerID, 'lines' ] );
@@ -330,7 +328,9 @@ class Project {
   }
 
   static pasteProperties ( state ) {
-    state = this.updateProperties( state, state.getIn( [ 'scene', 'selectedLayer' ] ), state.get( 'clipboardProperties' ) ).updatedState;
+    state = this.updateProperties(
+      state, state.getIn( [ 'scene', 'selectedLayer' ] ),
+      state.get( 'clipboardProperties' ) ).updatedState;
 
     return { updatedState: state };
   }
@@ -401,21 +401,17 @@ class Project {
   }
 
   static removeCircularGuide ( state, guideID ) {
-    console.log( 'removeing horizontal guide ', guideID );
+    console.log( 'removing horizontal guide ', guideID );
 
     return { updatedState: state };
   }
 
   static setIsElementSelected ( state ) {
+    const selectedElements = getSelectedElements( state );
+    const isElementSelected =
+      selectedElements.some( key => typeof key[ 1 ][ 0 ] !== 'undefined' );
 
-    // Replace with selector
-    const layerID = state.getIn( [ 'scene', 'selectedLayer' ] );
-    const selectedElements = state.getIn( [ 'scene', 'layers', layerID, 'selected' ] );
-    const formattedSelectedElements = Object.entries( selectedElements.toJS() );
-    const value = formattedSelectedElements.some( key => typeof key[ 1 ][ 0 ] !== 'undefined' );
-    //
-
-    state = state.set( 'isElementSelected', value );
+    state = state.set( 'isElementSelected', isElementSelected );
     return { updatedState: state };
   }
 }

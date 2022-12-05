@@ -1,6 +1,34 @@
 
 export const getLayerID = ( state ) => state.getIn( [ 'scene', 'selectedLayer' ] );
+
+export const getSelectedElements = ( state ) => {
+  const layerID = state.getIn( [ 'scene', 'selectedLayer' ] );
+  const selectedElements = state.getIn( [ 'scene', 'layers', layerID, 'selected' ] );
+  return Object.entries( selectedElements.toJS() );
+};
+
 export const getIsElementSelected = ( state ) => state.get( 'isElementSelected' );
+
+export const isMultipleSelection = ( state ) => {
+  const elementsSelected = getSelectedElements( state );
+  if ( !elementsSelected ) return;
+
+  const isSelectedInArray = ( element ) => (
+    element[ 0 ] !== 'vertices' && typeof element[ 1 ][ 0 ] !== 'undefined'
+  );
+
+  const selectedAmount = elementsSelected.reduce( ( amount, current ) => {
+    const arrayOfSelected = current[ 1 ];
+
+    return ( isSelectedInArray( current ) )
+      ? amount + arrayOfSelected.length
+      : amount;
+
+  }, 0 );
+
+  return selectedAmount > 1;
+};
+
 export const getIsGuia2D = ( state ) => state.getIn( [ 'prefs', 'GUIA2D' ] );
 export const getViewer2D = ( state ) => state.get( 'viewer2D' ).toJS();
 export const getRejillaTotal2D = ( state ) => state.getIn( [ 'prefs', 'T/REJILLATOTAL2D' ] );

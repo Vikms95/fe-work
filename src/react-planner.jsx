@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Translator from './translator/translator';
 import Catalog from './catalog/catalog';
 import actions from './actions/export';
-import { getIsElementSelected } from './selectors/selectors';
+import { getIsElementSelected, isMultipleSelection } from './selectors/selectors';
 import { objectsMap } from './utils/objects-utils';
 
 import {

@@ -16,7 +16,7 @@ import {
 } from '../../../constants';
 
 import { PropertyLengthMeasure, PropertyNumber } from '../../../catalog/properties/export';
-import { getCacheAngulo } from '../../../selectors/selectors';
+import { isMultipleSelection } from '../../../selectors/selectors';
 
 const PRECISION = 2;
 
@@ -388,7 +388,11 @@ export default class ElementEditor extends Component {
         {/* Imagen con nombre y descripcion */ }
         {/* TODO: Hacerlo dinamico */ }
         <div style={ { display: 'flex', flexDirection: 'column', alignContent: 'center', alignItems: 'center', marginBottom: '45px' } }>
-          <img style={ { height: '80px', width: '80px', paddingTop: '10px' } } src={ element.image } />
+
+          { !isMultipleSelection( appState ) && (
+            <img style={ { height: '80px', width: '80px', paddingTop: '10px' } } src={ element.image } />
+          ) }
+
           <p style={ { margin: '0', padding: '10px 0', fontSize: '0.8em', textAlign: 'center', color: SharedStyle.PRIMARY_COLOR.master, /*fontWeight: 'bold'*/ } }>
             { element.name }
           </p>
