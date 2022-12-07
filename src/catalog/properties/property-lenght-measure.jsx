@@ -9,7 +9,6 @@ import PropertyStyle from './shared-property-style';
 import { showMeasure } from './../../utils/changeUnit';
 
 import * as SharedStyle from '../../shared-style';
-import { Source } from 'three';
 
 
 const internalTableStyle = { borderCollapse: 'collapse' };
@@ -28,9 +27,9 @@ export default function PropertyLengthMeasure (
     stateRedux,
     internalState,
     attributeName,
-    attributeFormData,
     sourceElement,
-    projectActions
+    projectActions,
+    attributeFormData,
   }, { catalog } ) {
 
   let _unit = unit;
@@ -39,18 +38,21 @@ export default function PropertyLengthMeasure (
 
   let { hook, label, ...configRest } = configs;
 
-  let update = ( lengthInput, unitInput, isEnter ) => {
+  const update = ( lengthInput, unitInput, isEnter ) => {
+    // It gets transformed to a float of 6 values
     let newLength = toFixedFloat( lengthInput );
 
+    // Converts the value prop to an Immutable Map 
     let merged = value.merge( {
       length: ( unitInput !== UNIT_CENTIMETER )
+        // Use the convert-units library to make sure the length is given in CM
         ? convert( newLength ).from( unitInput ).to( UNIT_CENTIMETER )
         : newLength,
-
       _length: lengthInput,
       _unit: unitInput
     } );
 
+    //TODO What does this do? It does not seem to be used in any scenario
     if ( hook ) {
       return hook( merged, sourceElement, internalState, state ).then( val => {
         return onUpdate( val, isEnter );
@@ -81,6 +83,7 @@ export default function PropertyLengthMeasure (
               <tbody>
                 <tr>
                   <td>
+
                     <FormNumberInput
                       mode={ mode }
                       unit={ _unit }
@@ -95,10 +98,11 @@ export default function PropertyLengthMeasure (
                       onChange={ event => update( event.target.value, _unit, event.target.isEnter ) }
                       { ...configRest }
                     />
+
                   </td>
                   {/* SELECT UNIDADES */ }
                   {/* <td style={unitContainerStyle}>
-                <FormSelect value={_unit} onChange={event => update(_length, event.target.value) }>
+                      <FormSelect value={_unit} onChange={event => update(_length, event.target.value) }>
                   {
                     UNITS_LENGTH.map(el => <option key={el} value={el}>{el}</option>)
                   }

@@ -18,9 +18,11 @@ export default function PropertyNumber (
     attributeFormData,
   } ) {
 
-  let update = ( val, isEnter ) => {
+  const update = ( val, isEnter ) => {
+    //makes sure this is a number
     let number = parseFloat( val );
 
+    // if no number, conver it to 0
     if ( isNaN( number ) ) {
       number = 0;
     }
@@ -47,6 +49,7 @@ export default function PropertyNumber (
             </FormLabel>
           </td>
           <td>
+
             <FormNumberInput
               mode={ mode }
               value={ value }
@@ -59,6 +62,7 @@ export default function PropertyNumber (
               attributeFormData={ attributeFormData }
               onChange={ event => update( event.target.value, event.target.isEnter ) }
             />
+
           </td>
         </tr>
       </tbody>

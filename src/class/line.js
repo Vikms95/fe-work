@@ -646,8 +646,7 @@ class Line {
     //state = Line.reCalcVertexsB(state, layerID, lineID).updatedState;
 
     let line = state.getIn( [ 'scene', 'layers', layerID, 'lines', lineID ] );
-
-    if ( !line ) return;
+    if ( !line.vertices ) return;
 
     state = Layer.mergeEqualsVertices( state, layerID, line.vertices.get( 0 ) ).updatedState;
     state = Layer.mergeEqualsVertices( state, layerID, line.vertices.get( 1 ) ).updatedState;

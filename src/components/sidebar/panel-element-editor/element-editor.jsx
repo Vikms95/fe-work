@@ -48,7 +48,12 @@ export default class ElementEditor extends Component {
       attributesFormData: this.initAttrData( this.props.element, this.props.layer, this.props.state ),
       propertiesFormData: this.initPropData( this.props.element, this.props.layer, this.props.state ),
     };
+
+    this.save = this.save.bind( this );
+    this.initAttrData = this.initAttrData.bind( this );
+    this.initPropData = this.initPropData.bind( this );
     this.updateAttribute = this.updateAttribute.bind( this );
+    this.updateProperty = this.updateProperty.bind( this );
   }
 
   shouldComponentUpdate ( nextProps, nextState ) {
@@ -76,6 +81,7 @@ export default class ElementEditor extends Component {
       } );
     }
   }
+
 
   initAttrData ( element, layer, state ) {
 
@@ -154,6 +160,7 @@ export default class ElementEditor extends Component {
 
     return new Map( mapped );
   }
+
 
   updateAttribute ( attributeName, value, isEnter ) {
     let { attributesFormData } = this.state;
@@ -322,9 +329,9 @@ export default class ElementEditor extends Component {
 
   }
 
-  reset () {
-    this.setState( { propertiesFormData: this.initPropData( this.props.element, this.props.layer, this.props.state ) } );
-  }
+  //reset () {
+  //  this.setState( { propertiesFormData: this.initPropData( this.props.element, this.props.layer, this.props.state ) } );
+  //}
 
   save ( { propertiesFormData, attributesFormData, isEnter } ) {
     if ( propertiesFormData ) {
@@ -357,23 +364,23 @@ export default class ElementEditor extends Component {
       this.context.projectActions.next_Drawing_Item();
   }
 
-  copyProperties ( properties ) {
-    this.context.projectActions.copyProperties( properties );
-  }
+  //copyProperties ( properties ) {
+  //  this.context.projectActions.copyProperties( properties );
+  //}
 
-  pasteProperties () {
-    this.context.projectActions.pasteProperties();
-  }
+  //pasteProperties () {
+  //  this.context.projectActions.pasteProperties();
+  //}
 
   render () {
 
+    let mode = this.props.state.getIn( [ 'mode' ] );
     let {
-      state: { propertiesFormData, attributesFormData },
-      context: { projectActions, linesActions, catalog, translator },
       props: { state: appState, element },
+      context: { projectActions, catalog },
+      state: { propertiesFormData, attributesFormData },
     } = this;
 
-    let mode = this.props.state.getIn( [ 'mode' ] );
 
     const showAndHideAcabado = () => {
       if ( this.state.isSelectAcabado ) {
@@ -385,7 +392,7 @@ export default class ElementEditor extends Component {
 
     return (
       <div style={ { marginTop: '2em' } }>
-        {/* Imagen con nombre y descripcion */ }
+        {/* Imagen con nombre y descripcion, esto aparece siempre por defecto */ }
         {/* TODO: Hacerlo dinamico */ }
         <div style={ { display: 'flex', flexDirection: 'column', alignContent: 'center', alignItems: 'center', marginBottom: '45px' } }>
           <img style={ { height: '80px', width: '80px', paddingTop: '10px' } } src={ element.image } />
@@ -413,44 +420,51 @@ export default class ElementEditor extends Component {
           unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
         />
 
-        {
-          propertiesFormData.entrySeq()
-            .map( ( [ propertyName, data ] ) => {
-              if ( !propertyName.includes( 'texture' ) ) {
+        { propertiesFormData.entrySeq()
+          .map( ( [ propertyName, data ] ) => {
 
-                let currentValue = data.get( 'currentValue' ), configs = data.get( 'configs' );
-                let label = this.state.propertiesFormData.getIn( [ propertyName, 'configs' ] ).label;
+            // For a line, this would be applied to height and thickness
+            if ( propertyName.includes( 'texture' ) === false ) {
 
-                if ( configs.type === 'length-measure' ) {
-                  return <PropertyLengthMeasure
+              const configs = data.get( 'configs' );
+              const currentValue = data.get( 'currentValue' );
+              const label = propertiesFormData.getIn( [ propertyName, 'configs' ] ).label;
+
+              // For a line, this still implied height and thickness
+              if ( configs.type === 'length-measure' ) {
+
+                return (
+                  <PropertyLengthMeasure
                     mode={ mode }
                     key={ propertyName }
                     stateRedux={ appState }
+                    state={ propertiesFormData }
                     attributeName={ propertyName }
                     projectActions={ projectActions }
-                    state={ this.state.propertiesFormData }
                     unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
                     configs={ { label: label, min: 0, max: Infinity, precision: 2 } }
-                    value={ this.state.propertiesFormData.getIn( [ propertyName, "currentValue" ] ) }
+                    value={ propertiesFormData.getIn( [ propertyName, "currentValue" ] ) }
                     onUpdate={ ( value, isEnter ) => this.updateProperty( propertyName, value, isEnter ) }
-                  />;
-                } else {
-                  let { Editor } = catalog.getPropertyType( configs.type );
+                  /> );
 
-                  return <Editor
-                    configs={ configs }
-                    key={ propertyName }
-                    value={ currentValue }
-                    stateRedux={ appState }
-                    sourceElement={ element }
-                    internalState={ this.state }
-                    propertyName={ propertyName }
-                    unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
-                    onUpdate={ value => this.updateProperty( propertyName, value ) }
-                  />;
-                }
+              } else {
+                let { Editor } = catalog.getPropertyType( configs.type );
+
+                return <Editor
+                  configs={ configs }
+                  key={ propertyName }
+                  value={ currentValue }
+                  stateRedux={ appState }
+                  sourceElement={ element }
+                  internalState={ this.state }
+                  propertyName={ propertyName }
+                  unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
+                  onUpdate={ value => this.updateProperty( propertyName, value ) }
+                />;
+
               }
-            } )
+            }
+          } )
         }
 
         <AttributesEditor
@@ -464,6 +478,8 @@ export default class ElementEditor extends Component {
           unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
         />
 
+        {/** INPUTS DE ACABADO Y OPCIONES**/ }
+
         <div style={ { marginTop: '6px' } }>
           <div>
             <div
@@ -476,30 +492,35 @@ export default class ElementEditor extends Component {
               } }>Acabado</p>
               <img style={ { height: '0.70em', marginLeft: '1.8em', marginTop: '1px' } } src={ flecha } />
             </div>
-            <div id={ 'panelAcabado' } style={ this.state.isSelectAcabado ? { display: 'block', width: '100%', height: '100%', paddingBottom: '10px' } : { /*width: '100%', height: '100%',*/ display: 'none' } }>
-              {
-                propertiesFormData.entrySeq()
-                  .map( ( [ propertyName, data ] ) => {
 
-                    if ( propertyName.includes( 'texture' ) ) {
-                      let currentValue = data.get( 'currentValue' ), configs = data.get( 'configs' );
+            <div id={ 'panelAcabado' }
+              style={ ( this.state.isSelectAcabado )
+                ? { display: 'block', width: '100%', height: '100%', paddingBottom: '10px' }
+                : { /*width: '100%', height: '100%',*/ display: 'none' } }>
 
-                      let { Editor } = catalog.getPropertyType( configs.type );
+              { propertiesFormData.entrySeq()
+                .map( ( [ propertyName, data ] ) => {
 
-                      return <Editor
-                        state={ appState }
-                        configs={ configs }
-                        key={ propertyName }
-                        value={ currentValue }
-                        sourceElement={ element }
-                        internalState={ this.state }
-                        propertyName={ propertyName }
-                        onUpdate={ value => this.updateProperty( propertyName, value ) }
-                      />;
-                    }
-                  } )
+                  if ( propertyName.includes( 'texture' ) ) {
+                    let currentValue = data.get( 'currentValue' ), configs = data.get( 'configs' );
+
+                    let { Editor } = catalog.getPropertyType( configs.type );
+
+                    return <Editor
+                      state={ appState }
+                      configs={ configs }
+                      key={ propertyName }
+                      value={ currentValue }
+                      sourceElement={ element }
+                      internalState={ this.state }
+                      propertyName={ propertyName }
+                      onUpdate={ value => this.updateProperty( propertyName, value ) }
+                    />;
+                  }
+                } )
               }
             </div>
+
             <div style={ { display: 'flex', justifyItems: 'center', height: '25px', width: '5.5em', cursor: 'pointer' } }>
               <p style={ {
                 margin: '0',

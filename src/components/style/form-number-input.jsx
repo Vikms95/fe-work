@@ -36,16 +36,20 @@ export default class FormNumberInput extends Component {
       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
     };
     this.resetAngleInput = this.resetAngleInput.bind( this );
+    this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
+
   }
 
   resetAngleInput () {
     this.setState( { showedValue: this.props.value } );
   }
 
+  isLengthInputWhileDrawing () {
+    return this.props.attributeName === 'lineLength' && this.props.mode === MODE_DRAWING_LINE;
+  }
+
   componentDidMount () {
-    if (
-      ( this.props.attributeName === 'lineLength' ) &&
-      ( this.props.mode === MODE_DRAWING_LINE ) ) {
+    if ( this.isLengthInputWhileDrawing() ) {
       this.setState( { focus: true } );
       this.state.inputElement.focus();
       this.state.inputElement.select();
@@ -57,6 +61,10 @@ export default class FormNumberInput extends Component {
         document.addEventListener( 'mousemove', this.resetAngleInput );
       }
     }
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener( 'mousemove', this.resetAngleInput );
   }
 
   componentDidUpdate () {
@@ -79,9 +87,6 @@ export default class FormNumberInput extends Component {
     }
   }
 
-  componentWillUnmount () {
-    document.removeEventListener( 'mousemove', this.resetAngleInput );
-  }
 
   render () {
     let {
@@ -90,9 +95,9 @@ export default class FormNumberInput extends Component {
       max,
       style,
       onValid,
-      precision,
       onChange,
       onInvalid,
+      precision,
       stateRedux,
       placeholder,
       attributeName,

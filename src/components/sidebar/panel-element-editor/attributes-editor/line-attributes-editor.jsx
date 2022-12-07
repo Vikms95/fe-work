@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { FormNumberInput, FormTextInput } from '../../../style/export';
 import { PropertyLengthMeasure, PropertyNumber } from '../../../../catalog/properties/export';
 
 const tableStyle = { width: '100%' };
@@ -20,31 +19,35 @@ export default function LineAttributesEditor (
     ...rest
   }, { translator } ) {
 
-  let name = attributeFormData.has( 'name' ) ? attributeFormData.get( 'name' ) : element.name;
-  let vertexOne = attributeFormData.has( 'vertexOne' ) ? attributeFormData.get( 'vertexOne' ) : null;
-  let vertexTwo = attributeFormData.has( 'vertexTwo' ) ? attributeFormData.get( 'vertexTwo' ) : null;
+  //let name = attributeFormData.has( 'name' ) ? attributeFormData.get( 'name' ) : element.name;
+  //let vertexOne = attributeFormData.has( 'vertexOne' ) ? attributeFormData.get( 'vertexOne' ) : null;
+  //let vertexTwo = attributeFormData.has( 'vertexTwo' ) ? attributeFormData.get( 'vertexTwo' ) : null;
   let lineLength = attributeFormData.has( 'lineLength' ) ? attributeFormData.get( 'lineLength' ) : null;
   let lineAngle = attributeFormData.has( 'lineAngle' ) ? attributeFormData.get( 'lineAngle' ) : null;
+  const isLengthAttribute = () => position === 1;
+  const isAngleAttribute = () => position === 2;
 
-  if ( position === 1 ) {
+  // On element editor, line length was given position 1
+  // and angle was given position 2
+  if ( isLengthAttribute() ) {
+
     return (
-      <div>
-        <PropertyLengthMeasure
-          mode={ mode }
-          unit={ unit }
-          stateRedux={ state }
-          value={ lineLength }
-          sourceElement={ element }
-          attributeName={ 'lineLength' }
-          projectActions={ projectActions }
-          attributeFormData={ attributeFormData }
-          configs={ { label: 'Ancho', min: 0, max: Infinity, precision: 2 } }
-          onUpdate={ ( mapped, isEnter ) => onUpdate( 'lineLength', mapped, isEnter ) }
-        />
-      </div>
+      <PropertyLengthMeasure
+        mode={ mode }
+        unit={ unit }
+        stateRedux={ state }
+        value={ lineLength }
+        sourceElement={ element }
+        attributeName={ 'lineLength' }
+        projectActions={ projectActions }
+        attributeFormData={ attributeFormData }
+        configs={ { label: 'Ancho', min: 0, max: Infinity, precision: 2 } }
+        onUpdate={ ( mapped, isEnter ) => onUpdate( 'lineLength', mapped, isEnter ) }
+      />
     );
-  } else if ( position === 2 ) {
-    return <div >
+  } else if ( isAngleAttribute() ) {
+
+    return (
       <PropertyNumber
         mode={ mode }
         state={ state }
@@ -56,10 +59,10 @@ export default function LineAttributesEditor (
         onUpdate={ ( value, isEnter ) => onUpdate( 'lineAngle', value, isEnter ) }
         { ...rest }
       />
-    </div >;
-  } else {
-    return <div></div>;
+    );
   }
+
+  return <div></div>;
 
 
 }

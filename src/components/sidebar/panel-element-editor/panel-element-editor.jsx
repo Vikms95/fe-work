@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes, { element } from 'prop-types';
-import { Seq, fromJS } from 'immutable';
+import { Seq } from 'immutable';
 import ElementEditor from './element-editor';
 import {
   MODE_IDLE, MODE_2D_ZOOM_IN, MODE_2D_ZOOM_OUT, MODE_2D_PAN, MODE_3D_VIEW, MODE_3D_FIRST_PERSON,
@@ -19,7 +19,6 @@ const validModesToShowPanel =
     MODE_ROTATING_ITEM, MODE_UPLOADING_IMAGE, MODE_FITTING_IMAGE
   ];
 
-// HERE WE ARE AT THE SCENARIO WHERE THE SELECTED ITEMS HAVE THE SAME PROTOTYPE
 export default function PanelElementEditor ( { state }, { projectActions, translator } ) {
   let { scene, mode } = state;
   if ( validModesToShowPanel.includes( mode ) === false ) return null;
@@ -32,12 +31,11 @@ export default function PanelElementEditor ( { state }, { projectActions, transl
     );
   };
 
-  const lastElementSelectedID = fromJS( state.getIn( [ 'scene', 'selectedElementsHistory' ] ) ).first();
-
   const layerRenderer = layer => Seq()
     // make an array out of all the elements
     .concat( layer.lines, layer.holes, layer.areas, layer.items )
     // only pass in the ones with the selected element in it
+    // HERE WE ARE AT THE SCENARIO WHERE THE SELECTED ITEMS HAVE THE SAME PROTOTYPE
     .filter( element => element.selected )
     .map( element => componentRenderer( element, layer ) )
     .valueSeq();
@@ -53,13 +51,6 @@ export default function PanelElementEditor ( { state }, { projectActions, transl
   //let i = 0;
 
   return <div>{ scene.layers.valueSeq().map( layerRenderer ) }</div>;
-  /*<div>
-    {
-      elementsSelected.map((e) => {
-        return componentRenderer(e, scene.layers.valueSeq())
-      })
-    }
-  </div>*/
 }
 
 PanelElementEditor.propTypes = {
