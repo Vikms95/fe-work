@@ -16,7 +16,7 @@ import {
 } from '../../../constants';
 
 import { PropertyLengthMeasure, PropertyNumber } from '../../../catalog/properties/export';
-import { isMultiplePrototypeSelection, isMultipleSelection } from '../../../selectors/selectors';
+import { isMultiplePrototypeSelection } from '../../../selectors/selectors';
 
 const PRECISION = 2;
 
@@ -56,10 +56,13 @@ export default class ElementEditor extends Component {
   }
 
   shouldComponentUpdate ( nextProps, nextState ) {
-    return this.state.attributesFormData.hashCode() !== nextState.attributesFormData.hashCode() ||
-      this.state.propertiesFormData.hashCode() !== nextState.propertiesFormData.hashCode() ||
+    return (
       this.state.isSelectAcabado !== nextState.isSelectAcabado ||
-      this.props.state.clipboardProperties.hashCode() !== nextProps.state.clipboardProperties.hashCode();
+      this.props.state.isElementSelected !== nextProps.state.isElementSelected ||
+      this.state.attributesFormData.hashCode() !== nextState.attributesFormData.hashCode() ||
+      this.state.propertiesFormData.hashCode() !== nextState.propertiesFormData.hashCode() ||
+      this.props.state.clipboardProperties.hashCode() !== nextProps.state.clipboardProperties.hashCode()
+    );
   }
 
   componentWillReceiveProps ( { element, layer, state } ) {
@@ -384,7 +387,9 @@ export default class ElementEditor extends Component {
       }
     };
 
+    console.count( isMultiplePrototypeSelection( appState ) );
     if ( isMultiplePrototypeSelection( appState ) ) return null;
+
     return (
       <div style={ { marginTop: '2em' } }>
         {/* Imagen con nombre y descripcion */ }

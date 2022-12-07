@@ -9,7 +9,6 @@ import {
   MODE_DRAGGING_VERTEX, MODE_DRAGGING_ITEM, MODE_DRAGGING_HOLE, MODE_FITTING_IMAGE, MODE_UPLOADING_IMAGE,
   MODE_ROTATING_ITEM
 } from '../../../constants';
-import { isMultiplePrototypeSelection } from '../../../selectors/selectors';
 
 const validModesToShowPanel =
   [
@@ -24,7 +23,7 @@ export default function PanelElementEditor ( { state }, { projectActions, transl
   let { scene, mode } = state;
 
   if ( validModesToShowPanel.includes( mode ) === false ) return null;
-
+  console.log( "passed the valid modes" );
   const componentRenderer = ( element, layer ) => {
     return <div key={ element.id }>
       <ElementEditor element={ element } layer={ layer } state={ state } />
@@ -32,7 +31,6 @@ export default function PanelElementEditor ( { state }, { projectActions, transl
   };
 
   const lastElementSelectedID = fromJS( state.getIn( [ 'scene', 'selectedElementsHistory' ] ) ).first();
-  console.log( isMultiplePrototypeSelection( state ) );
 
   const layerRenderer = layer => Seq()
     .concat( layer.lines, layer.holes, layer.areas, layer.items )
