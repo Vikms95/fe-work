@@ -7,14 +7,14 @@ import HoleAttributesEditor from './hole-attributes-editor';
 
 export default function AttributesEditor (
   {
-    element,
-    onUpdate,
-    onValid,
-    attributeFormData,
-    state,
-    position,
-    mode,
     unit,
+    mode,
+    state,
+    element,
+    onValid,
+    position,
+    onUpdate,
+    attributeFormData,
     ...rest
   } ) {
 
@@ -45,8 +45,8 @@ export default function AttributesEditor (
         element={ element }
         onUpdate={ onUpdate }
         onValid={ onValid }
-        attributeFormData={ attributeFormData }
         state={ state }
+        attributeFormData={ attributeFormData }
         { ...rest }
       />;
     case 'areas':

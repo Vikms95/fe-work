@@ -7,11 +7,11 @@ import PanelElementEditor from './panel-element-editor/panel-element-editor';
 //import PanelGuides from './panel-guides';
 //import PanelGroups from './panel-groups';
 //import PanelLayerElements from './panel-layer-elements';
-import * as SharedStyle from '../../shared-style';
 //import If from '../../utils/react-if';
-
+import * as SharedStyle from '../../shared-style';
 import close from './../../assets/generalItems/deleteCross.png';
-import { getIsElementSelected } from '../../selectors/selectors';
+import { getIsElementSelected, isMultiplePrototypeSelection } from '../../selectors/selectors';
+
 
 const STYLE = {
   overflowY: 'auto',
@@ -122,6 +122,8 @@ function Sidebar ( { state, width, height, sidebarComponents, projectActions } )
     projectActions.unselectAll();
     document.getElementById( 'sideBar' ).style.display = 'none';
   };
+
+  if ( isMultiplePrototypeSelection( state ) ) return null;
 
   return (
     <div id='sideBar'

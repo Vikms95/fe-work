@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes, { element } from 'prop-types';
-import Panel from '../panel';
 import { Seq, fromJS } from 'immutable';
 import ElementEditor from './element-editor';
 import {
@@ -9,6 +8,7 @@ import {
   MODE_DRAGGING_VERTEX, MODE_DRAGGING_ITEM, MODE_DRAGGING_HOLE, MODE_FITTING_IMAGE, MODE_UPLOADING_IMAGE,
   MODE_ROTATING_ITEM
 } from '../../../constants';
+
 
 const validModesToShowPanel =
   [
@@ -19,22 +19,26 @@ const validModesToShowPanel =
     MODE_ROTATING_ITEM, MODE_UPLOADING_IMAGE, MODE_FITTING_IMAGE
   ];
 
+// HERE WE ARE AT THE SCENARIO WHERE THE SELECTED ITEMS HAVE THE SAME PROTOTYPE
 export default function PanelElementEditor ( { state }, { projectActions, translator } ) {
   let { scene, mode } = state;
-
   if ( validModesToShowPanel.includes( mode ) === false ) return null;
-  console.log( "passed the valid modes" );
+
   const componentRenderer = ( element, layer ) => {
-    return <div key={ element.id }>
-      <ElementEditor element={ element } layer={ layer } state={ state } />
-    </div>;
+    return (
+      <div key={ element.id }>
+        <ElementEditor element={ element } layer={ layer } state={ state } />
+      </div>
+    );
   };
 
   const lastElementSelectedID = fromJS( state.getIn( [ 'scene', 'selectedElementsHistory' ] ) ).first();
 
   const layerRenderer = layer => Seq()
+    // make an array out of all the elements
     .concat( layer.lines, layer.holes, layer.areas, layer.items )
-    .filter( element => element.id === lastElementSelectedID )
+    // only pass in the ones with the selected element in it
+    .filter( element => element.selected )
     .map( element => componentRenderer( element, layer ) )
     .valueSeq();
 
@@ -48,17 +52,14 @@ export default function PanelElementEditor ( { state }, { projectActions, transl
   //const elementsSelected = layerRenderer2( scene.layers );
   //let i = 0;
 
-  return (
-    <div>{ scene.layers.valueSeq().map( layerRenderer ) }</div>
-    /*<div>
-      {
-        elementsSelected.map((e) => {
-          return componentRenderer(e, scene.layers.valueSeq())
-        })
-      }
-    </div>*/
-  );
-
+  return <div>{ scene.layers.valueSeq().map( layerRenderer ) }</div>;
+  /*<div>
+    {
+      elementsSelected.map((e) => {
+        return componentRenderer(e, scene.layers.valueSeq())
+      })
+    }
+  </div>*/
 }
 
 PanelElementEditor.propTypes = {

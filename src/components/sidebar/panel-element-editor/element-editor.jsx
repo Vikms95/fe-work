@@ -5,18 +5,15 @@ import AttributesEditor from './attributes-editor/attributes-editor';
 import { GeometryUtils, MathUtils } from '../../../utils/export';
 import * as SharedStyle from '../../../shared-style';
 import convert from 'convert-units';
-import { MdContentCopy, MdContentPaste } from 'react-icons/md';
 
 import flecha from './../../../assets/generalItems/flecha.png';
 import puertas from './../../../assets/construccion/puertas.png';
-import { FormLabel, FormNumberInput, FormSelect } from './../../../components/style/export';
 import { Line } from '../../../class/export';
 import {
   MODE_DRAWING_LINE,
 } from '../../../constants';
 
-import { PropertyLengthMeasure, PropertyNumber } from '../../../catalog/properties/export';
-import { isMultiplePrototypeSelection } from '../../../selectors/selectors';
+import { PropertyLengthMeasure } from '../../../catalog/properties/export';
 
 const PRECISION = 2;
 
@@ -43,14 +40,13 @@ const iconHeadStyle = {
 };
 
 export default class ElementEditor extends Component {
-
   constructor ( props, context ) {
     super( props, context );
 
     this.state = {
+      isSelectAcabado: false,
       attributesFormData: this.initAttrData( this.props.element, this.props.layer, this.props.state ),
       propertiesFormData: this.initPropData( this.props.element, this.props.layer, this.props.state ),
-      isSelectAcabado: false,
     };
     this.updateAttribute = this.updateAttribute.bind( this );
   }
@@ -387,9 +383,6 @@ export default class ElementEditor extends Component {
       }
     };
 
-    console.count( isMultiplePrototypeSelection( appState ) );
-    if ( isMultiplePrototypeSelection( appState ) ) return null;
-
     return (
       <div style={ { marginTop: '2em' } }>
         {/* Imagen con nombre y descripcion */ }
@@ -397,12 +390,17 @@ export default class ElementEditor extends Component {
         <div style={ { display: 'flex', flexDirection: 'column', alignContent: 'center', alignItems: 'center', marginBottom: '45px' } }>
           <img style={ { height: '80px', width: '80px', paddingTop: '10px' } } src={ element.image } />
           <p style={ { margin: '0', padding: '10px 0', fontSize: '0.8em', textAlign: 'center', color: SharedStyle.PRIMARY_COLOR.master, /*fontWeight: 'bold'*/ } }>
+
             { element.name }
+
           </p>
           <p style={ { margin: '0', fontSize: '0.7em', textAlign: 'center' } }>
+
             { element.description }
+
           </p>
         </div>
+
         {/* OTROS ATRIBUTOS */ }
         <AttributesEditor
           mode={ mode }
@@ -415,22 +413,14 @@ export default class ElementEditor extends Component {
           unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
         />
 
-        {/* <div style={attrPorpSeparatorStyle}>
-          <div style={headActionStyle}>
-            <div title={translator.t('Copy')} style={iconHeadStyle} onClick={e => this.copyProperties(element.properties)}><MdContentCopy /></div>
-            {
-              appState.get('clipboardProperties') && appState.get('clipboardProperties').size ?
-                <div title={translator.t('Paste')} style={iconHeadStyle} onClick={e => this.pasteProperties()}><MdContentPaste /></div> : null
-            }
-          </div>
-        </div> */}
         {
           propertiesFormData.entrySeq()
             .map( ( [ propertyName, data ] ) => {
-
               if ( !propertyName.includes( 'texture' ) ) {
+
                 let currentValue = data.get( 'currentValue' ), configs = data.get( 'configs' );
                 let label = this.state.propertiesFormData.getIn( [ propertyName, 'configs' ] ).label;
+
                 if ( configs.type === 'length-measure' ) {
                   return <PropertyLengthMeasure
                     mode={ mode }
@@ -446,6 +436,7 @@ export default class ElementEditor extends Component {
                   />;
                 } else {
                   let { Editor } = catalog.getPropertyType( configs.type );
+
                   return <Editor
                     configs={ configs }
                     key={ propertyName }
@@ -482,7 +473,6 @@ export default class ElementEditor extends Component {
                 margin: '0',
                 fontSize: '0.75em',
                 color: SharedStyle.PRIMARY_COLOR.master,
-                /* fontWeight: 'bold',*/
               } }>Acabado</p>
               <img style={ { height: '0.70em', marginLeft: '1.8em', marginTop: '1px' } } src={ flecha } />
             </div>
@@ -515,7 +505,6 @@ export default class ElementEditor extends Component {
                 margin: '0',
                 fontSize: '0.75em',
                 color: SharedStyle.PRIMARY_COLOR.master,
-                /*fontWeight: 'bold',*/
               } }>Opciones</p>
               <img style={ { height: '0.70em', marginLeft: '1.6em', marginTop: '1px' } } src={ flecha } />
             </div>
