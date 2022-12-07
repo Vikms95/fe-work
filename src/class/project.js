@@ -20,7 +20,7 @@ import {
 import layer from './layer';
 import { Prefs } from '../proxies/export';
 import { projectActions } from '../actions/export';
-import { getSelectedElements } from '../selectors/selectors';
+import { getSelectedElementsToJS } from '../selectors/selectors';
 
 class Project {
 
@@ -387,7 +387,7 @@ class Project {
   }
 
   static setIsElementSelected ( state ) {
-    const selectedElements = getSelectedElements( state );
+    const selectedElements = getSelectedElementsToJS( state );
     const isElementSelected =
       selectedElements.some( key => typeof key[ 1 ][ 0 ] !== 'undefined' );
 

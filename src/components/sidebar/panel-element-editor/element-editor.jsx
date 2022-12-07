@@ -94,6 +94,7 @@ export default class ElementEditor extends Component {
         return new Map( element );
       }
       case 'lines': {
+
         let v2First = element.v2First;
         let v_a = layer.vertices.get( element.vertices.get( !v2First ? 0 : 1 ) );
         let v_b = layer.vertices.get( element.vertices.get( 1 ) );
@@ -109,6 +110,7 @@ export default class ElementEditor extends Component {
           isEndLine: false
         } );
       }
+
       case 'holes': {
         let line = layer.lines.get( element.line );
         let { x: x0, y: y0 } = layer.vertices.get( line.vertices.get( 0 ) );

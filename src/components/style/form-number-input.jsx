@@ -3,8 +3,17 @@ import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
 import { KEYBOARD_BUTTON_CODE, MODE_DRAWING_LINE } from '../../constants';
 import { convertMeasureToOriginal } from './../../utils/changeUnit';
-import { getCacheAngulo, getLayerID, getLineVerticesID, getVerticeCoords } from '../../selectors/selectors';
 import { Line } from '../../class/export';
+import {
+  getLines,
+  getLayerID,
+  getCacheAngulo,
+  getVerticeCoords,
+  getLineVerticesID,
+  getSelectedElementsToJS,
+  getElementVertices,
+  getElementAttributes
+} from '../../selectors/selectors';
 
 
 const STYLE_INPUT = {
@@ -37,7 +46,6 @@ export default class FormNumberInput extends Component {
     };
     this.resetAngleInput = this.resetAngleInput.bind( this );
     this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
-
   }
 
   resetAngleInput () {
@@ -49,6 +57,37 @@ export default class FormNumberInput extends Component {
   }
 
   componentDidMount () {
+
+    if ( this.props.sourceElement ) {
+
+      const selectedElements = getSelectedElementsToJS( this.props.stateRedux );
+      const layerID = getLayerID( this.props.stateRedux );
+      const lines = getLines( this.props.stateRedux );
+
+      // Element is the id // Lines the whole lines state slice
+      selectedElements
+        .filter( element => element[ 0 ] === this.props.sourceElement.get( 'prototype' ) )
+        .forEach( element => {
+          const elementID = element[ 1 ][ 0 ];
+          const line = lines.get( elementID );
+          const layer = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
+          // Get the layer
+          const { v_a, v_b } = getElementVertices( line, layer );
+          // Only retrieve what you need
+          const { distance, _angleLine } = getElementAttributes( line, layer, v_a, v_b );
+          console.log( 'test distance ', distance );
+          console.log( 'test angle ', _angleLine );
+          //console.log( 'test lines array', lines );
+          // Get its #property or att# (depending on the attribute name)
+          // If attributeName === property
+
+          // Else if attributeName === attribute
+          // Get its vertices with the selector method
+          // If the present value is different from the past value set SHOWED VALUE to 0
+          // Else, set SHOWED VALUE to the value that all selected items share
+        } );
+    }
+
     if ( this.isLengthInputWhileDrawing() ) {
       this.setState( { focus: true } );
       this.state.inputElement.focus();

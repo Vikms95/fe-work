@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes, { element } from 'prop-types';
-import { Seq } from 'immutable';
+import { Seq, fromJS } from 'immutable';
 import ElementEditor from './element-editor';
 import {
   MODE_IDLE, MODE_2D_ZOOM_IN, MODE_2D_ZOOM_OUT, MODE_2D_PAN, MODE_3D_VIEW, MODE_3D_FIRST_PERSON,
@@ -24,26 +24,42 @@ export default function PanelElementEditor ( { state }, { projectActions, transl
   if ( validModesToShowPanel.includes( mode ) === false ) return null;
 
   const componentRenderer = ( element, layer ) => {
-    return <ElementEditor
-      key={ element.id }
-      element={ element }
-      layer={ layer }
-      state={ state }
-    />;
+    return <div key={ element.id }>
+      <ElementEditor element={ element } layer={ layer } state={ state } />
+    </div>;
   };
 
-  const layerRenderer = layer => (
-    Seq()
-      .concat( layer.lines, layer.holes, layer.areas, layer.items )
-      // HERE WE ARE AT THE SCENARIO WHERE THE SELECTED ITEMS HAVE THE SAME PROTOTYPE
-      .filter( element => element.selected )
-      .map( element => componentRenderer( element, layer ) )
-      .valueSeq()
+  const lastElementSelectedID = fromJS( state.getIn( [ 'scene', 'selectedElementsHistory' ] ) ).first();
+
+  const layerRenderer = layer => Seq()
+    .concat( layer.lines, layer.holes, layer.areas, layer.items )
+    .filter( element => element.id === lastElementSelectedID )
+    .map( element => componentRenderer( element, layer ) )
+    .valueSeq();
+
+  //let selectedLayer = state.getIn( [ 'scene', 'selectedLayer' ] );
+  //let layerRenderer2 = ( layer ) => {
+  //  const elements = layer.getIn( [ selectedLayer, 'lines' ] ).concat( layer.getIn( [ selectedLayer, 'holes' ] ) ).concat( layer.getIn( [ selectedLayer, 'areas' ] ) ).concat( layer.getIn( [ selectedLayer, 'items' ] ) );
+  //  const elementsFilter = elements.filter( element => element.selected );
+  //  return elementsFilter;
+  //};
+
+  //const elementsSelected = layerRenderer2( scene.layers );
+  //let i = 0;
+
+  return (
+    <div>{ scene.layers.valueSeq().map( layerRenderer ) }</div>
+    /*<div>
+      {
+        elementsSelected.map((e) => {
+          return componentRenderer(e, scene.layers.valueSeq())
+        })
+      }
+    </div>*/
   );
 
-  return <div>{ scene.layers.valueSeq().map( layerRenderer ) }</div>;
-
 }
+
 PanelElementEditor.propTypes = {
   state: PropTypes.object.isRequired,
 };
