@@ -24,35 +24,26 @@ export default function PanelElementEditor ( { state }, { projectActions, transl
   if ( validModesToShowPanel.includes( mode ) === false ) return null;
 
   const componentRenderer = ( element, layer ) => {
-    return (
-      <div key={ element.id }>
-        <ElementEditor element={ element } layer={ layer } state={ state } />
-      </div>
-    );
+    return <ElementEditor
+      key={ element.id }
+      element={ element }
+      layer={ layer }
+      state={ state }
+    />;
   };
 
-  const layerRenderer = layer => Seq()
-    // make an array out of all the elements
-    .concat( layer.lines, layer.holes, layer.areas, layer.items )
-    // only pass in the ones with the selected element in it
-    // HERE WE ARE AT THE SCENARIO WHERE THE SELECTED ITEMS HAVE THE SAME PROTOTYPE
-    .filter( element => element.selected )
-    .map( element => componentRenderer( element, layer ) )
-    .valueSeq();
-
-  //let selectedLayer = state.getIn( [ 'scene', 'selectedLayer' ] );
-  //let layerRenderer2 = ( layer ) => {
-  //  const elements = layer.getIn( [ selectedLayer, 'lines' ] ).concat( layer.getIn( [ selectedLayer, 'holes' ] ) ).concat( layer.getIn( [ selectedLayer, 'areas' ] ) ).concat( layer.getIn( [ selectedLayer, 'items' ] ) );
-  //  const elementsFilter = elements.filter( element => element.selected );
-  //  return elementsFilter;
-  //};
-
-  //const elementsSelected = layerRenderer2( scene.layers );
-  //let i = 0;
+  const layerRenderer = layer => (
+    Seq()
+      .concat( layer.lines, layer.holes, layer.areas, layer.items )
+      // HERE WE ARE AT THE SCENARIO WHERE THE SELECTED ITEMS HAVE THE SAME PROTOTYPE
+      .filter( element => element.selected )
+      .map( element => componentRenderer( element, layer ) )
+      .valueSeq()
+  );
 
   return <div>{ scene.layers.valueSeq().map( layerRenderer ) }</div>;
-}
 
+}
 PanelElementEditor.propTypes = {
   state: PropTypes.object.isRequired,
 };

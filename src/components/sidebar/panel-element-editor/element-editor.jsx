@@ -85,7 +85,9 @@ export default class ElementEditor extends Component {
 
   initAttrData ( element, layer, state ) {
 
-    element = typeof element.misc === 'object' ? element.set( 'misc', new Map( element.misc ) ) : element;
+    element = ( typeof element.misc === 'object' )
+      ? element.set( 'misc', new Map( element.misc ) )
+      : element;
 
     switch ( element.prototype ) {
       case 'items': {
@@ -333,12 +335,13 @@ export default class ElementEditor extends Component {
   //  this.setState( { propertiesFormData: this.initPropData( this.props.element, this.props.layer, this.props.state ) } );
   //}
 
+
+  // Here the values taken from the form data are saved in state
   save ( { propertiesFormData, attributesFormData, isEnter } ) {
     if ( propertiesFormData ) {
       let properties = propertiesFormData.map( data => {
         return data.get( 'currentValue' );
       } );
-      console.log( 'entro' );
       this.context.projectActions.setProperties( properties );
     }
 
@@ -349,7 +352,6 @@ export default class ElementEditor extends Component {
           break;
         }
         case 'lines': {
-          //attributesFormData = attributesFormData.set('isEndLine', this.props.state.mode == MODE_DRAWING_LINE && isEnter);
           this.context.projectActions.setLinesAttributes( attributesFormData );
           break;
         }
