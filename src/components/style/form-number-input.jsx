@@ -14,7 +14,8 @@ import {
   getSelectedElementsToJS,
   getElementVertices,
   getElementAttributes,
-  isMultipleSelection
+  isMultipleSelection,
+  getHoles
 } from '../../selectors/selectors';
 import { toFixedFloat } from '../../utils/math';
 
@@ -51,8 +52,10 @@ export default class FormNumberInput extends Component {
     this.isProperty = this.isProperty.bind( this );
     this.getProperty = this.getProperty.bind( this );
     this.getAttribute = this.getAttribute.bind( this );
-    this.areAllValuesEqual = this.areAllValuesEqual.bind( this );
     this.resetAngleInput = this.resetAngleInput.bind( this );
+    this.areAllValuesEqual = this.areArrayValuesEqual.bind( this );
+    this.getSelectedLinesValues = this.getSelectedLinesValues.bind( this );
+    this.getSelectedHolesValues = this.getSelectedHolesValues.bind( this );
     this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
     this.isElementsOfSamePrototype = this.isElementsOfSamePrototype.bind( this );
     this.isNotMultipleSelectionOrInvalidElement = this.isNotMultipleSelectionOrInvalidElement.bind( this );
@@ -106,8 +109,38 @@ export default class FormNumberInput extends Component {
     return angulo.angle;
   }
 
-  areAllValuesEqual ( values ) {
+  areArrayValuesEqual ( values ) {
     return !values.every( el => el === values[ 0 ] );
+  }
+
+  getSelectedLinesValues ( elementsID, valuesArray ) {
+    const lines = getLines( this.props.stateRedux );
+
+    if ( this.isProperty() ) {
+      for ( const elementID of elementsID ) {
+        const property = this.getProperty( elementID, lines );
+        valuesArray.push( property );
+      }
+
+    } else if ( this.isAttribute() ) {
+      for ( const elementID of elementsID ) {
+        const attribute = this.getAttribute( elementID, lines );
+        valuesArray.push( attribute );
+      }
+    }
+
+    return valuesArray;
+  }
+
+  getSelectedHolesValues ( elementsID, valuesArray ) {
+    const holes = getHoles( this.props.stateRedux );
+
+    for ( const elementID of elementsID ) {
+      const property = this.getProperty( elementID, holes );
+      valuesArray.push( property );
+    }
+
+    return valuesArray;
   }
 
   componentDidMount () {
@@ -124,31 +157,29 @@ export default class FormNumberInput extends Component {
       }
     }
 
-    // Only on multiselection, add conditonal?
     if ( this.isNotMultipleSelectionOrInvalidElement() ) return;
 
     let values = [];
-    const selectedElements = getSelectedElementsToJS( this.props.stateRedux );
-    const lines = getLines( this.props.stateRedux );
 
+    const selectedElements = getSelectedElementsToJS( this.props.stateRedux );
     const prototypeElementsContainer = selectedElements
       .filter( element => this.isElementsOfSamePrototype( element ) );
-
     const elementsID = prototypeElementsContainer[ 0 ][ 1 ];
 
-    if ( this.isProperty() ) {
-      for ( const elementID of elementsID ) {
-        const property = this.getProperty( elementID, lines );
-        values.push( property );
-      }
+    switch ( this.props.sourceElement.get( 'prototype' ) ) {
+      case 'lines':
+        values = this.getSelectedLinesValues( elementsID, values );
+        break;
+      case 'holes':
+        values = this.getSelectedHolesValues( elementsID, values );
 
-    } else if ( this.isAttribute() ) {
-      for ( const elementID of elementsID ) {
-        const attribute = this.getAttribute( elementID, lines );
-        values.push( attribute );
-      }
+        break;
+      case 'areas':
+      // Color?
+      case 'items':
     }
-    if ( this.areAllValuesEqual( values ) ) {
+
+    if ( this.areArrayValuesEqual( values ) ) {
       this.setState( { showedValue: '' } );
     };
   }
