@@ -39,16 +39,19 @@ const STYLE_INPUT = {
 export default class FormNumberInput extends Component {
   constructor ( props, context ) {
     super( props, context );
+
     this.state = {
       focus: false,
       valid: true,
       showedValue: props.value,
       inputElement: null,
     };
+
     this.cursor = {
       x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
     };
+
     this.isAttribute = this.isAttribute.bind( this );
     this.isProperty = this.isProperty.bind( this );
     this.getProperty = this.getProperty.bind( this );
@@ -80,6 +83,14 @@ export default class FormNumberInput extends Component {
     }
   }
 
+  areArrayValuesEqual ( values ) {
+    return !values.every( el => el === values[ 0 ] );
+  }
+
+  isNotMultipleSelectionOrInvalidElement () {
+    return !this.props.sourceElement || !isMultipleSelection( this.props.stateRedux );
+  }
+
   isAttribute () {
     return this.props.attributeName === 'angulo' || this.props.attributeName === 'lineLength';
   }
@@ -88,9 +99,6 @@ export default class FormNumberInput extends Component {
     return this.props.attributeName === 'thickness' || this.props.attributeName === 'height';
   }
 
-  isNotMultipleSelectionOrInvalidElement () {
-    return !this.props.sourceElement || !isMultipleSelection( this.props.stateRedux );
-  }
 
   getProperty ( elementID, elements ) {
     const element = elements.get( elementID );
@@ -109,10 +117,6 @@ export default class FormNumberInput extends Component {
       return toFixedFloat( lineLength, 2 );
     }
     return angulo.angle;
-  }
-
-  areArrayValuesEqual ( values ) {
-    return !values.every( el => el === values[ 0 ] );
   }
 
   getSelectedLinesValues ( elementsID, valuesArray ) {
@@ -158,6 +162,8 @@ export default class FormNumberInput extends Component {
   }
 
   componentDidMount () {
+    console.log( this.state.showedValue );
+
     if ( this.isLengthInputWhileDrawing() ) {
       this.setState( { focus: true } );
       this.state.inputElement.focus();
@@ -198,11 +204,13 @@ export default class FormNumberInput extends Component {
     }
 
     if ( this.areArrayValuesEqual( values ) ) {
-      this.setState( { showedValue: '' } );
+      debugger;
+      this.setState( { showedValue: null } );
     };
   }
 
   componentWillUnmount () {
+    this.setState( { showedValue: this.props.value } );
     document.removeEventListener( 'mousemove', this.resetAngleInput );
   };
 
@@ -221,9 +229,11 @@ export default class FormNumberInput extends Component {
   }
 
   componentWillReceiveProps ( nextProps ) {
-    if ( this.props.value !== nextProps.value ) {
+    // Checking showedValue due to it being set to null when different values during multiselection
+    if ( this.props.value !== nextProps.value || this.state.showedValue === null ) {
       this.setState( { showedValue: nextProps.value } );
     }
+
   }
 
   render () {
