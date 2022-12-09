@@ -84,7 +84,7 @@ export default class FormNumberInput extends Component {
   }
 
   areArrayValuesEqual ( values ) {
-    return !values.every( el => el === values[ 0 ] );
+    return values.every( el => el === values[ 0 ] );
   }
 
   isNotMultipleSelectionOrInvalidElement () {
@@ -203,8 +203,7 @@ export default class FormNumberInput extends Component {
       // Color?
     }
 
-    if ( this.areArrayValuesEqual( values ) ) {
-      debugger;
+    if ( !this.areArrayValuesEqual( values ) ) {
       this.setState( { showedValue: null } );
     };
   }
