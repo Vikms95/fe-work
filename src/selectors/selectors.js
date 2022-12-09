@@ -2,6 +2,12 @@ import { GeometryUtils } from '../utils/export';
 import { Line } from '../class/export';
 
 export const getLayerID = ( state ) => state.getIn( [ 'scene', 'selectedLayer' ] );
+
+export const getLayerValue = ( state ) => {
+  const layerID = getLayerID( state );
+  return state.getIn( [ 'scene', 'layers', layerID ] );
+};
+
 export const getIsElementSelected = ( state ) => state.get( 'isElementSelected' );
 export const getIsGuia2D = ( state ) => state.getIn( [ 'prefs', 'GUIA2D' ] );
 export const getViewer2D = ( state ) => state.get( 'viewer2D' ).toJS();
@@ -20,8 +26,18 @@ export const getCacheAlto = ( state ) => state.getIn( [ 'drawingSupport', 'cache
 export const getCacheAngulo = ( state ) => state.getIn( [ 'drawingSupport', 'cacheAngulo' ] );
 
 export const getLines = ( state ) => {
-  const layer = getLayerID( state );
-  return state.getIn( [ 'scene', 'layers', layer, 'lines' ] );
+  const layerID = getLayerID( state );
+  return state.getIn( [ 'scene', 'layers', layerID, 'lines' ] );
+};
+
+export const getAreas = ( state ) => {
+  const layerID = getLayerID( state );
+  return state.getIn( [ 'scene', 'layers', layerID, 'areas' ] );
+};
+
+export const getHoles = ( state ) => {
+  const layerID = getLayerID( state );
+  return state.getIn( [ 'scene', 'layers', layerID, 'holes' ] );
 };
 
 export const getLineVerticesID = ( line ) => {

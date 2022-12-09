@@ -133,9 +133,8 @@ export default class FormNumberInput extends Component {
       }
       // If all the values from the selected ones are not the same, set SHOWED VALUE to 0
     }
-    console.log( 'test  ', values );
     if ( !values.every( el => el === values[ 0 ] ) ) {
-      this.setState( { showedValue: 0 } );
+      this.setState( { showedValue: '' } );
     };
   }
 
