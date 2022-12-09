@@ -25,26 +25,29 @@ export const getCacheFondo = ( state ) => state.getIn( [ 'drawingSupport', 'cach
 export const getCacheAlto = ( state ) => state.getIn( [ 'drawingSupport', 'cacheAlto' ] );
 export const getCacheAngulo = ( state ) => state.getIn( [ 'drawingSupport', 'cacheAngulo' ] );
 
-export const getLines = ( state ) => {
+export const getSelectedLines = ( state ) => {
   const layerID = getLayerID( state );
-  return state.getIn( [ 'scene', 'layers', layerID, 'lines' ] );
+  const lines = state.getIn( [ 'scene', 'layers', layerID, 'lines' ] );
+  return lines.filter( line => line.get( 'selected' ) );
 };
 
-export const getAreas = ( state ) => {
+export const getSelectedAreas = ( state ) => {
   const layerID = getLayerID( state );
-  return state.getIn( [ 'scene', 'layers', layerID, 'areas' ] );
+  const areas = state.getIn( [ 'scene', 'layers', layerID, 'areas' ] );
+  return areas.filter( area => area.get( 'selected' ) );
 };
 
-export const getHoles = ( state ) => {
+export const getSelectedHoles = ( state ) => {
   const layerID = getLayerID( state );
-  return state.getIn( [ 'scene', 'layers', layerID, 'holes' ] );
+  const holes = state.getIn( [ 'scene', 'layers', layerID, 'holes' ] );
+  return holes.filter( hole => hole.get( 'selected' ) );
 };
 
-export const getItems = ( state ) => {
+export const getSelectedItems = ( state ) => {
   const layerID = getLayerID( state );
-  return state.getIn( [ 'scene', 'layers', layerID, 'items' ] );
+  const items = state.getIn( [ 'scene', 'layers', layerID, 'items' ] );
+  return items.filter( item => item.get( 'selected' ) );
 };
-
 
 export const getLineVerticesID = ( line ) => {
   const vertices = line.get( 'vertices' );

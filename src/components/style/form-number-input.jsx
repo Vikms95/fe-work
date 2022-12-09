@@ -6,7 +6,7 @@ import { convertMeasureToOriginal } from './../../utils/changeUnit';
 import { Line } from '../../class/export';
 
 import {
-  getLines,
+  getSelectedLines,
   getLayerID,
   getCacheAngulo,
   getVerticeCoords,
@@ -15,8 +15,8 @@ import {
   getElementVertices,
   getElementAttributes,
   isMultipleSelection,
-  getHoles,
-  getItems
+  getSelectedHoles,
+  getSelectedItems
 } from '../../selectors/selectors';
 import { toFixedFloat } from '../../utils/math';
 
@@ -100,16 +100,15 @@ export default class FormNumberInput extends Component {
   }
 
 
-  getProperty ( elementID, elements ) {
-    const element = elements.get( elementID );
-    if ( !element ) return;
+  getProperty ( element ) {
     return element.getIn( [ 'properties', this.props.attributeName, 'length' ] );
   }
 
-  getAttribute ( elementID, elements ) {
+  getAttribute ( line ) {
+    if ( !line.vertices ) return;
     const layerID = getLayerID( this.props.stateRedux );
     const layer = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
-    const line = elements.get( elementID );
+
     const { v_a, v_b } = getElementVertices( line, layer );
     const { lineLength, angulo } = getElementAttributes( line, layer, v_a, v_b );
 
@@ -119,18 +118,22 @@ export default class FormNumberInput extends Component {
     return angulo.angle;
   }
 
-  getSelectedLinesValues ( elementsID, valuesArray ) {
-    const lines = getLines( this.props.stateRedux );
+  getSelectedLinesValues ( valuesArray ) {
+    const lines = getSelectedLines( this.props.stateRedux );
 
     if ( this.isProperty() ) {
-      for ( const elementID of elementsID ) {
-        const property = this.getProperty( elementID, lines );
+      for ( const line of lines ) {
+        const lineValue = line[ 1 ];
+
+        const property = this.getProperty( lineValue );
         valuesArray.push( property );
       }
 
     } else if ( this.isAttribute() ) {
-      for ( const elementID of elementsID ) {
-        const attribute = this.getAttribute( elementID, lines );
+      for ( const line of lines ) {
+        const lineValue = line[ 1 ];
+
+        const attribute = this.getAttribute( lineValue );
         valuesArray.push( attribute );
       }
     }
@@ -138,22 +141,26 @@ export default class FormNumberInput extends Component {
     return valuesArray;
   }
 
-  getSelectedHolesValues ( elementsID, valuesArray ) {
-    const holes = getHoles( this.props.stateRedux );
+  getSelectedHolesValues ( valuesArray ) {
+    const holes = getSelectedHoles( this.props.stateRedux );
 
-    for ( const elementID of elementsID ) {
-      const property = this.getProperty( elementID, holes );
+    for ( const hole of holes ) {
+      const holeValue = hole[ 1 ];
+
+      const property = this.getProperty( holeValue );
       valuesArray.push( property );
     }
 
     return valuesArray;
   }
 
-  getSelectedItemsValues ( elementsID, valuesArray ) {
-    const holes = getItems( this.props.stateRedux );
+  getSelectedItemsValues ( valuesArray ) {
+    const items = getSelectedItems( this.props.stateRedux );
 
-    for ( const elementID of elementsID ) {
-      const property = this.getProperty( elementID, holes );
+    for ( const item of items ) {
+      const itemValue = item[ 1 ];
+
+      const property = this.getProperty( itemValue );
       valuesArray.push( property );
     }
 
@@ -162,8 +169,6 @@ export default class FormNumberInput extends Component {
   }
 
   componentDidMount () {
-    console.log( this.state.showedValue );
-
     if ( this.isLengthInputWhileDrawing() ) {
       this.setState( { focus: true } );
       this.state.inputElement.focus();
@@ -181,22 +186,17 @@ export default class FormNumberInput extends Component {
 
     let values = [];
 
-    const selectedElements = getSelectedElementsToJS( this.props.stateRedux );
-    const prototypeElementsContainer = selectedElements
-      .filter( element => this.isElementsOfSamePrototype( element ) );
-    const elementsID = prototypeElementsContainer[ 0 ][ 1 ];
-
     switch ( this.props.sourceElement.get( 'prototype' ) ) {
       case 'lines':
-        values = this.getSelectedLinesValues( elementsID, values );
+        values = this.getSelectedLinesValues( values );
         break;
 
       case 'holes':
-        values = this.getSelectedHolesValues( elementsID, values );
+        values = this.getSelectedHolesValues( values );
         break;
 
       case 'items':
-        values = this.getSelectedItemsValues( elementsID, values );
+        values = this.getSelectedItemsValues( values );
         break;
 
       case 'areas':
