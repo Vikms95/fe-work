@@ -40,6 +40,12 @@ export const getHoles = ( state ) => {
   return state.getIn( [ 'scene', 'layers', layerID, 'holes' ] );
 };
 
+export const getItems = ( state ) => {
+  const layerID = getLayerID( state );
+  return state.getIn( [ 'scene', 'layers', layerID, 'items' ] );
+};
+
+
 export const getLineVerticesID = ( line ) => {
   const vertices = line.get( 'vertices' );
   const vertice1ID = vertices.toJS()[ 0 ];

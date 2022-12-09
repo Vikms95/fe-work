@@ -15,7 +15,8 @@ import {
   getElementVertices,
   getElementAttributes,
   isMultipleSelection,
-  getHoles
+  getHoles,
+  getItems
 } from '../../selectors/selectors';
 import { toFixedFloat } from '../../utils/math';
 
@@ -53,9 +54,10 @@ export default class FormNumberInput extends Component {
     this.getProperty = this.getProperty.bind( this );
     this.getAttribute = this.getAttribute.bind( this );
     this.resetAngleInput = this.resetAngleInput.bind( this );
-    this.areAllValuesEqual = this.areArrayValuesEqual.bind( this );
+    this.areArrayValuesEqual = this.areArrayValuesEqual.bind( this );
     this.getSelectedLinesValues = this.getSelectedLinesValues.bind( this );
     this.getSelectedHolesValues = this.getSelectedHolesValues.bind( this );
+    this.getSelectedItemsValues = this.getSelectedItemsValues.bind( this );
     this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
     this.isElementsOfSamePrototype = this.isElementsOfSamePrototype.bind( this );
     this.isNotMultipleSelectionOrInvalidElement = this.isNotMultipleSelectionOrInvalidElement.bind( this );
@@ -143,6 +145,18 @@ export default class FormNumberInput extends Component {
     return valuesArray;
   }
 
+  getSelectedItemsValues ( elementsID, valuesArray ) {
+    const holes = getItems( this.props.stateRedux );
+
+    for ( const elementID of elementsID ) {
+      const property = this.getProperty( elementID, holes );
+      valuesArray.push( property );
+    }
+
+    return valuesArray;
+
+  }
+
   componentDidMount () {
     if ( this.isLengthInputWhileDrawing() ) {
       this.setState( { focus: true } );
@@ -170,13 +184,18 @@ export default class FormNumberInput extends Component {
       case 'lines':
         values = this.getSelectedLinesValues( elementsID, values );
         break;
+
       case 'holes':
         values = this.getSelectedHolesValues( elementsID, values );
-
         break;
+
+      case 'items':
+        values = this.getSelectedItemsValues( elementsID, values );
+        console.log( 'test', values );
+        break;
+
       case 'areas':
       // Color?
-      case 'items':
     }
 
     if ( this.areArrayValuesEqual( values ) ) {
@@ -294,11 +313,13 @@ export default class FormNumberInput extends Component {
           ? parseFloat( this.state.showedValue )
           : 0;
 
-        const inputAlto = document.querySelector( '.height' ).value;
-        const inputFondo = document.querySelector( '.thickness' ).value;
+        if ( this.props.sourceElement.get( 'prototype' ) === 'lines' ) {
+          const inputAlto = document.querySelector( '.height' ).value;
+          const inputFondo = document.querySelector( '.thickness' ).value;
 
-        this.context.linesActions.cacheAlto( inputAlto );
-        this.context.linesActions.cacheFondo( inputFondo );
+          this.context.linesActions.cacheAlto( inputAlto );
+          this.context.linesActions.cacheFondo( inputFondo );
+        }
 
         onChange( {
           target: {
