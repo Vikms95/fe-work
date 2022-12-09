@@ -32,8 +32,6 @@ export default function PropertyLengthMeasure (
     attributeFormData,
   }, { catalog } ) {
 
-  console.log( sourceElement );
-
   let _unit = unit;
   let length = value.get( 'length' ) || 0;
   let _length = showMeasure( length, _unit ) || value.get( '_length' );
