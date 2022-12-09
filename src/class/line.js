@@ -729,7 +729,7 @@ class Line {
       else
         state = state.merge( {
           mode: MODE_IDLE,
-          drawingSupport: null,
+          drawingSupport: new Map(),
           activeSnapElement: null,
           snapElements: new List()
         } );

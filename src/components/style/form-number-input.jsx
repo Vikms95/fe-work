@@ -191,7 +191,6 @@ export default class FormNumberInput extends Component {
 
       case 'items':
         values = this.getSelectedItemsValues( elementsID, values );
-        console.log( 'test', values );
         break;
 
       case 'areas':
