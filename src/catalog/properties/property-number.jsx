@@ -58,6 +58,7 @@ export default function PropertyNumber (
               max={ configs.max }
               stateRedux={ state }
               attributeName={ attributeName }
+              sourceElement={ sourceElement }
               projectActions={ projectActions }
               attributeFormData={ attributeFormData }
               onChange={ event => update( event.target.value, event.target.isEnter ) }

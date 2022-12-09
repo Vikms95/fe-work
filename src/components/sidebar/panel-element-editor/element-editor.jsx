@@ -443,6 +443,7 @@ export default class ElementEditor extends Component {
                     key={ propertyName }
                     stateRedux={ appState }
                     state={ propertiesFormData }
+                    sourceElement={ element }
                     attributeName={ propertyName }
                     projectActions={ projectActions }
                     unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }

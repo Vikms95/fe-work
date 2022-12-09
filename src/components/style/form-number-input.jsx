@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { element } from 'prop-types';
 import * as SharedStyle from '../../shared-style';
 import { KEYBOARD_BUTTON_CODE, MODE_DRAWING_LINE } from '../../constants';
 import { convertMeasureToOriginal } from './../../utils/changeUnit';
 import { Line } from '../../class/export';
+
 import {
   getLines,
   getLayerID,
@@ -44,8 +45,12 @@ export default class FormNumberInput extends Component {
       x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
     };
+    this.isAttribute = this.isAttribute.bind( this );
+    this.isProperty = this.isProperty.bind( this );
     this.resetAngleInput = this.resetAngleInput.bind( this );
     this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
+    this.isElementsOfSamePrototype = this.isElementsOfSamePrototype.bind( this );
+
   }
 
   resetAngleInput () {
@@ -56,38 +61,20 @@ export default class FormNumberInput extends Component {
     return this.props.attributeName === 'lineLength' && this.props.mode === MODE_DRAWING_LINE;
   }
 
-  componentDidMount () {
-
+  isElementsOfSamePrototype ( element ) {
     if ( this.props.sourceElement ) {
-
-      const selectedElements = getSelectedElementsToJS( this.props.stateRedux );
-      const layerID = getLayerID( this.props.stateRedux );
-      const lines = getLines( this.props.stateRedux );
-
-      // Element is the id // Lines the whole lines state slice
-      selectedElements
-        .filter( element => element[ 0 ] === this.props.sourceElement.get( 'prototype' ) )
-        .forEach( element => {
-          const elementID = element[ 1 ][ 0 ];
-          const line = lines.get( elementID );
-          const layer = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
-          // Get the layer
-          const { v_a, v_b } = getElementVertices( line, layer );
-          // Only retrieve what you need
-          const { distance, _angleLine } = getElementAttributes( line, layer, v_a, v_b );
-          console.log( 'test distance ', distance );
-          console.log( 'test angle ', _angleLine );
-          //console.log( 'test lines array', lines );
-          // Get its #property or att# (depending on the attribute name)
-          // If attributeName === property
-
-          // Else if attributeName === attribute
-          // Get its vertices with the selector method
-          // If the present value is different from the past value set SHOWED VALUE to 0
-          // Else, set SHOWED VALUE to the value that all selected items share
-        } );
+      return element[ 0 ] === this.props.sourceElement.get( 'prototype' );
     }
+  }
+  isAttribute () {
+    return this.props.attributeName === 'angulo' || this.props.attributeName === 'lineLength';
+  }
 
+  isProperty () {
+    return this.props.attributeName === 'thickness' || this.props.attributeName === 'height';
+  }
+
+  componentDidMount () {
     if ( this.isLengthInputWhileDrawing() ) {
       this.setState( { focus: true } );
       this.state.inputElement.focus();
@@ -100,11 +87,58 @@ export default class FormNumberInput extends Component {
         document.addEventListener( 'mousemove', this.resetAngleInput );
       }
     }
+
+    // Only on multiselection, add conditonal?
+    if ( !this.props.sourceElement ) return;
+
+    let values = [];
+    const selectedElements = getSelectedElementsToJS( this.props.stateRedux );
+    const lines = getLines( this.props.stateRedux );
+
+
+    // Get its #property or att# (depending on the attribute name)
+    // If attributeName === property
+    // Else if attributeName === attribute
+    // Get its vertices with the selector method
+    if ( this.isProperty() ) {
+      const prototypeElementsContainer = selectedElements
+        .filter( element => this.isElementsOfSamePrototype( element ) );
+
+      const prototypeElementsID = prototypeElementsContainer[ 0 ][ 1 ];
+
+      for ( const elementID of prototypeElementsID ) {
+        const line = lines.get( elementID );
+        const property = line.getIn( [ 'properties', this.props.attributeName, 'length' ] );
+        values.push( property );
+      }
+
+
+    } else if ( this.isAttribute() ) {
+      console.log( 'test attribute', this.props.attributeName );
+      //const layerID = getLayerID( this.props.stateRedux );
+      //const layer = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
+
+      //const prototypeElementsContainer = selectedElements
+      //  .filter( element => this.isElementsOfSamePrototype( element ) );
+
+      //const prototypeElementsID = prototypeElementsContainer[ 0 ][ 1 ];
+      //for ( const elementID of prototypeElementsID ) {
+      //  const line = lines.get( elementID );
+      //  console.log( 'test', element );
+      //  const { v_a, v_b } = getElementVertices( line, layer );
+      //  const { lineLength, angulo } = getElementAttributes( line, layer, v_a, v_b );
+      //  values.push( lineLength );
+    }
+
+    // If all the values from the selected ones are not the same, set SHOWED VALUE to 0
+    if ( !values.every( el => el === values[ 0 ] ) ) {
+      this.setState( { showedValue: 0 } );
+    };
   }
 
   componentWillUnmount () {
     document.removeEventListener( 'mousemove', this.resetAngleInput );
-  }
+  };
 
   componentDidUpdate () {
     if ( document.activeElement === this.state.inputElement ) {
@@ -125,7 +159,6 @@ export default class FormNumberInput extends Component {
       this.setState( { showedValue: nextProps.value } );
     }
   }
-
 
   render () {
     let {

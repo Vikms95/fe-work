@@ -48,10 +48,10 @@ export const getVerticeCoords = ( state, layerID, verticeID ) => {
 };
 
 export const getElementAttributes = ( element, layer, v_a, v_b ) => {
-  let distance = GeometryUtils.pointsDistance( v_a.x, v_a.y, v_b.x, v_b.y );
-  let _angleLine = Line.getAngleV0_pcl( layer, element );
+  let lineLength = GeometryUtils.pointsDistance( v_a.x, v_a.y, v_b.x, v_b.y );
+  let angulo = Line.getAngleV0_pcl( layer, element );
 
-  return { distance, _angleLine };
+  return { lineLength, angulo };
 };
 
 export const getSelectedElements = ( state ) => {
