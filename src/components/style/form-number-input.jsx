@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes, { element } from 'prop-types';
+import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
 import { KEYBOARD_BUTTON_CODE, MODE_DRAWING_LINE } from '../../constants';
 import { convertMeasureToOriginal } from './../../utils/changeUnit';
@@ -49,9 +49,13 @@ export default class FormNumberInput extends Component {
     };
     this.isAttribute = this.isAttribute.bind( this );
     this.isProperty = this.isProperty.bind( this );
+    this.getProperty = this.getProperty.bind( this );
+    this.getAttribute = this.getAttribute.bind( this );
+    this.areAllValuesEqual = this.areAllValuesEqual.bind( this );
     this.resetAngleInput = this.resetAngleInput.bind( this );
     this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
     this.isElementsOfSamePrototype = this.isElementsOfSamePrototype.bind( this );
+    this.isNotMultipleSelectionOrInvalidElement = this.isNotMultipleSelectionOrInvalidElement.bind( this );
 
   }
 
@@ -79,6 +83,33 @@ export default class FormNumberInput extends Component {
     return this.props.attributeName === 'thickness' || this.props.attributeName === 'height';
   }
 
+  isNotMultipleSelectionOrInvalidElement () {
+    return !this.props.sourceElement || !isMultipleSelection( this.props.stateRedux );
+  }
+
+  getProperty ( elementID, elements ) {
+    const element = elements.get( elementID );
+    if ( !element ) return;
+    return element.getIn( [ 'properties', this.props.attributeName, 'length' ] );
+  }
+
+  getAttribute ( elementID, elements ) {
+    const layerID = getLayerID( this.props.stateRedux );
+    const layer = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
+    const line = elements.get( elementID );
+    const { v_a, v_b } = getElementVertices( line, layer );
+    const { lineLength, angulo } = getElementAttributes( line, layer, v_a, v_b );
+
+    if ( this.props.attributeName === 'lineLength' ) {
+      return toFixedFloat( lineLength, 2 );
+    }
+    return angulo.angle;
+  }
+
+  areAllValuesEqual ( values ) {
+    return !values.every( el => el === values[ 0 ] );
+  }
+
   componentDidMount () {
     if ( this.isLengthInputWhileDrawing() ) {
       this.setState( { focus: true } );
@@ -94,46 +125,30 @@ export default class FormNumberInput extends Component {
     }
 
     // Only on multiselection, add conditonal?
-    if ( !this.props.sourceElement || !isMultipleSelection( this.props.stateRedux ) ) return;
+    if ( this.isNotMultipleSelectionOrInvalidElement() ) return;
 
     let values = [];
     const selectedElements = getSelectedElementsToJS( this.props.stateRedux );
     const lines = getLines( this.props.stateRedux );
 
+    const prototypeElementsContainer = selectedElements
+      .filter( element => this.isElementsOfSamePrototype( element ) );
+
+    const elementsID = prototypeElementsContainer[ 0 ][ 1 ];
+
     if ( this.isProperty() ) {
-      const prototypeElementsContainer = selectedElements
-        .filter( element => this.isElementsOfSamePrototype( element ) );
-
-      const prototypeElementsID = prototypeElementsContainer[ 0 ][ 1 ];
-
-      for ( const elementID of prototypeElementsID ) {
-        const line = lines.get( elementID );
-        if ( !line ) return;
-        const property = line.getIn( [ 'properties', this.props.attributeName, 'length' ] );
+      for ( const elementID of elementsID ) {
+        const property = this.getProperty( elementID, lines );
         values.push( property );
       }
 
     } else if ( this.isAttribute() ) {
-      const layerID = getLayerID( this.props.stateRedux );
-      const layer = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
-
-      const prototypeElementsContainer = selectedElements
-        .filter( element => this.isElementsOfSamePrototype( element ) );
-
-      const prototypeElementsID = prototypeElementsContainer[ 0 ][ 1 ];
-
-      for ( const elementID of prototypeElementsID ) {
-        const line = lines.get( elementID );
-        const { v_a, v_b } = getElementVertices( line, layer );
-        const { lineLength, angulo } = getElementAttributes( line, layer, v_a, v_b );
-
-        ( this.props.attributeName === 'lineLength' )
-          ? values.push( toFixedFloat( lineLength, 2 ) )
-          : values.push( angulo.angle );
+      for ( const elementID of elementsID ) {
+        const attribute = this.getAttribute( elementID, lines );
+        values.push( attribute );
       }
-      // If all the values from the selected ones are not the same, set SHOWED VALUE to 0
     }
-    if ( !values.every( el => el === values[ 0 ] ) ) {
+    if ( this.areAllValuesEqual( values ) ) {
       this.setState( { showedValue: '' } );
     };
   }
