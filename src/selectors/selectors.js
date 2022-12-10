@@ -85,6 +85,7 @@ export const getSelectedElements = ( state ) => {
 };
 
 export const getSelectedElementsToJS = ( state ) => {
+  if ( !state ) return;
   const layerID = state.getIn( [ 'scene', 'selectedLayer' ] );
   const selectedElements = state.getIn( [ 'scene', 'layers', layerID, 'selected' ] );
   return immutableDStoJS( selectedElements );
