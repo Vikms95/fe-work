@@ -63,6 +63,7 @@ export default class FormNumberInput extends Component {
     this.getSelectedItemsValues = this.getSelectedItemsValues.bind( this );
     this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
     this.isElementsOfSamePrototype = this.isElementsOfSamePrototype.bind( this );
+    this.isValueBlankWhileMultiSelection = this.isValueBlankWhileMultiSelection.bind( this );
     this.isNotMultipleSelectionOrInvalidElement = this.isNotMultipleSelectionOrInvalidElement.bind( this );
 
   }
@@ -99,6 +100,9 @@ export default class FormNumberInput extends Component {
     return this.props.attributeName === 'thickness' || this.props.attributeName === 'height';
   }
 
+  isValueBlankWhileMultiSelection () {
+    return this.state.showedValue === null && !isMultipleSelection( this.props.stateRedux );
+  }
 
   getProperty ( element ) {
     return element.getIn( [ 'properties', this.props.attributeName, 'length' ] );
@@ -228,8 +232,10 @@ export default class FormNumberInput extends Component {
   }
 
   componentWillReceiveProps ( nextProps ) {
-    // Checking showedValue due to it being set to null when different values during multiselection
-    if ( this.props.value !== nextProps.value || this.state.showedValue === null ) {
+    if (
+      this.props.value !== nextProps.value ||
+      this.isValueBlankWhileMultiSelection()
+    ) {
       this.setState( { showedValue: nextProps.value } );
     }
 
