@@ -6,7 +6,7 @@ import { convertMeasureToOriginal } from './../../utils/changeUnit';
 import { Line } from '../../class/export';
 
 import {
-  getSelectedLines,
+  getSelectedPrototypeElements,
   getLayerID,
   getCacheAngulo,
   getVerticeCoords,
@@ -57,38 +57,13 @@ export default class FormNumberInput extends Component {
     this.getAttribute = this.getAttribute.bind( this );
     this.resetAngleInput = this.resetAngleInput.bind( this );
     this.areArrayValuesEqual = this.areArrayValuesEqual.bind( this );
-    this.getSelectedLinesValues = this.getSelectedLinesValues.bind( this );
-    this.getSelectedHolesValues = this.getSelectedHolesValues.bind( this );
-    this.getSelectedItemsValues = this.getSelectedItemsValues.bind( this );
+    this.getSelectedPropertyValues = this.getSelectedPropertyValues.bind( this );
     this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
     this.isElementsOfSamePrototype = this.isElementsOfSamePrototype.bind( this );
-    this.isEmptyInputAndNotMultiSelection = this.isEmptyInputAndNotMultiSelection.bind( this );
-    this.isNotMultipleSelectionOrInvalidElement = this.isNotMultipleSelectionOrInvalidElement.bind( this );
+    this.isEmptyInputAndSingleSelection = this.isEmptyInputAndSingleSelection.bind( this );
+    this.isInputAnguloAndSingleSelection = this.isInputAnguloAndSingleSelection.bind( this );
+    this.isSingleSelectionOrInvalidElement = this.isSingleSelectionOrInvalidElement.bind( this );
 
-  }
-
-  resetAngleInput () {
-    // Use a variable determining if the value is in multiselection reset
-    if ( this.state.showedValue !== 0 )
-      this.setState( { showedValue: this.props.value } );
-  }
-
-  isLengthInputWhileDrawing () {
-    return this.props.attributeName === 'lineLength' && this.props.mode === MODE_DRAWING_LINE;
-  }
-
-  isElementsOfSamePrototype ( element ) {
-    if ( this.props.sourceElement ) {
-      return element[ 0 ] === this.props.sourceElement.get( 'prototype' );
-    }
-  }
-
-  areArrayValuesEqual ( values ) {
-    return values.every( el => el === values[ 0 ] );
-  }
-
-  isNotMultipleSelectionOrInvalidElement () {
-    return !this.props.sourceElement || !isMultipleSelection( this.props.stateRedux );
   }
 
   isAttribute () {
@@ -99,8 +74,36 @@ export default class FormNumberInput extends Component {
     return this.props.attributeName === 'thickness' || this.props.attributeName === 'height';
   }
 
-  isEmptyInputAndNotMultiSelection () {
+  isLengthInputWhileDrawing () {
+    return this.props.attributeName === 'lineLength' && this.props.mode === MODE_DRAWING_LINE;
+  }
+
+  isInputAnguloAndSingleSelection () {
+    return this.props.attributeName === 'angulo' && !isMultipleSelection();
+  }
+
+  isElementsOfSamePrototype ( element ) {
+    if ( this.props.sourceElement ) {
+      return element[ 0 ] === this.props.sourceElement.get( 'prototype' );
+    }
+  }
+
+  isSingleSelectionOrInvalidElement () {
+    return !this.props.sourceElement || !isMultipleSelection( this.props.stateRedux );
+  }
+
+  isEmptyInputAndSingleSelection () {
     return this.state.showedValue === null && !isMultipleSelection( this.props.stateRedux );
+  }
+
+  areArrayValuesEqual ( values ) {
+    return values.every( el => el === values[ 0 ] );
+  }
+
+  resetAngleInput () {
+    // Use a variable determining if the value is in multiselection reset
+    if ( this.state.showedValue !== 0 )
+      this.setState( { showedValue: this.props.value } );
   }
 
   getProperty ( element ) {
@@ -121,55 +124,29 @@ export default class FormNumberInput extends Component {
     return angulo.angle;
   }
 
-  getSelectedLinesValues ( valuesArray ) {
-    const lines = getSelectedLines( this.props.stateRedux );
+  getSelectedPropertyValues ( prototype ) {
+    let valuesArray = [];
+    const elements = getSelectedPrototypeElements( this.props.stateRedux, prototype );
 
-    if ( this.isProperty() ) {
-      for ( const line of lines ) {
-        const lineValue = line[ 1 ];
+    if ( this.isAttribute() ) {
+      for ( const { 1: element } of elements ) {
 
-        const property = this.getProperty( lineValue );
-        valuesArray.push( property );
-      }
-
-    } else if ( this.isAttribute() ) {
-      for ( const line of lines ) {
-        const lineValue = line[ 1 ];
-
-        const attribute = this.getAttribute( lineValue );
+        const attribute = this.getAttribute( element );
         valuesArray.push( attribute );
       }
+
+    } else if ( this.isProperty() ) {
+      for ( const { 1: element } of elements ) {
+
+        const property = this.getProperty( element );
+        valuesArray.push( property );
+      }
     }
 
     return valuesArray;
   }
 
-  getSelectedHolesValues ( valuesArray ) {
-    const holes = getSelectedHoles( this.props.stateRedux );
 
-    for ( const hole of holes ) {
-      const holeValue = hole[ 1 ];
-
-      const property = this.getProperty( holeValue );
-      valuesArray.push( property );
-    }
-
-    return valuesArray;
-  }
-
-  getSelectedItemsValues ( valuesArray ) {
-    const items = getSelectedItems( this.props.stateRedux );
-
-    for ( const item of items ) {
-      const itemValue = item[ 1 ];
-
-      const property = this.getProperty( itemValue );
-      valuesArray.push( property );
-    }
-
-    return valuesArray;
-
-  }
 
   componentDidMount () {
     if ( this.isLengthInputWhileDrawing() ) {
@@ -178,7 +155,7 @@ export default class FormNumberInput extends Component {
       this.state.inputElement.select();
     }
 
-    if ( this.props.attributeName === 'angulo' && !isMultipleSelection() ) {
+    if ( this.isInputAnguloAndSingleSelection() ) {
 
       if ( getCacheAngulo( this.props.stateRedux ) ) {
         this.setState( { showedValue: parseFloat( getCacheAngulo( this.props.stateRedux ) ) } );
@@ -186,26 +163,10 @@ export default class FormNumberInput extends Component {
       }
     }
 
-    if ( this.isNotMultipleSelectionOrInvalidElement() ) return;
+    if ( this.isSingleSelectionOrInvalidElement() ) return;
 
-    let values = [];
-
-    switch ( this.props.sourceElement.get( 'prototype' ) ) {
-      case 'lines':
-        values = this.getSelectedLinesValues( values );
-        break;
-
-      case 'holes':
-        values = this.getSelectedHolesValues( values );
-        break;
-
-      case 'items':
-        values = this.getSelectedItemsValues( values );
-        break;
-
-      case 'areas':
-      // Color?
-    }
+    const prototype = this.props.sourceElement.get( 'prototype' );
+    const values = this.getSelectedPropertyValues( prototype );
 
     if ( !this.areArrayValuesEqual( values ) ) {
       this.setState( { showedValue: null } );
@@ -234,7 +195,7 @@ export default class FormNumberInput extends Component {
   componentWillReceiveProps ( nextProps ) {
     if (
       this.props.value !== nextProps.value ||
-      this.isEmptyInputAndNotMultiSelection()
+      this.isEmptyInputAndSingleSelection()
     ) {
       this.setState( { showedValue: nextProps.value } );
     }
@@ -363,7 +324,6 @@ export default class FormNumberInput extends Component {
 
       this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
     };
-
 
     const isEscPressed = ( keyCode ) => (
       keyCode == KEYBOARD_BUTTON_CODE.ESC
