@@ -14,8 +14,6 @@ import {
   getElementVertices,
   getElementAttributes,
   isMultipleSelection,
-  getSelectedHoles,
-  getSelectedItems
 } from '../../selectors/selectors';
 import { toFixedFloat } from '../../utils/math';
 
@@ -146,8 +144,6 @@ export default class FormNumberInput extends Component {
     return valuesArray;
   }
 
-
-
   componentDidMount () {
     if ( this.isLengthInputWhileDrawing() ) {
       this.setState( { focus: true } );
@@ -157,7 +153,7 @@ export default class FormNumberInput extends Component {
 
     if ( this.isInputAnguloAndSingleSelection() ) {
 
-      if ( getCacheAngulo( this.props.stateRedux ) ) {
+      if ( getCacheAngulo( this.props.stateRedux ) && this.props.stateRedux.get( 'mode' ) === MODE_DRAWING_LINE ) {
         this.setState( { showedValue: parseFloat( getCacheAngulo( this.props.stateRedux ) ) } );
         document.addEventListener( 'mousemove', this.resetAngleInput );
       }
