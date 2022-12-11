@@ -58,10 +58,10 @@ export default class FormNumberInput extends Component {
     this.getSelectedPropertyValues = this.getSelectedPropertyValues.bind( this );
     this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
     this.isElementsOfSamePrototype = this.isElementsOfSamePrototype.bind( this );
+    this.isCachedAnguloWhileDrawing = this.isCachedAnguloWhileDrawing.bind( this );
     this.isEmptyInputAndSingleSelection = this.isEmptyInputAndSingleSelection.bind( this );
     this.isInputAnguloAndSingleSelection = this.isInputAnguloAndSingleSelection.bind( this );
     this.isSingleSelectionOrInvalidElement = this.isSingleSelectionOrInvalidElement.bind( this );
-
   }
 
   isAttribute () {
@@ -74,6 +74,10 @@ export default class FormNumberInput extends Component {
 
   isLengthInputWhileDrawing () {
     return this.props.attributeName === 'lineLength' && this.props.mode === MODE_DRAWING_LINE;
+  }
+
+  isCachedAnguloWhileDrawing () {
+    return getCacheAngulo( this.props.stateRedux ) && this.props.stateRedux.get( 'mode' ) === MODE_DRAWING_LINE;
   }
 
   isInputAnguloAndSingleSelection () {
@@ -97,6 +101,7 @@ export default class FormNumberInput extends Component {
   areArrayValuesEqual ( values ) {
     return values.every( el => el === values[ 0 ] );
   }
+
 
   resetAngleInput () {
     // Use a variable determining if the value is in multiselection reset
