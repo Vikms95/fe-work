@@ -141,12 +141,7 @@ export default class FormNumberInput extends Component {
     } else {
       for ( const { 1: element } of elements ) {
 
-        console.log( 'test', this.props.attributeName );
-        console.log( 'test', element );
-
         const property = this.getProperty( element );
-
-        console.log( 'test', property );
         valuesArray.push( property );
       }
     }
@@ -298,6 +293,8 @@ export default class FormNumberInput extends Component {
           this.context.linesActions.cacheAlto( inputAlto );
           this.context.linesActions.cacheFondo( inputFondo );
         }
+
+        console.log( 'test', savedValue );
 
         onChange( {
           target: {

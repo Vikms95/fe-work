@@ -987,30 +987,6 @@ class Line {
     return { updatedState: state };
   }
 
-  static translateRight ( x1, y1, x2, y2, length ) {
-    y2 = y1;
-    x2 = x1 + ( length / 10 );
-    return { x2, y2 };
-  }
-
-  static translateLeft ( x1, y1, x2, y2, length ) {
-    y2 = y1;
-    x2 = x1 - ( length / 10 );
-    return { x2, y2 };
-  }
-
-  static translateUp ( x1, y1, x2, y2, length ) {
-    x2 = x1;
-    y2 = y1 + ( length / 10 );
-    return { x2, y2 };
-  }
-
-  static translateDown ( x1, y1, x2, y2, length ) {
-    x2 = x1;
-    y2 = y1 - ( length / 10 );
-    return { x2, y2 };
-  }
-
   static modifyCoordsOnKeyDown ( x1, x2, y1, y2, value, keyCode ) {
     switch ( keyCode ) {
       case 39:
@@ -1042,8 +1018,6 @@ class Line {
     }
     return { modifiedX: x2, modifiedY: y2 };
   }
-
-
 
   // angle
   static setProperties ( state, layerID, lineID, properties ) {

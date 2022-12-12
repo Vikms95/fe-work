@@ -112,22 +112,16 @@ export default function Viewer2D (
   const layerID = scene.selectedLayer;
   const [ isFirstRender, setIsFirstRender ] = useState( true );
 
-  // Keep it declared to figure out why was this created
-  //const Viewer = React.useRef( null );
-
-  // This gets triggered everytime the state is changed. Find
-  // a workaround
   useEffect( () => {
     const userZoom = getUserZoom( state );
     if ( !userZoom || !isFirstRender ) return;
 
     const windowWidthRatio = window.innerWidth / 1000;
-    //const windowHeightRatio = window.innerHeight / 1000;
     const finalZoom = constants.BASE_ZOOM / userZoom;
 
 
     refViewer2D.current.setPointOnViewerCenter(
-      550, // initial width
+      450, // initial width
       465.8, // initial height
       finalZoom * windowWidthRatio // same zoom output for all monitor sizes
     );
@@ -135,13 +129,11 @@ export default function Viewer2D (
     setIsFirstRender( false );
   }, [ state ] );
 
-
   useEffect( () => {
     document.addEventListener( 'keydown', onKeyDown );
     return () => document.removeEventListener( 'keydown', onKeyDown );
 
   }, [ state ] );
-
 
   const onKeyDown = ( event ) => {
     const viewer2DState = getViewer2D( state );
