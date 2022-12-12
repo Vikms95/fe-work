@@ -104,7 +104,6 @@ export default class FormNumberInput extends Component {
 
 
   resetAngleInput () {
-    // Use a variable determining if the value is in multiselection reset
     if ( this.state.showedValue !== 0 )
       this.setState( { showedValue: this.props.value } );
   }
@@ -158,7 +157,7 @@ export default class FormNumberInput extends Component {
 
     if ( this.isInputAnguloAndSingleSelection() ) {
 
-      if ( getCacheAngulo( this.props.stateRedux ) && this.props.stateRedux.get( 'mode' ) === MODE_DRAWING_LINE ) {
+      if ( this.isCachedAnguloWhileDrawing() ) {
         this.setState( { showedValue: parseFloat( getCacheAngulo( this.props.stateRedux ) ) } );
         document.addEventListener( 'mousemove', this.resetAngleInput );
       }
@@ -293,8 +292,6 @@ export default class FormNumberInput extends Component {
           this.context.linesActions.cacheAlto( inputAlto );
           this.context.linesActions.cacheFondo( inputFondo );
         }
-
-        console.log( 'test', savedValue );
 
         onChange( {
           target: {
