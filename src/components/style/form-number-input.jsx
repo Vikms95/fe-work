@@ -54,7 +54,8 @@ export default class FormNumberInput extends Component {
     this.getProperty = this.getProperty.bind( this );
     this.getAttribute = this.getAttribute.bind( this );
     this.resetAngleInput = this.resetAngleInput.bind( this );
-    this.areArrayValuesEqual = this.areArrayValuesEqual.bind( this );
+    this.isDifferentPropsValue = this.isDifferentPropsValue.bind( this );
+    this.areArrayValuesDifferent = this.areArrayValuesDifferent.bind( this );
     this.getSelectedPropertyValues = this.getSelectedPropertyValues.bind( this );
     this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
     this.isElementsOfSamePrototype = this.isElementsOfSamePrototype.bind( this );
@@ -74,6 +75,10 @@ export default class FormNumberInput extends Component {
 
   isLengthInputWhileDrawing () {
     return this.props.attributeName === 'lineLength' && this.props.mode === MODE_DRAWING_LINE;
+  }
+
+  isDifferentPropsValue ( nextProps ) {
+    return this.props.value !== nextProps.value;
   }
 
   isCachedAnguloWhileDrawing () {
@@ -98,8 +103,8 @@ export default class FormNumberInput extends Component {
     return this.state.showedValue === null && !isMultipleSelection( this.props.stateRedux );
   }
 
-  areArrayValuesEqual ( values ) {
-    return values.every( el => el === values[ 0 ] );
+  areArrayValuesDifferent ( values ) {
+    return !values.every( el => el === values[ 0 ] );
   }
 
 
@@ -169,7 +174,7 @@ export default class FormNumberInput extends Component {
     const prototype = this.props.sourceElement.get( 'prototype' );
     const values = this.getSelectedPropertyValues( prototype );
 
-    if ( !this.areArrayValuesEqual( values ) ) {
+    if ( this.areArrayValuesDifferent( values ) ) {
       this.setState( { showedValue: null } );
     };
   }
@@ -194,17 +199,13 @@ export default class FormNumberInput extends Component {
   }
 
   componentWillReceiveProps ( nextProps ) {
-    if (
-      this.props.value !== nextProps.value ||
-      this.isEmptyInputAndSingleSelection()
-    ) {
+    if ( this.isDifferentPropsValue( nextProps ) || this.isEmptyInputAndSingleSelection() ) {
       this.setState( { showedValue: nextProps.value } );
     }
-
   }
 
   render () {
-    let {
+    const {
       value,
       min,
       max,
@@ -217,11 +218,10 @@ export default class FormNumberInput extends Component {
       placeholder,
       attributeName,
       sourceElement,
-
     } = this.props;
 
-    let numericInputStyle = { ...STYLE_INPUT, ...style };
-    let regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
+    const numericInputStyle = { ...STYLE_INPUT, ...style };
+    const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
 
     if ( this.state.focus ) {
       numericInputStyle.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
@@ -235,11 +235,11 @@ export default class FormNumberInput extends Component {
       this.setState( { showedValue: max } );
     }
 
-    let currValue = ( regexp.test( this.state.showedValue ) )
+    const currValue = ( regexp.test( this.state.showedValue ) )
       ? this.state.showedValue
       : parseFloat( this.state.showedValue ).toFixed( precision );
 
-    let isDifferentValue =
+    const isDifferentValue =
       ( parseFloat( this.props.value ).toFixed( precision ) ) !==
       parseFloat( this.state.showedValue ).toFixed( precision );
 
@@ -266,16 +266,18 @@ export default class FormNumberInput extends Component {
 
     const onInputChange = ( e ) => {
       const valid = regexp.test( e.nativeEvent.target.value );
+
       if ( valid ) {
         this.setState( { showedValue: e.nativeEvent.target.value } );
 
-        if ( onValid ) onValid( e.nativeEvent );
+        if ( onValid ) {
+          onValid( e.nativeEvent );
+        }
+
+      } else if ( onInvalid ) {
+        onInvalid( e.nativeEvent );
       }
 
-      else {
-        if ( onInvalid ) onInvalid( e.nativeEvent );
-
-      }
       this.setState( { valid } );
     };
 
@@ -310,6 +312,7 @@ export default class FormNumberInput extends Component {
 
     const onArrrowPress = ( e, keyCode ) => {
       e.preventDefault();
+
       const state = stateRedux;
 
       const layerID = getLayerID( state );
