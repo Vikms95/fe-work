@@ -50,7 +50,6 @@ export default class FormNumberInput extends Component {
     };
 
     this.isAttribute = this.isAttribute.bind( this );
-    this.isProperty = this.isProperty.bind( this );
     this.getProperty = this.getProperty.bind( this );
     this.getAttribute = this.getAttribute.bind( this );
     this.resetAngleInput = this.resetAngleInput.bind( this );
@@ -67,10 +66,6 @@ export default class FormNumberInput extends Component {
 
   isAttribute () {
     return this.props.attributeName === 'angulo' || this.props.attributeName === 'lineLength';
-  }
-
-  isProperty () {
-    return this.props.attributeName === 'thickness' || this.props.attributeName === 'height';
   }
 
   isLengthInputWhileDrawing () {
@@ -143,10 +138,15 @@ export default class FormNumberInput extends Component {
         valuesArray.push( attribute );
       }
 
-    } else if ( this.isProperty() ) {
+    } else {
       for ( const { 1: element } of elements ) {
 
+        console.log( 'test', this.props.attributeName );
+        console.log( 'test', element );
+
         const property = this.getProperty( element );
+
+        console.log( 'test', property );
         valuesArray.push( property );
       }
     }

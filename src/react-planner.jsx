@@ -76,6 +76,7 @@ class ReactPlanner extends Component {
     this.update2DViewObject = this.update2DViewObject.bind( this );
     this.update2DViewOnState = this.update2DViewOnState.bind( this );
     this.handleToolbarButtons = this.handleToolbarButtons.bind( this );
+    this.unselectAllSubmenuButtons = this.unselectAllSubmenuButtons.bind( this );
 
     this.getState = this.getState.bind( this );
   }
@@ -219,17 +220,19 @@ class ReactPlanner extends Component {
     this.setState( { menus: menus } );
   }
 
+  unselectAllSubmenuButtons () {
+    Array.from(
+      document.querySelectorAll( '.rectangulo.active' ) )
+      .forEach( el => el.classList.remove( 'active' ) );
+  };
+
   render () {
-    const { update2DView } = this;
+    const { update2DView, unselectAllSubmenuButtons } = this;
     const { width, height, state, stateExtractor, ...props } = this.props;
     const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = this.state;
     let extractedState = stateExtractor( state );
 
-    const unselectAllSubmenuButtons = () => (
-      Array.from(
-        document.querySelectorAll( '.rectangulo.active' ) )
-        .forEach( el => el.classList.remove( 'active' ) )
-    );
+
 
     return (
       // <div>
