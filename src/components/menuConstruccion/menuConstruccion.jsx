@@ -95,15 +95,6 @@ export default class MenuConstruccion extends Component {
     };
   }
 
-  componentDidMount () {
-    document.addEventListener( 'click', ( e ) => {
-      const mode = this.props.state.getIn( [ 'react-planner', 'mode' ] );
-
-      if ( mode === 'MODE_IDLE' && document.getElementById( 'menuConstruccion' ).display === 'block' ) {
-        this.props.unSelectAllSubmenuButtons( e );
-      }
-    } );
-  }
 
   render () {
     const matcharray = ( text ) => {
