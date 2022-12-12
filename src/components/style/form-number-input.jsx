@@ -277,9 +277,12 @@ export default class FormNumberInput extends Component {
 
     const saveFn = ( e, keyCode ) => {
       e.stopPropagation();
+      if ( this.state.showedValue === null ) return;
 
       if ( this.state.valid ) {
-        let savedValue = (
+        let savedValue;
+
+        savedValue = (
           this.state.showedValue !== '' &&
           this.state.showedValue !== '-' )
           ? parseFloat( this.state.showedValue )
