@@ -12,15 +12,14 @@ import {
   MODE_3D_FIRST_PERSON,
   MODE_VIEWING_CATALOG,
   MODE_CONFIGURING_PROJECT,
-  MODE_MENU_ROOMS,
 } from '../../constants';
 import * as SharedStyle from '../../shared-style';
 
 // Imports de imagenes
-/*import paredes from './../../assets/toolbar/Paredes.png';*/
-import paredes from './../../assets/toolbar/ParedesTest.png';
+import paredes from './../../assets/toolbar/Paredes.png';
+//import paredes from './../../assets/toolbar/ParedesTest.png';
 import construccion from './../../assets/toolbar/Construccion.png';
-import muebles from './../../assets/toolbar/Muebles.png';
+//import muebles from './../../assets/toolbar/Muebles.png';
 import electros from './../../assets/toolbar/Electros.png';
 import decoracion from './../../assets/toolbar/Decoracion.png';
 import estilos from './../../assets/toolbar/Estilos.png';

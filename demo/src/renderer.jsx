@@ -180,7 +180,7 @@ const data = {
     "FONDOPARED": 100,
     "T/REJILLA2D": 1000,
     "T/REJILLA3D": 1000,
-    "ZOOM2D": 10000,
+    "ZOOM2D": 7000,
     "VER90": true,
     "FONTS": "CALIBRI",
     "T/REJILLATOTAL2D": 20000,
