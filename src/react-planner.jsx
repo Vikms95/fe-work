@@ -76,7 +76,7 @@ class ReactPlanner extends Component {
     this.update2DViewObject = this.update2DViewObject.bind( this );
     this.update2DViewOnState = this.update2DViewOnState.bind( this );
     this.handleToolbarButtons = this.handleToolbarButtons.bind( this );
-    this.unselectAllSubmenuButtons = this.unselectAllSubmenuButtons.bind( this );
+    this.unSelectAllSubmenuButtons = this.unSelectAllSubmenuButtons.bind( this );
 
     this.getState = this.getState.bind( this );
   }
@@ -220,14 +220,16 @@ class ReactPlanner extends Component {
     this.setState( { menus: menus } );
   }
 
-  unselectAllSubmenuButtons () {
+  unSelectAllSubmenuButtons () {
+    debugger;
     Array.from(
       document.querySelectorAll( '.rectangulo.active' ) )
       .forEach( el => el.classList.remove( 'active' ) );
+    console.log( "unselect triggered" );
   };
 
   render () {
-    const { update2DView, unselectAllSubmenuButtons } = this;
+    const { update2DView, unSelectAllSubmenuButtons } = this;
     const { width, height, state, stateExtractor, ...props } = this.props;
     const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = this.state;
     let extractedState = stateExtractor( state );
@@ -263,7 +265,7 @@ class ReactPlanner extends Component {
             state={ extractedState }
             menus={ this.state.menus }
             handleToolbarButtons={ this.handleToolbarButtons }
-            unselectAllSubmenuButtons={ unselectAllSubmenuButtons }
+            unSelectAllSubmenuButtons={ unSelectAllSubmenuButtons }
             { ...props }
           />
 
@@ -272,19 +274,19 @@ class ReactPlanner extends Component {
             <MenuRooms
               state={ state }
               handleToolbarButtons={ this.handleToolbarButtons }
-              unselectAllSubmenuButtons={ unselectAllSubmenuButtons }
+              unSelectAllSubmenuButtons={ unSelectAllSubmenuButtons }
               { ...props }
             />
             <MenuConstruccion
               state={ state }
               handleToolbarButtons={ this.handleToolbarButtons }
-              unselectAllSubmenuButtons={ unselectAllSubmenuButtons }
+              unSelectAllSubmenuButtons={ unSelectAllSubmenuButtons }
               { ...props }
             />
             <MenuMuebles
               state={ state }
               handleToolbarButtons={ this.handleToolbarButtons }
-              unselectAllSubmenuButtons={ unselectAllSubmenuButtons }
+              unSelectAllSubmenuButtons={ unSelectAllSubmenuButtons }
               { ...props }
             />
             <LoginComponent state={ extractedState } { ...props } />

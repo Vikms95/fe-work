@@ -21,6 +21,6 @@
     opacity: 0.2;
   }
 
-  .rectangulo:active {
+  .rectangulo.active {
     opacity: 0.2;
   }

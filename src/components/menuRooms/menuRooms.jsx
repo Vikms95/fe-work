@@ -81,6 +81,7 @@ export default class MenuRooms extends Component {
       lDerecha: false,
       lIzquierda: false
     };
+    this.paredesRef = React.createRef();
 
     this.closeMenuRooms = this.closeMenuRooms.bind( this );
     this.drawWalls = this.drawWalls.bind( this );
@@ -207,10 +208,11 @@ export default class MenuRooms extends Component {
           <img
             style={ STYLE_BUTTON_CLOSE }
             src={ close }
-            onClick={ () => {
+            onClick={ ( e ) => {
+              e.stopPropagation();
               this.closeMenuRooms();
               this.props.handleToolbarButtons();
-              this.props.unSelectAllSubmenuButtons();
+              this.props.unSelectAllSubmenuButtons( e );
             } } />
         </div>
         {/* Estructuras */ }
@@ -220,13 +222,20 @@ export default class MenuRooms extends Component {
         >
 
           <div roomjson={ 'cuadrada' }
-            onClick={ ( e ) => {
-              this.toggleButtonHighlight( e );
-              return this.loadProjectFromFile;
-            } }
             style={ { cursor: 'pointer', paddingTop: '10px', paddingLeft: '20px', paddingRight: '10px' } }>
             <div style={ { position: 'relative' } }>
-              <img className='rectangulo cuadrada' src={ rectangulo } style={ { marginLeft: '-1.5em', opacity: this.state.cuadrada ? 0.2 : null } } />
+              <img
+                ref={ this.paredesRef }
+                className='rectangulo cuadrada'
+                src={ rectangulo }
+                style={ { marginLeft: '-1.5em' } }
+                onClick={ ( e ) => {
+                  e.stopPropagation();
+                  this.props.unSelectAllSubmenuButtons( e );
+                  e.target.classList.toggle( 'active' );
+                } }
+
+              />
               <img src={ cuadrada } />
               <p style={ STYLE_NAME }>Habitación Cuadrada</p>
             </div>
@@ -234,48 +243,80 @@ export default class MenuRooms extends Component {
 
           <div roomjson={ 'Recta' }
             onClick={ ( e ) => {
-              this.toggleButtonHighlight( e );
               return this.loadProjectFromFile;
             } }
             style={ { cursor: 'pointer', paddingTop: '10px', paddingLeft: '10px', paddingRight: '20px' } }>
             <div style={ { position: 'relative' } }>
-              <img className='rectangulo recta' src={ rectangulo } style={ { marginLeft: '-1.3em', opacity: this.state.recta ? 0.2 : null } } />
+              <img
+                className='rectangulo recta'
+                src={ rectangulo }
+                style={ { marginLeft: '-1.3em' } }
+                onClick={ ( e ) => {
+                  e.stopPropagation();
+                  this.props.unSelectAllSubmenuButtons( e );
+                  e.target.classList.toggle( 'active' );
+                } }
+              />
               <img src={ Recta } />
               <p style={ STYLE_NAME }>Pared Recta</p>
             </div>
           </div>
 
           <div roomjson={ 'L1' } onClick={ ( e ) => {
-            this.toggleButtonHighlight( e );
             return this.loadProjectFromFile;
           } }
             style={ { cursor: 'pointer', paddingTop: '10px', paddingLeft: '20px', paddingRight: '10px' } }>
             <div style={ { position: 'relative' } }>
-              <img className='rectangulo lEstandar' src={ rectangulo } style={ { marginLeft: '-1.5em', opacity: this.state.lEstandar ? 0.2 : null } } />
+              <img
+                className='rectangulo lEstandar'
+                src={ rectangulo }
+                style={ { marginLeft: '-1.5em' } }
+                onClick={ ( e ) => {
+                  e.stopPropagation();
+                  this.props.unSelectAllSubmenuButtons( e );
+                  e.target.classList.toggle( 'active' );
+                } }
+              />
               <img src={ L1 } />
               <p style={ STYLE_NAME }>Dos paredes en L</p>
             </div>
           </div>
 
           <div roomjson={ 'Lizquierda1' } onClick={ ( e ) => {
-            this.toggleButtonHighlight( e );
             return this.loadProjectFromFile;
           } }
             style={ { cursor: 'pointer', paddingTop: '10px', paddingLeft: '10px', paddingRight: '20px' } }>
             <div style={ { position: 'relative' } }>
-              <img className='rectangulo lIzquierda' src={ rectangulo } style={ { marginLeft: '-1.3em', opacity: this.state.lIzquierda ? 0.2 : null } } />
+              <img
+                className='rectangulo lIzquierda'
+                src={ rectangulo }
+                style={ { marginLeft: '-1.3em' } }
+                onClick={ ( e ) => {
+                  e.stopPropagation();
+                  this.props.unSelectAllSubmenuButtons( e );
+                  e.target.classList.toggle( 'active' );
+                } }
+              />
               <img src={ Lizquierda1 } />
               <p style={ STYLE_NAME }>Habitación en forma de L</p>
             </div>
           </div>
 
           <div roomjson={ 'Lderecha1' } onClick={ ( e ) => {
-            this.toggleButtonHighlight( e );
             return this.loadProjectFromFile;
           } }
             style={ { cursor: 'pointer', paddingTop: '10px', paddingLeft: '20px', paddingRight: '10px' } }>
             <div style={ { position: 'relative' } }>
-              <img className='rectangulo lDerecha' src={ rectangulo } style={ { marginLeft: '-1.5em', opacity: this.state.lDerecha ? 0.2 : null } } />
+              <img
+                className='rectangulo lDerecha'
+                src={ rectangulo }
+                style={ { marginLeft: '-1.5em' } }
+                onClick={ ( e ) => {
+                  e.stopPropagation();
+                  this.props.unSelectAllSubmenuButtons( e );
+                  e.target.classList.toggle( 'active' );
+                } }
+              />
               <img src={ Lderecha1 } />
               <p style={ STYLE_NAME }>Habitación en forma de L</p>
             </div>

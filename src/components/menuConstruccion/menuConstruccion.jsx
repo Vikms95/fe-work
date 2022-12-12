@@ -96,11 +96,11 @@ export default class MenuConstruccion extends Component {
   }
 
   componentDidMount () {
-    document.addEventListener( 'click', () => {
+    document.addEventListener( 'click', ( e ) => {
       const mode = this.props.state.getIn( [ 'react-planner', 'mode' ] );
 
-      if ( mode === 'MODE_IDLE' ) {
-        this.props.unselectAllSubmenuButtons();
+      if ( mode === 'MODE_IDLE' && document.getElementById( 'menuConstruccion' ).display === 'block' ) {
+        this.props.unSelectAllSubmenuButtons( e );
       }
     } );
   }
@@ -176,7 +176,7 @@ export default class MenuConstruccion extends Component {
                       marginTop: '-0.5em',
                     } }
                   onClick={ e => {
-                    this.props.unselectAllSubmenuButtons();
+                    this.props.unSelectAllSubmenuButtons( e );
                     e.target.classList.add( 'active' );
                   } }
                 />
@@ -219,7 +219,7 @@ export default class MenuConstruccion extends Component {
             onClick={ () => {
               closeMenuConstruccion();
               this.props.handleToolbarButtons();
-              this.props.unselectAllSubmenuButtons();
+              this.props.unSelectAllSubmenuButtons( e );
             } } />
         </div>
         {/* Search */ }

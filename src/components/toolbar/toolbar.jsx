@@ -220,8 +220,9 @@ export default class Toolbar extends Component {
           index={ 0 }
           active={ menus.menuRooms }
           tooltip={ 'Paredes' }
-          onClick={ () => {
-            this.props.unselectAllSubmenuButtons();
+          onClick={ ( e ) => {
+            e.stopPropagation();
+            this.props.unSelectAllSubmenuButtons( e );
             showAndHideMenus( 'menuRooms' );
           } }
           img={ paredes }
@@ -236,8 +237,9 @@ export default class Toolbar extends Component {
           className='toolbar-button'
           active={ menus.menuConstruccion }
           tooltip={ 'Construccion' }
-          onClick={ () => {
-            this.props.unselectAllSubmenuButtons();
+          onClick={ ( e ) => {
+            e.stopPropagation();
+            this.props.unSelectAllSubmenuButtons( e );
             showAndHideMenus( 'menuConstruccion' );
 
           } }
@@ -253,8 +255,9 @@ export default class Toolbar extends Component {
           className='toolbar-button'
           active={ menus.menuMuebles }
           tooltip={ 'Baño Salgar' }
-          onClick={ () => {
-            this.props.unselectAllSubmenuButtons();
+          onClick={ ( e ) => {
+            e.stopPropagation();
+            this.props.unSelectAllSubmenuButtons( e );
             showAndHideMenus( 'menuMuebles' );
           } }
           img={ img_salgar }
