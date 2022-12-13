@@ -8,7 +8,7 @@ export const getLayerValue = ( state ) => {
   return state.getIn( [ 'scene', 'layers', layerID ] );
 };
 
-export const getIsElementSelected = ( state ) => state.get( 'isElementSelected' );
+export const getIsElementSelected = ( state ) => state.getIn( [ 'scene', 'isElementSelected' ] );
 export const getIsGuia2D = ( state ) => state.getIn( [ 'prefs', 'GUIA2D' ] );
 export const getViewer2D = ( state ) => state.get( 'viewer2D' ).toJS();
 export const getRejillaTotal2D = ( state ) => state.getIn( [ 'prefs', 'T/REJILLATOTAL2D' ] );

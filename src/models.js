@@ -231,6 +231,7 @@ export class Scene extends Record( {
   meta: new Map(),   //additional info
   guides: new Map(),
   prefs: new Map(),
+  isElementSelected: false,
   selectedElementsHistory: new List()
 }, 'Scene' ) {
   constructor ( json = {} ) {
@@ -338,7 +339,6 @@ export class State extends Record( {
   warnings: new List(),
   clipboardProperties: new Map(),
   alterate: false,
-  isElementSelected: false,
   userAuthenticated: false,
   misc: new Map()   //additional info
 }, 'State' ) {

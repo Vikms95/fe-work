@@ -14,8 +14,11 @@ import {
   getElementVertices,
   getElementAttributes,
   isMultipleSelection,
+  getLayerValue,
 } from '../../selectors/selectors';
 import { toFixedFloat } from '../../utils/math';
+import { GeometryUtils } from '../../utils/export';
+import * as convert from 'convert-units';
 
 
 const STYLE_INPUT = {
@@ -319,11 +322,23 @@ export default class FormNumberInput extends Component {
 
       let { x: x1, y: y1 } = getVerticeCoords( state, layerID, vertice1ID );
       let { x: x2, y: y2 } = getVerticeCoords( state, layerID, vertice2ID );
-      const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, value, keyCode );
+      if ( !x1 || !y1 || !x2 || !y2 ) return;
 
-      if ( !modifiedX || !modifiedY ) return;
+      const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, keyCode );
 
+      console.log( 'test value before dragging vertex ', value );
       this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
+
+      /** DEBUG **/
+
+      const layer = getLayerValue( state );
+      let v2First = sourceElement.v2First;
+      let v_a = layer.vertices.get( sourceElement.vertices.get( !v2First ? 0 : 1 ) );
+      let v_b = layer.vertices.get( sourceElement.vertices.get( 1 ) );
+
+      let distance = GeometryUtils.pointsDistance( v_a.x, v_a.y, v_b.x, v_b.y );
+      console.log( 'test distance after dragging vertex', distance );
+
     };
 
     const isEscPressed = ( keyCode ) => (
@@ -344,7 +359,6 @@ export default class FormNumberInput extends Component {
       ( keyCode == KEYBOARD_BUTTON_CODE.ESC ) &&
       ( this.props.mode === MODE_DRAWING_LINE )
     );
-
 
     return (
       <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
@@ -381,6 +395,7 @@ FormNumberInput.propTypes = {
 };
 
 FormNumberInput.contextTypes = {
+  catalog: PropTypes.object.isRequired,
   translator: PropTypes.object.isRequired,
   linesActions: PropTypes.object.isRequired,
   verticesActions: PropTypes.object.isRequired,

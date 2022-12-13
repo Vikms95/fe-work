@@ -19,7 +19,7 @@ export default function ( state, action ) {
 
     case DRAG_VERTEX:
       state = Vertex.beginDraggingVertex( state, action.layerID, action.verticeID, action.x, action.y ).updatedState;
-      state = Vertex.updateDraggingVertex( state, action.x, action.y ).updatedState;
+      state = Vertex.updateDraggingVertex( state, action.x, action.y, false ).updatedState;
       return Vertex.endDraggingVertex( state, action.x, action.y ).updatedState;
 
     default:

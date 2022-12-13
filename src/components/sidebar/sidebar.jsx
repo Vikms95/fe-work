@@ -116,7 +116,7 @@ function Sidebar ( { state, width, height, sidebarComponents, projectActions } )
   //    };
   //} ) );
 
-  const isSelected = getIsElementSelected( state );
+  const isElementSelected = getIsElementSelected( state );
 
   const hideSideBar = () => {
     projectActions.unselectAll();
@@ -127,7 +127,7 @@ function Sidebar ( { state, width, height, sidebarComponents, projectActions } )
 
   return (
     <div id='sideBar'
-      style={ ( isSelected )
+      style={ ( isElementSelected )
         ? { ...STYLE_SELECTED, left: width, height }
         : { ...STYLE_NOT_SELECTED, height: height }
       }>

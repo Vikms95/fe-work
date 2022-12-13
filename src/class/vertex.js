@@ -110,13 +110,19 @@ class Vertex {
     return { updatedState: state };
   }
 
-  static updateDraggingVertex ( state, x, y ) {
+  static updateDraggingVertex ( state, x, y, triggerSnap = true ) {
     let { draggingSupport, snapElements, scene } = state;
+    let snap;
 
-    let snap = null;
-    if ( state.snapMask && !state.snapMask.isEmpty() ) {
-      snap = SnapUtils.nearestSnap( snapElements, x, y, state.snapMask );
-      if ( snap ) ( { x, y } = snap.point );
+    // While moving the lines with arrows, this code snippet was causing the lines
+    // to change its length, so we avoid snap events by calling this function with
+    // the triggerSnap as false when triggered by arrow key press.
+    if ( triggerSnap ) {
+      snap = null;
+      if ( state.snapMask && !state.snapMask.isEmpty() ) {
+        snap = SnapUtils.nearestSnap( snapElements, x, y, state.snapMask );
+        if ( snap ) ( { x, y } = snap.point );
+      }
     }
 
     let layerID = draggingSupport.get( 'layerID' );

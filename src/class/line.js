@@ -986,30 +986,32 @@ class Line {
     return { updatedState: state };
   }
 
-  static modifyCoordsOnKeyDown ( x1, x2, y1, y2, value, keyCode ) {
+  static modifyCoordsOnKeyDown ( x1, x2, y1, y2, keyCode ) {
+    const value = GeometryUtils.pointsDistance( x1, y1, x2, y2 );
+
     switch ( keyCode ) {
       case 39:
         //Right
         y2 = y1;
-        x2 = x1 + ( value / 10 );
+        x2 = x1 + ( value );
         break;
 
       case 37:
         //Left
         y2 = y1;
-        x2 = x1 - ( value / 10 );
+        x2 = x1 - ( value );
         break;
 
       case 38:
         //Up
         x2 = x1;
-        y2 = y1 + ( value / 10 );
+        y2 = y1 + ( value );
         break;
 
       case 40:
         // Down
         x2 = x1;
-        y2 = y1 - ( value / 10 );
+        y2 = y1 - ( value );
         break;
 
       default:

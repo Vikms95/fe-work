@@ -391,7 +391,7 @@ class Project {
     const isElementSelected =
       selectedElements.some( key => typeof key[ 1 ][ 0 ] !== 'undefined' );
 
-    state = state.set( 'isElementSelected', isElementSelected );
+    state = state.setIn( [ 'scene', 'isElementSelected' ], isElementSelected );
     return { updatedState: state };
   }
 }

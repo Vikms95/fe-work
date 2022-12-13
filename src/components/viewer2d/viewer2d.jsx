@@ -121,8 +121,8 @@ export default function Viewer2D (
 
 
     refViewer2D.current.setPointOnViewerCenter(
-      450, // initial width
-      465.8, // initial height
+      550, // initial width
+      565.8, // initial height  465.8
       finalZoom * windowWidthRatio // same zoom output for all monitor sizes
     );
 

@@ -308,7 +308,7 @@ export const UNIT_METER = 'm';
 export const UNIT_INCH = 'in';
 export const UNIT_FOOT = 'ft';
 export const UNIT_MILE = 'mi';
-export const BASE_ZOOM = 9.4;
+export const BASE_ZOOM = 9.2;// 9.4
 
 export const UNITS_LENGTH = [
   UNIT_MILLIMETER,
