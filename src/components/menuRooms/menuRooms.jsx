@@ -113,10 +113,6 @@ export default class MenuRooms extends Component {
     }
   }
 
-  shouldComponentUpdate ( nextProps ) {
-    //return this.props.state.getIn( [ 'react-planner', 'mode' ] ) === nextProps.state.getIn( [ 'react-planner', 'mode' ] );
-  }
-
   closeMenuRooms ( e ) {
     this.clearHighlights( e );
     document.getElementById( 'menuRooms' ).style.display = 'none';
@@ -289,9 +285,8 @@ export default class MenuRooms extends Component {
           </div>
 
           <div onClick={ () => {
-            this.projectActions.setMode( MODE_DRAWING_LINE );
-            this.setState( { dibujar: true } );
             this.drawWalls();
+            document.querySelector( '.rectangulo.dibujar' ).style.opacity = 0.2;
           } }
             style={ {
               cursor: 'pointer',

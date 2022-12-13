@@ -221,11 +221,9 @@ class ReactPlanner extends Component {
   }
 
   unSelectAllSubmenuButtons () {
-    debugger;
     Array.from(
       document.querySelectorAll( '.rectangulo.active' ) )
       .forEach( el => el.classList.remove( 'active' ) );
-    console.log( "unselect triggered" );
   };
 
   render () {
