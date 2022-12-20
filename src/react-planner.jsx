@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useRef, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -43,6 +43,7 @@ const wrapperStyle = {
   display: 'flex',
   flexFlow: 'row nowrap'
 };
+
 
 class ReactPlanner extends Component {
   constructor ( props ) {
@@ -335,3 +336,217 @@ function mapDispatchToProps ( dispatch ) {
 }
 
 export default connect( mapStateToProps, mapDispatchToProps )( ReactPlanner );
+
+//function ReactPlanner ( props ) {
+//  const [ sizes, setSizes ] = useState( {
+//    toolbarH: props.height - 72, // 72 from topBar Height
+//    sideBarW: props.width - 257, // 257 from sideBar Width
+//    directionW: props.width - 257, // 257 from direction Width
+//    sideBarH: props.height - ( 82 + 120 ), // 72 from topBar Height and 130 from direction Height con los px de los borders
+//    contentH: props.height - footerBarH,
+//    contentW: props.width - toolbarW + 14.6,
+//  } );
+
+//  const refViewer = useRef( null );
+
+//  const getChildContext = () => {
+//    return {
+//      ...objectsMap( actions, actionNamespace => props[ actionNamespace ] ),
+//      translator: props.translator,
+//      catalog: props.catalog,
+//    };
+//  };
+
+//  useEffect( () => {
+//    const { store } = context;
+
+//    const {
+//      projectActions,
+//      catalog,
+//      stateExtractor,
+//      plugins,
+//      prefs,
+//      prefsInfo
+//    } = props;
+
+//    plugins.forEach( plugin => plugin( store, stateExtractor ) );
+//    projectActions.initCatalog( catalog );
+//    projectActions.SetPreference( prefs, prefsInfo );
+
+//  }, [] );
+
+//  useEffect( () => {
+//    const { stateExtractor, state, projectActions, catalog } = nextProps;
+//    const plannerState = stateExtractor( state );
+//    const catalogReady = plannerState.getIn( [ 'catalog', 'ready' ] );
+//    if ( !catalogReady ) {
+//      projectActions.initCatalog( catalog );
+//    }
+//  }, [ props ] );
+
+
+//  const getState = () => {
+//    return props.stateExtractor( props.state );
+//  };
+
+//  const isElementSelected = () => {
+//    const plannerState = getState();
+//    return getIsElementSelected( plannerState );
+//  };
+
+//  const panUp = ( value ) => {
+//    return { ...value, f: value.f + 50 };
+//  };
+
+//  const panDown = ( value ) => {
+//    return { ...value, f: value.f - 50 };
+//  };
+
+//  const panLeft = ( value ) => {
+//    return { ...value, e: value.e + 50 };
+//  };
+
+//  const panRight = ( value ) => {
+//    return { ...value, e: value.e - 50 };
+//  };
+
+//  const zoomIn = () => {
+//    refViewer.current.zoomOnViewerCenter( 1.03 );
+//  };
+
+//  const zoomOut = () => {
+//    refViewer.current.zoomOnViewerCenter( 0.97 );
+//  };
+
+//  const update2DView = ( value, event ) => {
+//    const isKeystroke = getEventType( event );
+//    const direction = getEventDirection( event, isKeystroke );
+
+//    if ( isClickWithoutSelection( direction ) ) {
+//      value = update2DViewObject( value, direction );
+//    }
+
+//    return update2DViewOnState( value );
+//  };
+
+//  const getEventDirection = ( event, isKeyStroke ) => {
+//    if ( !event ) return;
+//    if ( isKeyStroke ) return event.key;
+//    return event.target.id;
+//  };
+
+//  const getEventType = ( event ) => {
+//    if ( !event ) return;
+//    return typeof event.key === 'string';
+//  };
+
+//  const isClickWithoutSelection = ( input, isKeyStroke ) => {
+//    const isSelected = isElementSelected();
+//    return input && !isKeyStroke && !isSelected;
+//  };
+
+//  const update2DViewObject = ( value, directionPressed ) => {
+//    switch ( directionPressed ) {
+//      case 'ArrowUp':
+//        return panUp( value );
+//      case 'ArrowDown':
+//        return panDown( value );
+//      case 'ArrowRight':
+//        return panRight( value );
+//      case 'ArrowLeft':
+//        return panLeft( value );
+
+//      case '+':
+//      case 'ZoomIn':
+//        return zoomIn();
+
+//      case '-':
+//      case 'ZoomOut':
+//        return zoomOut();
+
+//      default:
+//        return value;
+//    }
+//  };
+
+//  const update2DViewOnState = ( value ) => {
+//    if ( !value ) return;
+//    props.projectActions.updateZoomScale( value.a );
+//    return props.viewer2DActions.updateCameraView( value );
+//  };
+
+
+//  const { width, height, state, stateExtractor } = props;
+//  const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = sizes;
+//  let extractedState = stateExtractor( state );
+
+
+
+//  return (
+//    <div>
+//      <MainComponent state={ state } { ...props } />
+
+//      <TopBar state={ extractedState } { ...props } />
+
+//      <div style={ { ...wrapperStyle, height } }>
+
+//        <Toolbar
+//          width={ toolbarW }
+//          height={ toolbarH }
+//          state={ extractedState }
+//          { ...props }
+//        />
+
+//        <div style={ { position: 'relative' } }>
+
+//          <MenuRooms
+//            state={ state }
+//            { ...props }
+//          />
+//          <MenuConstruccion
+//            state={ state }
+//            { ...props }
+//          />
+//          <MenuMuebles
+//            state={ state }
+//            { ...props }
+//          />
+//          <LoginComponent state={ extractedState } { ...props } />
+//          <RegisterComponent state={ state } { ...props } />
+//          <MenuPreferencias state={ state } { ...props } />
+
+//          <Content
+//            style={ { position: 'absolute', zIndex: '0' } }
+//            width={ contentW }
+//            height={ contentH }
+//            state={ extractedState }
+//            refViewer2D={ refViewer }
+//            update2DView={ update2DView }
+//            onWheel={ event => event.preventDefault() }
+//            { ...props }
+//          />
+
+//        </div>
+
+//        <Sidebar
+//          state={ extractedState }
+//          width={ sideBarW }
+//          height={ sideBarH }
+//          { ...props }
+//        />
+
+//        {
+//          refViewer && (
+//            <Direction
+//              width={ directionW }
+//              state={ extractedState }
+//              refViewer2D={ refViewer }
+//              update2DView={ update2DView }
+//              { ...props }
+//            />
+//          )
+//        }
+//      </div>
+//    </div>
+//  );
+//}

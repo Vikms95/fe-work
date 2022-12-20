@@ -53,7 +53,6 @@ export default class MenuPreferencias extends Component {
 
   componentDidMount () {
     /*console.log('prefsMethodOscar', Prefs.getPrefsInfo())*/
-    console.log( 'state', this.props.projectActions );
     this.setState( {
       prefs: Prefs.getPrefsInfo(),
       prefsState: this.props.prefs,
