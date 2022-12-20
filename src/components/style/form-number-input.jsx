@@ -278,6 +278,14 @@ export default class FormNumberInput extends Component {
       this.setState( { valid } );
     };
 
+    const cacheAttributes = () => {
+      const inputAlto = document.querySelector( '.height' ).value;
+      const inputFondo = document.querySelector( '.thickness' ).value;
+
+      this.context.linesActions.cacheAlto( inputAlto );
+      this.context.linesActions.cacheFondo( inputFondo );
+    };
+
     const saveFn = ( e, keyCode ) => {
       e.stopPropagation();
       if ( this.state.showedValue === null ) return;
@@ -292,11 +300,7 @@ export default class FormNumberInput extends Component {
           : 0;
 
         if ( this.props.sourceElement.get( 'prototype' ) === 'lines' ) {
-          const inputAlto = document.querySelector( '.height' ).value;
-          const inputFondo = document.querySelector( '.thickness' ).value;
-
-          this.context.linesActions.cacheAlto( inputAlto );
-          this.context.linesActions.cacheFondo( inputFondo );
+          cacheAttributes();
         }
 
         onChange( {
@@ -326,7 +330,6 @@ export default class FormNumberInput extends Component {
 
       const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, keyCode );
 
-      console.log( 'test value before dragging vertex ', value );
       this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
 
       /** DEBUG **/

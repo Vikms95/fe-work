@@ -64,11 +64,6 @@ const sortButtonsCb = ( a, b ) => {
 
 const mapButtonsCb = ( el, ind ) => {
   return (
-    /*<If
-      key={ind}
-      condition={el.condition}
-      style={{ position: 'relative' }}
-    >*/
     <If
       key={ ind }
       condition={ el.condition }
@@ -85,20 +80,16 @@ export default class Toolbar extends Component {
     this.state = {};
   }
 
-  shouldComponentUpdate ( nextProps, nextState ) {
+  shouldComponentUpdate ( nextProps ) {
     return this.props.state.mode !== nextProps.state.mode ||
       this.props.height !== nextProps.height ||
       this.props.width !== nextProps.width ||
-      this.props.state.alterate !== nextProps.state.alterate ||
-      this.props.menus.menuRooms !== nextProps.menus.menuRooms ||
-      this.props.menus.menuConstruccion !== nextProps.menus.menuConstruccion ||
-      this.props.menus.menuMuebles !== nextProps.menus.menuMuebles;
+      this.props.state.alterate !== nextProps.state.alterate;
   }
 
   render () {
     let {
       props: {
-        menus,
         state,
         width,
         height,
@@ -204,7 +195,6 @@ export default class Toolbar extends Component {
         index: 0, condition: true,
         dom: <ToolbarButton
           index={ 0 }
-          active={ menus.menuRooms }
           tooltip={ 'Paredes' }
           onClick={ ( e ) => {
             e.stopPropagation();
@@ -220,12 +210,10 @@ export default class Toolbar extends Component {
         dom: <ToolbarButton
           index={ 1 }
           className='toolbar-button'
-          active={ menus.menuConstruccion }
           tooltip={ 'Construccion' }
           onClick={ ( e ) => {
             e.stopPropagation();
             showAndHideMenus( 'menuConstruccion' );
-
           } }
           img={ construccion }
           //TODO: Poner en el translator
@@ -237,7 +225,6 @@ export default class Toolbar extends Component {
         dom: <ToolbarButton
           index={ 2 }
           className='toolbar-button'
-          active={ menus.menuMuebles }
           tooltip={ 'Baño Salgar' }
           onClick={ ( e ) => {
             e.stopPropagation();

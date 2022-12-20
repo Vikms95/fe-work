@@ -14,7 +14,7 @@ import {
 } from '../../../constants';
 
 import { PropertyLengthMeasure } from '../../../catalog/properties/export';
-import { getCacheAngulo } from '../../../selectors/selectors';
+import { getCacheAngulo, isMultipleSelection } from '../../../selectors/selectors';
 
 const PRECISION = 2;
 
@@ -104,7 +104,6 @@ export default class ElementEditor extends Component {
         let _unit = element.misc.get( '_unitLength' ) || this.context.catalog.unit;
         let _length = convert( distance ).from( this.context.catalog.unit ).to( _unit );
         let _angleLine = Line.getAngleV0_pcl( layer, element );
-        console.log( 'test distance when initializing the distance', distance );
 
         //TODO TEST When pressing enter and creating a new line
         // use the cached angulo for this new line

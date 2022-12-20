@@ -54,13 +54,6 @@ class ReactPlanner extends Component {
       sideBarW: props.width - 257, // 257 from sideBar Width
       sideBarH: props.height - ( 82 + 120 ), // 72 from topBar Height and 130 from direction Height con los px de los borders
       directionW: props.width - 257, // 257 from direction Width
-
-      // Change them together instead of iterating
-      menus: {
-        menuRooms: false,
-        menuMuebles: false,
-        menuConstruccion: false,
-      }
     };
 
     this.refViewer = React.createRef();
@@ -98,6 +91,7 @@ class ReactPlanner extends Component {
       prefsInfo,
       state
     } = this.props;
+
     plugins.forEach( plugin => plugin( store, stateExtractor ) );
     projectActions.initCatalog( catalog );
     projectActions.SetPreference( prefs, prefsInfo );
@@ -214,21 +208,6 @@ class ReactPlanner extends Component {
 
 
     return (
-      // <div>
-      //   <TopBar />
-      //   <div style={{ ...wrapperStyle, height }}>
-      //     <Toolbar width={toolbarW} height={toolbarH} state={extractedState} {...props} />
-      //     <div style={{ position: 'relative' }}>
-      //       <MenuRooms state={state} {...props} />
-      //       <Content style={{ position: 'absolute', zIndex: '0' }} width={contentW} height={contentH} state={extractedState} {...props} onWheel={event => event.preventDefault()} />
-      //     </div>
-      //     <Sidebar state={extractedState} {...props} />
-      //   </div>
-      //   <div style={{ position: 'absolute', left: '84%', bottom: '0', width: '16%', height: '11.5em', Zindex: '9002' }}>
-      //     <Direction state={extractedState} />
-      //   </div>
-      //   {/*<FooterBar width={width} height={footerBarH} state={extractedState} {...props} />*/}
-      // </div>
       <div>
         <MainComponent state={ state } { ...props } />
 
@@ -240,7 +219,6 @@ class ReactPlanner extends Component {
             width={ toolbarW }
             height={ toolbarH }
             state={ extractedState }
-            menus={ this.state.menus }
             { ...props }
           />
 
@@ -297,7 +275,6 @@ class ReactPlanner extends Component {
             )
           }
         </div>
-        {/* <FooterBar width={width} height={footerBarH} state={extractedState} {...props} /> */ }
       </div>
     );
   }
