@@ -25,6 +25,7 @@ let STYLE = {
   borderRightWidth: '2px',
   borderRightColor: SharedStyle.PRIMARY_COLOR.master,
   zIndex: '9005',
+  overflow: 'hidden'
 };
 
 const STYLE_TITLE_BAR = {
@@ -149,15 +150,21 @@ export default class MenuConstruccion extends Component {
     };
 
     const printItems = ( elements ) => {
-      return <div style={ { marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' } }>
+      return <div style={ {
+        marginTop: '20px',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        textAlign: 'center',
+        columnGap: '20px'
+      } }>
         {
           elements.map( ( element, key ) => (
-            <div
+            < div
               key={ key }
               style={ { cursor: 'pointer', paddingTop: '10px' } }
               onClick={ () => this.props.holesActions.selectToolDrawingHole( element.name ) }
             >
-              <div style={ { position: 'relative' } }>
+              <div style={ { position: 'relative', minHeight: '100%' } }>
                 <img
                   className='rectangulo'
                   src={ rectangulo }
@@ -165,6 +172,8 @@ export default class MenuConstruccion extends Component {
                     {
                       marginLeft: ( key % 2 === 0 ) ? '-1.5em' : '-0.9em',
                       marginTop: '-0.5em',
+                      minHeight: '100%',
+                      maxWidth: '150%'
                     } }
                 />
 
@@ -230,22 +239,22 @@ export default class MenuConstruccion extends Component {
               this.state.currentShowElement === null ?
                 <div style={ { marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' } }>
                   <div onClick={ selectDoors } style={ { cursor: 'pointer', paddingTop: '10px' } }>
-                    <div style={ { position: 'relative' } }>
-                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em', marginTop: '-0.5em' } } />
+                    <div style={ { position: 'relative', minHeight: '100%' } }>
+                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em', marginTop: '-0.5em', minHeight: '100%' } } />
                       <img src={ puertas } style={ STYLE_IMAGE } />
                       <p style={ STYLE_NAME }>Puertas</p>
                     </div>
                   </div>
                   <div onClick={ selectWindows } style={ { cursor: 'pointer', paddingTop: '10px' } }>
-                    <div style={ { position: 'relative' } }>
-                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-0.9em', marginTop: '-0.5em' } } />
+                    <div style={ { position: 'relative', minHeight: '100%' } }>
+                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-0.9em', marginTop: '-0.5em', minHeight: '100%' } } />
                       <img src={ ventanas } style={ STYLE_IMAGE } />
                       <p style={ STYLE_NAME }>Ventanas</p>
                     </div>
                   </div>
                   <div onClick={ selectObstacle } style={ { cursor: 'pointer', paddingTop: '10px' } }>
-                    <div style={ { position: 'relative' } }>
-                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em', marginTop: '-0.5em' } } />
+                    <div style={ { position: 'relative', minHeight: '100%' } }>
+                      <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em', marginTop: '-0.5em', minHeight: '100%' } } />
                       <img src={ obstaculos } style={ STYLE_IMAGE } />
                       <p style={ STYLE_NAME }>Obstaculos</p>
                     </div>

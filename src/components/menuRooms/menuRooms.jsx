@@ -25,6 +25,7 @@ let STYLE = {
   borderRightWidth: '2px',
   borderRightColor: SharedStyle.PRIMARY_COLOR.master,
   zIndex: '9005',
+  overflow: 'hidden'
 };
 
 const STYLE_TITLE_BAR = {
@@ -136,6 +137,7 @@ export default class MenuRooms extends Component {
     return (
       <aside id='menuRooms' style={ STYLE }>
         {/* Barra Inicial */ }
+
         <div style={ STYLE_TITLE_BAR }>
           <p style={ STYLE_TITLE }>Paredes</p>
           <img
@@ -146,6 +148,7 @@ export default class MenuRooms extends Component {
               this.closeMenuRooms();
             } } />
         </div>
+
         {/* Estructuras */ }
         {/*style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', overflowX: 'auto', height: '100%', }}*/ }
         <div
@@ -154,8 +157,7 @@ export default class MenuRooms extends Component {
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             textAlign: 'center',
-            columnGap: '20px',
-            overflow: 'hidden'
+            columnGap: '20px'
           } }
         >
 
@@ -166,11 +168,10 @@ export default class MenuRooms extends Component {
                 ref={ this.paredesRef }
                 className='rectangulo cuadrada'
                 src={ rectangulo }
-                style={ { marginLeft: '-1.5em' } }
-                onClick={ ( e ) => {
-                  e.stopPropagation();
+                style={ {
+                  marginLeft: '-1.5em',
+                  minHeight: '100%'
                 } }
-
               />
               <img src={ cuadrada } />
               <p style={ STYLE_NAME }>Habitación Cuadrada</p>
@@ -186,7 +187,7 @@ export default class MenuRooms extends Component {
               <img
                 className='rectangulo recta'
                 src={ rectangulo }
-                style={ { marginLeft: '-1.3em' } }
+                style={ { marginLeft: '-1.3em', minHeight: '100%' } }
                 onClick={ ( e ) => {
                   e.stopPropagation();
                 } }
@@ -204,7 +205,7 @@ export default class MenuRooms extends Component {
               <img
                 className='rectangulo lEstandar'
                 src={ rectangulo }
-                style={ { marginLeft: '-1.5em' } }
+                style={ { marginLeft: '-1.5em', minHeight: '100%' } }
                 onClick={ ( e ) => {
                   e.stopPropagation();
                 } }
@@ -222,7 +223,7 @@ export default class MenuRooms extends Component {
               <img
                 className='rectangulo lIzquierda'
                 src={ rectangulo }
-                style={ { marginLeft: '-1.3em' } }
+                style={ { marginLeft: '-1.3em', minHeight: '100%' } }
                 onClick={ ( e ) => {
                   e.stopPropagation();
                 } }
@@ -240,7 +241,7 @@ export default class MenuRooms extends Component {
               <img
                 className='rectangulo lDerecha'
                 src={ rectangulo }
-                style={ { marginLeft: '-1.5em' } }
+                style={ { marginLeft: '-1.5em', minHeight: '100%' } }
                 onClick={ ( e ) => {
                   e.stopPropagation();
                 } }
@@ -265,6 +266,7 @@ export default class MenuRooms extends Component {
               <img className='rectangulo dibujar' src={ rectangulo }
                 style={ {
                   marginLeft: '-1.3em',
+                  minHeight: '100%',
                   opacity: this.state.dibujar ? 0.2 : null
                 } } />
               <img src={ lapiz } />
