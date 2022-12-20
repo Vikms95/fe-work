@@ -149,7 +149,14 @@ export default class MenuRooms extends Component {
         {/* Estructuras */ }
         {/*style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', overflowX: 'auto', height: '100%', }}*/ }
         <div
-          style={ { marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' } }
+          style={ {
+            marginTop: '20px',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            textAlign: 'center',
+            columnGap: '20px',
+            overflow: 'hidden'
+          } }
         >
 
           <div roomjson={ 'cuadrada' }
