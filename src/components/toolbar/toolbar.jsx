@@ -17,9 +17,7 @@ import * as SharedStyle from '../../shared-style';
 
 // Imports de imagenes
 import paredes from './../../assets/toolbar/Paredes.png';
-//import paredes from './../../assets/toolbar/ParedesTest.png';
 import construccion from './../../assets/toolbar/Construccion.png';
-//import muebles from './../../assets/toolbar/Muebles.png';
 import electros from './../../assets/toolbar/Electros.png';
 import decoracion from './../../assets/toolbar/Decoracion.png';
 import estilos from './../../assets/toolbar/Estilos.png';
@@ -100,16 +98,15 @@ export default class Toolbar extends Component {
   render () {
     let {
       props: {
+        menus,
         state,
         width,
         height,
-        toolbarButtons,
         allowProjectFileSupport,
-        menus,
-        handleToolbarButtons
       },
       context: { projectActions, viewer3DActions, translator }
     } = this;
+
     let mode = state.get( 'mode' );
     let alterate = state.get( 'alterate' );
     let alterateColor = alterate ? SharedStyle.MATERIAL_COLORS[ 500 ].orange : '';
@@ -182,12 +179,9 @@ export default class Toolbar extends Component {
       }
     ];
 
-    // Listado de los menus que hay
     const allMenus = [ 'menuRooms', 'menuConstruccion', 'menuMuebles' ];
 
     const showAndHideMenus = ( menuShow ) => {
-      let elementShown = false;
-
       allMenus.forEach( ( ele ) => {
 
         if ( ele === menuShow ) {
@@ -197,21 +191,13 @@ export default class Toolbar extends Component {
 
           } else {
             document.getElementById( ele ).style.display = 'block';
-            elementShown = true;
           }
         } else {
           document.getElementById( ele ).style.display = 'none';
         }
 
       } );
-
-      if ( elementShown ) {
-        handleToolbarButtons( menuShow );
-      } else {
-        handleToolbarButtons();
-      }
     };
-
 
     let sorter = [
       {
@@ -222,7 +208,6 @@ export default class Toolbar extends Component {
           tooltip={ 'Paredes' }
           onClick={ ( e ) => {
             e.stopPropagation();
-            this.props.unSelectAllSubmenuButtons( e );
             showAndHideMenus( 'menuRooms' );
           } }
           img={ paredes }
@@ -239,7 +224,6 @@ export default class Toolbar extends Component {
           tooltip={ 'Construccion' }
           onClick={ ( e ) => {
             e.stopPropagation();
-            this.props.unSelectAllSubmenuButtons( e );
             showAndHideMenus( 'menuConstruccion' );
 
           } }
@@ -257,7 +241,6 @@ export default class Toolbar extends Component {
           tooltip={ 'Baño Salgar' }
           onClick={ ( e ) => {
             e.stopPropagation();
-            this.props.unSelectAllSubmenuButtons( e );
             showAndHideMenus( 'menuMuebles' );
           } }
           img={ img_salgar }
@@ -270,7 +253,6 @@ export default class Toolbar extends Component {
         dom: <ToolbarButton
           index={ 3 }
           className='toolbar-button'
-          active={ [ MODE_VIEWING_CATALOG ].includes( mode ) }
           tooltip={ 'Electrodomésticos' }
           onClick={ event => projectActions.openCatalog() }
           img={ electros }

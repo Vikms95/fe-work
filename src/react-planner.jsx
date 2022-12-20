@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Translator from './translator/translator';
 import Catalog from './catalog/catalog';
 import actions from './actions/export';
-import { getIsElementSelected, isMultipleSelection } from './selectors/selectors';
+import { getIsElementSelected } from './selectors/selectors';
 import { objectsMap } from './utils/objects-utils';
 
 import {
@@ -75,8 +75,6 @@ class ReactPlanner extends Component {
     this.update2DView = this.update2DView.bind( this );
     this.update2DViewObject = this.update2DViewObject.bind( this );
     this.update2DViewOnState = this.update2DViewOnState.bind( this );
-    this.handleToolbarButtons = this.handleToolbarButtons.bind( this );
-    this.unSelectAllSubmenuButtons = this.unSelectAllSubmenuButtons.bind( this );
 
     this.getState = this.getState.bind( this );
   }
@@ -206,28 +204,9 @@ class ReactPlanner extends Component {
     return this.props.viewer2DActions.updateCameraView( value );
   }
 
-  handleToolbarButtons ( menu ) {
-    const menus = {
-      menuRooms: false,
-      menuMuebles: false,
-      MenuConstruccion: false
-    };
-
-    if ( menu ) {
-      menus[ menu ] = true;
-    }
-
-    this.setState( { menus: menus } );
-  }
-
-  unSelectAllSubmenuButtons () {
-    Array.from(
-      document.querySelectorAll( '.rectangulo.active' ) )
-      .forEach( el => el.classList.remove( 'active' ) );
-  };
 
   render () {
-    const { update2DView, unSelectAllSubmenuButtons } = this;
+    const { update2DView } = this;
     const { width, height, state, stateExtractor, ...props } = this.props;
     const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = this.state;
     let extractedState = stateExtractor( state );
@@ -262,8 +241,6 @@ class ReactPlanner extends Component {
             height={ toolbarH }
             state={ extractedState }
             menus={ this.state.menus }
-            handleToolbarButtons={ this.handleToolbarButtons }
-            unSelectAllSubmenuButtons={ unSelectAllSubmenuButtons }
             { ...props }
           />
 
@@ -271,20 +248,14 @@ class ReactPlanner extends Component {
 
             <MenuRooms
               state={ state }
-              handleToolbarButtons={ this.handleToolbarButtons }
-              unSelectAllSubmenuButtons={ unSelectAllSubmenuButtons }
               { ...props }
             />
             <MenuConstruccion
               state={ state }
-              handleToolbarButtons={ this.handleToolbarButtons }
-              unSelectAllSubmenuButtons={ unSelectAllSubmenuButtons }
               { ...props }
             />
             <MenuMuebles
               state={ state }
-              handleToolbarButtons={ this.handleToolbarButtons }
-              unSelectAllSubmenuButtons={ unSelectAllSubmenuButtons }
               { ...props }
             />
             <LoginComponent state={ extractedState } { ...props } />

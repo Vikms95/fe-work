@@ -13,7 +13,7 @@ import lapiz from './../../assets/rooms/Lapiz2.png';
 import close from './../../assets/generalItems/deleteCross.png';
 
 import rectangulo from './../../assets/salgar/rectangulo.png';
-import { KEYBOARD_BUTTON_CODE, MODE_DRAWING_LINE, MODE_WAITING_DRAWING_LINE } from './../../constants';
+import { MODE_DRAWING_LINE, MODE_WAITING_DRAWING_LINE } from './../../constants';
 
 let STYLE = {
   backgroundColor: SharedStyle.COLORS.white,
@@ -58,7 +58,6 @@ const STYLE_CONT_IMAGE = {
 };
 
 const STYLE_NAME = {
-  margin: '0',
   margin: '10px 0',
   fontSize: '0.75em',
   color: SharedStyle.PRIMARY_COLOR.master,
@@ -78,30 +77,6 @@ export default class MenuRooms extends Component {
     this.drawWalls = this.drawWalls.bind( this );
     this.closeMenuRooms = this.closeMenuRooms.bind( this );
     this.loadProjectFromFile = this.loadProjectFromFile.bind( this );
-    this.clearHighlights = this.clearHighlights.bind( this );
-    this.clearHighlightsOnEscape = this.clearHighlightsOnEscape.bind( this );
-  }
-
-  clearHighlights () {
-    const stateToArray = Object.keys( this.state );
-
-    stateToArray.forEach( button => this.setState( prevState => {
-      return { ...prevState, [ button ]: false };
-    } ) );
-  }
-
-  clearHighlightsOnEscape ( e ) {
-    if ( e.keyCode === KEYBOARD_BUTTON_CODE.ESC ) {
-      this.props.unSelectAllSubmenuButtons( e );
-    }
-  }
-
-  componentDidMount () {
-    document.addEventListener( 'keydown', this.clearHighlightsOnEscape );
-  }
-
-  componentWillUnmount () {
-    document.removeEventListener( 'keydown', this.clearHighlightsOnEscape );
   }
 
   componentWillReceiveProps () {
@@ -114,12 +89,10 @@ export default class MenuRooms extends Component {
   }
 
   closeMenuRooms ( e ) {
-    this.clearHighlights( e );
     document.getElementById( 'menuRooms' ).style.display = 'none';
   }
 
   drawWalls () {
-    console.log( 'wall', this.props.catalog.elements.wall );
     this.props.linesActions.selectToolDrawingLine( this.props.catalog.elements.wall.name );
   }
 
@@ -153,10 +126,8 @@ export default class MenuRooms extends Component {
     // }
     //TODO: Traducir
     confirm( 'Are you sure?' )
-      ?
-      this.projectActions.loadProject( roomSelected )
-      :
-      null;
+      ? this.projectActions.loadProject( roomSelected )
+      : null;
 
     this.closeMenuRooms( event );
   };
@@ -173,8 +144,6 @@ export default class MenuRooms extends Component {
             onClick={ ( e ) => {
               e.stopPropagation();
               this.closeMenuRooms();
-              this.props.handleToolbarButtons();
-              this.props.unSelectAllSubmenuButtons( e );
             } } />
         </div>
         {/* Estructuras */ }
@@ -193,8 +162,6 @@ export default class MenuRooms extends Component {
                 style={ { marginLeft: '-1.5em' } }
                 onClick={ ( e ) => {
                   e.stopPropagation();
-                  this.props.unSelectAllSubmenuButtons( e );
-                  e.target.classList.toggle( 'active' );
                 } }
 
               />
@@ -215,8 +182,6 @@ export default class MenuRooms extends Component {
                 style={ { marginLeft: '-1.3em' } }
                 onClick={ ( e ) => {
                   e.stopPropagation();
-                  this.props.unSelectAllSubmenuButtons( e );
-                  e.target.classList.toggle( 'active' );
                 } }
               />
               <img src={ Recta } />
@@ -235,8 +200,6 @@ export default class MenuRooms extends Component {
                 style={ { marginLeft: '-1.5em' } }
                 onClick={ ( e ) => {
                   e.stopPropagation();
-                  this.props.unSelectAllSubmenuButtons( e );
-                  e.target.classList.toggle( 'active' );
                 } }
               />
               <img src={ L1 } />
@@ -255,8 +218,6 @@ export default class MenuRooms extends Component {
                 style={ { marginLeft: '-1.3em' } }
                 onClick={ ( e ) => {
                   e.stopPropagation();
-                  this.props.unSelectAllSubmenuButtons( e );
-                  e.target.classList.toggle( 'active' );
                 } }
               />
               <img src={ Lizquierda1 } />
@@ -275,8 +236,6 @@ export default class MenuRooms extends Component {
                 style={ { marginLeft: '-1.5em' } }
                 onClick={ ( e ) => {
                   e.stopPropagation();
-                  this.props.unSelectAllSubmenuButtons( e );
-                  e.target.classList.toggle( 'active' );
                 } }
               />
               <img src={ Lderecha1 } />

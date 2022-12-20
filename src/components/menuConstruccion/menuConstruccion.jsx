@@ -166,10 +166,6 @@ export default class MenuConstruccion extends Component {
                       marginLeft: ( key % 2 === 0 ) ? '-1.5em' : '-0.9em',
                       marginTop: '-0.5em',
                     } }
-                  onClick={ e => {
-                    this.props.unSelectAllSubmenuButtons( e );
-                    e.target.classList.add( 'active' );
-                  } }
                 />
 
                 <img src={ element.info.image } style={ STYLE_IMAGE } />
@@ -209,8 +205,6 @@ export default class MenuConstruccion extends Component {
             src={ close }
             onClick={ () => {
               closeMenuConstruccion();
-              this.props.handleToolbarButtons();
-              this.props.unSelectAllSubmenuButtons( e );
             } } />
         </div>
         {/* Search */ }
