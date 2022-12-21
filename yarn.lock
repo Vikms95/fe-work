@@ -2,22 +2,6 @@
 # yarn lockfile v1
 
 
-"@gltf-transform/core@^2.4.7":
-  "integrity" "sha512-XIsbeKXdFdTO5UgVVKnGPUB5vQfQ3DoBVQcJd7tZzTia895Grs52AAtGEZhy3ja4p2J0OMq22kVUMvolKRbM5w=="
-  "resolved" "https://registry.npmjs.org/@gltf-transform/core/-/core-2.4.7.tgz"
-  "version" "2.4.7"
-  dependencies:
-    "gl-matrix" "~3.4.3"
-    "property-graph" "^0.2.6"
-
-"@gltf-transform/extensions@^2.4.7":
-  "integrity" "sha512-Pn3g0deLv6EsW7rL3n6ohWJmhvSDRt554E0zW04qNVqcxCCpHdZwG/Vqs80ZG2OxYD3ctYF92gXPx6NKSTak5g=="
-  "resolved" "https://registry.npmjs.org/@gltf-transform/extensions/-/extensions-2.4.7.tgz"
-  "version" "2.4.7"
-  dependencies:
-    "@gltf-transform/core" "^2.4.7"
-    "ktx-parse" "^0.4.5"
-
 "@mapbox/react-range@0.0.7":
   "integrity" "sha1-J5MAF1FiyyYBH48O7Qk9XAU4eTc= sha512-PCNi/L6q3+HYmT7JzygYnoCWpSvDo/jJoiX+KJfKclMuQVUAgg5IiawoakSFntjlHTMPt39NlseI6KkYZKH9gQ=="
   "resolved" "https://registry.npmjs.org/@mapbox/react-range/-/react-range-0.0.7.tgz"
@@ -2587,11 +2571,6 @@
     "graceful-fs" "^4.1.11"
     "rimraf" "^2.6.2"
 
-"gl-matrix@~3.4.3":
-  "integrity" "sha512-wcCp8vu8FT22BnvKVPjXa/ICBWRq/zjFfdofZy1WSpQZpphblv12/bOQLBC1rMM7SGOFS9ltVmKOHil5+Ml7gA=="
-  "resolved" "https://registry.npmjs.org/gl-matrix/-/gl-matrix-3.4.3.tgz"
-  "version" "3.4.3"
-
 "glob-base@^0.3.0":
   "integrity" "sha1-27Fk9iIbHAscz4Kuoyi0l98Oo8Q= sha512-ab1S1g1EbO7YzauaJLkgLp7DZVAqj9M/dvKlTt8DkXA2tiOIcSMrlVI2J1RZyB5iJVccEscjGn+kpOG9788MHA=="
   "resolved" "https://registry.npmjs.org/glob-base/-/glob-base-0.3.0.tgz"
@@ -3399,11 +3378,6 @@
   "integrity" "sha512-s5kLOcnH0XqDO+FvuaLX8DDjZ18CGFk7VygH40QoKPUQhW4e2rvM0rwUq0t8IQDOwYSeLK01U90OjzBTme2QqA=="
   "resolved" "https://registry.npmjs.org/kind-of/-/kind-of-6.0.2.tgz"
   "version" "6.0.2"
-
-"ktx-parse@^0.4.5":
-  "integrity" "sha512-MK3FOody4TXbFf8Yqv7EBbySw7aPvEcPX++Ipt6Sox+/YMFvR5xaTyhfNSk1AEmMy+RYIw81ctN4IMxCB8OAlg=="
-  "resolved" "https://registry.npmjs.org/ktx-parse/-/ktx-parse-0.4.5.tgz"
-  "version" "0.4.5"
 
 "lcid@^2.0.0":
   "integrity" "sha512-avPEb8P8EGnwXKClwsNUgryVjllcRqtMYa49NTsbQagYuT1DcXnl1915oxWjoyGrXR6zH/Y0Zc96xWsPcoDKeA=="
@@ -4499,11 +4473,6 @@
     "object-assign" "^4.1.1"
     "react-is" "^16.8.1"
 
-"property-graph@^0.2.6":
-  "integrity" "sha512-QiBHxNZlwIarbkxsqCY688aP1ANbwtoQFBYgTZopQ0Bvku6/EYp3H4KH0ygxkhWQbJv5DEONspLy1rHi5xIycg=="
-  "resolved" "https://registry.npmjs.org/property-graph/-/property-graph-0.2.6.tgz"
-  "version" "0.2.6"
-
 "proxy-addr@~2.0.5":
   "integrity" "sha512-t/7RxHXPH6cJtP0pRG6smSr9QJidhB+3kXu0KgXnbGYMgzEnUxRQ4/LDdfOwZEMyIh3/xHb8PX3t+lfL9z+YVQ=="
   "resolved" "https://registry.npmjs.org/proxy-addr/-/proxy-addr-2.0.5.tgz"
@@ -5472,10 +5441,10 @@
     "source-map" "~0.6.1"
     "source-map-support" "~0.5.12"
 
-"three@0.94.0":
-  "integrity" "sha1-TObbfyv795wtc0RKpuPPwIoy12I= sha512-UFyqFrb/CaTAHStYaPNxNeddNo/wlApRMJK0oIWjx5WMj/xhgXWKMRuAJ+leZBIA4wgeqifrbjKiwmNiysgMLg=="
-  "resolved" "https://registry.npmjs.org/three/-/three-0.94.0.tgz"
-  "version" "0.94.0"
+"three@0.140.0":
+  "integrity" "sha512-jcHjbnYspPLDdsDQChmzyAoZ5KhJbgFk6pNGlAIc9fQMvsfPGjF5H9glrngqvb2CR/qXcClMyp5PYdF996lldA=="
+  "resolved" "https://registry.npmjs.org/three/-/three-0.140.0.tgz"
+  "version" "0.140.0"
 
 "through@~2.3.4":
   "integrity" "sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU= sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg=="
