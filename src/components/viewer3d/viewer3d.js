@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import * as Three from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import OrbitControls from './libs/orbit-controls';
 import { parseData, updateScene } from './scene-creator';
 import { disposeScene } from './three-memory-cleaner';
 import diff from 'immutablediff';

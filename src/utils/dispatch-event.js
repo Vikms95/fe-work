@@ -1,6 +1,5 @@
 export const dispatch3DZoomIn = ( canvas ) => {
   const evt = new Event( 'wheel', { bubbles: true, cancelable: true } );
-  console.log( evt );
   evt.deltaY = -240;
   canvas.dispatchEvent( evt );
 };
@@ -12,6 +11,7 @@ export const dispatch3DZoomOut = ( canvas ) => {
 export const dispatch3DMoveLeft = () => {
   const evtDown = new KeyboardEvent( 'keydown', { bubbles: true, cancelable: true, key: 'ArrowLeft', keyCode: 37 } );
   const evtUp = new KeyboardEvent( 'keyup', { bubbles: true, cancelable: true, key: 'ArrowLeft', keyCode: 37 } );
+  console.log( 'test', evtDown );
   document.dispatchEvent( evtDown );
   document.dispatchEvent( evtUp );
 };
