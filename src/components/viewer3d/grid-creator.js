@@ -6,7 +6,6 @@ import gridVerticalStreak from './grids/grid-vertical-streak';
 
 
 export default function createGrid ( state, scene ) {
-
   let gridMesh = new Three.Object3D();
   gridMesh.name = 'grid';
   let fontLoader = new FontLoader();
@@ -25,5 +24,6 @@ export default function createGrid ( state, scene ) {
   } );
 
   gridMesh.position.y = -1;
+  console.log( gridMesh );
   return gridMesh;
 }

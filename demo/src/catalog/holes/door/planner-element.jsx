@@ -99,7 +99,6 @@ export default {
   },
 
   render3D: function ( element, layer, scene ) {
-    debugger;
     let onLoadItem = ( object ) => {
       let boundingBox = new Three.Box3().setFromObject( object );
 
