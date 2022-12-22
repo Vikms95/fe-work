@@ -1,5 +1,4 @@
 import * as Three from 'three';
-import { Geometry } from 'three/examples/jsm/deprecated/Geometry.js';
 import { List } from 'immutable';
 import { COLORS } from '../../../shared-style';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
@@ -26,7 +25,7 @@ export default function ( state, width, height, grid, font ) {
     const positionNumComponent = 3;
     const positions = new Float32Array( [ i, 0, 0, i, 0, - medidaTotalRejilla ] );
 
-    geometry.addAttribute(
+    geometry.setAttribute(
       'position',
       new Three.BufferAttribute( positions, positionNumComponent )
     );

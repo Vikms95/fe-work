@@ -62,6 +62,9 @@ export default class Scene3DViewer extends React.Component {
     //RENDERER
     this.renderer.setClearColor( new Three.Color( SharedStyle.COLORS.white ) );
     this.renderer.setSize( this.width, this.height );
+    this.renderer.antialias = true;
+    this.renderer.physicallyCorrectLights = true;
+    this.renderer.outputEncoding = Three.sRGBEncoding;
 
     // LOAD DATA
     let planData = parseData( state, data, actions, this.context.catalog );
@@ -93,7 +96,7 @@ export default class Scene3DViewer extends React.Component {
 
     // Add another light
 
-    let spotLight1 = new Three.DirectionalLight( 'white', 1 );
+    let spotLight1 = new Three.DirectionalLight( 'white', 3 );
     spotLight1.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
     scene3D.add( spotLight1 );
 
@@ -167,7 +170,6 @@ export default class Scene3DViewer extends React.Component {
 
     render();
 
-    console.log( orbitController );
     this.orbitControls = orbitController;
     this.camera = camera;
     this.scene3D = scene3D;

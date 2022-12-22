@@ -24,6 +24,5 @@ export default function createGrid ( state, scene ) {
   } );
 
   gridMesh.position.y = -1;
-  console.log( gridMesh );
   return gridMesh;
 }
