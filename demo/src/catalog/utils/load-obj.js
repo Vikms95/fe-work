@@ -1,7 +1,8 @@
 import { Box3, BoxHelper } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import MTLLoader from './mtl-loader';
-import OBJLoader from './obj-loader';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+//import OBJLoader from './obj-loader';
 //import GLTFLoader from './gltf-loader';
 
 export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm, normalizeOrigin ) {

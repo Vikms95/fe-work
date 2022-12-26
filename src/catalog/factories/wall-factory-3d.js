@@ -2,14 +2,12 @@ import {
   TextureLoader,
   Mesh,
   RepeatWrapping,
-  Vector2,
   BoxGeometry,
-  BufferAttribute,
   MeshBasicMaterial,
+  Vector2,
   Group,
-  BufferGeometry
 } from 'three';
-import * as Three from 'three';
+
 import { Geometry } from 'three/examples/jsm/deprecated/Geometry.js';
 
 import ThreeBSP from '../../utils/threeCSG.es6';
@@ -33,15 +31,16 @@ const applyTexture = ( material, texture, length, height ) => {
     material.map.wrapS = RepeatWrapping;
     material.map.wrapT = RepeatWrapping;
     material.map.repeat.set( length * texture.lengthRepeatScale, height * texture.heightRepeatScale );
-    console.log( texture );
-    //if ( texture.normal ) {
-    //material.name = 'wallTexture';
-    //material.normalMap = loader.load( texture.normal.uri );
-    //material.normalScale = new Vector2( texture.normal.normalScaleX, texture.normal.normalScaleY );
-    //material.normalMap.wrapS = RepeatWrapping;
-    //material.normalMap.wrapT = RepeatWrapping;
-    //material.normalMap.repeat.set( length * texture.normal.lengthRepeatScale, height * texture.normal.heightRepeatScale );
-    //}
+
+    // TODO This conditional snippet broke the app on Three 0.140. Look for a workaround
+    //  if ( texture.normal ) {
+    //    material.name = 'wallTexture';
+    //    material.normalMap = loader.load( texture.normal.uri );
+    //    material.normalScale = new Vector2( texture.normal.normalScaleX, texture.normal.normalScaleY );
+    //    material.normalMap.wrapS = RepeatWrapping;
+    //    material.normalMap.wrapT = RepeatWrapping;
+    //    material.normalMap.repeat.set( length * texture.normal.lengthRepeatScale, height * texture.normal.heightRepeatScale );
+    //  }
   }
 };
 
@@ -69,27 +68,24 @@ export function buildWall ( element, layer, scene, textures ) {
   let distance = verticesDistance( vertex0, vertex1 );
   let halfDistance = distance / 2;
 
-  //let positionNumComponent = 3;
-  //let positions = new Float32Array( [ vertex0.x, vertex0.y, halfThickness, vertex1.x, vertex1.y, halfThickness ] );
   let soulMaterial = new MeshBasicMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } );
   let soulGeometry = new BoxGeometry( distance, height, thickness );
   soulMaterial.name = 'wallMaterial';
   soulGeometry.name = 'wallGeometry';
 
-  console.log( 'soul test', soulGeometry );
-  let soul = new Mesh( soulGeometry, soulMaterial );
-  soul.name = 'soul';
+  let soulMesh = new Mesh( soulGeometry, soulMaterial );
+  soulMesh.name = 'soul';
 
   let alpha = Math.asin( ( vertex1.y - vertex0.y ) / ( distance ) );
 
   let sinAlpha = Math.sin( alpha );
   let cosAlpha = Math.cos( alpha );
 
-  soul.position.y += height / 2;
-  soul.position.x += halfDistance * cosAlpha;
-  soul.position.z -= halfDistance * sinAlpha;
+  soulMesh.position.y += height / 2;
+  soulMesh.position.x += halfDistance * cosAlpha;
+  soulMesh.position.z -= halfDistance * sinAlpha;
 
-  soul.rotation.y = alpha;
+  soulMesh.rotation.y = alpha;
 
   element.holes.forEach( holeID => {
     let holeData = layer.holes.get( holeID );
@@ -109,11 +105,11 @@ export function buildWall ( element, layer, scene, textures ) {
 
     holeMesh.rotation.y = alpha;
 
-    let wallBSP = new ThreeBSP( soul );
+    let wallBSP = new ThreeBSP( soulMesh );
     let holeBSP = new ThreeBSP( holeMesh );
 
     let wallWithHoleBSP = wallBSP.subtract( holeBSP );
-    soul = wallWithHoleBSP.toMesh( soulMaterial );
+    soulMesh = wallWithHoleBSP.toMesh( soulMaterial );
   } );
 
 
@@ -126,14 +122,14 @@ export function buildWall ( element, layer, scene, textures ) {
   let scaleFactor = faceThickness / thickness;
   let texturedFaceDistance = halfThickness + faceDistance;
 
-  let frontFace = soul.clone();
+  let frontFace = soulMesh.clone();
   frontFace.material = frontMaterial;
   frontFace.scale.set( 1, 1, scaleFactor );
   frontFace.position.x += texturedFaceDistance * Math.cos( alpha - ( halfPI ) );
   frontFace.position.z -= texturedFaceDistance * Math.sin( alpha - ( halfPI ) );
   frontFace.name = 'frontFace';
 
-  let backFace = soul.clone();
+  let backFace = soulMesh.clone();
   backFace.material = backMaterial;
   backFace.scale.set( 1, 1, scaleFactor );
   backFace.position.x += texturedFaceDistance * Math.cos( alpha + ( halfPI ) );
@@ -141,7 +137,7 @@ export function buildWall ( element, layer, scene, textures ) {
   backFace.name = 'backFace';
 
   let merged = new Group();
-  merged.add( soul, frontFace, backFace );
+  merged.add( soulMesh, frontFace, backFace );
 
   return Promise.resolve( merged );
 }
