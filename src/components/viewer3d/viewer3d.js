@@ -12,9 +12,11 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 
-export default class Scene3DViewer extends React.Component {
+export default class Scene3DViewer extends React.Component
+{
 
-  constructor ( props ) {
+  constructor ( props )
+  {
     super( props );
     let rulerSize = 15; //px
     this.lastMousePosition = {};
@@ -28,21 +30,24 @@ export default class Scene3DViewer extends React.Component {
     this.update3DZoom = this.update3DZoom.bind( this );
   }
 
-  update3DZoom ( event ) {
+  update3DZoom ( event )
+  {
     const canvas = document.querySelector( 'canvas' );
     const isSelected = getIsElementSelected( this.props.state );
 
-    if ( !isSelected && canvas ) switch ( event.keyCode ) {
-      case 187:
-      case 107:
-        dispatch3DZoomIn( canvas ); break;
-      case 189:
-      case 109:
-        dispatch3DZoomOut( canvas ); break;
-    }
+    if ( !isSelected && canvas ) switch ( event.keyCode )
+      {
+        case 187:
+        case 107:
+          dispatch3DZoomIn( canvas ); break;
+        case 189:
+        case 109:
+          dispatch3DZoomOut( canvas ); break;
+      }
   }
 
-  componentDidMount () {
+  componentDidMount ()
+  {
     document.addEventListener( 'keydown', this.update3DZoom );
 
     let actions = {
@@ -109,25 +114,30 @@ export default class Scene3DViewer extends React.Component {
     let mouse = new Three.Vector2();
     let raycaster = new Three.Raycaster();
 
-    this.mouseDownEvent = ( event ) => {
+    this.mouseDownEvent = ( event ) =>
+    {
       this.lastMousePosition.x = event.offsetX / this.width * 2 - 1;
       this.lastMousePosition.y = -event.offsetY / this.height * 2 + 1;
     };
 
-    this.mouseUpEvent = ( event ) => {
+    this.mouseUpEvent = ( event ) =>
+    {
       event.preventDefault();
 
       mouse.x = ( event.offsetX / this.width ) * 2 - 1;
       mouse.y = -( event.offsetY / this.height ) * 2 + 1;
 
-      if ( Math.abs( mouse.x - this.lastMousePosition.x ) <= 0.02 && Math.abs( mouse.y - this.lastMousePosition.y ) <= 0.02 ) {
+      if ( Math.abs( mouse.x - this.lastMousePosition.x ) <= 0.02 && Math.abs( mouse.y - this.lastMousePosition.y ) <= 0.02 )
+      {
 
         raycaster.setFromCamera( mouse, camera );
         let intersects = raycaster.intersectObjects( toIntersect, true );
 
-        if ( intersects.length > 0 && !( isNaN( intersects[ 0 ].distance ) ) ) {
+        if ( intersects.length > 0 && !( isNaN( intersects[ 0 ].distance ) ) )
+        {
           intersects[ 0 ].object.interact && intersects[ 0 ].object.interact();
-        } else {
+        } else
+        {
           this.context.projectActions.unselectAll();
         }
       }
@@ -153,14 +163,16 @@ export default class Scene3DViewer extends React.Component {
     //spotLight1.target = spotLightTarget;
     //scene3D.add( spotLightTarget );
 
-    let render = () => {
+    let render = () =>
+    {
       orbitController.update();
       //spotLight1.position.set( camera.position.x, camera.position.y, camera.position.z );
       //spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
       camera.updateMatrix();
       camera.updateMatrixWorld();
 
-      for ( let elemID in planData.sceneGraph.LODs ) {
+      for ( let elemID in planData.sceneGraph.LODs )
+      {
         planData.sceneGraph.LODs[ elemID ].update( camera );
       }
 
@@ -176,7 +188,8 @@ export default class Scene3DViewer extends React.Component {
     this.planData = planData;
   }
 
-  componentWillUnmount () {
+  componentWillUnmount ()
+  {
     document.removeEventListener( 'keydown', this.update3DZoom );
     cancelAnimationFrame( this.renderingID );
 
@@ -196,7 +209,8 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.renderLists.dispose();
   }
 
-  componentWillReceiveProps ( nextProps ) {
+  componentWillReceiveProps ( nextProps )
+  {
     let { width, height } = nextProps;
 
     let actions = {
@@ -215,7 +229,8 @@ export default class Scene3DViewer extends React.Component {
 
     this.camera.updateProjectionMatrix();
 
-    if ( nextProps.state.scene !== this.props.state.scene ) {
+    if ( nextProps.state.scene !== this.props.state.scene )
+    {
       let changedValues = diff( this.props.state.scene, nextProps.state.scene );
       updateScene( this.planData, nextProps.state.scene, this.props.state.scene, changedValues.toJS(), actions, this.context.catalog );
     }
@@ -223,7 +238,8 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.setSize( width, height );
   }
 
-  render () {
+  render ()
+  {
     return React.createElement( 'div', { ref: 'canvasWrapper' } );
   }
 }

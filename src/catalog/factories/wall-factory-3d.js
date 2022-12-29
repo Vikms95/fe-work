@@ -33,14 +33,15 @@ const applyTexture = ( material, texture, length, height ) => {
     material.map.repeat.set( length * texture.lengthRepeatScale, height * texture.heightRepeatScale );
 
     // TODO This conditional snippet broke the app on Three 0.140. Look for a workaround
-    //  if ( texture.normal ) {
-    //    material.name = 'wallTexture';
-    //    material.normalMap = loader.load( texture.normal.uri );
-    //    material.normalScale = new Vector2( texture.normal.normalScaleX, texture.normal.normalScaleY );
-    //    material.normalMap.wrapS = RepeatWrapping;
-    //    material.normalMap.wrapT = RepeatWrapping;
-    //    material.normalMap.repeat.set( length * texture.normal.lengthRepeatScale, height * texture.normal.heightRepeatScale );
-    //  }
+    // if ( texture.normal )
+    // {
+    //   material.name = 'wallTexture';
+    //   material.normalMap = loader.load( texture.normal.uri );
+    //   material.normalScale = new Vector2( texture.normal.normalScaleX, texture.normal.normalScaleY );
+    //   material.normalMap.wrapS = RepeatWrapping;
+    //   material.normalMap.wrapT = RepeatWrapping;
+    //   material.normalMap.repeat.set( length * texture.normal.lengthRepeatScale, height * texture.normal.heightRepeatScale );
+    // }
   }
 };
 
@@ -105,11 +106,15 @@ export function buildWall ( element, layer, scene, textures ) {
 
     holeMesh.rotation.y = alpha;
 
+    console.log( 'test before', soulMesh );
+    let wallAttributes = soulMesh.geometry.parameters;
     let wallBSP = new ThreeBSP( soulMesh );
     let holeBSP = new ThreeBSP( holeMesh );
-
     let wallWithHoleBSP = wallBSP.subtract( holeBSP );
-    soulMesh = wallWithHoleBSP.toMesh( soulMaterial );
+
+    soulMesh = wallWithHoleBSP.toMesh( soulMaterial, wallAttributes );
+    console.log( 'test after', soulMesh );
+
   } );
 
 

@@ -42,14 +42,17 @@ export default class ThreeBSP {
       throw 'ThreeBSP: Given geometry is unsupported';
     }
 
+
     const uvAttribute = geometry.getAttribute( 'uv' );
     const posAttribute = geometry.getAttribute( 'position' );
     const normAttribute = geometry.getAttribute( 'normal' );
     const idx = geometry.index;
+    console.log( geometry.attributes.position.array[ idx.array[ 0 ] ] );
+    console.log( geometry.attributes.position.array[ idx.array[ 1 ] ] );
 
-    console.log( 'pos test', posAttribute );
-    console.log( 'uv test', uvAttribute );
-    console.log( 'norm test', normAttribute );
+    // console.log( 'pos test', posAttribute );
+    // console.log( 'uv test', uvAttribute );
+    // console.log( 'norm test', normAttribute );
 
     const triArray = [];
     const uvArray = [];
@@ -93,20 +96,11 @@ export default class ThreeBSP {
       normArray.push( [ norm0, norm1, norm3 ] );
     }
 
-    console.log( 'test', triArray );
-    console.log( 'test', uvArray );
-    console.log( 'test', normArray );
+    // console.log( 'test', triArray );
+    // console.log( 'test', uvArray );
+    // console.log( 'test', normArray );
 
-    // Get a list of all the faces (objects with a,b,c that hold the corresponding vertex index of the face)
     for ( i = 0, _length_i = triArray.length; i < _length_i; i++ ) {
-      // Get one face of the list
-      // For each of the three indexes in the face (do it with one first, its the same process repeated)
-      // Get the corresponding vertices with geometry.attributes.position.array[face]
-      // Get the uvs of the face, use method getUV?
-      // Get the normals of the face, use method getNormal?
-
-
-      // Each index is a Triangle
       face = triArray[ i ];
       faceVertexUvs = uvArray[ i ];
       faceVertexNormals = normArray[ i ];
@@ -133,8 +127,8 @@ export default class ThreeBSP {
       polygon.calculateProperties();
       polygons.push( polygon );
 
-      console.log( 'current poly', polygon );
-      console.log( 'current poly array ', polygons );
+      // console.log( 'current poly', polygon );
+      // console.log( 'current poly array ', polygons );
     }
 
     this.tree = new Node( polygons );
@@ -188,10 +182,10 @@ export default class ThreeBSP {
     return a;
   }
 
-  toGeometry () {
+  toGeometry ( { width, height, depth } ) {
     var i, j,
-      matrix = new THREE.Matrix4().getInverse( this.matrix ),
-      geometry = new THREE.BufferGeometry(),
+      matrix = new THREE.Matrix4().copy( this.matrix ).invert(),
+      geometry = new THREE.BoxGeometry( width, height, depth ),
       polygons = this.tree.allPolygons(),
       polygon_count = polygons.length,
       polygon, polygon_vertice_count,
@@ -199,6 +193,8 @@ export default class ThreeBSP {
       vertex_idx_a, vertex_idx_b, vertex_idx_c,
       vertex, face,
       verticeUvs;
+
+    geometry.name = 'wallGeometry';
 
     for ( i = 0; i < polygon_count; i++ ) {
       polygon = polygons[ i ];
@@ -214,50 +210,67 @@ export default class ThreeBSP {
 
         if ( typeof vertice_dict[ vertex.x + ',' + vertex.y + ',' + vertex.z ] !== 'undefined' ) {
           vertex_idx_a = vertice_dict[ vertex.x + ',' + vertex.y + ',' + vertex.z ];
-        } else {
-          geometry.vertices.push( vertex );
-          vertex_idx_a = vertice_dict[ vertex.x + ',' + vertex.y + ',' + vertex.z ] = geometry.vertices.length - 1;
+        }
+        else {
+          const positionsArray = new Float32Array( [] );
+          const positionsAttribute = new THREE.BufferAttribute( positionsArray, 3 );
+
+          geometry.setAttribute( 'position', positionsAttribute );
+          vertex_idx_a = vertice_dict[ vertex.x + ',' + vertex.y + ',' + vertex.z ] = geometry.attributes.position.count - 1;
         }
 
         vertex = polygon.vertices[ j - 1 ];
         verticeUvs.push( new THREE.Vector2( vertex.uv.x, vertex.uv.y ) );
         vertex = new THREE.Vector3( vertex.x, vertex.y, vertex.z );
         vertex.applyMatrix4( matrix );
+
         if ( typeof vertice_dict[ vertex.x + ',' + vertex.y + ',' + vertex.z ] !== 'undefined' ) {
           vertex_idx_b = vertice_dict[ vertex.x + ',' + vertex.y + ',' + vertex.z ];
-        } else {
-          geometry.vertices.push( vertex );
-          vertex_idx_b = vertice_dict[ vertex.x + ',' + vertex.y + ',' + vertex.z ] = geometry.vertices.length - 1;
+        }
+        else {
+          geometry.setAttribute( 'position', new THREE.BufferAttribute( new Float32Array( [ vertex.x, vertex.y, vertex.z ] ), 3 ) );
+          //geometry.vertices.push( vertex );
+          vertex_idx_a = vertice_dict[ vertex.x + ',' + vertex.y + ',' + vertex.z ] = geometry.attributes.position.count - 1;
         }
 
         vertex = polygon.vertices[ j ];
         verticeUvs.push( new THREE.Vector2( vertex.uv.x, vertex.uv.y ) );
         vertex = new THREE.Vector3( vertex.x, vertex.y, vertex.z );
         vertex.applyMatrix4( matrix );
+
         if ( typeof vertice_dict[ vertex.x + ',' + vertex.y + ',' + vertex.z ] !== 'undefined' ) {
           vertex_idx_c = vertice_dict[ vertex.x + ',' + vertex.y + ',' + vertex.z ];
-        } else {
-          geometry.vertices.push( vertex );
-          vertex_idx_c = vertice_dict[ vertex.x + ',' + vertex.y + ',' + vertex.z ] = geometry.vertices.length - 1;
+        }
+        else {
+          geometry.setAttribute(
+            'position',
+            new THREE.BufferAttribute(
+              new Float32Array(
+                [ vertex.x, vertex.y, vertex.z ] ), 3 ) );
+          //geometry.vertices.push( vertex );
+          vertex_idx_a = vertice_dict[ vertex.x + ',' + vertex.y + ',' + vertex.z ] = geometry.attributes.position.count - 1;
         }
 
-        face = new THREE.Face3(
+        face = new THREE.Triangle(
           vertex_idx_a,
           vertex_idx_b,
           vertex_idx_c,
           new THREE.Vector3( polygon.normal.x, polygon.normal.y, polygon.normal.z )
         );
 
-        geometry.faces.push( face );
-        geometry.faceVertexUvs[ 0 ].push( verticeUvs );
+        //Need to be set with other methods;
+
+        //geometry.faces.push( face );
+
+        //geometry.faceVertexUvs[ 0 ].push( verticeUvs );
       }
 
     }
     return geometry;
   }
 
-  toMesh ( material ) {
-    var geometry = this.toGeometry(),
+  toMesh ( material, parameters ) {
+    var geometry = this.toGeometry( parameters ),
       mesh = new THREE.Mesh( geometry, material );
 
     mesh.position.setFromMatrixPosition( this.matrix );

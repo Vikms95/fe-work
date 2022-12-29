@@ -121,7 +121,7 @@ module.exports = OrbitControls = function ( object, domElement ) {
 
     // so camera.up is the orbit axis
     let quat = new THREE.Quaternion().setFromUnitVectors( object.up, new THREE.Vector3( 0, 1, 0 ) );
-    let quatInverse = quat.clone().inverse();
+    let quatInverse = quat.clone().invert();
 
     let lastPosition = new THREE.Vector3();
     let lastQuaternion = new THREE.Quaternion();

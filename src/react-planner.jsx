@@ -1,4 +1,8 @@
-import React, { Component, useEffect, useRef, useState, useContext } from 'react';
+import React,
+{
+  Component, useEffect, useRef, useState, useContext
+}
+  from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -9,7 +13,8 @@ import actions from './actions/export';
 import { getIsElementSelected } from './selectors/selectors';
 import { objectsMap } from './utils/objects-utils';
 
-import {
+import
+{
   ToolbarComponents,
   Content,
   SidebarComponents,
@@ -45,8 +50,10 @@ const wrapperStyle = {
 };
 
 
-class ReactPlanner extends Component {
-  constructor ( props ) {
+class ReactPlanner extends Component
+{
+  constructor ( props )
+  {
     super( props );
     this.state = {
       contentW: props.width - toolbarW + 14.6,
@@ -73,7 +80,8 @@ class ReactPlanner extends Component {
     this.getState = this.getState.bind( this );
   }
 
-  getChildContext () {
+  getChildContext ()
+  {
     return {
       ...objectsMap( actions, actionNamespace => this.props[ actionNamespace ] ),
       translator: this.props.translator,
@@ -81,7 +89,8 @@ class ReactPlanner extends Component {
     };
   }
 
-  componentWillMount () {
+  componentWillMount ()
+  {
     let { store } = this.context;
     let {
       projectActions,
@@ -98,79 +107,96 @@ class ReactPlanner extends Component {
     projectActions.SetPreference( prefs, prefsInfo );
   }
 
-  componentWillReceiveProps ( nextProps ) {
+  componentWillReceiveProps ( nextProps )
+  {
     let { stateExtractor, state, projectActions, catalog } = nextProps;
     let plannerState = stateExtractor( state );
     let catalogReady = plannerState.getIn( [ 'catalog', 'ready' ] );
-    if ( !catalogReady ) {
+    if ( !catalogReady )
+    {
       projectActions.initCatalog( catalog );
     }
   }
 
 
-  getState () {
+  getState ()
+  {
     return this.props.stateExtractor( this.props.state );
   }
 
-  isElementSelected () {
+  isElementSelected ()
+  {
     const { state } = this.props;
     const plannerState = this.getState( state );
     return getIsElementSelected( plannerState );
   }
 
-  panUp ( value ) {
+  panUp ( value )
+  {
     return { ...value, f: value.f + 50 };
   }
 
-  panDown ( value ) {
+  panDown ( value )
+  {
     return { ...value, f: value.f - 50 };
   }
 
-  panLeft ( value ) {
+  panLeft ( value )
+  {
     return { ...value, e: value.e + 50 };
   }
 
-  panRight ( value ) {
+  panRight ( value )
+  {
     return { ...value, e: value.e - 50 };
   }
 
-  zoomIn () {
+  zoomIn ()
+  {
     this.refViewer.current.zoomOnViewerCenter( 1.03 );
   }
 
-  zoomOut () {
+  zoomOut ()
+  {
     this.refViewer.current.zoomOnViewerCenter( 0.97 );
   }
 
-  update2DView ( value, event ) {
+  update2DView ( value, event )
+  {
     const isKeystroke = this.getEventType( event );
     const direction = this.getEventDirection( event, isKeystroke );
 
-    if ( this.isClickWithoutSelection( direction ) ) {
+    if ( this.isClickWithoutSelection( direction ) )
+    {
       value = this.update2DViewObject( value, direction );
     }
 
     return this.update2DViewOnState( value );
   }
 
-  getEventDirection ( event, isKeyStroke ) {
+  getEventDirection ( event, isKeyStroke )
+  {
     if ( !event ) return;
     if ( isKeyStroke ) return event.key;
     return event.target.id;
   }
 
-  getEventType ( event ) {
+  getEventType ( event )
+  {
     if ( !event ) return;
     return typeof event.key === 'string';
   }
 
-  isClickWithoutSelection ( input, isKeyStroke ) {
+  isClickWithoutSelection ( input, isKeyStroke )
+  {
     const isSelected = this.isElementSelected();
     return input && !isKeyStroke && !isSelected;
   }
 
-  update2DViewObject ( value, directionPressed ) {
-    switch ( directionPressed ) {
+  update2DViewObject ( value, directionPressed )
+  {
+    switch ( directionPressed )
+    {
       case 'ArrowUp':
         return this.panUp( value );
       case 'ArrowDown':
@@ -193,14 +219,16 @@ class ReactPlanner extends Component {
     }
   }
 
-  update2DViewOnState ( value ) {
+  update2DViewOnState ( value )
+  {
     if ( !value ) return;
     this.props.projectActions.updateZoomScale( value.a );
     return this.props.viewer2DActions.updateCameraView( value );
   }
 
 
-  render () {
+  render ()
+  {
     const { update2DView } = this;
     const { width, height, state, stateExtractor, ...props } = this.props;
     const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = this.state;
@@ -262,18 +290,17 @@ class ReactPlanner extends Component {
             { ...props }
           />
 
-          {
-            this.refViewer && (
-              <Direction
-                width={ directionW }
-                state={ extractedState }
-                refViewer2D={ this.refViewer }
-                handleZoom2D={ this.handleZoom2D }
-                update2DView={ update2DView }
-                { ...props }
+          { this.refViewer && (
+            <Direction
+              width={ directionW }
+              state={ extractedState }
+              refViewer2D={ this.refViewer }
+              handleZoom2D={ this.handleZoom2D }
+              update2DView={ update2DView }
+              { ...props }
 
-              />
-            )
+            />
+          )
           }
         </div>
       </div>
@@ -325,13 +352,15 @@ ReactPlanner.defaultProps = {
 };
 
 //redux connect
-function mapStateToProps ( reduxState ) {
+function mapStateToProps ( reduxState )
+{
   return {
     state: reduxState
   };
 }
 
-function mapDispatchToProps ( dispatch ) {
+function mapDispatchToProps ( dispatch )
+{
   return objectsMap( actions, actionNamespace => bindActionCreators( actions[ actionNamespace ], dispatch ) );
 }
 
