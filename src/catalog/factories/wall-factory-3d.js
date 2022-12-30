@@ -33,16 +33,18 @@ const applyTexture = ( material, texture, length, height ) => {
     material.map.wrapS = RepeatWrapping;
     material.map.wrapT = RepeatWrapping;
     material.map.repeat.set( length * texture.lengthRepeatScale, height * texture.heightRepeatScale );
+    material.name = 'wallTexture';
 
     // TODO This conditional snippet broke the app on Three 0.140. Look for a workaround
-    // if ( texture.normal ) {
-    //   material.name = 'wallTexture';
-    //   material.normalMap = loader.load( texture.normal.uri );
-    //   material.normalScale = new Vector2( texture.normal.normalScaleX, texture.normal.normalScaleY );
-    //   material.normalMap.wrapS = RepeatWrapping;
-    //   material.normalMap.wrapT = RepeatWrapping;
-    //   material.normalMap.repeat.set( length * texture.normal.lengthRepeatScale, height * texture.normal.heightRepeatScale );
-    // }
+    if ( texture.normal ) {
+      console.log( 'test', texture.normal.uri );
+
+      // material.normalMap = loader.load( texture.normal.uri );
+      // material.normalScale = new Vector2( texture.normal.normalScaleX, texture.normal.normalScaleY );
+      // material.normalMap.wrapS = RepeatWrapping;
+      // material.normalMap.wrapT = RepeatWrapping;
+      // material.normalMap.repeat.set( length * texture.normal.lengthRepeatScale, height * texture.normal.heightRepeatScale );
+    }
   }
 };
 
@@ -76,7 +78,7 @@ export function buildWall ( element, layer, scene, textures ) {
   soulGeometry.name = 'wallGeometry';
 
   let soulMesh = new Mesh( soulGeometry, soulMaterial );
-  soulMesh.name = 'soul';
+  soulMesh.name = 'soulMesh';
 
   let alpha = Math.asin( ( vertex1.y - vertex0.y ) / ( distance ) );
 
@@ -118,6 +120,7 @@ export function buildWall ( element, layer, scene, textures ) {
 
     soulMesh = CSG.toMesh( wallWithHoleCSG, soulMesh.matrix );
     soulMesh.material = soulMaterial;
+    soulMesh.name = 'soulMesh';
 
   } );
 
@@ -152,13 +155,13 @@ export function buildWall ( element, layer, scene, textures ) {
 
 export function updatedWall ( element, layer, scene, textures, mesh, oldElement, differences, selfDestroy, selfBuild ) {
   let noPerf = () => { selfDestroy(); return selfBuild(); };
-  let soul = mesh.getObjectByName( 'soul' );
+  let soulMesh = mesh.getObjectByName( 'soulMesh' );
   let frontFace = mesh.getObjectByName( 'frontFace' );
   let backFace = mesh.getObjectByName( 'backFace' );
 
   if ( differences[ 0 ] == 'selected' ) {
-    soul.material = new MeshBasicMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } );
-    soul.material.name = 'updatedSoulMaterial';
+    soulMesh.material = new MeshBasicMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } );
+    soulMesh.material.name = 'updatedSoulMaterial';
   }
   else if ( differences[ 0 ] == 'properties' ) {
 
@@ -167,19 +170,19 @@ export function updatedWall ( element, layer, scene, textures, mesh, oldElement,
       let oldThickness = oldElement.getIn( [ 'properties', 'thickness', 'length' ] );
       let halfNewThickness = newThickness / 2;
       let texturedFaceDistance = halfNewThickness + 1;
-      let originalThickness = oldThickness / soul.scale.z;
-      let alpha = soul.rotation.y;
+      let originalThickness = oldThickness / soulMesh.scale.z;
+      let alpha = soulMesh.rotation.y;
 
       let xTemp = texturedFaceDistance * Math.cos( alpha - ( halfPI ) );
       let zTemp = texturedFaceDistance * Math.sin( alpha - ( halfPI ) );
 
-      soul.scale.set( 1, 1, ( newThickness / originalThickness ) );
+      soulMesh.scale.set( 1, 1, ( newThickness / originalThickness ) );
 
-      frontFace.position.x = soul.position.x + ( xTemp );
-      frontFace.position.z = soul.position.z + ( zTemp );
+      frontFace.position.x = soulMesh.position.x + ( xTemp );
+      frontFace.position.z = soulMesh.position.z + ( zTemp );
 
-      backFace.position.x = soul.position.x - ( xTemp );
-      backFace.position.z = soul.position.z - ( zTemp );
+      backFace.position.x = soulMesh.position.x - ( xTemp );
+      backFace.position.z = soulMesh.position.z - ( zTemp );
     }
     else return noPerf();
   }
