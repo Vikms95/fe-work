@@ -6,11 +6,13 @@ import {
   MeshBasicMaterial,
   Vector2,
   Group,
+  Matrix4
 } from 'three';
 
 import { Geometry } from 'three/examples/jsm/deprecated/Geometry.js';
 
-import ThreeBSP from '../../utils/threeCSG.es6';
+
+import CSG from '../../utils/csg-three';
 import { verticesDistance } from '../../utils/geometry';
 import * as SharedStyle from '../../shared-style';
 
@@ -33,8 +35,7 @@ const applyTexture = ( material, texture, length, height ) => {
     material.map.repeat.set( length * texture.lengthRepeatScale, height * texture.heightRepeatScale );
 
     // TODO This conditional snippet broke the app on Three 0.140. Look for a workaround
-    // if ( texture.normal )
-    // {
+    // if ( texture.normal ) {
     //   material.name = 'wallTexture';
     //   material.normalMap = loader.load( texture.normal.uri );
     //   material.normalScale = new Vector2( texture.normal.normalScaleX, texture.normal.normalScaleY );
@@ -106,17 +107,19 @@ export function buildWall ( element, layer, scene, textures ) {
 
     holeMesh.rotation.y = alpha;
 
-    console.log( 'test before', soulMesh );
-    let wallAttributes = soulMesh.geometry.parameters;
-    let wallBSP = new ThreeBSP( soulMesh );
-    let holeBSP = new ThreeBSP( holeMesh );
-    let wallWithHoleBSP = wallBSP.subtract( holeBSP );
+    soulMesh.updateMatrix();
+    holeMesh.updateMatrix();
 
-    soulMesh = wallWithHoleBSP.toMesh( soulMaterial, wallAttributes );
-    console.log( 'test after', soulMesh );
+    let wallCSG = CSG.fromMesh( soulMesh );
+    let holeCSG = CSG.fromMesh( holeMesh );
+    let wallWithHoleCSG = wallCSG.subtract( holeCSG );
+
+    soulMesh.updateMatrix();
+
+    soulMesh = CSG.toMesh( wallWithHoleCSG, soulMesh.matrix );
+    soulMesh.material = soulMaterial;
 
   } );
-
 
   let frontMaterial = new MeshBasicMaterial();
   let backMaterial = new MeshBasicMaterial();
