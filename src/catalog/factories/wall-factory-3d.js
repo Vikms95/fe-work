@@ -4,13 +4,8 @@ import {
   RepeatWrapping,
   BoxGeometry,
   MeshBasicMaterial,
-  Vector2,
   Group,
-  Matrix4
 } from 'three';
-
-import { Geometry } from 'three/examples/jsm/deprecated/Geometry.js';
-
 
 import CSG from '../../utils/csg-three';
 import { verticesDistance } from '../../utils/geometry';

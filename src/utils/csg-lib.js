@@ -2,9 +2,10 @@ class CSG {
   constructor () {
     this.polygons = [];
   }
+
   clone () {
-    let csg = new CSG();
-    csg.polygons = this.polygons.map( p => p.clone() );
+    const csg = new CSG();
+    csg.polygons = this.polygons.map( polygon => polygon.clone() );
     return csg;
   }
 
@@ -13,15 +14,17 @@ class CSG {
   }
 
   union ( csg ) {
-    let a = new Node( this.clone().polygons );
-    let b = new Node( csg.clone().polygons );
-    a.clipTo( b );
-    b.clipTo( a );
-    b.invert();
-    b.clipTo( a );
-    b.invert();
-    a.build( b.allPolygons() );
-    return CSG.fromPolygons( a.allPolygons() );
+    const nodeA = new Node( this.clone().polygons );
+    const nodeB = new Node( csg.clone().polygons );
+
+    nodeA.clipTo( nodeB );
+    nodeB.clipTo( nodeA );
+    nodeB.invert();
+    nodeB.clipTo( nodeA );
+    nodeB.invert();
+    nodeA.build( nodeB.allPolygons() );
+
+    return CSG.fromPolygons( nodeA.allPolygons() );
   }
 
   subtract ( csg ) {
@@ -39,31 +42,35 @@ class CSG {
   }
 
   intersect ( csg ) {
-    let a = new Node( this.clone().polygons );
-    let b = new Node( csg.clone().polygons );
-    a.invert();
-    b.clipTo( a );
-    b.invert();
-    a.clipTo( b );
-    b.clipTo( a );
-    a.build( b.allPolygons() );
-    a.invert();
-    return CSG.fromPolygons( a.allPolygons() );
+    const nodeA = new Node( this.clone().polygons );
+    const nodeB = new Node( csg.clone().polygons );
+
+    nodeA.invert();
+    nodeB.clipTo( nodeA );
+    nodeB.invert();
+    nodeA.clipTo( nodeB );
+    nodeB.clipTo( nodeA );
+    nodeA.build( nodeB.allPolygons() );
+    nodeA.invert();
+
+    return CSG.fromPolygons( nodeA.allPolygons() );
   }
 
   // Return a new CSG solid with solid and empty space switched. This solid is
   // not modified.
   inverse () {
-    let csg = this.clone();
-    csg.polygons.forEach( p => p.flip() );
+    const csg = this.clone();
+    csg.polygons.forEach( polygon => polygon.flip() );
+
     return csg;
   }
 }
 
 // Construct a CSG solid from a list of `Polygon` instances.
 CSG.fromPolygons = function ( polygons ) {
-  let csg = new CSG();
+  const csg = new CSG();
   csg.polygons = polygons;
+
   return csg;
 };
 
@@ -83,57 +90,68 @@ class Vector {
     this.y = y;
     this.z = z;
   }
+
   copy ( v ) {
     this.x = v.x;
     this.y = v.y;
     this.z = v.z;
     return this;
   }
+
   clone () {
     return new Vector( this.x, this.y, this.z );
   }
+
   negate () {
     this.x *= -1;
     this.y *= -1;
     this.z *= -1;
     return this;
   }
+
   add ( a ) {
     this.x += a.x;
     this.y += a.y;
     this.z += a.z;
     return this;
   }
+
   sub ( a ) {
     this.x -= a.x;
     this.y -= a.y;
     this.z -= a.z;
     return this;
   }
+
   times ( a ) {
     this.x *= a;
     this.y *= a;
     this.z *= a;
     return this;
   }
+
   dividedBy ( a ) {
     this.x /= a;
     this.y /= a;
     this.z /= a;
     return this;
   }
+
   lerp ( a, t ) {
-    return this.add( tv0.copy( a ).sub( this ).times( t ) );
+    return this.add( temporaryVector0.copy( a ).sub( this ).times( t ) );
   }
+
   unit () {
     return this.dividedBy( this.length() );
   }
+
   length () {
     return Math.sqrt( ( this.x ** 2 ) + ( this.y ** 2 ) + ( this.z ** 2 ) );
   }
   normalize () {
     return this.unit();
   }
+
   cross ( b ) {
     let a = this;
     const ax = a.x, ay = a.y, az = a.z;
@@ -145,14 +163,15 @@ class Vector {
 
     return this;
   }
+
   dot ( b ) {
     return ( this.x * b.x ) + ( this.y * b.y ) + ( this.z * b.z );
   }
 }
 
 //Temporaries used to avoid internal allocation..
-let tv0 = new Vector();
-let tv1 = new Vector();
+let temporaryVector0 = new Vector();
+let temporaryVector1 = new Vector();
 
 
 // # class Vertex
@@ -166,7 +185,6 @@ let tv1 = new Vector();
 // is not used anywhere else.
 
 class Vertex {
-
   constructor ( pos, normal, uv, color ) {
     this.pos = new Vector().copy( pos );
     this.normal = new Vector().copy( normal );
@@ -188,7 +206,11 @@ class Vertex {
   // interpolating all properties using a parameter of `t`. Subclasses should
   // override this to interpolate additional properties.
   interpolate ( other, t ) {
-    return new Vertex( this.pos.clone().lerp( other.pos, t ), this.normal.clone().lerp( other.normal, t ), this.uv && other.uv && this.uv.clone().lerp( other.uv, t ), this.color && other.color && this.color.clone().lerp( other.color, t ) );
+    return new Vertex(
+      this.pos.clone().lerp( other.pos, t ),
+      this.normal.clone().lerp( other.normal, t ),
+      this.uv && other.uv && this.uv.clone().lerp( other.uv, t ),
+      this.color && other.color && this.color.clone().lerp( other.color, t ) );
   }
 }
 ;
@@ -224,11 +246,13 @@ class Plane {
 
     // Classify each point as well as the entire polygon into one of the above
     // four classes.
+    const types = [];
     let polygonType = 0;
-    let types = [];
+
     for ( let i = 0; i < polygon.vertices.length; i++ ) {
       let t = this.normal.dot( polygon.vertices[ i ].pos ) - this.w;
-      let type = ( t < -Plane.EPSILON ) ? BACK : ( t > Plane.EPSILON ) ? FRONT : COPLANAR;
+      const type = ( t < -Plane.EPSILON ) ? BACK : ( t > Plane.EPSILON ) ? FRONT : COPLANAR;
+
       polygonType |= type;
       types.push( type );
     }
@@ -238,36 +262,51 @@ class Plane {
       case COPLANAR:
         ( this.normal.dot( polygon.plane.normal ) > 0 ? coplanarFront : coplanarBack ).push( polygon );
         break;
+
       case FRONT:
         front.push( polygon );
         break;
+
       case BACK:
         back.push( polygon );
         break;
+
       case SPANNING:
-        let f = []
-          , b = [];
+        let f = [];
+        let b = [];
+
         for ( let i = 0; i < polygon.vertices.length; i++ ) {
-          let j = ( i + 1 ) % polygon.vertices.length;
-          let ti = types[ i ]
-            , tj = types[ j ];
-          let vi = polygon.vertices[ i ]
-            , vj = polygon.vertices[ j ];
-          if ( ti != BACK )
+          const j = ( i + 1 ) % polygon.vertices.length;
+          const ti = types[ i ];
+          const tj = types[ j ];
+          const vi = polygon.vertices[ i ];
+          const vj = polygon.vertices[ j ];
+
+          if ( ti != BACK ) {
             f.push( vi );
-          if ( ti != FRONT )
+          }
+
+          if ( ti != FRONT ) {
             b.push( ti != BACK ? vi.clone() : vi );
+          }
+
           if ( ( ti | tj ) == SPANNING ) {
-            let t = ( this.w - this.normal.dot( vi.pos ) ) / this.normal.dot( tv0.copy( vj.pos ).sub( vi.pos ) );
-            let v = vi.interpolate( vj, t );
+            const t = ( this.w - this.normal.dot( vi.pos ) ) / this.normal.dot( temporaryVector0.copy( vj.pos ).sub( vi.pos ) );
+            const v = vi.interpolate( vj, t );
+
             f.push( v );
             b.push( v.clone() );
           }
         }
-        if ( f.length >= 3 )
+
+        if ( f.length >= 3 ) {
           front.push( new Polygon( f, polygon.shared ) );
-        if ( b.length >= 3 )
+        }
+
+        if ( b.length >= 3 ) {
           back.push( new Polygon( b, polygon.shared ) );
+        }
+
         break;
     }
   }
@@ -279,7 +318,7 @@ class Plane {
 Plane.EPSILON = 1e-5;
 
 Plane.fromPoints = function ( a, b, c ) {
-  let n = tv0.copy( b ).sub( a ).cross( tv1.copy( c ).sub( a ) ).normalize();
+  let n = temporaryVector0.copy( b ).sub( a ).cross( temporaryVector1.copy( c ).sub( a ) ).normalize();
   return new Plane( n.clone(), n.dot( a ) );
 };
 
@@ -418,7 +457,11 @@ class Node {
 
 // Inflate/deserialize a vanilla struct into a CSG structure webworker.
 CSG.fromJSON = function ( json ) {
-  return CSG.fromPolygons( json.polygons.map( p => new Polygon( p.vertices.map( v => new Vertex( v.pos, v.normal, v.uv ) ), p.shared ) ) );
+  return CSG.fromPolygons( json.polygons.map( polygon => {
+    new Polygon( polygon.vertices.map( vertex => {
+      new Vertex( vertex.pos, vertex.normal, vertex.uv );
+    } ), polygon.shared );
+  } ) );
 };
 
 export { CSG, Vertex, Vector, Polygon, Plane };
