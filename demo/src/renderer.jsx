@@ -12,9 +12,9 @@ import MyCatalog from './catalog/mycatalog';
 import ToolbarScreenshotButton from './ui/toolbar-screenshot-button';
 
 import {
+  ReactPlanner,
   Models as PlannerModels,
   reducer as PlannerReducer,
-  ReactPlanner,
   Plugins as PlannerPlugins,
 } from 'react-planner'; //react-planner
 

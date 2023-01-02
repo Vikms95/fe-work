@@ -286,6 +286,10 @@ export default class FormNumberInput extends Component {
       this.context.linesActions.cacheFondo( inputFondo );
     };
 
+    const isElementLine = () => (
+      this.props.sourceElement.get( 'prototype' ) === 'lines'
+    );
+
     const saveFn = ( e, keyCode ) => {
       e.stopPropagation();
       if ( this.state.showedValue === null ) return;
@@ -299,16 +303,16 @@ export default class FormNumberInput extends Component {
           ? parseFloat( this.state.showedValue )
           : 0;
 
-        if ( this.props.sourceElement.get( 'prototype' ) === 'lines' ) {
+        if ( isElementLine() ) {
           cacheAttributes();
         }
 
         onChange( {
           target: {
+            isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER,
             value: ( attributeName === 'angulo' )
               ? savedValue
-              : convertMeasureToOriginal( savedValue, this.props.unit ),
-            isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER
+              : convertMeasureToOriginal( savedValue, this.props.unit )
           }
         } );
       };

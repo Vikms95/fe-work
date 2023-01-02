@@ -117,13 +117,14 @@ export default function Viewer2D (
     if ( !userZoom || !isFirstRender ) return;
 
     const windowWidthRatio = window.innerWidth / 1000;
+    const windowHeigthRatio = window.innerHeight / 1000;
     const finalZoom = constants.BASE_ZOOM / userZoom;
 
 
     refViewer2D.current.setPointOnViewerCenter(
       550, // initial width
-      565.8, // initial height  465.8
-      finalZoom * windowWidthRatio // same zoom output for all monitor sizes
+      568, // initial height  465.8
+      finalZoom * windowWidthRatio * windowHeigthRatio // same zoom output for all monitor sizes
     );
 
     setIsFirstRender( false );
@@ -400,6 +401,7 @@ export default function Viewer2D (
 
       <div>
         <div>
+          {/*//TODO Arreglar duplicado de HTML con un HOC*/ }
           <ReactSVGPanZoom
             ref={ refViewer2D }
             className='ReactSVGPanZoom'
