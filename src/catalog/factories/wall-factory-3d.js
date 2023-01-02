@@ -5,6 +5,7 @@ import {
   BoxGeometry,
   MeshBasicMaterial,
   Group,
+  Vector2
 } from 'three';
 
 import CSG from '../../utils/csg-three';
@@ -30,16 +31,14 @@ const applyTexture = ( material, texture, length, height ) => {
     material.map.repeat.set( length * texture.lengthRepeatScale, height * texture.heightRepeatScale );
     material.name = 'wallTexture';
 
-    // TODO This conditional snippet broke the app on Three 0.140. Look for a workaround
-    if ( texture.normal ) {
-      console.log( 'test', texture.normal.uri );
-
-      // material.normalMap = loader.load( texture.normal.uri );
-      // material.normalScale = new Vector2( texture.normal.normalScaleX, texture.normal.normalScaleY );
-      // material.normalMap.wrapS = RepeatWrapping;
-      // material.normalMap.wrapT = RepeatWrapping;
-      // material.normalMap.repeat.set( length * texture.normal.lengthRepeatScale, height * texture.normal.heightRepeatScale );
-    }
+    // TODO This snippet breaks when 3D view is loaded
+    //  if ( texture.normal ) {
+    //     material.normalMap = loader.load( texture.normal.uri );
+    //     material.normalScale = new Vector2( texture.normal.normalScaleX, texture.normal.normalScaleY );
+    //     material.normalMap.wrapS = RepeatWrapping;
+    //     material.normalMap.wrapT = RepeatWrapping;
+    //     material.normalMap.repeat.set( length * texture.normal.lengthRepeatScale, height * texture.normal.heightRepeatScale );
+    //   }
   }
 };
 

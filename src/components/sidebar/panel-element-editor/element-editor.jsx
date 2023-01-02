@@ -73,8 +73,8 @@ export default class ElementEditor extends Component {
     let selectedLayer = scene.getIn( [ 'layers', scene.get( 'selectedLayer' ) ] );
     let selected = selectedLayer.getIn( [ prototype, id ] );
 
-    // TODO Figure out what's the logic behind checking whether the
-    // layer passed as props is different from the selected ones
+    /* TODO Figure out what's the logic behind checking whether the
+     layer passed as props is different from the selected ones */
     if ( selectedLayer.hashCode() !== layer.hashCode() ) {
       this.setState( {
         attributesFormData: this.initAttrData( element, layer, state ),
@@ -105,7 +105,7 @@ export default class ElementEditor extends Component {
         let _length = convert( distance ).from( this.context.catalog.unit ).to( _unit );
         let _angleLine = Line.getAngleV0_pcl( layer, element );
 
-        //TODO TEST When pressing enter and creating a new line
+        //TODO test when pressing enter and creating a new line
         // use the cached angulo for this new line
         if ( distance === 0 && getCacheAngulo( this.props.state ) ) {
           _angleLine.angle = getCacheAngulo( this.props.state );

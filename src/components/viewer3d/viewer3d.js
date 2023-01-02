@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import * as Three from 'three';
+import * as THREE from 'three';
 import OrbitControls from './libs/orbit-controls';
 import { parseData, updateScene } from './scene-creator';
 import { disposeScene } from './three-memory-cleaner';
@@ -23,7 +23,7 @@ export default class Scene3DViewer extends React.Component {
     this.height = props.height - rulerSize;
     this.renderingID = 0;
 
-    this.renderer = window.__threeRenderer || new Three.WebGLRenderer( { preserveDrawingBuffer: true } );
+    this.renderer = window.__threeRenderer || new THREE.WebGLRenderer( { preserveDrawingBuffer: true } );
     window.__threeRenderer = this.renderer;
     this.update3DZoom = this.update3DZoom.bind( this );
   }
@@ -57,14 +57,14 @@ export default class Scene3DViewer extends React.Component {
 
     let data = state.scene;
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
-    let scene3D = new Three.Scene();
+    let scene3D = new THREE.Scene();
 
     //RENDERER
-    this.renderer.setClearColor( new Three.Color( SharedStyle.COLORS.white ) );
+    this.renderer.setClearColor( new THREE.Color( SharedStyle.COLORS.white ) );
     this.renderer.setSize( this.width, this.height );
-    //this.renderer.antialias = true;
-    //this.renderer.physicallyCorrectLights = true;
-    //this.renderer.outputEncoding = Three.sRGBEncoding;
+    this.renderer.antialias = true;
+    // this.renderer.physicallyCorrectLights = true;
+    window.createImageBitmap = undefined;
 
     // LOAD DATA
     let planData = parseData( state, data, actions, this.context.catalog );
@@ -74,7 +74,7 @@ export default class Scene3DViewer extends React.Component {
     scene3D.add( planData.grid );
 
     let aspectRatio = this.width / this.height;
-    let camera = new Three.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
+    let camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
 
     scene3D.add( camera );
 
@@ -84,19 +84,19 @@ export default class Scene3DViewer extends React.Component {
     let cameraPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 2;
 
     camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
-    camera.up = new Three.Vector3( 0, 1, 0 );
+    camera.up = new THREE.Vector3( 0, 1, 0 );
 
     // HELPER AXIS
     //let axisHelper = new Three.AxisHelper( 100 );
     //scene3D.add( axisHelper );
 
     // LIGHT
-    let light = new Three.AmbientLight( 0xafafaf ); // soft white light
+    let light = new THREE.AmbientLight( 0xafafaf, 0.5 ); // soft white light
     scene3D.add( light );
 
     // Add another light
 
-    let spotLight1 = new Three.DirectionalLight( 'white', 0.5 );
+    let spotLight1 = new THREE.DirectionalLight( 'white', 0.5 );
     spotLight1.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
     scene3D.add( spotLight1 );
 
@@ -106,8 +106,8 @@ export default class Scene3DViewer extends React.Component {
 
     // OBJECT PICKING
     let toIntersect = [ planData.plan ];
-    let mouse = new Three.Vector2();
-    let raycaster = new Three.Raycaster();
+    let mouse = new THREE.Vector2();
+    let raycaster = new THREE.Raycaster();
 
     this.mouseDownEvent = ( event ) => {
       this.lastMousePosition.x = event.offsetX / this.width * 2 - 1;
@@ -143,7 +143,7 @@ export default class Scene3DViewer extends React.Component {
     // create orbit controls
     let orbitController = new OrbitControls( camera, this.renderer.domElement );
 
-    let spotLightTarget = new Three.Object3D();
+    let spotLightTarget = new THREE.Object3D();
 
     spotLightTarget.name = 'spotLightTarget';
 
