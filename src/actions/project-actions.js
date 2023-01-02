@@ -160,6 +160,7 @@ export function setLinesAttributes ( linesAttributes ) {
     attributes.setIn( [ 'vertexTwo', 'x' ], parseFloat( linesAttributes.getIn( [ 'vertexTwo', 'x' ] ) ) );
     attributes.setIn( [ 'vertexTwo', 'y' ], parseFloat( linesAttributes.getIn( [ 'vertexTwo', 'y' ] ) ) );
   } );
+
   return {
     type: SET_LINES_ATTRIBUTES,
     linesAttributes

@@ -18,7 +18,6 @@ import {
 } from '../../selectors/selectors';
 import { toFixedFloat } from '../../utils/math';
 import { GeometryUtils } from '../../utils/export';
-import * as convert from 'convert-units';
 
 
 const STYLE_INPUT = {
@@ -64,6 +63,7 @@ export default class FormNumberInput extends Component {
     this.isCachedAnguloWhileDrawing = this.isCachedAnguloWhileDrawing.bind( this );
     this.isEmptyInputAndSingleSelection = this.isEmptyInputAndSingleSelection.bind( this );
     this.isInputAnguloAndSingleSelection = this.isInputAnguloAndSingleSelection.bind( this );
+    this.isInputAnguloAndMultipleSelection = this.isInputAnguloAndMultipleSelection.bind( this );
     this.isSingleSelectionOrInvalidElement = this.isSingleSelectionOrInvalidElement.bind( this );
   }
 
@@ -87,6 +87,10 @@ export default class FormNumberInput extends Component {
     return this.props.attributeName === 'angulo' && !isMultipleSelection();
   }
 
+  isInputAnguloAndMultipleSelection () {
+    return this.props.attributeName === 'angulo' && isMultipleSelection();
+  }
+
   isElementsOfSamePrototype ( element ) {
     if ( this.props.sourceElement ) {
       return element[ 0 ] === this.props.sourceElement.get( 'prototype' );
@@ -98,6 +102,7 @@ export default class FormNumberInput extends Component {
   }
 
   isEmptyInputAndSingleSelection () {
+    console.log( "checking if null" );
     return this.state.showedValue === null && !isMultipleSelection( this.props.stateRedux );
   }
 
@@ -152,6 +157,7 @@ export default class FormNumberInput extends Component {
   }
 
   componentDidMount () {
+    console.log( 'mounted' );
     if ( this.isLengthInputWhileDrawing() ) {
       this.setState( { focus: true } );
       this.state.inputElement.focus();
@@ -177,6 +183,10 @@ export default class FormNumberInput extends Component {
   }
 
   componentWillUnmount () {
+    console.log( 'unmounted' );
+    // if(this.isEmptyInputAndSingleSelection()) {
+
+    // }
     this.setState( { showedValue: this.props.value } );
     document.removeEventListener( 'mousemove', this.resetAngleInput );
   };
@@ -196,6 +206,7 @@ export default class FormNumberInput extends Component {
   }
 
   componentWillReceiveProps ( nextProps ) {
+    console.log( 'test' );
     if ( this.isDifferentPropsValue( nextProps ) || this.isEmptyInputAndSingleSelection() ) {
       this.setState( { showedValue: nextProps.value } );
     }
@@ -293,6 +304,7 @@ export default class FormNumberInput extends Component {
     const saveFn = ( e, keyCode ) => {
       e.stopPropagation();
       if ( this.state.showedValue === null ) return;
+      if ( this.isInputAnguloAndMultipleSelection() ) return;
 
       if ( this.state.valid ) {
         let savedValue;
@@ -303,6 +315,7 @@ export default class FormNumberInput extends Component {
           ? parseFloat( this.state.showedValue )
           : 0;
 
+        //FIXME Multiple selection check was put as a test, not debugged
         if ( isElementLine() ) {
           cacheAttributes();
         }
@@ -344,7 +357,6 @@ export default class FormNumberInput extends Component {
       let v_b = layer.vertices.get( sourceElement.vertices.get( 1 ) );
 
       let distance = GeometryUtils.pointsDistance( v_a.x, v_a.y, v_b.x, v_b.y );
-      console.log( 'test distance after dragging vertex', distance );
 
     };
 

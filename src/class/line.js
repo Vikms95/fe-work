@@ -36,7 +36,8 @@ import {
   getPrefsFondo,
   setCacheAlto,
   setCacheFondo,
-  setCacheAngulo
+  setCacheAngulo,
+  isMultipleSelection
 } from '../selectors/selectors';
 
 const cthicknessDefault = 20;
@@ -86,6 +87,7 @@ class Line {
     let line01ID = v.lines.find( id => id != lineID );
     return line01ID;
   }
+
   static getLines0_1_pcl ( layer, line ) {
     let v2First = line.v2First || false;
     let v0ID = line.vertices.get( !v2First ? 0 : 1 );
@@ -139,6 +141,7 @@ class Line {
       angle: Math.round( angle_u * 180 / Math.PI )
     };
   }
+
   static getAngleRadV0ByAngle_pcl ( layer, line, angleDegree ) {
     let lineIDV0 = Line.getLine2IDV0_pcl( layer, line );
     let angleRad = angleDegree * Math.PI / 180;
@@ -161,9 +164,6 @@ class Line {
   }
 
   static getAngleAndArcL11L20_pcl ( layer, line, dist ) {
-    // BORRAR, NULL CHECK SOLO PARA DEPURAR
-    if ( !line ) return null;
-
     let vertices = layer.vertices;
     let v2First1 = line.v2First || false;
     let v10ID = line.vertices.get( !v2First1 ? 0 : 1 );
@@ -174,9 +174,6 @@ class Line {
 
     if ( !line2ID ) return null;
     let line2 = layer.lines.get( line2ID );
-
-    // BORRAR, NULL CHECK SOLO PARA DEPURAR
-    if ( !line2 ) return null;
 
     let v2First2 = line2.v2First || false;
     let v20ID = line2.vertices.get( !v2First2 ? 0 : 1 );
@@ -1046,20 +1043,28 @@ class Line {
     return this.updateProperties( state, layerID, lineID, fromJS( properties ) );
   }
 
-  // lineLenth
   static setAttributes ( state, layerID, lineID, lineAttributes ) {
     let lAttr = lineAttributes.toJS();
 
-    let { lineLength, lineAngle, lineAlto, isEndLine } = lAttr;
+    let {
+      lineLength,
+      lineAngle,
+      lineAlto,
+      isEndLine
+    } = lAttr;
+
+    console.log( 'test', lineAngle );
+
 
     delete lAttr[ 'vertexOne' ];
     delete lAttr[ 'vertexTwo' ];
     delete lAttr[ 'lineLength' ];
-    delete lAttr[ 'lineAngle' ];
     delete lAttr[ 'lineAlto' ];
     delete lAttr[ 'lineAngleRad' ];
     delete lAttr[ 'isEndLine' ];
+    delete lAttr[ 'lineAngle' ];
 
+    // If multi selection, get the angle of each line and keep it as is
     state = state
       .mergeIn( [ 'scene', 'layers', layerID, 'lines', lineID ], fromJS( lAttr ) )
       //  .mergeIn(['scene', 'layers', layerID, 'vertices', vertexOne.id], { x: vertexOne.x, y: vertexOne.y })
@@ -1083,6 +1088,7 @@ class Line {
 
     if ( v0id == v1id ) {
       let { updatedState: stateV0, vertex: v1new } = Vertex.add( state, layerID, x1new, y1new, 'lines', lineID );
+
       state = stateV0;
       state = state.setIn( [ 'scene', 'layers', layerID, 'lines', lineID, 'vertices', !v2First ? 1 : 0 ], v1new.id );
     }

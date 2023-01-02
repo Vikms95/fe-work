@@ -9,6 +9,7 @@ import { Layer as LayerModel /*, Perimeter as PerimeterModel */ } from '../model
 import line from './line';
 import vertex from './vertex';
 import { func } from 'prop-types';
+import { getLayerValue, isMultipleSelection } from '../selectors/selectors';
 
 const sameSet = ( set1, set2 ) => set1.size === set2.size && set1.isSuperset( set2 ) && set1.isSubset( set2 );
 const someList = ( list1, list2 ) => list1.some( e => list2.includes( e ) );
@@ -43,7 +44,7 @@ class Layer {
     if ( elementPrototype !== 'vertices' ) {
 
       state = state.updateIn( [ 'scene', 'selectedElementsHistory' ], ( history ) => history.clear() );
-      state = state.updateIn( [ 'scene', 'selectedElementsHistory' ], ( history ) => fromJS(history).push( elementID ) );
+      state = state.updateIn( [ 'scene', 'selectedElementsHistory' ], ( history ) => fromJS( history ).push( elementID ) );
     }
 
     return { updatedState: state };
@@ -476,8 +477,23 @@ class Layer {
 
   static setAttributesOnSelected ( state, layerID, attributes ) {
     let selected = state.getIn( [ 'scene', 'layers', layerID, 'selected' ] );
+    let layer = getLayerValue( state );
 
-    selected.lines.forEach( lineID => state = Line.setAttributes( state, layerID, lineID, attributes ).updatedState );
+    selected.lines.forEach( lineID => {
+      // Do not modify the angle attribute if multiple selection
+      if ( isMultipleSelection( state ) ) {
+        const line = state.getIn( [ 'scene', 'layers', layerID, 'lines', lineID ] );
+        const { angle: angleValueToKeep } = Line.getAngleV0_pcl( layer, line );
+        attributes = attributes.set( 'lineAngle', angleValueToKeep );
+      }
+
+      console.log( 'test', attributes );
+
+
+      return state = Line.setAttributes( state, layerID, lineID, attributes ).updatedState;
+
+    } );
+
     selected.holes.forEach( holeID => state = Hole.setAttributes( state, layerID, holeID, attributes ).updatedState );
     selected.items.forEach( itemID => state = Item.setAttributes( state, layerID, itemID, attributes ).updatedState );
     //selected.areas.forEach(areaID => state = Area.setAttributes( state, layerID, areaID, attributes ).updatedState);
