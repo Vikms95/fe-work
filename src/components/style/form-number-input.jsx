@@ -43,7 +43,7 @@ export default class FormNumberInput extends Component {
       focus: false,
       valid: true,
       showedValue: props.value,
-      inputElement: null,
+      inputElement: null
     };
 
     this.cursor = {
@@ -56,6 +56,7 @@ export default class FormNumberInput extends Component {
     this.getAttribute = this.getAttribute.bind( this );
     this.resetAngleInput = this.resetAngleInput.bind( this );
     this.isDifferentPropsValue = this.isDifferentPropsValue.bind( this );
+    this.resetInputOnSelection = this.resetInputOnSelection.bind( this );
     this.areArrayValuesDifferent = this.areArrayValuesDifferent.bind( this );
     this.getSelectedPropertyValues = this.getSelectedPropertyValues.bind( this );
     this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
@@ -102,14 +103,12 @@ export default class FormNumberInput extends Component {
   }
 
   isEmptyInputAndSingleSelection () {
-    console.log( "checking if null" );
-    return this.state.showedValue === null && !isMultipleSelection( this.props.stateRedux );
+    return this.state.showedValue === 'null' && !this.state.isMultiSelection;
   }
 
   areArrayValuesDifferent ( values ) {
     return !values.every( el => el === values[ 0 ] );
   }
-
 
   resetAngleInput () {
     if ( this.state.showedValue !== 0 )
@@ -157,19 +156,15 @@ export default class FormNumberInput extends Component {
   }
 
   componentDidMount () {
-    console.log( 'mounted' );
     if ( this.isLengthInputWhileDrawing() ) {
       this.setState( { focus: true } );
       this.state.inputElement.focus();
       this.state.inputElement.select();
     }
 
-    if ( this.isInputAnguloAndSingleSelection() ) {
-
-      if ( this.isCachedAnguloWhileDrawing() ) {
-        this.setState( { showedValue: parseFloat( getCacheAngulo( this.props.stateRedux ) ) } );
-        document.addEventListener( 'mousemove', this.resetAngleInput );
-      }
+    if ( this.isCachedAnguloWhileDrawing() && this.isInputAnguloAndSingleSelection() ) {
+      this.setState( { showedValue: parseFloat( getCacheAngulo( this.props.stateRedux ) ) } );
+      document.addEventListener( 'mousemove', this.resetAngleInput );
     }
 
     if ( this.isSingleSelectionOrInvalidElement() ) return;
@@ -179,16 +174,22 @@ export default class FormNumberInput extends Component {
 
     if ( this.areArrayValuesDifferent( values ) ) {
       this.setState( { showedValue: null } );
+      window.addEventListener( 'click', this.resetInputOnSelection );
     };
   }
 
-  componentWillUnmount () {
-    console.log( 'unmounted' );
-    // if(this.isEmptyInputAndSingleSelection()) {
+  resetInputOnSelection () {
+    this.forceUpdate();
+    console.log( 'test', this.props.stateRedux );
+    if ( !isMultipleSelection( this.props.stateRedux ) ) {
+      this.setState( { showedValue: this.props.value } );
+    }
+  }
 
-    // }
+  componentWillUnmount () {
     this.setState( { showedValue: this.props.value } );
     document.removeEventListener( 'mousemove', this.resetAngleInput );
+    // window.removeEventListener( 'click', this.resetInputOnSelection );
   };
 
   componentDidUpdate () {
@@ -206,11 +207,11 @@ export default class FormNumberInput extends Component {
   }
 
   componentWillReceiveProps ( nextProps ) {
-    console.log( 'test' );
     if ( this.isDifferentPropsValue( nextProps ) || this.isEmptyInputAndSingleSelection() ) {
       this.setState( { showedValue: nextProps.value } );
     }
   }
+
 
   render () {
     const {
@@ -303,32 +304,28 @@ export default class FormNumberInput extends Component {
 
     const saveFn = ( e, keyCode ) => {
       e.stopPropagation();
+      if ( this.state.valid === false ) return;
       if ( this.state.showedValue === null ) return;
-      if ( this.isInputAnguloAndMultipleSelection() ) return;
 
-      if ( this.state.valid ) {
-        let savedValue;
+      let savedValue;
 
-        savedValue = (
-          this.state.showedValue !== '' &&
-          this.state.showedValue !== '-' )
+      savedValue =
+        ( this.state.showedValue !== '' && this.state.showedValue !== '-' )
           ? parseFloat( this.state.showedValue )
           : 0;
 
-        //FIXME Multiple selection check was put as a test, not debugged
-        if ( isElementLine() ) {
-          cacheAttributes();
-        }
+      if ( isElementLine() ) {
+        cacheAttributes();
+      }
 
-        onChange( {
-          target: {
-            isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER,
-            value: ( attributeName === 'angulo' )
-              ? savedValue
-              : convertMeasureToOriginal( savedValue, this.props.unit )
-          }
-        } );
-      };
+      onChange( {
+        target: {
+          isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER,
+          value: ( attributeName === 'angulo' )
+            ? savedValue
+            : convertMeasureToOriginal( savedValue, this.props.unit )
+        }
+      } );
     };
 
     const onArrrowPress = ( e, keyCode ) => {

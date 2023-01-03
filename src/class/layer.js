@@ -480,15 +480,13 @@ class Layer {
     let layer = getLayerValue( state );
 
     selected.lines.forEach( lineID => {
+
       // Do not modify the angle attribute if multiple selection
       if ( isMultipleSelection( state ) ) {
         const line = state.getIn( [ 'scene', 'layers', layerID, 'lines', lineID ] );
         const { angle: angleValueToKeep } = Line.getAngleV0_pcl( layer, line );
         attributes = attributes.set( 'lineAngle', angleValueToKeep );
       }
-
-      console.log( 'test', attributes );
-
 
       return state = Line.setAttributes( state, layerID, lineID, attributes ).updatedState;
 

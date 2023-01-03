@@ -1053,9 +1053,6 @@ class Line {
       isEndLine
     } = lAttr;
 
-    console.log( 'test', lineAngle );
-
-
     delete lAttr[ 'vertexOne' ];
     delete lAttr[ 'vertexTwo' ];
     delete lAttr[ 'lineLength' ];
@@ -1064,7 +1061,6 @@ class Line {
     delete lAttr[ 'isEndLine' ];
     delete lAttr[ 'lineAngle' ];
 
-    // If multi selection, get the angle of each line and keep it as is
     state = state
       .mergeIn( [ 'scene', 'layers', layerID, 'lines', lineID ], fromJS( lAttr ) )
       //  .mergeIn(['scene', 'layers', layerID, 'vertices', vertexOne.id], { x: vertexOne.x, y: vertexOne.y })

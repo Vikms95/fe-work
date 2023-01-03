@@ -57,15 +57,18 @@ export default class ElementEditor extends Component {
     this.updateProperty = this.updateProperty.bind( this );
   }
 
-  shouldComponentUpdate ( nextProps, nextState ) {
-    return (
-      this.state.isSelectAcabado !== nextState.isSelectAcabado ||
-      this.props.state.isElementSelected !== nextProps.state.isElementSelected ||
-      this.state.attributesFormData.hashCode() !== nextState.attributesFormData.hashCode() ||
-      this.state.propertiesFormData.hashCode() !== nextState.propertiesFormData.hashCode() ||
-      this.props.state.clipboardProperties.hashCode() !== nextProps.state.clipboardProperties.hashCode()
-    );
-  }
+  //FIXME this has been commented bc it was preventing the lower components from getting    
+  //the updated state
+
+  // shouldComponentUpdate ( nextProps, nextState ) {
+  //   return (
+  //     this.state.isSelectAcabado !== nextState.isSelectAcabado ||
+  //     this.props.state.isElementSelected !== nextProps.state.isElementSelected ||
+  //     this.state.attributesFormData.hashCode() !== nextState.attributesFormData.hashCode() ||
+  //     this.state.propertiesFormData.hashCode() !== nextState.propertiesFormData.hashCode() ||
+  //     this.props.state.clipboardProperties.hashCode() !== nextProps.state.clipboardProperties.hashCode()
+  //   );
+  // }
 
   componentWillReceiveProps ( { element, layer, state } ) {
     let { prototype, id } = element;
