@@ -46,7 +46,7 @@ export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm
   } );
 }
 
-export function loadGLTF ( input, tocm, normalizeOrigin ) {
+export function loadGLTF ( input, tocm, normalizeOrigin, scale ) {
   let gltfLoader = new GLTFLoader();
 
   return new Promise( ( resolve, reject ) => {
@@ -57,6 +57,9 @@ export function loadGLTF ( input, tocm, normalizeOrigin ) {
         // esta en mm
         object.scale.set( 10, 10, 10 );
       }
+
+      if ( scale && scale.x, scale.y, scale.z )
+        object.scale.set( scale.x, scale.y, scale.z );
 
       if ( input.rotation ) {
         if ( input.rotation.x )

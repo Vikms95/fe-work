@@ -3,72 +3,92 @@ import { BoxHelper } from 'three';
 let cacheLoadingObjects = new Map();
 let cacheLoadedObjects = new Map();
 
-export function getObject3d(name, loadObj) {
-  let object = cacheLoadedObjects.get(name);
+export function getObject3d ( name, loadObj ) {
+  let object = cacheLoadedObjects.get( name );
 
-  if (object)
-    return Promise.resolve(object.clone());
+  if ( object )
+    return Promise.resolve( object.clone() );
 
-  let promise = cacheLoadingObjects.get(name);
+  let promise = cacheLoadingObjects.get( name );
 
-  if (promise == null) {
-    promise = loadObj().then(object => {
-      cacheLoadedObjects.set(name, object);
-      cacheLoadingObjects.delete(name);
+  if ( promise == null ) {
+    promise = loadObj().then( object => {
+      cacheLoadedObjects.set( name, object );
+      cacheLoadingObjects.delete( name );
 
       return object.clone();
-    });
+    } );
   }
   else
-    promise = promise.then(object => object.clone());
+    promise = promise.then( object => object.clone() );
 
-  cacheLoadingObjects.set(name, promise);
+  cacheLoadingObjects.set( name, promise );
 
   return promise;
 }
 
-export function selectedObject3d(object, selected) {
-  object.traverse((child) => {
-    if (child instanceof BoxHelper) {
+export function selectedObject3d ( object, selected ) {
+  object.traverse( ( child ) => {
+    if ( child instanceof BoxHelper ) {
       child.visible = selected;
     }
-  });
+  } );
 }
 
-export function getMorphObject3d(object, element) {
+export function getMorphObject3d ( object, element ) {
   let morph = [];
 
-  object.traverse(o => {
-    if (o.isMesh && o.morphTargetInfluences) {
-      Object.keys(o.morphTargetDictionary).forEach(key => {
-        if (key.includes("ANCHO") || key.includes("width")) {
-          if (element.properties.has('width') && element.width && element.width.min && element.width.max)
-            morph.push({
+  object.traverse( o => {
+    if ( o.isMesh && o.morphTargetInfluences ) {
+      Object.keys( o.morphTargetDictionary ).forEach( key => {
+        if ( key.includes( "ANCHO" ) || key.includes( "width" ) ) {
+          if ( element.properties.has( 'width' ) && element.width && element.width.min && element.width.max )
+            morph.push( {
               mesh: o,
-              idx: o.morphTargetDictionary[key],
-              length: element.properties.get('width').get('length'),
+              idx: o.morphTargetDictionary[ key ],
+              length: element.properties.get( 'width' ).get( 'length' ),
               min: element.width.min,
               max: element.width.max
-            });
+            } );
         }
-      });
+        if ( key.includes( "ALTO" ) || key.includes( "height" ) ) {
+          if ( element.properties.has( 'height' ) && element.width && element.width.min && element.width.max )
+            morph.push( {
+              mesh: o,
+              idx: o.morphTargetDictionary[ key ],
+              length: element.properties.get( 'height' ).get( 'length' ),
+              min: element.height.min,
+              max: element.height.max
+            } );
+        }
+        if ( key.includes( "FONDO" ) || key.includes( "depth" ) ) {
+          if ( element.properties.has( 'depth' ) && element.width && element.width.min && element.width.max )
+            morph.push( {
+              mesh: o,
+              idx: o.morphTargetDictionary[ key ],
+              length: element.properties.get( 'depth' ).get( 'length' ),
+              min: element.depth.min,
+              max: element.depth.max
+            } );
+        }
+      } );
     }
-  });
+  } );
 
   return morph;
 }
 
-export function sizeParametricObject3d(object, element) {
-  let morph = getMorphObject3d(object, element);
+export function sizeParametricObject3d ( object, element ) {
+  let morph = getMorphObject3d( object, element );
   let hasMorph = false;
 
-  morph.forEach(m => {
-    if (m.length >= m.min && m.length <= m.max) {
-      let value = (m.length - m.min) / (m.max - m.min);
-      m.mesh.morphTargetInfluences[m.idx] = value;
+  morph.forEach( m => {
+    if ( m.length >= m.min && m.length <= m.max ) {
+      let value = ( m.length - m.min ) / ( m.max - m.min );
+      m.mesh.morphTargetInfluences[ m.idx ] = value;
       hasMorph = true;
     }
-  });
+  } );
 
   return hasMorph;
 }

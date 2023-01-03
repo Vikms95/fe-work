@@ -7,6 +7,7 @@ import * as history from './history';
 import * as ObjectUtils from './objects-utils';
 import IDBroker from './id-broker';
 import NameGenerator from './name-generator';
+import * as Box8P from './box8p';
 
 export {
   GeometryUtils,
@@ -17,7 +18,8 @@ export {
   history,
   IDBroker,
   NameGenerator,
-  ObjectUtils
+  ObjectUtils,
+  Box8P
 };
 
 export default {
@@ -29,5 +31,6 @@ export default {
   history,
   IDBroker,
   NameGenerator,
-  ObjectUtils
+  ObjectUtils,
+  Box8P
 };

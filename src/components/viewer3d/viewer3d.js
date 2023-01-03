@@ -103,7 +103,7 @@ export default class Scene3DViewer extends React.Component {
     //scene3D.add( axisHelper );
 
     // LIGHT
-    let light = new THREE.AmbientLight( 0xafafaf, 0.5 ); // soft white light
+    let light = new THREE.AmbientLight( 0xafafaf ); // soft white light
     scene3D.add( light );
 
     // Add another light

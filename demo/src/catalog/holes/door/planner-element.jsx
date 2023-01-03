@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Three from 'three';
-import { loadObjWithMaterial } from '../../utils/load-obj';
+import { loadObjWithMaterial, loadGLTF } from '../../utils/load-obj';
+import { getObject3d, selectedObject3d, sizeParametricObject3d } from '../../utils/objects3d-utils';
 import path from 'path';
 
 let cached3DDoor = null;
@@ -10,6 +11,33 @@ const STYLE_HOLE_SELECTED = { stroke: '#0096fd', strokeWidth: '4px', fill: '#009
 const STYLE_ARC_BASE = { stroke: '#000', strokeWidth: '3px', strokeDasharray: '5,5', fill: 'none' };
 const STYLE_ARC_SELECTED = { stroke: '#0096fd', strokeWidth: '4px', strokeDasharray: '5,5', fill: 'none', cursor: 'move' };
 const EPSILON = 3;
+
+const glb = require( './Puerta morph.glb' );
+
+// Escala : { 0.001, 0.001, 0.001 }
+// Ancho : { 0.8m - 1.4m }
+const width =
+{
+  min: 0.8 * 0.001 * 100,  // cm
+  max: 1.4 * 0.001 * 100  // cm
+};
+// Fondo : { 0.145m - 0.594m }
+const depth =
+{
+  min: 0.145 * 0.001 * 100,  // cm
+  max: 0.594 * 0.001 * 100  // cm
+};
+// Alto : { 1.8m - 3m }
+const height =
+{
+  min: 1.8 * 0.001 * 100,  // cm
+  max: 3 * 0.001 * 100  // cm
+};
+
+const glbInfo =
+{
+  gltfFile: glb, width, height, depth/*, rotation: { y: -90 }*/
+};
 
 export default {
   name: 'door',
@@ -99,44 +127,73 @@ export default {
   },
 
   render3D: function ( element, layer, scene ) {
-    let onLoadItem = ( object ) => {
-      let boundingBox = new Three.Box3().setFromObject( object );
+    let loadItem = () =>
+      loadGLTF( glbInfo, true, false, { x: 100, y: 100, z: 100 } );
 
-      let initialWidth = boundingBox.max.x - boundingBox.min.x;
-      let initialHeight = boundingBox.max.y - boundingBox.min.y;
-      let initialThickness = boundingBox.max.z - boundingBox.min.z;
+    return getObject3d( element.name, loadItem ).then( object => {
+      /*
+      let obj = new Object3D();
+      let bbox = new BoxHelper(object, 0x99c3fb);
 
-      if ( element.selected ) {
-        let box = new Three.BoxHelper( object, 0x99c3fb );
-        box.material.linewidth = 2;
-        box.material.depthTest = false;
-        box.renderOrder = 1000;
-        object.add( box );
-      }
+      bbox.material.linewidth = 100;
+      bbox.renderOrder = 1000;
+      bbox.material.depthTest = false;
+      obj.add(bbox);
+      obj.add(object);
+      //object.add(bbox);
 
-      let width = element.properties.get( 'width' ).get( 'length' );
-      let height = element.properties.get( 'height' ).get( 'length' );
-      let thickness = element.properties.get( 'thickness' ).get( 'length' );
+      //selectedObject3d(object, element.selected);
+      //sizeParametricObject3d(object, glbInfo, element);
 
-      object.scale.set( width / initialWidth, height / initialHeight,
-        thickness / initialThickness );
+      return obj;
+      */
+
+      sizeParametricObject3d( object, element );
 
       return object;
-    };
 
-    if ( cached3DDoor ) {
-      return Promise.resolve( onLoadItem( cached3DDoor.clone() ) );
+    } );
+  },
+
+  updateRender3D: ( element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild ) => {
+
+    let noPerf = () => { selfDestroy(); return selfBuild(); };
+
+    /*
+    if (differences.indexOf('selected') !== -1) {
+      if (element.selected) {
+        let bbox = new BoxHelper(mesh, 0x99c3fb);
+        bbox.material.linewidth = 5;
+        bbox.renderOrder = 1000;
+        bbox.material.depthTest = false;
+        mesh.add(bbox);
+
+        return Promise.resolve(mesh);
+      }
+    }
+    */
+
+    /*
+    if (differences.indexOf('selected') !== -1) {
+      //mesh.traverse((child) => {
+      //  if (child instanceof BoxHelper) {
+      //    child.visible = element.selected;
+      //  }
+      //});
+      selectedObject3d(mesh, element.selected);
+
+      return Promise.resolve(mesh);
+    }
+    */
+
+    if ( differences.indexOf( 'rotation' ) !== -1 ) {
+      mesh.rotation.y = element.rotation * Math.PI / 180;
+      return Promise.resolve( mesh );
     }
 
-    let mtl = require( './door.mtl' );
-    let obj = require( './door.obj' );
-    let img = require( './texture.jpg' );
+    if ( sizeParametricObject3d( mesh, element ) )
+      return Promise.resolve( mesh );
 
-    return loadObjWithMaterial( mtl, obj, path.dirname( img ) + '/' )
-      .then( object => {
-        cached3DDoor = object;
-        return onLoadItem( cached3DDoor.clone() );
-      } );
-
+    return noPerf();
   }
 };
