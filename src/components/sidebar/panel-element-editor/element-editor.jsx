@@ -344,10 +344,6 @@ export default class ElementEditor extends Component {
 
   }
 
-  //reset () {
-  //  this.setState( { propertiesFormData: this.initPropData( this.props.element, this.props.layer, this.props.state ) } );
-  //}
-
 
   // Here the values taken from the form data are saved in state
   save ( { propertiesFormData, attributesFormData, isEnter } ) {
@@ -378,6 +374,10 @@ export default class ElementEditor extends Component {
     if ( this.props.state.mode == MODE_DRAWING_LINE && isEnter )
       this.context.projectActions.next_Drawing_Item();
   }
+
+  //reset () {
+  //  this.setState( { propertiesFormData: this.initPropData( this.props.element, this.props.layer, this.props.state ) } );
+  //}
 
   //copyProperties ( properties ) {
   //  this.context.projectActions.copyProperties( properties );

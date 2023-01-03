@@ -11,6 +11,12 @@ import diff from 'immutablediff';
 import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
+import nx from './1/nx.png';
+import ny from './1/ny.png';
+import nz from './1/nz.png';
+import px from './1/px.png';
+import py from './1/py.png';
+import pz from './1/pz.png';
 
 export default class Scene3DViewer extends React.Component {
 
@@ -62,13 +68,19 @@ export default class Scene3DViewer extends React.Component {
     //RENDERER
     this.renderer.setClearColor( new THREE.Color( SharedStyle.COLORS.white ) );
     this.renderer.setSize( this.width, this.height );
-    this.renderer.antialias = true;
+    // this.renderer.antialias = true;
     // this.renderer.physicallyCorrectLights = true;
-    window.createImageBitmap = undefined;
+
 
     // LOAD DATA
     let planData = parseData( state, data, actions, this.context.catalog );
 
+    const cubeTextureLoader = new THREE.CubeTextureLoader();
+    const envMap = cubeTextureLoader.load( [
+      nx, ny, nz, px, py, pz
+    ] );
+
+    scene3D.environment = envMap;
     scene3D.add( planData.plan );
 
     scene3D.add( planData.grid );

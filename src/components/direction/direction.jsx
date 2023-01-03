@@ -106,6 +106,7 @@ export default class Direction extends Component {
 
   moveLeftViewer3D () {
     const selected = getIsElementSelected( this.props.state );
+    console.log( 'test', selected );
     if ( !selected ) dispatch3DMoveLeft();
   }
 

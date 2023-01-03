@@ -110,7 +110,7 @@ export default {
 
       return obj;
       */
-
+      console.log( 'test', object );
       sizeParametricObject3d( object, element );
 
       return object;

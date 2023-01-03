@@ -85,7 +85,6 @@ export const isMultipleSelection = ( state ) => {
 
   }, 0 );
 
-  console.log( 'test', elementsSelectedAmount );
   return elementsSelectedAmount > 1;
 };
 
