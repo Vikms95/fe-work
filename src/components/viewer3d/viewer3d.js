@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import * as THREE from 'three';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
 import OrbitControls from './libs/orbit-controls';
 import { parseData, updateScene } from './scene-creator';
 import { disposeScene } from './three-memory-cleaner';
@@ -68,21 +69,25 @@ export default class Scene3DViewer extends React.Component {
     //RENDERER
     this.renderer.setClearColor( new THREE.Color( SharedStyle.COLORS.white ) );
     this.renderer.setSize( this.width, this.height );
-    // this.renderer.antialias = true;
+    this.renderer.antialias = true;
     // this.renderer.physicallyCorrectLights = true;
 
+    // Add an environment with a set of PNGs
+    // const cubeTextureLoader = new THREE.CubeTextureLoader();
+    // const envMap = cubeTextureLoader.load( [
+    //   nx, ny, nz, px, py, pz
+    // ] );
+
+    // scene3D.environment = envMap;
+
+    // Add a generated environment map with a PMREMGenerator
+    const environment = new RoomEnvironment();
+    const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+    scene3D.environment = pmremGenerator.fromScene( environment, 0.04 ).texture;
 
     // LOAD DATA
     let planData = parseData( state, data, actions, this.context.catalog );
-
-    const cubeTextureLoader = new THREE.CubeTextureLoader();
-    const envMap = cubeTextureLoader.load( [
-      nx, ny, nz, px, py, pz
-    ] );
-
-    scene3D.environment = envMap;
     scene3D.add( planData.plan );
-
     scene3D.add( planData.grid );
 
     let aspectRatio = this.width / this.height;
