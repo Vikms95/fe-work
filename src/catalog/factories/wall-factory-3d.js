@@ -46,13 +46,13 @@ const applyTexture = ( material, texture, length, height ) => {
     material.name = 'wallTexture';
 
     // TODO This snippet breaks when 3D view is loaded
-    //  if ( texture.normal ) {
-    //     material.normalMap = loader.load( texture.normal.uri );
-    //     material.normalScale = new Vector2( texture.normal.normalScaleX, texture.normal.normalScaleY );
-    //     material.normalMap.wrapS = RepeatWrapping;
-    //     material.normalMap.wrapT = RepeatWrapping;
-    //     material.normalMap.repeat.set( length * texture.normal.lengthRepeatScale, height * texture.normal.heightRepeatScale );
-    //   }
+    // if ( texture.normal ) {
+    //   material.normalMap = loader.load( texture.normal.uri );
+    //   material.normalScale = new Vector2( texture.normal.normalScaleX, texture.normal.normalScaleY );
+    //   material.normalMap.wrapS = RepeatWrapping;
+    //   material.normalMap.wrapT = RepeatWrapping;
+    //   material.normalMap.repeat.set( length * texture.normal.lengthRepeatScale, height * texture.normal.heightRepeatScale );
+    // }
   }
 };
 

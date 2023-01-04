@@ -58,7 +58,7 @@ export function loadGLTF ( input, tocm, normalizeOrigin, scale ) {
         object.scale.set( 10, 10, 10 );
       }
 
-      if ( scale && scale.x, scale.y, scale.z )
+      if ( scale )
         object.scale.set( scale.x, scale.y, scale.z );
 
       if ( input.rotation ) {
