@@ -2,6 +2,7 @@ import {
   Shape,
   MeshPhongMaterial,
   ShapeGeometry,
+  BufferGeometry,
   Box3,
   TextureLoader,
   BackSide,
@@ -11,7 +12,8 @@ import {
   MeshBasicMaterial,
   RepeatWrapping,
   Vector2,
-  DoubleSide
+  DoubleSide,
+  BufferAttribute
 } from 'three';
 import * as SharedStyle from '../../shared-style';
 
@@ -54,21 +56,57 @@ const assignUVs = ( geometry ) => {
   let offset = new Vector2( 0 - min.x, 0 - min.y );
   let range = new Vector2( max.x - min.x, max.y - min.y );
 
-  geometry.faceVertexUvs[ 0 ] = geometry.faces.map( ( face ) => {
+  // New way of assigning UVs
+  // Returns an array of three Vector2 based on the 3 vertices of each face
+  const indexCount = geometry.index.count; // this is the amount of faces
+  const indexAttr = geometry.index;
+  const positionCount = geometry.getAttribute( 'position' ).count;
+  const positionAttr = geometry.getAttribute( 'position' );
+  const uvAttr = geometry.getAttribute( 'uv' );
 
-    let v1 = geometry.vertices[ face.a ];
-    let v2 = geometry.vertices[ face.b ];
-    let v3 = geometry.vertices[ face.c ];
+  // Get the positions and assign them as UV
+  for ( let i = 0; i < indexCount; i = +3 ) {
+    //Get the 3 vertex indices
+    const a = indexAttr.getX( i );
+    const b = indexAttr.getX( i + 1 );
+    const c = indexAttr.getX( i + 2 );
 
-    return [
-      new Vector2( ( v1.x + offset.x ) / range.x, ( v1.y + offset.y ) / range.y ),
-      new Vector2( ( v2.x + offset.x ) / range.x, ( v2.y + offset.y ) / range.y ),
-      new Vector2( ( v3.x + offset.x ) / range.x, ( v3.y + offset.y ) / range.y )
-    ];
+    //Get the values from positions attribute based on the indexes
+    const v1 = new Vector2();
+    const v2 = new Vector2();
+    const v3 = new Vector2();
 
-  } );
+    v1.fromBufferAttribute( positionAttr, a );
+    v2.fromBufferAttribute( positionAttr, b );
+    v3.fromBufferAttribute( positionAttr, c );
 
+    const uvArray = new Float32Array( [
+      ( v1.x + offset.x ) / range.x, ( v1.y + offset.y ) / range.y,
+      ( v2.x + offset.x ) / range.x, ( v2.y + offset.y ) / range.y,
+      ( v3.x + offset.x ) / range.x, ( v3.y + offset.y ) / range.y
+    ] );
+
+    const itemSize = 2;
+    const uvBufferAttribute = new BufferAttribute( uvArray, itemSize );
+    geometry.setAttribute( 'uv', uvBufferAttribute );
+  }
   geometry.uvsNeedUpdate = true;
+
+  // Forma antigua de actualizar UV - dejar comentado de momento
+  // geometry.faceVertexUvs[ 0 ] = geometry.faces.map( ( face ) => {
+
+  //   let v1 = geometry.vertices[ face.a ];
+  //   let v2 = geometry.vertices[ face.b ];
+  //   let v3 = geometry.vertices[ face.c ];
+
+  //   return [
+  //     new Vector2( ( v1.x + offset.x ) / range.x, ( v1.y + offset.y ) / range.y ),
+  //     new Vector2( ( v2.x + offset.x ) / range.x, ( v2.y + offset.y ) / range.y ),
+  //     new Vector2( ( v3.x + offset.x ) / range.x, ( v3.y + offset.y ) / range.y )
+  //   ];
+
+  // } );
+
 };
 
 export function createArea ( element, layer, scene, textures ) {
@@ -89,19 +127,22 @@ export function createArea ( element, layer, scene, textures ) {
 
   let shape = new Shape();
   shape.moveTo( vertices[ 0 ].x, vertices[ 0 ].y );
+
   for ( let i = 1; i < vertices.length; i++ ) {
     shape.lineTo( vertices[ i ].x, vertices[ i ].y );
   }
 
-  let areaMaterial = new MeshPhongMaterial( { side: DoubleSide, color } );
+  let areaMaterial = new MeshBasicMaterial( { side: DoubleSide, color } );
 
   /* Create holes for the area */
   element.holes.forEach( holeID => {
     let holeCoords = [];
+
     layer.getIn( [ 'areas', holeID, 'vertices' ] ).forEach( vertexID => {
       let { x, y } = layer.getIn( [ 'vertices', vertexID ] );
       holeCoords.push( [ x, y ] );
     } );
+
     holeCoords = holeCoords.reverse();
     let holeShape = createShape( holeCoords );
     shape.holes.push( holeShape );
@@ -109,8 +150,11 @@ export function createArea ( element, layer, scene, textures ) {
 
   let shapeGeometry = new ShapeGeometry( shape );
 
+
   // Comentado de momento para que compile, usa código de Three antiguo y da error
-  // assignUVs(shapeGeometry);
+  console.log( 'test before assigning uv', shapeGeometry );
+  assignUVs( shapeGeometry );
+  console.log( 'test after assigning uv', shapeGeometry );
 
   let boundingBox = new Box3().setFromObject( new Mesh( shapeGeometry, new MeshBasicMaterial() ) );
 
@@ -155,8 +199,10 @@ export function updatedArea ( element, layer, scene, textures, mesh, oldElement,
 const createShape = ( shapeCoords ) => {
   let shape = new Shape();
   shape.moveTo( shapeCoords[ 0 ][ 0 ], shapeCoords[ 0 ][ 1 ] );
+
   for ( let i = 1; i < shapeCoords.length; i++ ) {
     shape.lineTo( shapeCoords[ i ][ 0 ], shapeCoords[ i ][ 1 ] );
   }
+
   return shape;
 };

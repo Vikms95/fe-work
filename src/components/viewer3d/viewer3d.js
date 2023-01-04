@@ -111,7 +111,7 @@ export default class Scene3DViewer extends React.Component {
     let light = new THREE.AmbientLight( 0xafafaf ); // soft white light
     scene3D.add( light );
 
-    // Add another light
+    // // Add another light
 
     let spotLight1 = new THREE.DirectionalLight( 'white', 0.5 );
     spotLight1.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
@@ -167,12 +167,12 @@ export default class Scene3DViewer extends React.Component {
     // Sets spotlight position to the target of orbitControll
     spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
 
-    spotLight1.target = spotLightTarget;
+    // spotLight1.target = spotLightTarget;
     scene3D.add( spotLightTarget );
 
     let render = () => {
       orbitController.update();
-      spotLight1.position.set( camera.position.x, camera.position.y, camera.position.z );
+      // spotLight1.position.set( camera.position.x, camera.position.y, camera.position.z );
       spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
       camera.updateMatrix();
       camera.updateMatrixWorld();

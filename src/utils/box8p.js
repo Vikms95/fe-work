@@ -111,7 +111,6 @@ export function buildBox8P ( p0, p1, p2, p3, p4, p5, p6, p7, mat ) {
   //buffer.setAttribute('normal', new Float32BufferAttribute(normals, 3));
   buffer.setAttribute( 'uv', new Float32BufferAttribute( uvs, 2 ) );
   buffer.computeVertexNormals();
-  console.log( 'test', new Mesh( buffer, mat ) );
 
 
   return new Mesh( buffer, mat );
