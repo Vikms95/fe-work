@@ -150,11 +150,7 @@ export function createArea ( element, layer, scene, textures ) {
 
   let shapeGeometry = new ShapeGeometry( shape );
 
-
-  // Comentado de momento para que compile, usa código de Three antiguo y da error
-  console.log( 'test before assigning uv', shapeGeometry );
   assignUVs( shapeGeometry );
-  console.log( 'test after assigning uv', shapeGeometry );
 
   let boundingBox = new Box3().setFromObject( new Mesh( shapeGeometry, new MeshBasicMaterial() ) );
 

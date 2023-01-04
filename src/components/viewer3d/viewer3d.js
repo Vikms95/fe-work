@@ -108,14 +108,14 @@ export default class Scene3DViewer extends React.Component {
     //scene3D.add( axisHelper );
 
     // LIGHT
-    let light = new THREE.AmbientLight( 0xafafaf ); // soft white light
-    scene3D.add( light );
+    // let light = new THREE.AmbientLight( 0xafafaf ); // soft white light
+    // scene3D.add( light );
 
     // // Add another light
 
-    let spotLight1 = new THREE.DirectionalLight( 'white', 0.5 );
-    spotLight1.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
-    scene3D.add( spotLight1 );
+    // let spotLight1 = new THREE.DirectionalLight( 'white', 0.5 );
+    // spotLight1.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
+    // scene3D.add( spotLight1 );
 
     // Light Helper
     //const spotLightHelper = new Three.SpotLightHelper( spotLight1 );
