@@ -22,7 +22,7 @@ const height = 50;  // cm
 
 const glbInfo =
 {
-  gltfFile: glb, width, height, depth, rotation: { y: -90 }
+  gltfFile: glb, width, height, depth, rotation: { y: -90 }, tocm: true, normalizeOrigin: false
 }
 
 export default {
@@ -101,7 +101,7 @@ export default {
 
   render3D: function (element, layer, scene) {
     let loadItem = () =>
-      loadGLTF(glbInfo, true, false);
+      loadGLTF(glbInfo);
 
     return getObject3d(element.name, loadItem).then(object => {
       /*

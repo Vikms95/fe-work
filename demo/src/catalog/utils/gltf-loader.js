@@ -2251,7 +2251,7 @@ GLTFLoader = ( function () {
       if ( !threeAttributeName ) continue;
       if ( threeAttributeName in geometry.attributes ) continue;
 
-      geometry.addAttribute( threeAttributeName, bufferAttribute );
+      geometry.setAttribute( threeAttributeName, bufferAttribute );
 
     }
 
@@ -2377,7 +2377,7 @@ GLTFLoader = ( function () {
           geometry.name = baseGeometry.name;
           geometry.userData = baseGeometry.userData;
 
-          for ( var key in baseGeometry.attributes ) geometry.addAttribute( key, baseGeometry.attributes[ key ] );
+          for ( var key in baseGeometry.attributes ) geometry.setAttribute( key, baseGeometry.attributes[ key ] );
           for ( var key in baseGeometry.morphAttributes ) geometry.morphAttributes[ key ] = baseGeometry.morphAttributes[ key ];
 
           var indices = [];
@@ -2640,7 +2640,7 @@ GLTFLoader = ( function () {
             if ( material.aoMap && geometry.attributes.uv2 === undefined && geometry.attributes.uv !== undefined ) {
 
               console.log( 'THREE.GLTFLoader: Duplicating UVs to support aoMap.' );
-              geometry.addAttribute( 'uv2', new THREE.BufferAttribute( geometry.attributes.uv.array, 2 ) );
+              geometry.setAttribute( 'uv2', new THREE.BufferAttribute( geometry.attributes.uv.array, 2 ) );
 
             }
 

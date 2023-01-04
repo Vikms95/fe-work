@@ -2,9 +2,9 @@ import { Box3, BoxHelper } from 'three';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-//import MTLLoader from './mtl-loader';
-//import OBJLoader from './obj-loader';
-//import GLTFLoader from './gltf-loader';
+// import MTLLoader from './mtl-loader';
+// import OBJLoader from './obj-loader';
+// import GLTFLoader from './gltf-loader';
 
 export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm, normalizeOrigin ) {
   let mtlLoader = new MTLLoader();
@@ -27,6 +27,7 @@ export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm
           object.scale.set( 100, 100, 100 );
         }
 
+
         if ( normalizeOrigin ) {
           let boundingBox = new Box3().setFromObject( object );
 
@@ -46,20 +47,21 @@ export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm
   } );
 }
 
-export function loadGLTF ( input, tocm, normalizeOrigin, scale ) {
+export function loadGLTF ( input ) {
   let gltfLoader = new GLTFLoader();
+
 
   return new Promise( ( resolve, reject ) => {
     gltfLoader.load( input.gltfFile, glt => {
       let object = glt.scene;
 
-      if ( tocm ) {
+      if ( input.tocm ) {
         // esta en mm
         object.scale.set( 10, 10, 10 );
       }
 
-      if ( scale )
-        object.scale.set( scale.x, scale.y, scale.z );
+      if ( input.scale )
+        object.scale.set( input.scale.x, input.scale.y, input.scale.z );
 
       if ( input.rotation ) {
         if ( input.rotation.x )
@@ -70,7 +72,7 @@ export function loadGLTF ( input, tocm, normalizeOrigin, scale ) {
           object.rotation.z = input.rotation.z * Math.PI / 180;
       }
 
-      if ( normalizeOrigin ) {
+      if ( input.normalizeOrigin ) {
         let boundingBox = new Box3().setFromObject( object );
 
         let center = [
