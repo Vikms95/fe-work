@@ -90,7 +90,6 @@ export default {
   },
 
   render3D: function ( element, layer, scene ) {
-    debugger;
     let loadItem = () =>
       loadGLTF( glbInfo );
 
