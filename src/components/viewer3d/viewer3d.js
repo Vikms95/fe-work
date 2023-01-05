@@ -30,8 +30,14 @@ export default class Scene3DViewer extends React.Component {
     this.height = props.height - rulerSize;
     this.renderingID = 0;
 
-    this.renderer = window.__threeRenderer || new THREE.WebGLRenderer( { preserveDrawingBuffer: true } );
     window.__threeRenderer = this.renderer;
+
+    this.renderer =
+      window.__threeRenderer ||
+      new THREE.WebGLRenderer( {
+        antialias: true
+      } );
+
     this.update3DZoom = this.update3DZoom.bind( this );
   }
 
@@ -69,8 +75,16 @@ export default class Scene3DViewer extends React.Component {
     //RENDERER
     this.renderer.setClearColor( new THREE.Color( SharedStyle.COLORS.white ) );
     this.renderer.setSize( this.width, this.height );
-    this.renderer.antialias = true;
+
+    // ENCARGADOS DE RENDERIZAR LAS TEXTURAS DE ALTA CALIDAD
     // this.renderer.physicallyCorrectLights = true;
+    this.renderer.setPixelRatio( window.devicePixelRatio );
+
+    // this.renderer.encoding = THREE.sRGBEncoding;
+    this.renderer.toneMapping = Number( THREE.LinearToneMapping );
+    this.renderer.toneMappingExposure = Math.pow( 2, 0 );
+
+
 
     // Add an environment with a set of PNGs
     // const cubeTextureLoader = new THREE.CubeTextureLoader();
@@ -107,11 +121,11 @@ export default class Scene3DViewer extends React.Component {
     //let axisHelper = new Three.AxisHelper( 100 );
     //scene3D.add( axisHelper );
 
-    // LIGHT
+    // LIGHT;
     // let light = new THREE.AmbientLight( 0xafafaf ); // soft white light
     // scene3D.add( light );
 
-    // // Add another light
+    // Add another light
 
     // let spotLight1 = new THREE.DirectionalLight( 'white', 0.5 );
     // spotLight1.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );

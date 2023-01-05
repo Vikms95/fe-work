@@ -90,6 +90,7 @@ export default {
   },
 
   render3D: function ( element, layer, scene ) {
+    debugger;
     let loadItem = () =>
       loadGLTF( glbInfo );
 
@@ -110,7 +111,6 @@ export default {
 
       return obj;
       */
-      console.log( 'test', object );
       sizeParametricObject3d( object, element );
 
       return object;

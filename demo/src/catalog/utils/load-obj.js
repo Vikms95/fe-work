@@ -8,7 +8,6 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm, normalizeOrigin ) {
   let mtlLoader = new MTLLoader();
-  console.log( 'test HELL HELO' );
 
   mtlLoader.setResourcePath( imgPath );
 
@@ -51,7 +50,6 @@ export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm
 export function loadGLTF ( input ) {
   let gltfLoader = new GLTFLoader();
 
-
   return new Promise( ( resolve, reject ) => {
     gltfLoader.load( input.gltfFile, glt => {
       let object = glt.scene;
@@ -61,8 +59,8 @@ export function loadGLTF ( input ) {
         object.scale.set( 10, 10, 10 );
       }
 
-      // if ( input.scale )
-      //   object.scale.set( input.scale.x, input.scale.y, input.scale.z );
+      if ( input.scale )
+        object.scale.set( input.scale.x, input.scale.y, input.scale.z );
 
       if ( input.rotation ) {
         if ( input.rotation.x )
