@@ -39,7 +39,7 @@ export default function keyboard () {
           {
             store.dispatch( setMode( MODE_IDLE ) );
             // TODO set remove for the furniture
-            store.dispatch( remove() );
+            store.dispatch( rollback() );
             store.dispatch( unselectAll() );
             break;
           }
