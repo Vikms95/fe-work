@@ -1,11 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import ContainerDimensions from 'react-container-dimensions';
 import Immutable, { Map } from 'immutable';
 import installDevTools from 'immutable-devtools';
 import { createStore } from 'redux';
-import * as actionCreators from '../../src/actions/export';
 import { Provider } from 'react-redux';
+import * as actionCreators from '../../src/actions/export';
 
 import MyCatalog from './catalog/mycatalog';
 
@@ -188,8 +189,11 @@ const data = {
   }
 };
 
+const container = document.getElementById( 'app' );
+const root = createRoot( container );
+
 //render
-ReactDOM.render(
+root.render(
   (
     //<FetchData />
     <Provider store={ store }>
@@ -208,8 +212,7 @@ ReactDOM.render(
         }
       </ContainerDimensions>
     </Provider>
-  ),
-  document.getElementById( 'app' )
+  )
 );
 //} ).catch( error => {
   //alert( error.detail || error.statusText || error.status || error );

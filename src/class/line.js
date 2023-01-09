@@ -175,6 +175,8 @@ class Line {
     if ( !line2ID ) return null;
     let line2 = layer.lines.get( line2ID );
 
+    if ( !line2 ) return null;
+
     let v2First2 = line2.v2First || false;
     let v20ID = line2.vertices.get( !v2First2 ? 0 : 1 );
     let v21ID = line2.vertices.get( !v2First2 ? 1 : 0 );

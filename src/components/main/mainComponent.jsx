@@ -66,12 +66,15 @@ class MainComponent extends Component {
     this.projectActions = props.projectActions;
     this.indexImage = 0;
     this.listImages = [ hogar, cocina, lavabo ];
-    this.state = [
-      { opacity: 1 },
-      { opacity: 0 },
-      { opacity: 0 },
-    ];
     this.count = 0;
+
+    this.state = {
+      opacity: [
+        { opacity: 1 },
+        { opacity: 0 },
+        { opacity: 0 },
+      ]
+    };
   }
 
   componentDidMount () {
@@ -147,7 +150,7 @@ class MainComponent extends Component {
         <div style={ { position: 'relative', backgroundColor: 'white', width: '100%', height: '100%' } } onClick={ hideForms }>
           <img className={ 'imageBG' } style={ {
             transition: 'opacity 2s ease',
-            opacity: this.state[ 0 ].opacity,
+            opacity: this.state.opacity[ 0 ].opacity,
             position: 'absolute',
             top: '0',
             height: '100%',
@@ -155,7 +158,7 @@ class MainComponent extends Component {
           } } src={ hogar } />
           <img className={ 'imageBG' } style={ {
             transition: 'opacity 2s ease',
-            opacity: this.state[ 1 ].opacity,
+            opacity: this.state.opacity[ 1 ].opacity,
             position: 'absolute',
             top: '0',
             height: '100%',
@@ -163,7 +166,7 @@ class MainComponent extends Component {
           } } src={ cocina } />
           <img className={ 'imageBG' } style={ {
             transition: 'opacity 2s ease',
-            opacity: this.state[ 2 ].opacity,
+            opacity: this.state.opacity[ 2 ].opacity,
             position: 'absolute',
             top: '0',
             height: '100%',
