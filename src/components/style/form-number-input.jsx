@@ -192,7 +192,7 @@ export default class FormNumberInput extends Component {
     // window.removeEventListener( 'click', this.resetInputOnSelection );
   };
 
-  componentDidUpdate () {
+  componentDidUpdate ( nextProps ) {
     if ( document.activeElement === this.state.inputElement ) {
       if ( this.cursor.x !== this.props.stateRedux.getIn( [ 'mouse', 'x' ] )
         || this.cursor.y !== this.props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
@@ -204,9 +204,10 @@ export default class FormNumberInput extends Component {
       x: this.props.stateRedux.getIn( [ 'mouse', 'x' ] ),
       y: this.props.stateRedux.getIn( [ 'mouse', 'y' ] ),
     };
+
   }
 
-  componentWillReceiveProps ( nextProps ) {
+  UNSAFE_componentWillReceiveProps ( nextProps ) {
     if ( this.isDifferentPropsValue( nextProps ) || this.isEmptyInputAndSingleSelection() ) {
       this.setState( { showedValue: nextProps.value } );
     }

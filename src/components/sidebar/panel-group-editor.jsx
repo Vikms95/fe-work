@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Panel from './panel';
 import * as SharedStyle from '../../shared-style';
 import { FormNumberInput, FormTextInput } from '../style/export';
 import { Map } from 'immutable';
 
-import {FaUnlink} from 'react-icons/fa';
+import { FaUnlink } from 'react-icons/fa';
 
 import {
   MODE_IDLE, MODE_2D_ZOOM_IN, MODE_2D_ZOOM_OUT, MODE_2D_PAN, MODE_3D_VIEW, MODE_3D_FIRST_PERSON,
@@ -41,77 +41,74 @@ const tablegroupStyle = {
   marginTop: '1em'
 };
 
-const iconColStyle = {width: '2em'};
+const iconColStyle = { width: '2em' };
 
 export default class PanelGroupEditor extends Component {
 
-  constructor(props, context) {
-    super(props, context);
+  constructor ( props, context ) {
+    super( props, context );
 
     this.state = {};
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate ( nextProps, nextState ) {
     return true;
   }
 
-  componentWillReceiveProps( nextProps, nextContext ) {
-  }
+  render () {
+    if ( !this.props.groupID || !VISIBILITY_MODE[ this.props.state.mode ] ) return null;
 
-  render() {
-    if (!this.props.groupID || !VISIBILITY_MODE[this.props.state.mode]) return null;
-
-    let group = this.props.state.getIn(['scene', 'groups', this.props.groupID]);
-    let elements = group.get('elements');
+    let group = this.props.state.getIn( [ 'scene', 'groups', this.props.groupID ] );
+    let elements = group.get( 'elements' );
 
     return (
-      <Panel name={this.context.translator.t('Group [{0}]', group.get('name'))} opened={true}>
-        <div style={{padding: '5px 15px'}}>
-          <table style={tableStyle}>
+      <Panel name={ this.context.translator.t( 'Group [{0}]', group.get( 'name' ) ) } opened={ true }>
+        <div style={ { padding: '5px 15px' } }>
+          <table style={ tableStyle }>
             <tbody>
               <tr>
-                <td style={firstTdStyle}>{this.context.translator.t('Name')}</td>
+                <td style={ firstTdStyle }>{ this.context.translator.t( 'Name' ) }</td>
                 <td>
                   <FormTextInput
-                    value={group.get('name')}
-                    onChange={e => this.context.groupsActions.setGroupAttributes( this.props.groupID, new Map({ 'name': e.target.value }) ) }
-                    style={inputStyle}
+                    value={ group.get( 'name' ) }
+                    onChange={ e => this.context.groupsActions.setGroupAttributes( this.props.groupID, new Map( { 'name': e.target.value } ) ) }
+                    style={ inputStyle }
                   />
                 </td>
               </tr>
               <tr>
-                <td style={firstTdStyle}>X</td>
+                <td style={ firstTdStyle }>X</td>
                 <td>
                   <FormNumberInput
-                    value={group.get('x')}
-                    onChange={e => this.context.groupsActions.groupTranslate( this.props.groupID, e.target.value, group.get('y') ) }
-                    style={inputStyle}
-                    state={this.props.state}
-                    precision={2}
+                    value={ group.get( 'x' ) }
+                    onChange={ e => this.context.groupsActions.groupTranslate( this.props.groupID, e.target.value, group.get( 'y' ) ) }
+                    style={ inputStyle }
+                    state={ this.props.state }
+                    precision={ 2 }
                   />
                 </td>
               </tr>
               <tr>
-                <td style={firstTdStyle}>Y</td>
+                <td style={ firstTdStyle }>Y</td>
                 <td>
                   <FormNumberInput
-                    value={group.get('y')}
-                    onChange={e => this.context.groupsActions.groupTranslate( this.props.groupID, group.get('x'), e.target.value ) }
-                    style={inputStyle}
-                    state={this.props.state}
-                    precision={2}
+                    value={ group.get( 'y' ) }
+                    onChange={ e => this.context.groupsActions.groupTranslate( this.props.groupID, group.get( 'x' ), e.target.value ) }
+                    style={ inputStyle }
+                    state={ this.props.state }
+                    precision={ 2 }
                   />
                 </td>
               </tr>
               <tr>
-                <td style={firstTdStyle}>{this.context.translator.t('Rotation')}</td>
+                <td style={ firstTdStyle }>{ this.context.translator.t( 'Rotation' ) }</td>
                 <td>
                   <FormNumberInput
-                    value={group.get('rotation')}
-                    onChange={e => this.context.groupsActions.groupRotate( this.props.groupID, e.target.value ) }
-                    style={inputStyle}
-                    state={this.props.state}
-                    precision={2}
+                    value={ group.get( 'rotation' ) }
+                    onChange={ e => this.context.groupsActions.groupRotate( this.props.groupID, e.target.value ) }
+                    style={ inputStyle }
+                    state={ this.props.state }
+                    precision={ 2 }
                   />
                 </td>
               </tr>
@@ -120,47 +117,47 @@ export default class PanelGroupEditor extends Component {
           {
             elements.size ?
               <div>
-                <p style={{textAlign:'center', borderBottom:SharedStyle.PRIMARY_COLOR.border , paddingBottom:'1em'}}>{this.context.translator.t('Group\'s Elements')}</p>
-                <table style={tablegroupStyle}>
+                <p style={ { textAlign: 'center', borderBottom: SharedStyle.PRIMARY_COLOR.border, paddingBottom: '1em' } }>{ this.context.translator.t( 'Group\'s Elements' ) }</p>
+                <table style={ tablegroupStyle }>
                   <thead>
                     <tr>
-                      <th style={iconColStyle}></th>
-                      <th>{this.context.translator.t('Layer')}</th>
-                      <th>{this.context.translator.t('Prototype')}</th>
-                      <th>{this.context.translator.t('Name')}</th>
+                      <th style={ iconColStyle }></th>
+                      <th>{ this.context.translator.t( 'Layer' ) }</th>
+                      <th>{ this.context.translator.t( 'Prototype' ) }</th>
+                      <th>{ this.context.translator.t( 'Name' ) }</th>
                     </tr>
                   </thead>
                   <tbody>
                     {
-                      elements.entrySeq().map(([ layerID, layerElements ]) => {
+                      elements.entrySeq().map( ( [ layerID, layerElements ] ) => {
 
-                        return layerElements.entrySeq().map(([elementPrototype, ElementList]) => {
+                        return layerElements.entrySeq().map( ( [ elementPrototype, ElementList ] ) => {
 
                           return ElementList.valueSeq().map( elementID => {
-                            let element = this.props.state.getIn(['scene', 'layers', layerID, elementPrototype, elementID]);
+                            let element = this.props.state.getIn( [ 'scene', 'layers', layerID, elementPrototype, elementID ] );
 
                             return <tr
-                              key={elementID}
+                              key={ elementID }
                             >
-                              <td style={iconColStyle} title={this.context.translator.t('Un-chain Element from Group')}>
+                              <td style={ iconColStyle } title={ this.context.translator.t( 'Un-chain Element from Group' ) }>
                                 <FaUnlink
                                   onClick={ e => this.context.groupsActions.removeFromGroup( this.props.groupID, layerID, elementPrototype, elementID ) }
-                                  style={styleEditButton}
+                                  style={ styleEditButton }
                                 />
                               </td>
-                              <td style={{textAlign:'center'}}>
-                                {layerID}
+                              <td style={ { textAlign: 'center' } }>
+                                { layerID }
                               </td>
-                              <td style={{textAlign:'center', textTransform:'capitalize'}}>
-                                {elementPrototype}
+                              <td style={ { textAlign: 'center', textTransform: 'capitalize' } }>
+                                { elementPrototype }
                               </td>
-                              <td style={{textAlign:'center'}}>
-                                {element.name}
+                              <td style={ { textAlign: 'center' } }>
+                                { element.name }
                               </td>
                             </tr>;
-                          });
-                        });
-                      })
+                          } );
+                        } );
+                      } )
                     }
                   </tbody>
                 </table>

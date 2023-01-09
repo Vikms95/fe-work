@@ -80,7 +80,7 @@ export default class MenuRooms extends Component {
     this.loadProjectFromFile = this.loadProjectFromFile.bind( this );
   }
 
-  componentWillReceiveProps () {
+  UNSAFE_componentWillReceiveProps () {
     if ( this.props.state.getIn( [ 'react-planner', 'mode' ] ) === MODE_WAITING_DRAWING_LINE
       || this.props.state.getIn( [ 'react-planner', 'mode' ] ) === MODE_DRAWING_LINE ) {
       this.setState( { dibujar: true } );

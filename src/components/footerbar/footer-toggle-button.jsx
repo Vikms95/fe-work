@@ -22,8 +22,8 @@ const toggleButtonStyleOver = {
 };
 
 export default class FooterToggleButton extends Component {
-  constructor(props) {
-    super(props);
+  constructor ( props ) {
+    super( props );
 
     this.state = {
       over: false,
@@ -31,47 +31,45 @@ export default class FooterToggleButton extends Component {
     };
   }
 
-  toggleOver(e) { this.setState({ over: true }); }
-  toggleOut(e) { this.setState({ over: false }); }
+  toggleOver ( e ) { this.setState( { over: true } ); }
+  toggleOut ( e ) { this.setState( { over: false } ); }
 
-  toggle(e) {
+  toggle ( e ) {
     let isActive = !this.state.active;
-    this.setState({ active: isActive });
+    this.setState( { active: isActive } );
 
-    if (isActive)
-    {
+    if ( isActive ) {
       this.props.toggleOn();
     }
-    else
-    {
+    else {
       this.props.toggleOff();
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if( this.state.over != nextState.over ) return true;
-    if( this.state.active != nextState.active ) return true;
-    if( this.props.toggleState != nextProps.toggleState ) return true;
+  shouldComponentUpdate ( nextProps, nextState ) {
+    if ( this.state.over != nextState.over ) return true;
+    if ( this.state.active != nextState.active ) return true;
+    if ( this.props.toggleState != nextProps.toggleState ) return true;
 
     return false;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if( nextProps.toggleState != this.props.toggleState  )
+  UNSAFE_componentWillReceiveProps ( nextProps ) {
+    if ( nextProps.toggleState != this.props.toggleState )
       this.state.active = nextProps.toggleState;
   }
 
-  render() {
+  render () {
 
     return (
       <div
-        style={this.state.over || this.state.active ? toggleButtonStyleOver : toggleButtonStyle}
-        onMouseOver={e => this.toggleOver(e)}
-        onMouseOut={e => this.toggleOut(e)}
-        onClick={e => this.toggle(e)}
-        title={this.props.title}
+        style={ this.state.over || this.state.active ? toggleButtonStyleOver : toggleButtonStyle }
+        onMouseOver={ e => this.toggleOver( e ) }
+        onMouseOut={ e => this.toggleOut( e ) }
+        onClick={ e => this.toggle( e ) }
+        title={ this.props.title }
       >
-        {this.props.text}
+        { this.props.text }
       </div>
     );
   }

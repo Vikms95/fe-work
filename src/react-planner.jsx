@@ -102,7 +102,7 @@ class ReactPlanner extends Component {
     projectActions.SetPreference( prefs, prefsInfo );
   }
 
-  componentWillReceiveProps ( nextProps ) {
+  UNSAFE_componentWillReceiveProps ( nextProps ) {
     let { stateExtractor, state, projectActions, catalog } = nextProps;
     let plannerState = stateExtractor( state );
     let catalogReady = plannerState.getIn( [ 'catalog', 'ready' ] );

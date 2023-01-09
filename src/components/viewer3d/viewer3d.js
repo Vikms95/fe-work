@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import * as THREE from 'three';
@@ -19,7 +19,7 @@ import px from './1/px.png';
 import py from './1/py.png';
 import pz from './1/pz.png';
 
-export default class Scene3DViewer extends React.Component {
+export default class Scene3DViewer extends Component {
 
   constructor ( props ) {
     super( props );
@@ -227,7 +227,7 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.renderLists.dispose();
   }
 
-  componentWillReceiveProps ( nextProps ) {
+  UNSAFE_componentWillReceiveProps ( nextProps ) {
     let { width, height } = nextProps;
 
     let actions = {

@@ -1,5 +1,4 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import ContainerDimensions from 'react-container-dimensions';
 import Immutable, { Map } from 'immutable';

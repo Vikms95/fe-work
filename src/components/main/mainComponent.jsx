@@ -96,7 +96,7 @@ class MainComponent extends Component {
   }
 
   toggle () {
-    const newState = this.state;
+    const newState = this.state.opacity;
 
     newState[ this.count ].opacity = '0';
     this.count++;
