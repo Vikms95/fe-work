@@ -65,32 +65,32 @@ const assignUVs = ( geometry ) => {
   const uvAttr = geometry.getAttribute( 'uv' );
 
   // Get the positions and assign them as UV
-  for ( let i = 0; i < indexCount; i = +3 ) {
-    //Get the 3 vertex indices
-    const a = indexAttr.getX( i );
-    const b = indexAttr.getX( i + 1 );
-    const c = indexAttr.getX( i + 2 );
+  // for ( let i = 0; i < indexCount; i = +3 ) {
+  //   //Get the 3 vertex indices
+  //   const a = indexAttr.getX( i );
+  //   const b = indexAttr.getX( i + 1 );
+  //   const c = indexAttr.getX( i + 2 );
 
-    //Get the values from positions attribute based on the indexes
-    const v1 = new Vector2();
-    const v2 = new Vector2();
-    const v3 = new Vector2();
+  //   //Get the values from positions attribute based on the indexes
+  //   const v1 = new Vector2();
+  //   const v2 = new Vector2();
+  //   const v3 = new Vector2();
 
-    v1.fromBufferAttribute( positionAttr, a );
-    v2.fromBufferAttribute( positionAttr, b );
-    v3.fromBufferAttribute( positionAttr, c );
+  //   v1.fromBufferAttribute( positionAttr, a );
+  //   v2.fromBufferAttribute( positionAttr, b );
+  //   v3.fromBufferAttribute( positionAttr, c );
 
-    const uvArray = new Float32Array( [
-      ( v1.x + offset.x ) / range.x, ( v1.y + offset.y ) / range.y,
-      ( v2.x + offset.x ) / range.x, ( v2.y + offset.y ) / range.y,
-      ( v3.x + offset.x ) / range.x, ( v3.y + offset.y ) / range.y
-    ] );
+  //   const uvArray = new Float32Array( [
+  //     ( v1.x + offset.x ) / range.x, ( v1.y + offset.y ) / range.y,
+  //     ( v2.x + offset.x ) / range.x, ( v2.y + offset.y ) / range.y,
+  //     ( v3.x + offset.x ) / range.x, ( v3.y + offset.y ) / range.y
+  //   ] );
 
-    const itemSize = 2;
-    const uvBufferAttribute = new BufferAttribute( uvArray, itemSize );
-    geometry.setAttribute( 'uv', uvBufferAttribute );
-  }
-  geometry.uvsNeedUpdate = true;
+  //   const itemSize = 2;
+  //   const uvBufferAttribute = new BufferAttribute( uvArray, itemSize );
+  //   geometry.setAttribute( 'uv', uvBufferAttribute );
+  // }
+  // geometry.uvsNeedUpdate = true;
 
   // Forma antigua de actualizar UV - dejar comentado de momento
   // geometry.faceVertexUvs[ 0 ] = geometry.faces.map( ( face ) => {
@@ -150,7 +150,7 @@ export function createArea ( element, layer, scene, textures ) {
 
   let shapeGeometry = new ShapeGeometry( shape );
 
-  assignUVs( shapeGeometry );
+  // assignUVs( shapeGeometry );
 
   let boundingBox = new Box3().setFromObject( new Mesh( shapeGeometry, new MeshBasicMaterial() ) );
 
