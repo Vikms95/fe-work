@@ -77,10 +77,10 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.setSize( this.width, this.height );
 
     // ENCARGADOS DE RENDERIZAR LAS TEXTURAS DE ALTA CALIDAD
-    // this.renderer.physicallyCorrectLights = true;
+    this.renderer.physicallyCorrectLights = true;
     this.renderer.setPixelRatio( window.devicePixelRatio );
 
-    // this.renderer.encoding = THREE.sRGBEncoding;
+    this.renderer.encoding = THREE.sRGBEncoding;
     this.renderer.toneMapping = Number( THREE.LinearToneMapping );
     this.renderer.toneMappingExposure = Math.pow( 2, 0 );
 
