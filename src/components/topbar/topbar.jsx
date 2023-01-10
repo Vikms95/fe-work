@@ -1,7 +1,6 @@
-import React, { Component, useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
-import { Auth } from '../../proxies/export';
 
 // Imports de imagenes
 import menuIcon from './../../assets/topbar/list_options_menu_icon.png';

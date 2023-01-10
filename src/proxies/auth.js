@@ -59,7 +59,6 @@ class AutenticateProxy {
   }
 
   getUserAuthenticated () {
-    console.log( "Hi auth" );
     return proxyResponse( fetch( this.url + '/getUserAuthenticated', addOptionsAuth() ) );
   }
 
