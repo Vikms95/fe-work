@@ -1,4 +1,4 @@
-import MenuMuebles from './menuMuebles';
+import MenuMuebles from './menu-muebles';
 
 export {
   MenuMuebles as MenuMuebles

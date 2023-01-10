@@ -1,4 +1,4 @@
-import MenuRooms from './menuRooms';
+import MenuRooms from './menu-rooms';
 
 export {
   MenuRooms

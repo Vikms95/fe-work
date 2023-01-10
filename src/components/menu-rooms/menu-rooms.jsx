@@ -64,7 +64,6 @@ const STYLE_NAME = {
 };
 
 export default function MenuRooms ( props ) {
-
   const isDrawMode = useDrawMode( props.state );
 
   const loadProjectFromFile = ( event ) => {

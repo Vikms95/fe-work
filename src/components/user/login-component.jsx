@@ -4,7 +4,7 @@ import * as SharedStyle from '../../shared-style';
 
 import { Auth } from '../../proxies/export';
 
-let STYLE = {
+const STYLE = {
   backgroundColor: SharedStyle.COLORS.white,
   display: 'none',
   position: 'absolute',

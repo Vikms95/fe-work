@@ -1,4 +1,4 @@
-import MainComponent from './mainComponent';
+import MainComponent from './main-component';
 
 export {
   MainComponent

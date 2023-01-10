@@ -1,4 +1,4 @@
-import MenuConstruccion from './menuConstruccion';
+import MenuConstruccion from './menu-construccion';
 
 export {
   MenuConstruccion

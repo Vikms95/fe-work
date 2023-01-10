@@ -1,5 +1,5 @@
-import LoginComponent from "./loginComponent";
-import RegisterComponent from "./RegisterComponent";
+import LoginComponent from "./login-component";
+import RegisterComponent from "./register-component";
 
 export {
   LoginComponent,

@@ -6,11 +6,12 @@ import Viewer2DComponents from './viewer2d/export';
 import StyleComponents from './style/export';
 import TopbarComponents from './topbar/export';
 import DirectionComponent from './direction/export';
-import MenuRoomsComponent from './menuRooms/export'
+import MenuRoomsComponent from './menu-rooms/export';
 import MainComponent from './main/export';
-import MenuConstruccion from './menuConstruccion/export';
-import MenuMuebles from './menuMuebles/export';
-import MenuPreferencias from './menuPreferencias/export';
+import MenuConstruccion from './menu-construccion/export';
+import MenuMuebles from './menu-muebles/export';
+import MenuPreferencias from './menu-preferencias/export';
+
 import {
   LoginComponent,
   RegisterComponent

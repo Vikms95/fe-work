@@ -10,7 +10,7 @@ import hogar from './../../assets/main/hogar.png';
 
 import * as SharedStyle from '../../shared-style';
 
-import { browserUpload } from './../../utils/browser';
+import { browserUpload } from '../../utils/browser';
 
 let STYLE = {
   width: '100%',
