@@ -52,7 +52,7 @@ export function getMorphObject3d ( object, element ) {
             } );
         }
         if ( key.includes( "ALTO" ) || key.includes( "height" ) ) {
-          if (element.properties.has('height') && element.height && element.height.min && element.height.max )
+          if ( element.properties.has( 'height' ) && element.height && element.height.min && element.height.max )
             morph.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ key ],
@@ -62,7 +62,7 @@ export function getMorphObject3d ( object, element ) {
             } );
         }
         if ( key.includes( "FONDO" ) || key.includes( "depth" ) ) {
-          if (element.properties.has('depth') && element.depth && element.depth.min && element.depth.max )
+          if ( element.properties.has( 'depth' ) && element.depth && element.depth.min && element.depth.max )
             morph.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ key ],

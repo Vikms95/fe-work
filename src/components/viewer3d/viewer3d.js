@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
 import OrbitControls from './libs/orbit-controls';
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { parseData, updateScene } from './scene-creator';
 import { disposeScene } from './three-memory-cleaner';
 import diff from 'immutablediff';

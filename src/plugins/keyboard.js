@@ -37,7 +37,6 @@ export default function keyboard () {
           }
         case KEYBOARD_BUTTON_CODE.ESC:
           {
-            store.dispatch( setMode( MODE_IDLE ) );
             // TODO set remove for the furniture
             store.dispatch( rollback() );
             store.dispatch( unselectAll() );

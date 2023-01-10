@@ -56,7 +56,7 @@ export function loadGLTF ( input ) {
 
       if ( input.tocm ) {
         // esta en mm
-        object.scale.set( 10, 10, 10 );
+        object.scale.set( 100, 100, 100 );
       }
 
       if ( input.scale )

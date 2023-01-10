@@ -85,7 +85,7 @@ function createLayerObjects ( layer, planData, sceneData, actions, catalog ) {
 }
 
 export function updateScene ( planData, sceneData, oldSceneData, diffArray, actions, catalog ) {
-
+  console.log( 'hi' );
   let splitted = diffArray.map( el => { return { op: el.op, path: el.path.split( '/' ), value: el.value }; } );
   let filteredDiffs = filterDiffs( splitted, sceneData, oldSceneData );
 

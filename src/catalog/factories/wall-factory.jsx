@@ -14,7 +14,7 @@ const STYLE_RECT_SELECTED = { ...STYLE_RECT, stroke: SharedStyle.LINE_MESH_COLOR
 
 let translator = new Translator();
 
-export default function WallFactory(name, info, textures) {
+export default function WallFactory ( name, info, textures ) {
 
   let wallElement = {
     name,
@@ -44,21 +44,21 @@ export default function WallFactory(name, info, textures) {
       }
     },
 
-    render2D: function (element, layer, scene) {
+    render2D: function ( element, layer, scene ) {
       let v2First = element.v2First || false;
-      let { x: x0, y: y0 } = layer.vertices.get(element.vertices.get(!v2First ? 0 : 1));
-      let { x: x1, y: y1 } = layer.vertices.get(element.vertices.get(!v2First ? 1 : 0));
-      let { x: x2, y: y2 } = layer.vertices.get(element.vertices.get(2)) || { x: x0, y: y0 };
-      let { x: x3, y: y3 } = layer.vertices.get(element.vertices.get(3)) || { x: x1, y: y1 };
+      let { x: x0, y: y0 } = layer.vertices.get( element.vertices.get( !v2First ? 0 : 1 ) );
+      let { x: x1, y: y1 } = layer.vertices.get( element.vertices.get( !v2First ? 1 : 0 ) );
+      let { x: x2, y: y2 } = layer.vertices.get( element.vertices.get( 2 ) ) || { x: x0, y: y0 };
+      let { x: x3, y: y3 } = layer.vertices.get( element.vertices.get( 3 ) ) || { x: x1, y: y1 };
 
       let style_rect = { ...STYLE_RECT };
-      let c_liso_pared2d = scene.getIn(['prefs', C_LISOPARED2D]);
-      let points = `${x0},${y0} ${x1},${y1} ${x3},${y3} ${x2},${y2}`;
+      let c_liso_pared2d = scene.getIn( [ 'prefs', C_LISOPARED2D ] );
+      let points = `${ x0 },${ y0 } ${ x1 },${ y1 } ${ x3 },${ y3 } ${ x2 },${ y2 }`;
 
-      if (c_liso_pared2d)
+      if ( c_liso_pared2d )
         style_rect.fill = c_liso_pared2d;
 
-      return <polygon points={points} style={style_rect} />;
+      return <polygon points={ points } style={ style_rect } />;
 
       /*
 
@@ -113,22 +113,22 @@ export default function WallFactory(name, info, textures) {
         */
     },
 
-    render3D: function (element, layer, scene) {
-      return buildWall(element, layer, scene, textures);
+    render3D: function ( element, layer, scene ) {
+      return buildWall( element, layer, scene, textures );
     },
 
-    updateRender3D: (element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild) => {
-      return updatedWall(element, layer, scene, textures, mesh, oldElement, differences, selfDestroy, selfBuild);
+    updateRender3D: ( element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild ) => {
+      return updatedWall( element, layer, scene, textures, mesh, oldElement, differences, selfDestroy, selfBuild );
     }
 
   };
 
-  if (textures && textures !== {}) {
+  if ( textures && textures !== {} ) {
 
     let textureValues = { 'none': 'None' };
 
-    for (let textureName in textures) {
-      textureValues[textureName] = textures[textureName].name;
+    for ( let textureName in textures ) {
+      textureValues[ textureName ] = textures[ textureName ].name;
     }
 
     wallElement.properties.textureA = {
