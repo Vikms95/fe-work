@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as SharedStyle from '../../shared-style';
 import { getIsElementSelected } from '../../selectors/selectors';
 
@@ -68,8 +68,7 @@ const STYLE_BUTTONS_DIRECTION = {
 };
 
 export default function Direction (
-  {
-    state,
+  { state,
     width,
     update2DView,
     projectActions,

@@ -1,22 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import If from '../../utils/react-if';
-
-import {
-  MODE_IDLE,
-  MODE_3D_VIEW,
-  MODE_3D_FIRST_PERSON,
-  MODE_VIEWING_CATALOG,
-  MODE_CONFIGURING_PROJECT
-} from '../../constants';
 import * as SharedStyle from '../../shared-style';
+import { Auth } from '../../proxies/export';
 
 // Imports de imagenes
 import menuIcon from './../../assets/topbar/list_options_menu_icon.png';
 import logoImage from './../../assets/topbar/FOR2HOME.png';
 import profileUserIcon from './../../assets/topbar/account_profile_user_avatar_icon.png';
+import { useAuthenticateUser } from '../../hooks/useAuthenticateUser';
 
-import { Auth } from '../../proxies/export';
 
 const STYLE_TOPBAR = {
   backgroundColor: SharedStyle.COLORS.white,
@@ -48,7 +40,7 @@ const STYLE_USER = {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'end',
-}
+};
 
 const STYLE_USER_NAME = {
   margin: '0 8px 0 0',
@@ -56,69 +48,109 @@ const STYLE_USER_NAME = {
   display: 'flex',
   alignItems: 'end',
   fontSize: '0.9em',
-}
+};
 
 const STYLE_USER_AVATAR = {
 
 };
 
-export default class Topbar extends Component {
+export default function Topbar ( { state, projectActions } ) {
+  const nombre = useAuthenticateUser( state, projectActions );
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      nombre: 'Nombre Apellido'
-    };
-    this.callGetUser();
-  }
+  const showLogin = () => {
+    const loginComp = document.getElementById( 'userLogin' );
+    const registerComp = document.getElementById( 'userRegister' );
 
-  componentWillReceiveProps(nextProps) {
-    let { state, projectActions } = nextProps;
-    let userAuthenticated = state.get('userAuthenticated');
+    if ( loginComp.style.display === 'block' || registerComp.style.display === 'block' ) {
+      loginComp.style.display = 'none';
+      registerComp.style.display = 'none';
 
-    if (userAuthenticated)
-      this.callGetUser().then(data => projectActions.SetUserAuthenticated(false));
-  }
+    } else {
+      loginComp.style.display = 'block';
 
-  callGetUser() {
-    let proxy = new Auth.AutenticateProxy();
-
-    return proxy.getUserAuthenticated().then(data => this.setState({ 'nombre': data.name }));
-  }
-
-  render() {
-    const showLogin = () => {
-      const loginComp = document.getElementById('userLogin')
-      const registerComp = document.getElementById('userRegister')
-      loginComp.style.display === 'block' || registerComp.style.display === 'block' ?
-        (loginComp.style.display = 'none', registerComp.style.display = 'none')
-        :
-        loginComp.style.display = 'block';
     }
+  };
 
-    const showMenuPreferenciar = () => {
-      const menuPreferencias = document.getElementById('menuPreferencias')
-      if (menuPreferencias.style.display === 'block') {
-        menuPreferencias.style.display = 'none'
-      } else {
-        menuPreferencias.style.display = 'block'
-      }
+  const showMenuPreferencias = () => {
+    const menuPreferencias = document.getElementById( 'menuPreferencias' );
+
+    if ( menuPreferencias.style.display === 'block' ) {
+      menuPreferencias.style.display = 'none';
+
+    } else {
+      menuPreferencias.style.display = 'block';
+
     }
+  };
 
-    //this.callGetUser();
-
-    return (
-      <aside style={STYLE_TOPBAR}>
-        <img onClick={showMenuPreferenciar} style={STYLE_MENU} src={menuIcon} />
-        <img style={STYLE_LOGO} src={logoImage} />
-        <div style={STYLE_USER}>
-          <p style={STYLE_USER_NAME}>{this.state.nombre}</p>
-          <img style={STYLE_USER_AVATAR} src={profileUserIcon} onClick={showLogin} />
-        </div>
-      </aside>
-    )
-  }
+  return (
+    <aside style={ STYLE_TOPBAR }>
+      <img onClick={ showMenuPreferencias } style={ STYLE_MENU } src={ menuIcon } />
+      <img style={ STYLE_LOGO } src={ logoImage } />
+      <div style={ STYLE_USER }>
+        <p style={ STYLE_USER_NAME }>{ nombre }</p>
+        <img style={ STYLE_USER_AVATAR } src={ profileUserIcon } onClick={ showLogin } />
+      </div>
+    </aside>
+  );
 }
+
+// export default class Topbar extends Component {
+//   constructor ( props, context ) {
+//     super( props, context );
+//     this.state = {
+//       nombre: 'Nombre Apellido'
+//     };
+//     this.callGetUser();
+//   }
+
+//   componentWillReceiveProps ( nextProps ) {
+//     let { state, projectActions } = nextProps;
+//     let userAuthenticated = state.get( 'userAuthenticated' );
+
+//     if ( userAuthenticated )
+//       this.callGetUser().then( data => projectActions.SetUserAuthenticated( false ) );
+//   }
+
+//   callGetUser () {
+//     let proxy = new Auth.AutenticateProxy();
+
+//     return proxy.getUserAuthenticated().then( data => this.setState( { 'nombre': data.name } ) );
+//   }
+
+//   render () {
+//     const showLogin = () => {
+//       const loginComp = document.getElementById( 'userLogin' );
+//       const registerComp = document.getElementById( 'userRegister' );
+//       loginComp.style.display === 'block' || registerComp.style.display === 'block' ?
+//         ( loginComp.style.display = 'none', registerComp.style.display = 'none' )
+//         :
+//         loginComp.style.display = 'block';
+//     };
+
+//     const showMenuPreferenciar = () => {
+//       const menuPreferencias = document.getElementById( 'menuPreferencias' );
+//       if ( menuPreferencias.style.display === 'block' ) {
+//         menuPreferencias.style.display = 'none';
+//       } else {
+//         menuPreferencias.style.display = 'block';
+//       }
+//     };
+
+//     //this.callGetUser();
+
+//     return (
+//       <aside style={ STYLE_TOPBAR }>
+//         <img onClick={ showMenuPreferenciar } style={ STYLE_MENU } src={ menuIcon } />
+//         <img style={ STYLE_LOGO } src={ logoImage } />
+//         <div style={ STYLE_USER }>
+//           <p style={ STYLE_USER_NAME }>{ this.state.nombre }</p>
+//           <img style={ STYLE_USER_AVATAR } src={ profileUserIcon } onClick={ showLogin } />
+//         </div>
+//       </aside>
+//     );
+//   }
+// }
 
 Topbar.propTypes = {
   state: PropTypes.object.isRequired,
