@@ -191,28 +191,24 @@ const data = {
 const container = document.getElementById( 'app' );
 const root = createRoot( container );
 
-//render
-root.render(
-  (
-    //<FetchData />
-    <Provider store={ store }>
-      <ContainerDimensions>
-        { ( { width, height } ) =>
-          <ReactPlanner
-            catalog={ MyCatalog }
-            width={ width }
-            height={ height }
-            plugins={ plugins }
-            toolbarButtons={ toolbarButtons }
-            stateExtractor={ state => state.get( 'react-planner' ) }
-            prefsInfo={ data.prefsInfo }
-            prefs={ data.prefs }
-          />
-        }
-      </ContainerDimensions>
-    </Provider>
-  )
-);
+root.render( (
+  <Provider store={ store }>
+    <ContainerDimensions>
+      { ( { width, height } ) =>
+        <ReactPlanner
+          catalog={ MyCatalog }
+          width={ width }
+          height={ height }
+          plugins={ plugins }
+          toolbarButtons={ toolbarButtons }
+          stateExtractor={ state => state.get( 'react-planner' ) }
+          prefsInfo={ data.prefsInfo }
+          prefs={ data.prefs }
+        />
+      }
+    </ContainerDimensions>
+  </Provider>
+) );
 //} ).catch( error => {
   //alert( error.detail || error.statusText || error.status || error );
 //} );

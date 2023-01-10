@@ -1,7 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import If from '../../utils/react-if';
-
+import React, { useState } from 'react';
 import * as SharedStyle from '../../shared-style';
 import { getIsElementSelected } from '../../selectors/selectors';
 
@@ -64,225 +61,379 @@ const STYLE_ARROWS = {
 
 const STYLE_BUTTONS_ZOOM = {
   cursor: 'pointer',
-  /* height: '1.85em',
-   width: '1.85em',*/
 };
 
 const STYLE_BUTTONS_DIRECTION = {
   cursor: 'pointer',
-  /*  height: '2em',
-    width: '2.2em',*/
 };
 
 
-export default class Direction extends Component {
+export default function Direction ( props, context ) {
+  const [ is2DActive, setIs2DActive ] = useState( true );
 
-  constructor ( props, context ) {
-    super( props, context );
-    this.state = {};
-    this.is2DActivate = true;
-    this.update2DView = this.props.update2DView;
+  const getCanvas = () => (
+    document.querySelector( 'canvas' )
+  );
 
-    this.moveUpViewer3D = this.moveUpViewer3D.bind( this );
-    this.zoomInViewer3D = this.zoomInViewer3D.bind( this );
-    this.zoomOutViewer3D = this.zoomOutViewer3D.bind( this );
-    this.moveLeftViewer3D = this.moveLeftViewer3D.bind( this );
-    this.moveDownViewer3D = this.moveDownViewer3D.bind( this );
-    this.moveRightViewer3D = this.moveRightViewer3D.bind( this );
-  }
-
-  componentDidMount () {
-    /*    console.log('didMount Direction')
-        console.log('refViewer2D', this.props.refViewer2D)*/
-  }
-
-  /* shouldComponentUpdate(nextProps, nextState) {
-     return this.props.state.mode !== nextProps.state.mode ||
-       this.props.height !== nextProps.height ||
-       this.props.width !== nextProps.width ||
-       this.props.state.alterate !== nextProps.state.alterate;
-   }*/
-
-
-  moveLeftViewer3D () {
-    const selected = getIsElementSelected( this.props.state );
-    console.log( 'test', selected );
+  const moveLeftViewer3D = () => {
+    const selected = getIsElementSelected( props.state );
     if ( !selected ) dispatch3DMoveLeft();
-  }
+  };
 
-  moveRightViewer3D () {
-    const selected = getIsElementSelected( this.props.state );
+  const moveRightViewer3D = () => {
+    const selected = getIsElementSelected( props.state );
     if ( !selected ) dispatch3DMoveRight();
-  }
+  };
 
-  moveUpViewer3D () {
-    const selected = getIsElementSelected( this.props.state );
+  const moveUpViewer3D = () => {
+    const selected = getIsElementSelected( props.state );
     if ( !selected ) dispatch3DMoveUp();
-  }
+  };
 
-  moveDownViewer3D () {
-    const selected = getIsElementSelected( this.props.state );
+  const moveDownViewer3D = () => {
+    const selected = getIsElementSelected( props.state );
     if ( !selected ) dispatch3DMoveDown();
-  }
+  };
 
-  zoomInViewer3D () {
-    const canvas = document.querySelector( 'canvas' );
-    const selected = getIsElementSelected( this.props.state );
+  const zoomInViewer3D = () => {
+    const canvas = getCanvas();
+    const selected = getIsElementSelected( props.state );
     if ( canvas && !selected ) dispatch3DZoomIn( canvas );
-  }
+  };
 
-  zoomOutViewer3D () {
-    const canvas = document.querySelector( 'canvas' );
-    const selected = getIsElementSelected( this.props.state );
+  const zoomOutViewer3D = () => {
+    const canvas = getCanvas();
+    const selected = getIsElementSelected( props.state );
     if ( canvas && !selected ) dispatch3DZoomOut( canvas );
-  }
+  };
 
-  render () {
+  const {
+    state,
+    width,
+    height,
+    refViewer2D,
+    toolbarButtons,
+    allowProjectFileSupport,
+    update2DView
+  } = props;
 
-    const {
-      props: {
-        state,
-        width,
-        height,
-        refViewer2D,
-        toolbarButtons,
-        allowProjectFileSupport
-      },
-      context: {
-        projectActions,
-        viewer2DActions,
-        viewer3DActions,
-        translator
-      },
-      update2DView,
-      moveDownViewer3D,
-      moveLeftViewer3D,
-      moveRightViewer3D,
-      moveUpViewer3D,
-      zoomInViewer3D,
-      zoomOutViewer3D
-    } = this;
+  const {
+    projectActions,
+    viewer2DActions,
+    viewer3DActions,
+    translator
+  } = context;
 
 
-    const viewer2DState = state.get( 'viewer2D' ).toJS();
-    const mode = state.getIn( [ 'mode' ] );
-    const is3DMode = state.getIn( [ 'mode' ] ) === MODE_3D_VIEW;
+  const viewer2DState = state.get( 'viewer2D' ).toJS();
+  const mode = state.getIn( [ 'mode' ] );
+  const is3DMode = state.getIn( [ 'mode' ] ) === MODE_3D_VIEW;
 
-    const changeTo2D = () => {
-      this.is2DActivate = true;
-      this.props.projectActions.setMode( MODE_IDLE );
-    };
+  const changeTo2D = () => {
+    setIs2DActive( true );
+    props.projectActions.setMode( MODE_IDLE );
+  };
 
-    const changeTo3D = () => {
-      this.is2DActivate = false;
-      this.props.viewer3DActions.selectTool3DView();
-    };
+  const changeTo3D = () => {
+    setIs2DActive( false );
+    props.viewer3DActions.selectTool3DView();
+  };
 
+  console.log( projectActions );
 
+  return (
+    <div style={ { position: 'absolute', left: width, bottom: '0', width: '257px', height: '130px', Zindex: '9002' } }>
+      <aside style={ STYLE }>
+        <div style={ { height: '4.6em', paddingLeft: '20px' } }>
+          { ( mode === MODE_IDLE ||
+            mode === MODE_DRAWING_ITEM ||
+            mode === MODE_DRAWING_LINE ||
+            mode === MODE_WAITING_DRAWING_LINE ||
+            mode === MODE_DRAWING_HOLE
+          )
+            ? <img onClick={ changeTo3D } style={ { cursor: 'pointer' } } src={ active2D } />
+            : <img onClick={ changeTo2D } style={ { cursor: 'pointer' } } src={ active3D } />
+          }
+        </div>
 
-    const changeVisor = () => {
-      if ( !this.is2DActivate ) {
-        return <img onClick={ changeTo2D } style={ { cursor: 'pointer' } } src={ active3D } />;
-      } else {
-        return <img onClick={ changeTo3D } style={ { cursor: 'pointer' } } src={ active2D } />;
-      }
-    };
-
-    return (
-      <div style={ { position: 'absolute', left: width, bottom: '0', width: '257px', height: '130px', Zindex: '9002' } }>
-        <aside style={ STYLE }>
-          {/* 2D/3D Button */ }
-          <div style={ { height: '4.6em', paddingLeft: '20px' } }>
-            {
-              ( mode === MODE_IDLE ||
-                mode === MODE_DRAWING_ITEM ||
-                mode === MODE_DRAWING_LINE ||
-                mode === MODE_WAITING_DRAWING_LINE ||
-                mode === MODE_DRAWING_HOLE )
-                ?
-                <img onClick={ changeTo3D } style={ { cursor: 'pointer' } } src={ active2D } />
-                :
-                <img onClick={ changeTo2D } style={ { cursor: 'pointer' } } src={ active3D } />
+        <div style={ STYLE_ARROWS }>
+          <img
+            style={ { ...STYLE_BUTTONS_DIRECTION, marginBottom: '-1px' } }
+            src={ iconUp }
+            id='ArrowUp'
+            onClick={ ( is3DMode )
+              ? () => moveUpViewer3D()
+              : ( event ) => update2DView( viewer2DState, event )
             }
+          />
 
-            {/*{changeVisor()}*/ }
-          </div>
-
-          {/* Direction Buttons */ }
-          <div style={ STYLE_ARROWS }>
+          <div style={ { flexDirection: 'row' } }>
             <img
-              style={ { ...STYLE_BUTTONS_DIRECTION, marginBottom: '-1px' } }
-              src={ iconUp }
-              id='ArrowUp'
-              onClick={
-                is3DMode
-                  ? () => moveUpViewer3D()
-                  : ( event ) => update2DView( viewer2DState, event )
-              }
-            />
-
-            <div style={ { flexDirection: 'row' } }>
-              <img
-                style={ { ...STYLE_BUTTONS_DIRECTION, marginRight: '-1px' } }
-                src={ iconLeft }
-                id='ArrowLeft'
-                onClick={
-                  is3DMode
-                    ? () => moveLeftViewer3D()
-                    : ( event ) => update2DView( viewer2DState, event )
-                }
-              />
-
-              <img
-                style={ { ...STYLE_BUTTONS_DIRECTION } }
-                id='ArrowDown'
-                src={ iconDown }
-                onClick={
-                  is3DMode
-                    ? () => moveDownViewer3D()
-                    : ( event ) => update2DView( viewer2DState, event )
-                }
-              />
-
-              <img
-                style={ { ...STYLE_BUTTONS_DIRECTION, marginLeft: '-1px' } }
-                id='ArrowRight'
-                src={ iconRight }
-                onClick={
-                  is3DMode
-                    ? () => moveRightViewer3D()
-                    : ( event ) => update2DView( viewer2DState, event )
-                }
-              />
-            </div>
-          </div>
-
-          {/* Zoom Buttons */ }
-          <div style={ STYLE_ZOOM }>
-            <img
-              style={ { ...STYLE_BUTTONS_ZOOM, marginBottom: '0.5em' } }
-              src={ iconPlus }
-              id='ZoomIn'
-              onClick={
-                is3DMode
-                  ? () => zoomInViewer3D()
-                  : ( event ) => update2DView( viewer2DState, event )
+              style={ { ...STYLE_BUTTONS_DIRECTION, marginRight: '-1px' } }
+              src={ iconLeft }
+              id='ArrowLeft'
+              onClick={ ( is3DMode )
+                ? () => moveLeftViewer3D()
+                : ( event ) => update2DView( viewer2DState, event )
               }
             />
 
             <img
-              style={ STYLE_BUTTONS_ZOOM }
-              src={ iconMinus }
-              id='ZoomOut'
-              onClick={
-                is3DMode
-                  ? () => zoomOutViewer3D()
-                  : ( event ) => update2DView( viewer2DState, event )
+              style={ { ...STYLE_BUTTONS_DIRECTION } }
+              id='ArrowDown'
+              src={ iconDown }
+              onClick={ ( is3DMode )
+                ? () => moveDownViewer3D()
+                : ( event ) => update2DView( viewer2DState, event )
+              }
+            />
+
+            <img
+              style={ { ...STYLE_BUTTONS_DIRECTION, marginLeft: '-1px' } }
+              id='ArrowRight'
+              src={ iconRight }
+              onClick={ ( is3DMode )
+                ? () => moveRightViewer3D()
+                : ( event ) => update2DView( viewer2DState, event )
               }
             />
           </div>
-        </aside>
-      </div>
-    );
-  }
+        </div>
+
+        <div style={ STYLE_ZOOM }>
+          <img
+            style={ { ...STYLE_BUTTONS_ZOOM, marginBottom: '0.5em' } }
+            src={ iconPlus }
+            id='ZoomIn'
+            onClick={ ( is3DMode )
+              ? () => zoomInViewer3D()
+              : ( event ) => update2DView( viewer2DState, event )
+            }
+          />
+
+          <img
+            style={ STYLE_BUTTONS_ZOOM }
+            src={ iconMinus }
+            id='ZoomOut'
+            onClick={ ( is3DMode )
+              ? () => zoomOutViewer3D()
+              : ( event ) => update2DView( viewer2DState, event )
+            }
+          />
+        </div>
+      </aside>
+    </div>
+  );
 }
+
+// export default class Direction extends Component {
+
+//   constructor ( props, context ) {
+//     super( props, context );
+//     this.state = {};
+//     this.is2DActivate = true;
+//     this.update2DView = this.props.update2DView;
+
+//     this.moveUpViewer3D = this.moveUpViewer3D.bind( this );
+//     this.zoomInViewer3D = this.zoomInViewer3D.bind( this );
+//     this.zoomOutViewer3D = this.zoomOutViewer3D.bind( this );
+//     this.moveLeftViewer3D = this.moveLeftViewer3D.bind( this );
+//     this.moveDownViewer3D = this.moveDownViewer3D.bind( this );
+//     this.moveRightViewer3D = this.moveRightViewer3D.bind( this );
+//   }
+
+//   componentDidMount () {
+//     /*    console.log('didMount Direction')
+//         console.log('refViewer2D', this.props.refViewer2D)*/
+//   }
+
+//   /* shouldComponentUpdate(nextProps, nextState) {
+//      return this.props.state.mode !== nextProps.state.mode ||
+//        this.props.height !== nextProps.height ||
+//        this.props.width !== nextProps.width ||
+//        this.props.state.alterate !== nextProps.state.alterate;
+//    }*/
+
+
+//   moveLeftViewer3D () {
+//     const selected = getIsElementSelected( this.props.state );
+//     console.log( 'test', selected );
+//     if ( !selected ) dispatch3DMoveLeft();
+//   }
+
+//   moveRightViewer3D () {
+//     const selected = getIsElementSelected( this.props.state );
+//     if ( !selected ) dispatch3DMoveRight();
+//   }
+
+//   moveUpViewer3D () {
+//     const selected = getIsElementSelected( this.props.state );
+//     if ( !selected ) dispatch3DMoveUp();
+//   }
+
+//   moveDownViewer3D () {
+//     const selected = getIsElementSelected( this.props.state );
+//     if ( !selected ) dispatch3DMoveDown();
+//   }
+
+//   zoomInViewer3D () {
+//     const canvas = document.querySelector( 'canvas' );
+//     const selected = getIsElementSelected( this.props.state );
+//     if ( canvas && !selected ) dispatch3DZoomIn( canvas );
+//   }
+
+//   zoomOutViewer3D () {
+//     const canvas = document.querySelector( 'canvas' );
+//     const selected = getIsElementSelected( this.props.state );
+//     if ( canvas && !selected ) dispatch3DZoomOut( canvas );
+//   }
+
+//   render () {
+
+//     const {
+//       props: {
+//         state,
+//         width,
+//         height,
+//         refViewer2D,
+//         toolbarButtons,
+//         allowProjectFileSupport
+//       },
+//       context: {
+//         projectActions,
+//         viewer2DActions,
+//         viewer3DActions,
+//         translator
+//       },
+//       update2DView,
+//       moveDownViewer3D,
+//       moveLeftViewer3D,
+//       moveRightViewer3D,
+//       moveUpViewer3D,
+//       zoomInViewer3D,
+//       zoomOutViewer3D
+//     } = this;
+
+
+//     const viewer2DState = state.get( 'viewer2D' ).toJS();
+//     const mode = state.getIn( [ 'mode' ] );
+//     const is3DMode = state.getIn( [ 'mode' ] ) === MODE_3D_VIEW;
+
+//     const changeTo2D = () => {
+//       this.is2DActivate = true;
+//       this.props.projectActions.setMode( MODE_IDLE );
+//     };
+
+//     const changeTo3D = () => {
+//       this.is2DActivate = false;
+//       this.props.viewer3DActions.selectTool3DView();
+//     };
+
+
+
+//     const changeVisor = () => {
+//       if ( !this.is2DActivate ) {
+//         return <img onClick={ changeTo2D } style={ { cursor: 'pointer' } } src={ active3D } />;
+//       } else {
+//         return <img onClick={ changeTo3D } style={ { cursor: 'pointer' } } src={ active2D } />;
+//       }
+//     };
+
+//     return (
+//       <div style={ { position: 'absolute', left: width, bottom: '0', width: '257px', height: '130px', Zindex: '9002' } }>
+//         <aside style={ STYLE }>
+//           {/* 2D/3D Button */ }
+//           <div style={ { height: '4.6em', paddingLeft: '20px' } }>
+//             {
+//               ( mode === MODE_IDLE ||
+//                 mode === MODE_DRAWING_ITEM ||
+//                 mode === MODE_DRAWING_LINE ||
+//                 mode === MODE_WAITING_DRAWING_LINE ||
+//                 mode === MODE_DRAWING_HOLE )
+//                 ?
+//                 <img onClick={ changeTo3D } style={ { cursor: 'pointer' } } src={ active2D } />
+//                 :
+//                 <img onClick={ changeTo2D } style={ { cursor: 'pointer' } } src={ active3D } />
+//             }
+
+//             {/*{changeVisor()}*/ }
+//           </div>
+
+//           {/* Direction Buttons */ }
+//           <div style={ STYLE_ARROWS }>
+//             <img
+//               style={ { ...STYLE_BUTTONS_DIRECTION, marginBottom: '-1px' } }
+//               src={ iconUp }
+//               id='ArrowUp'
+//               onClick={
+//                 is3DMode
+//                   ? () => moveUpViewer3D()
+//                   : ( event ) => update2DView( viewer2DState, event )
+//               }
+//             />
+
+//             <div style={ { flexDirection: 'row' } }>
+//               <img
+//                 style={ { ...STYLE_BUTTONS_DIRECTION, marginRight: '-1px' } }
+//                 src={ iconLeft }
+//                 id='ArrowLeft'
+//                 onClick={
+//                   is3DMode
+//                     ? () => moveLeftViewer3D()
+//                     : ( event ) => update2DView( viewer2DState, event )
+//                 }
+//               />
+
+//               <img
+//                 style={ { ...STYLE_BUTTONS_DIRECTION } }
+//                 id='ArrowDown'
+//                 src={ iconDown }
+//                 onClick={
+//                   is3DMode
+//                     ? () => moveDownViewer3D()
+//                     : ( event ) => update2DView( viewer2DState, event )
+//                 }
+//               />
+
+//               <img
+//                 style={ { ...STYLE_BUTTONS_DIRECTION, marginLeft: '-1px' } }
+//                 id='ArrowRight'
+//                 src={ iconRight }
+//                 onClick={
+//                   is3DMode
+//                     ? () => moveRightViewer3D()
+//                     : ( event ) => update2DView( viewer2DState, event )
+//                 }
+//               />
+//             </div>
+//           </div>
+
+//           {/* Zoom Buttons */ }
+//           <div style={ STYLE_ZOOM }>
+//             <img
+//               style={ { ...STYLE_BUTTONS_ZOOM, marginBottom: '0.5em' } }
+//               src={ iconPlus }
+//               id='ZoomIn'
+//               onClick={
+//                 is3DMode
+//                   ? () => zoomInViewer3D()
+//                   : ( event ) => update2DView( viewer2DState, event )
+//               }
+//             />
+
+//             <img
+//               style={ STYLE_BUTTONS_ZOOM }
+//               src={ iconMinus }
+//               id='ZoomOut'
+//               onClick={
+//                 is3DMode
+//                   ? () => zoomOutViewer3D()
+//                   : ( event ) => update2DView( viewer2DState, event )
+//               }
+//             />
+//           </div>
+//         </aside>
+//       </div>
+//     );
+//   }
+// }
