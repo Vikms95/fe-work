@@ -117,17 +117,7 @@ export default function MenuMuebles ( props ) {
     accesorios: null,
   } );
 
-  const mueblesElements =
-    props
-      .catalog
-      .getCategory( 'muebles' )
-      .elements
-      .filter( element => ( element.info.visibility )
-        ? element.info.visibility.catalog
-        : true
-      );
-
-
+  //TODO Refactor into custom hook
   const matcharray = ( text ) => {
     if ( text != '' && state.currentShowElement !== null ) {
       let filtered = [];
@@ -139,12 +129,19 @@ export default function MenuMuebles ( props ) {
           filtered.push( array[ i ] );
         }
       }
-      setState( ( prevState ) => (
-        { ...prevState, matchString: text, filterShowElement: filtered }
+
+      setState( ( prevState ) => ( {
+        ...prevState,
+        matchString: text,
+        filterShowElement: filtered
+      }
       ) );
 
     } else {
-      setState( ( prevState ) => ( { ...prevState, filterShowElement: null } ) );
+      setState( ( prevState ) => ( {
+        ...prevState,
+        filterShowElement: null
+      } ) );
 
     }
   };
@@ -188,7 +185,6 @@ export default function MenuMuebles ( props ) {
     );
   };
 
-  // SECTION MUEBLES
   const selectFusionChrome = () => {
     // TODO: Cambiar idioma
     let newBreadcrumb = () => {
@@ -235,7 +231,6 @@ export default function MenuMuebles ( props ) {
     } ) );
   };
 
-  // SECTION LAVABO
   const selectLavabo2 = () => {
     // TODO: Cambiar idioma
     let newBreadcrumb = () => {
@@ -327,7 +322,6 @@ export default function MenuMuebles ( props ) {
     } ) );
   };
 
-  // SECTION MAMPARAS
   const selectFrontal = () => {
     // TODO: Cambiar idioma
     let newBreadcrumb = () => {
