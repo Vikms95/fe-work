@@ -6,7 +6,6 @@ import React,
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import Translator from './translator/translator';
 import Catalog from './catalog/catalog';
 import actions from './actions/export';
