@@ -7,8 +7,8 @@ const STYLE = {
   fontWeight: 300,
 };
 
-export default function ContentTitle({children, style = {}, ...rest}) {
-  return <h1 style={{...STYLE, ...style}} {...rest}>{children}</h1>
+export default function ContentTitle ( { children, style = {}, ...rest } ) {
+  return <h1 style={ { ...STYLE, ...style } } { ...rest }>{ children }</h1>;
 }
 
 ContentTitle.propsType = {

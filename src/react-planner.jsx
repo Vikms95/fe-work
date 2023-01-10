@@ -84,6 +84,7 @@ class ReactPlanner extends Component {
     };
   }
 
+  // UseEffect con []
   componentWillMount () {
     let { store } = this.context;
     let {
@@ -101,6 +102,7 @@ class ReactPlanner extends Component {
     projectActions.SetPreference( prefs, prefsInfo );
   }
 
+  // UseEffect con [props]
   UNSAFE_componentWillReceiveProps ( nextProps ) {
     let { stateExtractor, state, projectActions, catalog } = nextProps;
     let plannerState = stateExtractor( state );

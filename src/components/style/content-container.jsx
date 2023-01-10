@@ -6,8 +6,8 @@ const STYLE = {
   overflowY: 'auto'
 };
 
-export default function ContentContainer({children, width, height, style = {}}) {
-  return <div style={{width, height, ...STYLE, ...style}} onWheel={event => event.stopPropagation()}>{children}</div>
+export default function ContentContainer ( { children, width, height, style = {} } ) {
+  return <div style={ { width, height, ...STYLE, ...style } } onWheel={ event => event.stopPropagation() }>{ children }</div>;
 }
 
 ContentContainer.propsType = {
