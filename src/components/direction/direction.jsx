@@ -67,79 +67,40 @@ const STYLE_BUTTONS_DIRECTION = {
   cursor: 'pointer',
 };
 
-
-export default function Direction ( props, context ) {
-  const [ is2DActive, setIs2DActive ] = useState( true );
-
-  const getCanvas = () => (
-    document.querySelector( 'canvas' )
-  );
-
-  const moveLeftViewer3D = () => {
-    const selected = getIsElementSelected( props.state );
-    if ( !selected ) dispatch3DMoveLeft();
-  };
-
-  const moveRightViewer3D = () => {
-    const selected = getIsElementSelected( props.state );
-    if ( !selected ) dispatch3DMoveRight();
-  };
-
-  const moveUpViewer3D = () => {
-    const selected = getIsElementSelected( props.state );
-    if ( !selected ) dispatch3DMoveUp();
-  };
-
-  const moveDownViewer3D = () => {
-    const selected = getIsElementSelected( props.state );
-    if ( !selected ) dispatch3DMoveDown();
-  };
-
-  const zoomInViewer3D = () => {
-    const canvas = getCanvas();
-    const selected = getIsElementSelected( props.state );
-    if ( canvas && !selected ) dispatch3DZoomIn( canvas );
-  };
-
-  const zoomOutViewer3D = () => {
-    const canvas = getCanvas();
-    const selected = getIsElementSelected( props.state );
-    if ( canvas && !selected ) dispatch3DZoomOut( canvas );
-  };
-
-  const {
+export default function Direction (
+  {
     state,
     width,
-    height,
-    refViewer2D,
-    toolbarButtons,
-    allowProjectFileSupport,
-    update2DView
-  } = props;
-
-  const {
+    update2DView,
     projectActions,
-    viewer2DActions,
-    viewer3DActions,
-    translator
-  } = context;
-
+    viewer3DActions
+  } ) {
 
   const viewer2DState = state.get( 'viewer2D' ).toJS();
   const mode = state.getIn( [ 'mode' ] );
   const is3DMode = state.getIn( [ 'mode' ] ) === MODE_3D_VIEW;
 
+  const getCanvas = () => document.querySelector( 'canvas' );
+
+  // TODO implement this function
+  const moveViewer2DWhileIdle = ( dispatch ) => {
+    const selected = getIsElementSelected( state );
+    if ( !selected ) dispatch();
+  };
+
+  const moveViewer3DWhileIdle = ( dispatch ) => {
+    const canvas = getCanvas();
+    const selected = getIsElementSelected( state );
+    if ( canvas && !selected ) dispatch( canvas );
+  };
+
   const changeTo2D = () => {
-    setIs2DActive( true );
-    props.projectActions.setMode( MODE_IDLE );
+    projectActions.setMode( MODE_IDLE );
   };
 
   const changeTo3D = () => {
-    setIs2DActive( false );
-    props.viewer3DActions.selectTool3DView();
+    viewer3DActions.selectTool3DView();
   };
-
-  console.log( projectActions );
 
   return (
     <div style={ { position: 'absolute', left: width, bottom: '0', width: '257px', height: '130px', Zindex: '9002' } }>
@@ -162,7 +123,7 @@ export default function Direction ( props, context ) {
             src={ iconUp }
             id='ArrowUp'
             onClick={ ( is3DMode )
-              ? () => moveUpViewer3D()
+              ? () => moveViewer3DWhileIdle( dispatch3DMoveUp )
               : ( event ) => update2DView( viewer2DState, event )
             }
           />
@@ -173,7 +134,7 @@ export default function Direction ( props, context ) {
               src={ iconLeft }
               id='ArrowLeft'
               onClick={ ( is3DMode )
-                ? () => moveLeftViewer3D()
+                ? () => moveViewer3DWhileIdle( dispatch3DMoveLeft )
                 : ( event ) => update2DView( viewer2DState, event )
               }
             />
@@ -183,7 +144,7 @@ export default function Direction ( props, context ) {
               id='ArrowDown'
               src={ iconDown }
               onClick={ ( is3DMode )
-                ? () => moveDownViewer3D()
+                ? () => moveViewer3DWhileIdle( dispatch3DMoveDown )
                 : ( event ) => update2DView( viewer2DState, event )
               }
             />
@@ -193,7 +154,7 @@ export default function Direction ( props, context ) {
               id='ArrowRight'
               src={ iconRight }
               onClick={ ( is3DMode )
-                ? () => moveRightViewer3D()
+                ? () => moveViewer3DWhileIdle( dispatch3DMoveRight )
                 : ( event ) => update2DView( viewer2DState, event )
               }
             />
@@ -206,7 +167,7 @@ export default function Direction ( props, context ) {
             src={ iconPlus }
             id='ZoomIn'
             onClick={ ( is3DMode )
-              ? () => zoomInViewer3D()
+              ? () => moveViewer3DWhileIdle( dispatch3DZoomIn )
               : ( event ) => update2DView( viewer2DState, event )
             }
           />
@@ -216,7 +177,7 @@ export default function Direction ( props, context ) {
             src={ iconMinus }
             id='ZoomOut'
             onClick={ ( is3DMode )
-              ? () => zoomOutViewer3D()
+              ? () => moveViewer3DWhileIdle( dispatch3DZoomOut )
               : ( event ) => update2DView( viewer2DState, event )
             }
           />
