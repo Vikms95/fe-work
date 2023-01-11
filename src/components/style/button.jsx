@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
 
@@ -37,26 +37,58 @@ const BASE_STYLE_SIZE = {
   },
 };
 
-export default class Button extends Component {
+export default function Button ( {
+  type,
+  style: customStyle,
+  styleHover: customStyleHover,
+  children,
+  size,
+  ...rest
+} ) {
 
-  constructor(props) {
-    super(props);
-    this.state = {hover: false};
-  }
+  const [ hover, setHover ] = useState( false );
 
-  render() {
-    let {hover} = this.state;
-    let {type, style: customStyle, styleHover: customStyleHover, children, size, ...rest} = this.props;
-    let styleMerged = Object.assign({}, BASE_STYLE, BASE_STYLE_SIZE[size], hover ? customStyleHover : customStyle);
+  const styleMerged = Object.assign( {},
+    BASE_STYLE,
+    BASE_STYLE_SIZE[ size ],
+    ( hover )
+      ? customStyleHover
+      : customStyle
+  );
 
-    return <button
-      type={type}
-      onMouseEnter={e => this.setState({hover: true})}
-      onMouseLeave={e => this.setState({hover: false})}
-      style={styleMerged}
-      {...rest}>{children}</button>
-  }
+  return (
+    <button
+      type={ type }
+      style={ styleMerged }
+      onMouseEnter={ () => setHover( true ) }
+      onMouseLeave={ () => setHover( false ) }
+      { ...rest }
+    >
+      { children }
+    </button>
+  );
 }
+
+// export default class Button extends Component {
+
+//   constructor ( props ) {
+//     super( props );
+//     this.state = { hover: false };
+//   }
+
+//   render () {
+//     let { hover } = this.state;
+//     let { type, style: customStyle, styleHover: customStyleHover, children, size, ...rest } = this.props;
+//     let styleMerged = Object.assign( {}, BASE_STYLE, BASE_STYLE_SIZE[ size ], hover ? customStyleHover : customStyle );
+
+//     return <button
+//       type={ type }
+//       onMouseEnter={ e => this.setState( { hover: true } ) }
+//       onMouseLeave={ e => this.setState( { hover: false } ) }
+//       style={ styleMerged }
+//       { ...rest }>{ children }</button>;
+//   }
+// }
 
 Button.defaultProps = {
   type: "button",
@@ -75,6 +107,6 @@ Button.propTypes = {
   type: PropTypes.string,
   style: PropTypes.object,
   styleHover: PropTypes.object,
-  size: PropTypes.oneOf(['large', 'normal', 'small']),
+  size: PropTypes.oneOf( [ 'large', 'normal', 'small' ] ),
 };
 

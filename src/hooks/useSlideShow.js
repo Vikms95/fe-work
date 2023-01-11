@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
+// Right now, it is limited to our use case of 3 slides.
+// This can be refactored to handle a max amount of slides.
 export function useSlideShow () {
   const [ index, setIndex ] = useState( 0 );
   let interval = useRef( null );
