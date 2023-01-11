@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Map, fromJS } from 'immutable';
 import AttributesEditor from './attributes-editor/attributes-editor';
@@ -9,16 +9,13 @@ import convert from 'convert-units';
 import flecha from './../../../assets/generalItems/flecha.png';
 import puertas from './../../../assets/construccion/puertas.png';
 import { Line } from '../../../class/export';
-import {
-  MODE_DRAWING_LINE,
-} from '../../../constants';
-
+import { MODE_DRAWING_LINE } from '../../../constants';
 import { PropertyLengthMeasure } from '../../../catalog/properties/export';
 import { getCacheAngulo, isMultipleSelection } from '../../../selectors/selectors';
 
 const PRECISION = 2;
 
-const attrPorpSeparatorStyle = {
+const STYLE_ATTR_PROP_SEPARATOR = {
   margin: '0.5em 0.25em 0.5em 0',
   border: '2px solid ' + SharedStyle.SECONDARY_COLOR.alt,
   position: 'relative',
@@ -26,19 +23,520 @@ const attrPorpSeparatorStyle = {
   borderRadius: '2px'
 };
 
-const headActionStyle = {
+const STYLE_HEAD_ACTION = {
   position: 'absolute',
   right: '0.5em',
   top: '0.5em'
 };
 
-const iconHeadStyle = {
+const STYLE_ICON_HEAD = {
   float: 'right',
   margin: '-3px 4px 0px 0px',
   padding: 0,
   cursor: 'pointer',
   fontSize: '1.4em'
 };
+
+// export default function ElementEditor ( props ) {
+
+//   const {
+//     element,
+//     layer,
+//     state: appState,
+//     catalog,
+//     projectActions,
+//     linesActions
+//   } = props;
+
+//   const mode = appState.getIn( [ 'mode' ] );
+
+//   useEffect( () => {
+//     const scene = appState.get( 'scene' );
+//     const selectedLayer = scene.getIn( [ 'layers', scene.get( 'selectedLayer' ) ] );
+
+//     /* //TODO Figure out what's the logic behind checking whether the
+//      layer passed as props is different from the selected ones */
+//     if ( selectedLayer.hashCode() !== layer.hashCode() ) {
+//       setState( ( prevState ) => ( {
+//         isSelectAcabado: prevState.isSelectAcabado,
+//         attributesFormData: initAttrData( element, layer, state ),
+//         propertiesFormData: initPropData( element, layer, state )
+//       } ) );
+//     }
+//   }, [ props ] );
+
+
+//   const initAttrData = ( element, layer ) => {
+//     element = ( typeof element.misc === 'object' )
+//       ? element.set( 'misc', new Map( element.misc ) )
+//       : element;
+
+//     switch ( element.prototype ) {
+//       case 'items': {
+//         return new Map( element );
+//       }
+//       case 'lines': {
+
+//         let v2First = element.v2First;
+//         let v_a = layer.vertices.get( element.vertices.get( !v2First ? 0 : 1 ) );
+//         let v_b = layer.vertices.get( element.vertices.get( 1 ) );
+
+//         let distance = GeometryUtils.pointsDistance( v_a.x, v_a.y, v_b.x, v_b.y );
+//         let _unit = element.misc.get( '_unitLength' ) || catalog.unit;
+//         let _length = convert( distance ).from( catalog.unit ).to( _unit );
+//         let _angleLine = Line.getAngleV0_pcl( layer, element );
+
+//         //TODO test when pressing enter and creating a new line
+//         // use the cached angulo for this new line 
+//         if ( distance === 0 && getCacheAngulo( appState ) ) {
+//           _angleLine.angle = getCacheAngulo( appState );
+//         }
+
+//         return new Map( {
+//           lineLength: new Map( { length: distance, _length, _unit } ),
+//           lineAngle: _angleLine.angle,
+//           isEndLine: false
+//         } );
+//       }
+
+//       case 'holes': {
+//         let line = layer.lines.get( element.line );
+//         let { x: x0, y: y0 } = layer.vertices.get( line.vertices.get( 0 ) );
+//         let { x: x1, y: y1 } = layer.vertices.get( line.vertices.get( 1 ) );
+//         let lineLength = GeometryUtils.pointsDistance( x0, y0, x1, y1 );
+//         let startAt = lineLength * element.offset - element.properties.get( 'width' ).get( 'length' ) / 2;
+
+//         let _unitA = element.misc.get( '_unitA' ) || catalog.unit;
+//         let _lengthA = convert( startAt ).from( catalog.unit ).to( _unitA );
+
+//         let endAt = lineLength - lineLength * element.offset - element.properties.get( 'width' ).get( 'length' ) / 2;
+//         let _unitB = element.misc.get( '_unitB' ) || catalog.unit;
+//         let _lengthB = convert( endAt ).from( catalog.unit ).to( _unitB );
+
+//         return new Map( {
+//           offset: element.offset,
+//           offsetA: new Map( {
+//             length: MathUtils.toFixedFloat( startAt, PRECISION ),
+//             _length: MathUtils.toFixedFloat( _lengthA, PRECISION ),
+//             _unit: _unitA
+//           } ),
+//           offsetB: new Map( {
+//             length: MathUtils.toFixedFloat( endAt, PRECISION ),
+//             _length: MathUtils.toFixedFloat( _lengthB, PRECISION ),
+//             _unit: _unitB
+//           } )
+//         } );
+//       }
+
+//       case 'areas': {
+//         return new Map( {} );
+//       }
+
+//       default:
+//         return null;
+//     }
+//   };
+
+//   const initPropData = ( element ) => {
+//     let catalogElement = catalog.getElement( element.type );
+
+//     let mapped = {};
+//     for ( let name in catalogElement.properties ) {
+//       mapped[ name ] = new Map( {
+//         currentValue: element.properties.has( name )
+//           ? element.properties.get( name )
+//           : fromJS( catalogElement.properties[ name ].defaultValue ),
+
+//         configs: catalogElement.properties[ name ]
+//       } );
+//     }
+
+//     return new Map( mapped );
+//   };
+
+
+//   const updateAttribute = ( attributeName, value, isEnter ) => {
+//     let { attributesFormData } = state;
+
+//     switch ( props.element.prototype ) {
+//       case 'items': {
+//         attributesFormData = attributesFormData.set( attributeName, value );
+//         break;
+//       }
+//       case 'lines':
+
+//         attributesFormData = attributesFormData.set( attributeName, value );
+//         setState( ( prevState ) => (
+//           { ...prevState, attributesFormData: attributesFormData }
+//         ) );
+
+//         if ( isEnter && !isMultipleSelection( appState ) ) {
+//           const cachedAngulo = document.querySelector( '.angulo' ).value;
+//           linesActions.cacheAngulo( cachedAngulo );
+//         }
+//         break;
+
+//       case 'holes': {
+//         switch ( attributeName ) {
+//           case 'offsetA':
+//             {
+//               let line = props.layer.lines.get( props.element.line );
+
+//               let orderedVertices = GeometryUtils.orderVertices( [
+//                 props.layer.vertices.get( line.vertices.get( 0 ) ),
+//                 props.layer.vertices.get( line.vertices.get( 1 ) )
+//               ] );
+
+//               let [ { x: x0, y: y0 }, { x: x1, y: y1 } ] = orderedVertices;
+
+//               let alpha = GeometryUtils.angleBetweenTwoPoints( x0, y0, x1, y1 );
+//               let lineLength = GeometryUtils.pointsDistance( x0, y0, x1, y1 );
+//               let widthLength = props.element.properties.get( 'width' ).get( 'length' );
+//               let halfWidthLength = widthLength / 2;
+
+//               let lengthValue = value.get( 'length' );
+//               lengthValue = Math.max( lengthValue, 0 );
+//               lengthValue = Math.min( lengthValue, lineLength - widthLength );
+
+//               let xp = ( lengthValue + halfWidthLength ) * Math.cos( alpha ) + x0;
+//               let yp = ( lengthValue + halfWidthLength ) * Math.sin( alpha ) + y0;
+
+//               let offset = GeometryUtils.pointPositionOnLineSegment( x0, y0, x1, y1, xp, yp );
+
+//               let endAt = MathUtils.toFixedFloat( lineLength - ( lineLength * offset ) - halfWidthLength, PRECISION );
+//               let offsetUnit = attributesFormData.getIn( [ 'offsetB', '_unit' ] );
+
+//               let offsetB = new Map( {
+//                 length: endAt,
+//                 _length: convert( endAt ).from( catalog.unit ).to( offsetUnit ),
+//                 _unit: offsetUnit
+//               } );
+
+//               attributesFormData = attributesFormData.set( 'offsetB', offsetB ).set( 'offset', offset );
+
+//               let offsetAttribute = new Map( {
+//                 length: MathUtils.toFixedFloat( lengthValue, PRECISION ),
+//                 _unit: value.get( '_unit' ),
+//                 _length: MathUtils.toFixedFloat( convert( lengthValue ).from( catalog.unit ).to( value.get( '_unit' ) ), PRECISION )
+//               } );
+
+//               attributesFormData = attributesFormData.set( attributeName, offsetAttribute );
+//               break;
+//             }
+//           case 'offsetB':
+//             {
+//               let line = props.layer.lines.get( props.element.line );
+
+//               let orderedVertices = GeometryUtils.orderVertices( [
+//                 props.layer.vertices.get( line.vertices.get( 0 ) ),
+//                 props.layer.vertices.get( line.vertices.get( 1 ) )
+//               ] );
+
+//               let [ { x: x0, y: y0 }, { x: x1, y: y1 } ] = orderedVertices;
+
+//               let alpha = GeometryUtils.angleBetweenTwoPoints( x0, y0, x1, y1 );
+//               let lineLength = GeometryUtils.pointsDistance( x0, y0, x1, y1 );
+//               let widthLength = props.element.properties.get( 'width' ).get( 'length' );
+//               let halfWidthLength = widthLength / 2;
+
+//               let lengthValue = value.get( 'length' );
+//               lengthValue = Math.max( lengthValue, 0 );
+//               lengthValue = Math.min( lengthValue, lineLength - widthLength );
+
+//               let xp = x1 - ( lengthValue + halfWidthLength ) * Math.cos( alpha );
+//               let yp = y1 - ( lengthValue + halfWidthLength ) * Math.sin( alpha );
+
+//               let offset = GeometryUtils.pointPositionOnLineSegment( x0, y0, x1, y1, xp, yp );
+
+//               let startAt = MathUtils.toFixedFloat( ( lineLength * offset ) - halfWidthLength, PRECISION );
+//               let offsetUnit = attributesFormData.getIn( [ 'offsetA', '_unit' ] );
+
+//               let offsetA = new Map( {
+//                 length: startAt,
+//                 _length: convert( startAt ).from( catalog.unit ).to( offsetUnit ),
+//                 _unit: offsetUnit
+//               } );
+
+//               attributesFormData = attributesFormData.set( 'offsetA', offsetA ).set( 'offset', offset );
+
+//               let offsetAttribute = new Map( {
+//                 length: MathUtils.toFixedFloat( lengthValue, PRECISION ),
+//                 _unit: value.get( '_unit' ),
+//                 _length: MathUtils.toFixedFloat( convert( lengthValue ).from( catalog.unit ).to( value.get( '_unit' ) ), PRECISION )
+//               } );
+
+//               attributesFormData = attributesFormData.set( attributeName, offsetAttribute );
+//               break;
+//             }
+//           default:
+//             {
+//               attributesFormData = attributesFormData.set( attributeName, value );
+//               break;
+//             }
+//         };
+//         break;
+//       }
+//       default:
+//         break;
+//     }
+
+//     setState( ( prevState ) => (
+//       { ...prevState, attributesFormData: attributesFormData }
+//     ) );
+
+//     save( { attributesFormData, isEnter } );
+//   };
+
+//   const updateProperty = ( propertyName, value, isEnter ) => {
+//     let propertiesFormData = state.propertiesFormData;
+
+//     propertiesFormData = propertiesFormData.setIn( [ propertyName, 'currentValue' ], value );
+//     setState( ( prevState ) => (
+//       { ...prevState, propertiesFormData: propertiesFormData }
+//     ) );
+
+//     save( { propertiesFormData, isEnter: isEnter || false } );
+
+//   };
+
+
+//   // Here the values taken from the form data are saved in state
+//   const save = ( { propertiesFormData, attributesFormData, isEnter } ) => {
+//     if ( propertiesFormData ) {
+//       let properties = propertiesFormData.map( data => {
+//         return data.get( 'currentValue' );
+//       } );
+
+//       projectActions.setProperties( properties );
+//     }
+
+//     if ( attributesFormData ) {
+//       switch ( props.element.prototype ) {
+//         case 'items': {
+//           projectActions.setItemsAttributes( attributesFormData );
+//           break;
+//         }
+//         case 'lines': {
+//           projectActions.setLinesAttributes( attributesFormData );
+//           break;
+//         }
+//         case 'holes': {
+//           projectActions.setHolesAttributes( attributesFormData );
+//           break;
+//         }
+//       }
+//     }
+
+//     if ( appState.mode == MODE_DRAWING_LINE && isEnter )
+//       projectActions.next_Drawing_Item();
+//   };
+
+//   const showAndHideAcabado = () => {
+//     if ( state.isSelectAcabado ) {
+//       setState( ( prevState ) => ( { ...prevState, isSelectAcabado: false } ) );
+//     } else {
+//       setState( ( prevState ) => ( { ...prevState, isSelectAcabado: true } ) );
+//     }
+//   };
+
+
+//   const [ state, setState ] = useState( {
+//     isSelectAcabado: false,
+//     attributesFormData: initAttrData( props.element, props.layer, appState ),
+//     propertiesFormData: initPropData( props.element, props.layer, appState ),
+
+//   } );
+
+//   const {
+//     attributesFormData,
+//     propertiesFormData
+//   } = state;
+
+//   return (
+//     <div style={ { marginTop: '2em' } }>
+//       <div style={ {
+//         display: 'flex',
+//         flexDirection: 'column',
+//         alignContent: 'center',
+//         alignItems: 'center',
+//         marginBottom: '45px'
+//       } }
+//       >
+//         <img style={ {
+//           height: '80px',
+//           width: '80px',
+//           paddingTop: '10px'
+//         } }
+//           src={ element.image }
+//         />
+//         <p style={ {
+//           margin: '0',
+//           padding: '10px 0',
+//           fontSize: '0.8em',
+//           textAlign: 'center',
+//           color: SharedStyle.PRIMARY_COLOR.master,
+//         } }
+//         >
+//           { element.name }
+//         </p>
+//         <p style={ { margin: '0', fontSize: '0.7em', textAlign: 'center' } }>
+//           { element.description }
+//         </p>
+//       </div>
+
+//       <AttributesEditor
+//         mode={ mode }
+//         position={ 1 }
+//         state={ appState }
+//         element={ element }
+//         onUpdate={ updateAttribute }
+//         attributeFormData={ attributesFormData }
+//         projectActions={ projectActions }
+//         unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
+//       />
+
+//       { propertiesFormData.entrySeq()
+//         .map( ( [ propertyName, data ] ) => {
+//           if ( propertyName.includes( 'texture' ) === false ) {
+//             const configs = data.get( 'configs' );
+//             const currentValue = data.get( 'currentValue' );
+//             const label = propertiesFormData.getIn( [ propertyName, 'configs' ] ).label;
+
+//             if ( configs.type === 'length-measure' ) {
+//               return (
+//                 <PropertyLengthMeasure
+//                   mode={ mode }
+//                   key={ propertyName }
+//                   stateRedux={ appState }
+//                   state={ propertiesFormData }
+//                   sourceElement={ element }
+//                   attributeName={ propertyName }
+//                   projectActions={ projectActions }
+//                   unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
+//                   configs={ { label: label, min: 0, max: Infinity, precision: 2 } }
+//                   value={ propertiesFormData.getIn( [ propertyName, "currentValue" ] ) }
+//                   onUpdate={ ( value, isEnter ) => updateProperty( propertyName, value, isEnter ) }
+//                 /> );
+
+//             } else {
+//               const { Editor } = catalog.getPropertyType( configs.type );
+
+//               return (
+//                 <Editor
+//                   configs={ configs }
+//                   key={ propertyName }
+//                   value={ currentValue }
+//                   stateRedux={ appState }
+//                   sourceElement={ element }
+//                   internalState={ state }
+//                   propertyName={ propertyName }
+//                   unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
+//                   onUpdate={ value => updateProperty( propertyName, value ) }
+//                 /> );
+
+//             }
+//           }
+//         } )
+//       }
+
+//       <AttributesEditor
+//         mode={ mode }
+//         position={ 2 }
+//         state={ appState }
+//         element={ element }
+//         onUpdate={ updateAttribute }
+//         attributeFormData={ attributesFormData }
+//         projectActions={ projectActions }
+//         unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
+//       />
+
+//       <div style={ { marginTop: '6px' } }>
+//         <div>
+//           <div
+//             onClick={ showAndHideAcabado }
+//             style={ {
+//               display: 'flex',
+//               justifyItems: 'center',
+//               height: '25px',
+//               width: '5.5em',
+//               cursor: 'pointer',
+//               paddingBottom: '34px'
+//             } }
+//           >
+//             <p style={ {
+//               margin: '0',
+//               fontSize: '0.75em',
+//               color: SharedStyle.PRIMARY_COLOR.master,
+//             } }
+//             >
+//               Acabado
+//             </p>
+//             <img style={ {
+//               height: '0.70em',
+//               marginLeft: '1.8em',
+//               marginTop: '1px'
+//             } }
+//               src={ flecha }
+//             />
+//           </div>
+
+//           <div id={ 'panelAcabado' }
+//             style={ ( state.isSelectAcabado )
+//               ? { display: 'block', width: '100%', height: '100%', paddingBottom: '10px' }
+//               : { display: 'none' } }>
+
+//             { propertiesFormData.entrySeq()
+//               .map( ( [ propertyName, data ] ) => {
+//                 if ( propertyName.includes( 'texture' ) ) {
+//                   const currentValue = data.get( 'currentValue' ), configs = data.get( 'configs' );
+
+//                   const { Editor } = catalog.getPropertyType( configs.type );
+
+//                   return (
+//                     <Editor
+//                       state={ appState }
+//                       configs={ configs }
+//                       key={ propertyName }
+//                       value={ currentValue }
+//                       sourceElement={ element }
+//                       internalState={ state }
+//                       propertyName={ propertyName }
+//                       onUpdate={ value => updateProperty( propertyName, value ) }
+//                     /> );
+//                 }
+//               } )
+//             }
+//           </div>
+
+//           <div style={ {
+//             display: 'flex',
+//             justifyItems: 'center',
+//             height: '25px',
+//             width: '5.5em',
+//             cursor: 'pointer'
+//           } }
+//           >
+//             <p style={ {
+//               margin: '0',
+//               fontSize: '0.75em',
+//               color: SharedStyle.PRIMARY_COLOR.master,
+//             } }
+//             >
+//               Opciones
+//             </p>
+//             <img style={ {
+//               height: '0.70em',
+//               marginLeft: '1.6em',
+//               marginTop: '1px'
+//             } }
+//               src={ flecha }
+//             />
+//           </div>
+//         </div>
+//       </div >
+//     </div >
+//   );
+// }
 
 export default class ElementEditor extends Component {
   constructor ( props, context ) {

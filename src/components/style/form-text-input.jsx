@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import * as SharedStyle from '../../shared-style';
 
 const STYLE_INPUT = {
@@ -16,28 +16,44 @@ const STYLE_INPUT = {
 };
 
 
-export default class FormTextInput extends Component {
+export default function FormTextInput ( { style, ...rest } ) {
+  const [ focus, setFocus ] = useState( false );
+  const textInputStyle = { ...STYLE_INPUT, ...style };
 
-  constructor(props) {
-    super(props);
-    this.state = { focus: false };
-  }
+  if ( focus ) textInputStyle.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
 
-  render() {
-    let { style, ...rest } = this.props;
-
-    let textInputStyle = { ...STYLE_INPUT, ...style };
-    if (this.state.focus) textInputStyle.border = `1px solid ${SharedStyle.SECONDARY_COLOR.main}`;
-
-    return <input
-      onFocus={e => this.setState({ focus: true })}
-      onBlur={e => this.setState({ focus: false })}
-      style={textInputStyle}
+  return (
+    <input
       type="text"
-      {...rest}
-    />
-  }
+      style={ textInputStyle }
+      onFocus={ () => setFocus( true ) }
+      onBlur={ () => setFocus( false ) }
+      { ...rest }
+    /> );
 }
+
+// export default class FormTextInput extends Component {
+
+//   constructor(props) {
+//     super(props);
+//     this.state = { focus: false };
+//   }
+
+//   render() {
+//     let { style, ...rest } = this.props;
+
+//     let textInputStyle = { ...STYLE_INPUT, ...style };
+//     if (this.state.focus) textInputStyle.border = `1px solid ${SharedStyle.SECONDARY_COLOR.main}`;
+
+//     return <input
+//       onFocus={e => this.setState({ focus: true })}
+//       onBlur={e => this.setState({ focus: false })}
+//       style={textInputStyle}
+//       type="text"
+//       {...rest}
+//     />
+//   }
+// }
 
 FormTextInput.defaultProps = {
   style: {}

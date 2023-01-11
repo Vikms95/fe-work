@@ -1,15 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PanelElementEditor from './panel-element-editor/panel-element-editor';
-//import PanelGroupEditor from './panel-group-editor';
-//import PanelMultiElementsEditor from './panel-element-editor/panel-multi-elements-editor';
-//import PanelLayers from './panel-layers';
-//import PanelGuides from './panel-guides';
-//import PanelGroups from './panel-groups';
-//import PanelLayerElements from './panel-layer-elements';
-//import If from '../../utils/react-if';
 import * as SharedStyle from '../../shared-style';
 import close from './../../assets/generalItems/deleteCross.png';
+
 import { getIsElementSelected, isMultiplePrototypeSelection } from '../../selectors/selectors';
 
 
@@ -78,7 +72,14 @@ const STYLE_NOT_SELECTED = {
 
 //const mapButtonsCb = ( el, ind ) => <If key={ ind } condition={ el.condition } style={ { position: 'relative' } }>{ el.dom }</If>;
 
-function Sidebar ( { state, width, height, sidebarComponents, projectActions } ) {
+function Sidebar ( {
+  state,
+  width,
+  height,
+  projectActions,
+  catalog,
+  linesActions
+} ) {
   //TODO change in multi-layer check
   //let selected = state.getIn( [ 'scene', 'layers', selectedLayer, 'selected' ] );
 
@@ -138,7 +139,6 @@ function Sidebar ( { state, width, height, sidebarComponents, projectActions } )
         onKeyUp={ event => event.stopPropagation() }
       >
 
-        {/* Barra Inicial */ }
         <div style={ STYLE_TITLE_BAR }>
           <p style={ STYLE_TITLE }>Propiedades</p>
           <img
@@ -147,9 +147,13 @@ function Sidebar ( { state, width, height, sidebarComponents, projectActions } )
             onClick={ hideSideBar } />
         </div>
 
-        {/* Elements */ }
         <div style={ { margin: '0 20px' } }>
-          <PanelElementEditor state={ state } />
+          <PanelElementEditor
+            state={ state }
+            projectActions={ projectActions }
+            catalog={ catalog }
+            linesActions={ linesActions }
+          />
         </div>
       </aside>
     </div >

@@ -191,6 +191,8 @@ const data = {
 const container = document.getElementById( 'app' );
 const root = createRoot( container );
 
+console.log( store );
+
 root.render( (
   <Provider store={ store }>
     <ContainerDimensions>

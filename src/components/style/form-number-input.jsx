@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
 import { KEYBOARD_BUTTON_CODE, MODE_DRAWING_LINE } from '../../constants';
@@ -16,6 +16,7 @@ import {
   isMultipleSelection,
   getLayerValue,
 } from '../../selectors/selectors';
+
 import { toFixedFloat } from '../../utils/math';
 import { GeometryUtils } from '../../utils/export';
 
@@ -34,6 +35,356 @@ const STYLE_INPUT = {
   textAlign: 'right',
   width: '100%',
 };
+
+// export default function FormNumberInput ( props ) {
+//   const {
+//     value,
+//     min,
+//     max,
+//     style,
+//     onValid,
+//     onChange,
+//     onInvalid,
+//     precision,
+//     stateRedux,
+//     placeholder,
+//     attributeName,
+//     sourceElement,
+//   } = props;
+
+
+//   const [ state, setState ] = useState( {
+//     focus: false,
+//     valid: true,
+//     showedValue: props.value,
+//     inputElement: null
+
+//   } );
+
+//   const STYLE_NUMERIC_INPUT = { ...STYLE_INPUT, ...style };
+
+//   const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
+
+//   let cursor = {
+//     x: stateRedux.getIn( [ 'mouse', 'x' ] ),
+//     y: stateRedux.getIn( [ 'mouse', 'y' ] ),
+//   };
+
+//   const isAttribute = () => {
+//     return props.attributeName === 'angulo' || props.attributeName === 'lineLength';
+//   };
+
+//   const isLengthInputWhileDrawing = () => {
+//     return props.attributeName === 'lineLength' && props.mode === MODE_DRAWING_LINE;
+//   };
+
+//   const isDifferentPropsValue = ( nextProps ) => {
+//     return props.value !== nextProps.value;
+//   };
+
+//   const isCachedAnguloWhileDrawing = () => {
+//     return getCacheAngulo( props.stateRedux ) && props.stateRedux.get( 'mode' ) === MODE_DRAWING_LINE;
+//   };
+
+//   const isInputAnguloAndSingleSelection = () => {
+//     return props.attributeName === 'angulo' && !isMultipleSelection();
+//   };
+
+//   const isInputAnguloAndMultipleSelection = () => {
+//     return props.attributeName === 'angulo' && isMultipleSelection();
+//   };
+
+//   const isElementsOfSamePrototype = ( element ) => {
+//     if ( props.sourceElement ) {
+//       return element[ 0 ] === props.sourceElement.get( 'prototype' );
+//     }
+//   };
+
+//   const isSingleSelectionOrInvalidElement = () => {
+//     return !props.sourceElement || !isMultipleSelection( props.stateRedux );
+//   };
+
+//   const isEmptyInputAndSingleSelection = () => {
+//     return state.showedValue === 'null' && !state.isMultiSelection;
+//   };
+
+//   const areArrayValuesDifferent = ( values ) => {
+//     return !values.every( el => el === values[ 0 ] );
+//   };
+
+//   const resetAngleInput = () => {
+//     if ( state.showedValue !== 0 ) {
+//       setState( ( prevState ) => (
+//         { ...prevState, showedValue: props.value }
+//       ) );
+//     }
+//   };
+
+//   const getProperty = ( element ) => {
+//     return element.getIn( [ 'properties', props.attributeName, 'length' ] );
+//   };
+
+//   const getAttribute = ( line ) => {
+//     if ( !line.vertices ) return;
+
+//     const layerID = getLayerID( props.stateRedux );
+//     const layer = props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
+
+//     const { v_a, v_b } = getElementVertices( line, layer );
+//     const { lineLength, angulo } = getElementAttributes( line, layer, v_a, v_b );
+
+//     if ( props.attributeName === 'lineLength' ) {
+//       return toFixedFloat( lineLength, 2 );
+//     }
+
+//     return angulo.angle;
+//   };
+
+//   const getSelectedPropertyValues = ( prototype ) => {
+//     const valuesArray = [];
+//     const elements = getSelectedPrototypeElements( props.stateRedux, prototype );
+
+//     if ( isAttribute() ) {
+//       for ( const { 1: element } of elements ) {
+
+//         const attribute = getAttribute( element );
+//         valuesArray.push( attribute );
+//       }
+
+//     } else {
+//       for ( const { 1: element } of elements ) {
+
+//         const property = getProperty( element );
+//         valuesArray.push( property );
+//       }
+//     }
+
+//     return valuesArray;
+//   };
+
+//   const resetInputOnSelection = () => {
+//     //TODO Test app without this forceupdate, checked with class component
+//     // Did not seem to give any problem
+//     // forceUpdate();
+//     if ( !isMultipleSelection( props.stateRedux ) ) {
+//       setState( { showedValue: props.value } );
+//     }
+//   };
+
+//   //TODO This could be refactored to several useEffects and later, custom hooks
+//   useEffect( () => {
+
+//     if ( isLengthInputWhileDrawing() ) {
+//       setState( { focus: true } );
+//       state.inputElement.focus();
+//       state.inputElement.select();
+//     }
+
+//     if ( isCachedAnguloWhileDrawing() && isInputAnguloAndSingleSelection() ) {
+//       setState( { showedValue: parseFloat( getCacheAngulo( props.stateRedux ) ) } );
+//       document.addEventListener( 'mousemove', resetAngleInput );
+//     }
+
+//     if ( isSingleSelectionOrInvalidElement() ) return;
+
+//     const prototype = props.sourceElement.get( 'prototype' );
+//     const values = getSelectedPropertyValues( prototype );
+
+//     if ( areArrayValuesDifferent( values ) ) {
+//       setState( { showedValue: null } );
+//       window.addEventListener( 'click', resetInputOnSelection );
+//     };
+
+//     return () => {
+//       setState( { showedValue: props.value } );
+//       document.removeEventListener( 'mousemove', resetAngleInput );
+//     };
+
+//   }, [] );
+
+//   //TODO This could be refactored to several useEffects and later, custom hooks
+//   useEffect( () => {
+//     if ( document.activeElement === state.inputElement ) {
+//       if ( cursor.x !== props.stateRedux.getIn( [ 'mouse', 'x' ] )
+//         || cursor.y !== props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
+//         state.inputElement.select();
+//       }
+//     }
+
+//     cursor = {
+//       x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
+//       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
+//     };
+
+//     if ( isDifferentPropsValue( props ) || isEmptyInputAndSingleSelection() ) {
+//       setState( { showedValue: props.value } );
+//     }
+//   }, [ props ] );
+
+
+//   if ( state.focus ) {
+//     STYLE_NUMERIC_INPUT.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
+//   }
+
+//   if ( !isNaN( min ) && isFinite( min ) && state.showedValue < min ) {
+//     setState( { showedValue: min } );
+//   };
+
+//   if ( !isNaN( max ) && isFinite( max ) && state.showedValue > max ) {
+//     setState( { showedValue: max } );
+//   }
+
+//   const currValue = ( regexp.test( state.showedValue ) )
+//     ? state.showedValue
+//     : parseFloat( state.showedValue ).toFixed( precision );
+
+//   const isDifferentValue =
+//     ( parseFloat( props.value ).toFixed( precision ) ) !==
+//     parseFloat( state.showedValue ).toFixed( precision );
+
+
+//   const onKeyDown = ( e ) => {
+//     const keyCode = e.keyCode || e.which;
+
+//     if ( isSaveButtonPressed( keyCode ) ) {
+//       saveFn( e, keyCode );
+
+//     } else if ( isArrowPressedOnLength( keyCode ) ) {
+//       onArrrowPress( e, keyCode );
+
+//     } else if ( isEscPressedWhileDrawing( keyCode ) ) {
+//       props.projectActions.undo();
+//       context.linesActions.cacheFondo( '' );
+//       context.linesActions.cacheAlto( '' );
+//       context.linesActions.cacheAngulo( '' );
+
+//     } else if ( isEscPressed( keyCode ) ) {
+//       props.projectActions.unselectAll();
+//     }
+//   };
+
+//   const onInputChange = ( e ) => {
+//     const valid = regexp.test( e.nativeEvent.target.value );
+
+//     if ( valid ) {
+//       setState( { showedValue: e.nativeEvent.target.value } );
+
+//       if ( onValid ) {
+//         onValid( e.nativeEvent );
+//       }
+
+//     } else if ( onInvalid ) {
+//       onInvalid( e.nativeEvent );
+//     }
+
+//     setState( { valid } );
+//   };
+
+//   const cacheAttributes = () => {
+//     const inputAlto = document.querySelector( '.height' ).value;
+//     const inputFondo = document.querySelector( '.thickness' ).value;
+
+//     context.linesActions.cacheAlto( inputAlto );
+//     context.linesActions.cacheFondo( inputFondo );
+//   };
+
+//   const isElementLine = () => (
+//     props.sourceElement.get( 'prototype' ) === 'lines'
+//   );
+
+//   const saveFn = ( e, keyCode ) => {
+//     e.stopPropagation();
+//     if ( state.valid === false ) return;
+//     if ( state.showedValue === null ) return;
+
+//     let savedValue;
+
+//     savedValue =
+//       ( state.showedValue !== '' && state.showedValue !== '-' )
+//         ? parseFloat( state.showedValue )
+//         : 0;
+
+//     if ( isElementLine() ) {
+//       cacheAttributes();
+//     }
+
+//     onChange( {
+//       target: {
+//         isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER,
+//         value: ( attributeName === 'angulo' )
+//           ? savedValue
+//           : convertMeasureToOriginal( savedValue, props.unit )
+//       }
+//     } );
+//   };
+
+//   const onArrrowPress = ( e, keyCode ) => {
+//     e.preventDefault();
+
+//     const state = stateRedux;
+
+//     const layerID = getLayerID( state );
+//     const { vertice1ID, vertice2ID } = getLineVerticesID( sourceElement );
+
+//     if ( vertice1ID === vertice2ID ) return;
+
+//     let { x: x1, y: y1 } = getVerticeCoords( state, layerID, vertice1ID );
+//     let { x: x2, y: y2 } = getVerticeCoords( state, layerID, vertice2ID );
+//     if ( !x1 || !y1 || !x2 || !y2 ) return;
+
+//     const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, keyCode );
+
+//     context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
+
+//     /** DEBUG **/
+
+//     const layer = getLayerValue( state );
+//     let v2First = sourceElement.v2First;
+//     let v_a = layer.vertices.get( sourceElement.vertices.get( !v2First ? 0 : 1 ) );
+//     let v_b = layer.vertices.get( sourceElement.vertices.get( 1 ) );
+
+//     let distance = GeometryUtils.pointsDistance( v_a.x, v_a.y, v_b.x, v_b.y );
+
+//   };
+
+//   const isEscPressed = ( keyCode ) => (
+//     keyCode == KEYBOARD_BUTTON_CODE.ESC
+//   );
+
+//   const isSaveButtonPressed = ( keyCode ) => (
+//     ( keyCode == KEYBOARD_BUTTON_CODE.ENTER ) ||
+//     ( keyCode == KEYBOARD_BUTTON_CODE.TAB && isDifferentValue )
+//   );
+
+//   const isArrowPressedOnLength = ( keyCode ) => (
+//     ( attributeName === 'lineLength' ) &&
+//     ( KEYBOARD_BUTTON_CODE.ARROW_KEYS.includes( keyCode ) )
+//   );
+
+//   const isEscPressedWhileDrawing = ( keyCode ) => (
+//     ( keyCode == KEYBOARD_BUTTON_CODE.ESC ) &&
+//     ( props.mode === MODE_DRAWING_LINE )
+//   );
+
+//   return (
+//     <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
+
+//       <input
+//         type='number'
+//         value={ currValue }
+//         placeholder={ placeholder }
+//         className={ attributeName }
+//         ref={ c => ( state.inputElement = c ) }
+//         style={ { ...STYLE_NUMERIC_INPUT, fontFamily: 'Calibri', fontWidth: 'lighter' } }
+//         onKeyDown={ onKeyDown }
+//         onChange={ onInputChange }
+//         onClick={ () => state.inputElement.select() }
+//         onFocus={ () => setState( { focus: true } ) }
+//         onBlur={ () => setState( { focus: false } ) }
+//       />
+//     </div >
+//   );
+// };
 
 export default class FormNumberInput extends Component {
   constructor ( props, context ) {
@@ -179,8 +530,6 @@ export default class FormNumberInput extends Component {
   }
 
   resetInputOnSelection () {
-    this.forceUpdate();
-    console.log( 'test', this.props.stateRedux );
     if ( !isMultipleSelection( this.props.stateRedux ) ) {
       this.setState( { showedValue: this.props.value } );
     }
