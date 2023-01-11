@@ -1,10 +1,11 @@
 import React from 'react';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import { createRoot } from 'react-dom/client';
+
 import ContainerDimensions from 'react-container-dimensions';
 import Immutable, { Map } from 'immutable';
 import installDevTools from 'immutable-devtools';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
 import * as actionCreators from '../../src/actions/export';
 
 import MyCatalog from './catalog/mycatalog';
@@ -18,23 +19,7 @@ import {
   Plugins as PlannerPlugins,
 } from 'react-planner'; //react-planner
 
-//define state
-let AppState = Map( {
-  'react-planner': new PlannerModels.State()
-} );
-
-let getPlannerState = ( state, action ) => PlannerReducer( state, action );
-let getState = getPlannerState;
-
-//define reducer
-let reducer = ( state, action ) => {
-  state = state || AppState;
-  state = state.update( 'react-planner', plannerState => getState( plannerState, action ) );
-
-  return state;
-};
-
-let blackList = isProduction === true ? [] : [
+const blackList = isProduction === true ? [] : [
   'UPDATE_MOUSE_COORDS',
   'UPDATE_ZOOM_SCALE',
   'UPDATE_2D_CAMERA'
@@ -46,8 +31,24 @@ if ( !isProduction ) {
   installDevTools( Immutable );
 }
 
+//define state
+const AppState = Map( {
+  'react-planner': new PlannerModels.State()
+} );
+
+const getPlannerState = ( state, action ) => PlannerReducer( state, action );
+let getState = getPlannerState;
+
+//define reducer
+const reducer = ( state, action ) => {
+  state = state || AppState;
+  state = state.update( 'react-planner', plannerState => getState( plannerState, action ) );
+
+  return state;
+};
+
 //init store
-let store = createStore(
+const store = createStore(
   reducer,
   null,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__( {
@@ -56,17 +57,17 @@ let store = createStore(
   } )
 );
 
-let plugins = [
+const plugins = [
   PlannerPlugins.Keyboard(),
   PlannerPlugins.Autosave( 'react-planner_v0' ),
   PlannerPlugins.ConsoleDebugger(),
 ];
 
-let toolbarButtons = [
+const toolbarButtons = [
   ToolbarScreenshotButton,
 ];
 
-let dispatch = store.dispatch;
+const dispatch = store.dispatch;
 
 getState = ( state, action ) => {
   state = getPlannerState( state, action );
@@ -190,8 +191,6 @@ const data = {
 
 const container = document.getElementById( 'app' );
 const root = createRoot( container );
-
-console.log( store );
 
 root.render( (
   <Provider store={ store }>
