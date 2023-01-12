@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
 
 import * as SharedStyle from '../../shared-style';
 import './style.css';
@@ -13,7 +13,7 @@ import obstaculos from './../../assets/construccion/obstaculos.png';
 import flecha from './../../assets/generalItems/flecha.png';
 
 
-const STYLE = {
+let STYLE = {
   backgroundColor: SharedStyle.COLORS.white,
   display: 'none',
   position: 'absolute',
@@ -238,7 +238,7 @@ export default function MenuConstruccion ( props ) {
           </div>
 
           { ( state.currentShowElement === null )
-            ? <div div style={ { marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' } }>
+            ? <div style={ { marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center', columnGap: '20px' } }>
               <div onClick={ selectDoors } style={ { cursor: 'pointer', paddingTop: '10px' } }>
                 <div style={ { position: 'relative', minHeight: '100%' } }>
                   <img className={ 'rectangulo' } src={ rectangulo } style={ { marginLeft: '-1.5em', marginTop: '-0.5em', minHeight: '100%' } } />
