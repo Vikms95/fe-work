@@ -890,8 +890,6 @@ export default class ElementEditor extends Component {
   //}
 
   render () {
-    const hi = useSelector;
-    console.log( hi );
     let mode = this.props.state.getIn( [ 'mode' ] );
     let {
       props: { state: appState, element },
