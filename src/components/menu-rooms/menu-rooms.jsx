@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { MODE_DRAWING_LINE, MODE_WAITING_DRAWING_LINE } from '../../constants';
 import * as SharedStyle from '../../shared-style';
 import './style.css';
 
