@@ -542,9 +542,9 @@ ReactPlanner.propTypes = {
   //prefs: PropTypes.object,
 };
 
-ReactPlanner.contextTypes = {
-  store: PropTypes.object.isRequired,
-};
+// ReactPlanner.contextTypes = {
+//   store: PropTypes.object.isRequired,
+// };
 
 ReactPlanner.childContextTypes = {
   ...objectsMap( actions, () => PropTypes.object ),
