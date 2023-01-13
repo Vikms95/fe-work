@@ -327,6 +327,7 @@ class ReactPlanner extends Component {
 
   UNSAFE_componentWillReceiveProps ( nextProps ) {
     // useEffect(() => {}, [props])
+
     let { stateExtractor, state, projectActions, catalog } = nextProps;
 
     let plannerState = stateExtractor( state );
@@ -338,17 +339,17 @@ class ReactPlanner extends Component {
 
     // This can go on its own useEffect(() => {}, [props])
 
-    const delay = 500;
-    const autosaveKey = 'react-planner_v0';
+    // const delay = 500;
+    // const autosaveKey = 'react-planner_v0';
 
-    if ( !autosaveKey ) return;
-    if ( !localStorage ) return;
+    // if ( !autosaveKey ) return;
+    // if ( !localStorage ) return;
 
-    if ( this.timeout ) clearTimeout( this.timeout );
+    // if ( this.timeout ) clearTimeout( this.timeout );
 
-    this.timeout = setTimeout( () => {
-      localStorage.setItem( autosaveKey, JSON.stringify( plannerState.scene.toJS() ) );
-    }, delay );
+    // this.timeout = setTimeout( () => {
+    //   localStorage.setItem( autosaveKey, JSON.stringify( plannerState.scene.toJS() ) );
+    // }, delay );
   }
 
 
@@ -542,9 +543,9 @@ ReactPlanner.propTypes = {
   //prefs: PropTypes.object,
 };
 
-// ReactPlanner.contextTypes = {
-//   store: PropTypes.object.isRequired,
-// };
+ReactPlanner.contextTypes = {
+  store: PropTypes.object.isRequired,
+};
 
 ReactPlanner.childContextTypes = {
   ...objectsMap( actions, () => PropTypes.object ),
