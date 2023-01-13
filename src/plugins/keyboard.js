@@ -20,12 +20,12 @@ import {
 
 export default function keyboard () {
 
-  return ( store, stateExtractor, projectActions ) => {
+  return ( store, stateExtractor, projectActions, state ) => {
 
     window.addEventListener( 'keydown', event => {
 
-      let state = stateExtractor( store.getState() );
-      let mode = state.get( 'mode' );
+      let extractedState = stateExtractor( state );
+      let mode = extractedState.get( 'mode' );
 
       switch ( event.keyCode ) {
         case KEYBOARD_BUTTON_CODE.BACKSPACE:
@@ -55,13 +55,13 @@ export default function keyboard () {
         case KEYBOARD_BUTTON_CODE.ALT:
           {
             if ( MODE_SNAPPING.includes( mode ) )
-              projectActions.toggleSnap( state.snapMask.merge( {
+              projectActions.toggleSnap( extractedState.snapMask.merge( {
                 SNAP_POINT: false,
                 SNAP_LINE: false,
                 SNAP_SEGMENT: false,
                 SNAP_GRID: false,
                 SNAP_GUIDE: false,
-                tempSnapConfiguartion: state.snapMask.toJS()
+                tempSnapConfiguartion: extractedState.snapMask.toJS()
               } ) );
             // store.dispatch( toggleSnap( state.snapMask.merge( {
             //   SNAP_POINT: false,
@@ -75,28 +75,28 @@ export default function keyboard () {
           }
         case KEYBOARD_BUTTON_CODE.C:
           {
-            let selectedLayer = state.getIn( [ 'scene', 'selectedLayer' ] );
-            let selected = state.getIn( [ 'scene', 'layers', selectedLayer, 'selected' ] );
+            let selectedLayer = extractedState.getIn( [ 'scene', 'selectedLayer' ] );
+            let selected = extractedState.getIn( [ 'scene', 'layers', selectedLayer, 'selected' ] );
 
             if ( ( mode === MODE_IDLE || mode === MODE_3D_VIEW ) && ( selected.holes.size || selected.areas.size || selected.items.size || selected.lines.size ) ) {
               if ( selected.holes.size ) {
-                let hole = state.getIn( [ 'scene', 'layers', selectedLayer, 'holes', selected.holes.get( 0 ) ] );
+                let hole = extractedState.getIn( [ 'scene', 'layers', selectedLayer, 'holes', selected.holes.get( 0 ) ] );
                 projectActions.copyProperties( hole.get( 'properties' ) );
                 // store.dispatch( copyProperties( hole.get( 'properties' ) ) );
               }
               else if ( selected.areas.size ) {
-                let area = state.getIn( [ 'scene', 'layers', selectedLayer, 'areas', selected.areas.get( 0 ) ] );
+                let area = extractedState.getIn( [ 'scene', 'layers', selectedLayer, 'areas', selected.areas.get( 0 ) ] );
                 projectActions.copyProperties( area.properties );
                 // store.dispatch( copyProperties( area.properties ) );
               }
               else if ( selected.items.size ) {
-                let item = state.getIn( [ 'scene', 'layers', selectedLayer, 'items', selected.items.get( 0 ) ] );
+                let item = extractedState.getIn( [ 'scene', 'layers', selectedLayer, 'items', selected.items.get( 0 ) ] );
 
                 projectActions.copyProperties( item.properties );
                 // store.dispatch( copyProperties( item.properties ) );
               }
               else if ( selected.lines.size ) {
-                let line = state.getIn( [ 'scene', 'layers', selectedLayer, 'lines', selected.lines.get( 0 ) ] );
+                let line = extractedState.getIn( [ 'scene', 'layers', selectedLayer, 'lines', selected.lines.get( 0 ) ] );
                 projectActions.copyProperties( line.properties );
                 // store.dispatch( copyProperties( line.properties ) );
               }
@@ -120,14 +120,14 @@ export default function keyboard () {
 
     window.addEventListener( 'keyup', event => {
 
-      let state = stateExtractor( store.getState() );
-      let mode = state.get( 'mode' );
+      let extractedState = stateExtractor( state );
+      let mode = extractedState.get( 'mode' );
 
       switch ( event.keyCode ) {
         case KEYBOARD_BUTTON_CODE.ALT:
           {
             if ( MODE_SNAPPING.includes( mode ) )
-              projectActions.toggleSnap( state.snapMask.merge( state.snapMask.get( 'tempSnapConfiguartion' ) ) );
+              projectActions.toggleSnap( extractedState.snapMask.merge( extractedState.snapMask.get( 'tempSnapConfiguartion' ) ) );
             // store.dispatch( toggleSnap( state.snapMask.merge( state.snapMask.get( 'tempSnapConfiguartion' ) ) ) );
             break;
           }

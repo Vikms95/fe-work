@@ -7,7 +7,7 @@ let timeout = null;
 
 export default function autosave ( autosaveKey, delay ) {
 
-  return ( store, stateExtractor, projectActions ) => {
+  return ( store, stateExtractor, projectActions, state ) => {
 
     delay = delay || TIMEOUT_DELAY;
 
@@ -27,9 +27,15 @@ export default function autosave ( autosaveKey, delay ) {
     //update
     store.subscribe( () => {
       if ( timeout ) clearTimeout( timeout );
+
       timeout = setTimeout( () => {
-        let state = stateExtractor( store.getState() );
-        localStorage.setItem( autosaveKey, JSON.stringify( state.scene.toJS() ) );
+        const extractedState = stateExtractor( state );
+        localStorage.setItem( autosaveKey, JSON.stringify( extractedState.scene.toJS() ) );
+
+        // TODO this was accessing the store directly from legacy context, causing incompabilities with React 18
+        // let state = stateExtractor( store.getState() );
+        // localStorage.setItem( autosaveKey, JSON.stringify( state.scene.toJS() ) );
+
         /*let scene = state.sceneHistory.last;
         if (scene) {
           let json = JSON.stringify(scene.toJS());

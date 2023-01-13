@@ -320,7 +320,7 @@ class ReactPlanner extends Component {
       state
     } = this.props;
 
-    plugins.forEach( plugin => plugin( store, stateExtractor, projectActions ) );
+    plugins.forEach( plugin => plugin( store, stateExtractor, projectActions, state ) );
     projectActions.initCatalog( catalog );
     projectActions.SetPreference( prefs, prefsInfo );
   }
