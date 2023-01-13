@@ -284,6 +284,7 @@ class ReactPlanner extends Component {
     };
 
     this.refViewer = React.createRef();
+    this.timeout = false;
 
     this.panUp = this.panUp.bind( this );
     this.zoomIn = this.zoomIn.bind( this );
@@ -309,7 +310,6 @@ class ReactPlanner extends Component {
 
   // UseEffect con []
   componentWillMount () {
-    let { store } = this.context;
     let {
       projectActions,
       catalog,
@@ -320,19 +320,35 @@ class ReactPlanner extends Component {
       state
     } = this.props;
 
-    plugins.forEach( plugin => plugin( store, stateExtractor, projectActions, state ) );
+    plugins.forEach( plugin => plugin( state, stateExtractor, projectActions ) );
     projectActions.initCatalog( catalog );
     projectActions.SetPreference( prefs, prefsInfo );
   }
 
-  // UseEffect con [props]
   UNSAFE_componentWillReceiveProps ( nextProps ) {
+    // useEffect(() => {}, [props])
     let { stateExtractor, state, projectActions, catalog } = nextProps;
+
     let plannerState = stateExtractor( state );
     let catalogReady = plannerState.getIn( [ 'catalog', 'ready' ] );
+
     if ( !catalogReady ) {
       projectActions.initCatalog( catalog );
     }
+
+    // This can go on its own useEffect(() => {}, [props])
+
+    const delay = 500;
+    const autosaveKey = 'react-planner_v0';
+
+    if ( !autosaveKey ) return;
+    if ( !localStorage ) return;
+
+    if ( this.timeout ) clearTimeout( this.timeout );
+
+    this.timeout = setTimeout( () => {
+      localStorage.setItem( autosaveKey, JSON.stringify( plannerState.scene.toJS() ) );
+    }, delay );
   }
 
 

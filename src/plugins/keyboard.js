@@ -20,7 +20,7 @@ import {
 
 export default function keyboard () {
 
-  return ( store, stateExtractor, projectActions, state ) => {
+  return ( state, stateExtractor, projectActions ) => {
 
     window.addEventListener( 'keydown', event => {
 
@@ -111,6 +111,7 @@ export default function keyboard () {
           }
         case KEYBOARD_BUTTON_CODE.CTRL:
           {
+            projectActions.setAlterateState();
             // store.dispatch( setAlterateState() );
             break;
           }

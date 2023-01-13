@@ -2,7 +2,8 @@ import actions from '../actions/export';
 
 export default function consoleDebugger () {
 
-  return ( store, stateExtractor ) => {
+  //TODO añadir la store como primer parámetro para testear esto
+  return ( state, stateExtractor ) => {
     // window.ReactPlanner = {
     //   ...actions,
 
