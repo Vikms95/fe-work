@@ -46,7 +46,6 @@ import {
 import { Project } from '../class/export';
 
 export default function ( state, action ) {
-
   switch ( action.type ) {
     case SET_USER_AUTHENTICATED:
       return Project.SetUserAuthenticated( state, action.value ).updatedState;

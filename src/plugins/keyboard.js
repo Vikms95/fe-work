@@ -6,21 +6,21 @@ import {
   KEYBOARD_BUTTON_CODE
 } from '../constants';
 
-import {
-  rollback,
-  undo,
-  remove,
-  toggleSnap,
-  copyProperties,
-  pasteProperties,
-  setAlterateState,
-  unselectAll,
-  setMode
-} from '../actions/project-actions';
+// import {
+//   rollback,
+//   undo,
+//   remove,
+//   toggleSnap,
+//   copyProperties,
+//   pasteProperties,
+//   setAlterateState,
+//   unselectAll,
+//   setMode
+// } from '../actions/project-actions';
 
 export default function keyboard () {
 
-  return ( store, stateExtractor ) => {
+  return ( store, stateExtractor, projectActions ) => {
 
     window.addEventListener( 'keydown', event => {
 
@@ -32,33 +32,45 @@ export default function keyboard () {
         case KEYBOARD_BUTTON_CODE.DELETE:
           {
             if ( [ MODE_IDLE, MODE_3D_FIRST_PERSON, MODE_3D_VIEW ].includes( mode ) )
-              store.dispatch( remove() );
+              projectActions.remove();
+            // store.dispatch( remove() );
             break;
           }
         case KEYBOARD_BUTTON_CODE.ESC:
           {
             // TODO set remove for the furniture
-            store.dispatch( rollback() );
-            store.dispatch( unselectAll() );
+            projectActions.rollback();
+            projectActions.unselectAll();
+            // store.dispatch( rollback() );
+            // store.dispatch( unselectAll() );
             break;
           }
         case KEYBOARD_BUTTON_CODE.Z:
           {
             if ( event.getModifierState( 'Control' ) || event.getModifierState( 'Meta' ) )
-              store.dispatch( undo() );
+              projectActions.undo();
+            // store.dispatch( undo() );
             break;
           }
         case KEYBOARD_BUTTON_CODE.ALT:
           {
             if ( MODE_SNAPPING.includes( mode ) )
-              store.dispatch( toggleSnap( state.snapMask.merge( {
+              projectActions.toggleSnap( state.snapMask.merge( {
                 SNAP_POINT: false,
                 SNAP_LINE: false,
                 SNAP_SEGMENT: false,
                 SNAP_GRID: false,
                 SNAP_GUIDE: false,
                 tempSnapConfiguartion: state.snapMask.toJS()
-              } ) ) );
+              } ) );
+            // store.dispatch( toggleSnap( state.snapMask.merge( {
+            //   SNAP_POINT: false,
+            //   SNAP_LINE: false,
+            //   SNAP_SEGMENT: false,
+            //   SNAP_GRID: false,
+            //   SNAP_GUIDE: false,
+            //   tempSnapConfiguartion: state.snapMask.toJS()
+            // } ) ) );
             break;
           }
         case KEYBOARD_BUTTON_CODE.C:
@@ -69,31 +81,37 @@ export default function keyboard () {
             if ( ( mode === MODE_IDLE || mode === MODE_3D_VIEW ) && ( selected.holes.size || selected.areas.size || selected.items.size || selected.lines.size ) ) {
               if ( selected.holes.size ) {
                 let hole = state.getIn( [ 'scene', 'layers', selectedLayer, 'holes', selected.holes.get( 0 ) ] );
-                store.dispatch( copyProperties( hole.get( 'properties' ) ) );
+                projectActions.copyProperties( hole.get( 'properties' ) );
+                // store.dispatch( copyProperties( hole.get( 'properties' ) ) );
               }
               else if ( selected.areas.size ) {
                 let area = state.getIn( [ 'scene', 'layers', selectedLayer, 'areas', selected.areas.get( 0 ) ] );
-                store.dispatch( copyProperties( area.properties ) );
+                projectActions.copyProperties( area.properties );
+                // store.dispatch( copyProperties( area.properties ) );
               }
               else if ( selected.items.size ) {
                 let item = state.getIn( [ 'scene', 'layers', selectedLayer, 'items', selected.items.get( 0 ) ] );
-                store.dispatch( copyProperties( item.properties ) );
+
+                projectActions.copyProperties( item.properties );
+                // store.dispatch( copyProperties( item.properties ) );
               }
               else if ( selected.lines.size ) {
                 let line = state.getIn( [ 'scene', 'layers', selectedLayer, 'lines', selected.lines.get( 0 ) ] );
-                store.dispatch( copyProperties( line.properties ) );
+                projectActions.copyProperties( line.properties );
+                // store.dispatch( copyProperties( line.properties ) );
               }
             }
             break;
           }
         case KEYBOARD_BUTTON_CODE.V:
           {
-            store.dispatch( pasteProperties() );
+            projectActions.pasteProperties();
+            // store.dispatch( pasteProperties() );
             break;
           }
         case KEYBOARD_BUTTON_CODE.CTRL:
           {
-            store.dispatch( setAlterateState() );
+            // store.dispatch( setAlterateState() );
             break;
           }
       }
@@ -109,17 +127,17 @@ export default function keyboard () {
         case KEYBOARD_BUTTON_CODE.ALT:
           {
             if ( MODE_SNAPPING.includes( mode ) )
-              store.dispatch( toggleSnap( state.snapMask.merge( state.snapMask.get( 'tempSnapConfiguartion' ) ) ) );
+              projectActions.toggleSnap( state.snapMask.merge( state.snapMask.get( 'tempSnapConfiguartion' ) ) );
+            // store.dispatch( toggleSnap( state.snapMask.merge( state.snapMask.get( 'tempSnapConfiguartion' ) ) ) );
             break;
           }
         case KEYBOARD_BUTTON_CODE.CTRL:
           {
-            store.dispatch( setAlterateState() );
+            projectActions.setAlterateState();
+            // store.dispatch( setAlterateState() );
             break;
           }
       }
-
     } );
-
   };
 }

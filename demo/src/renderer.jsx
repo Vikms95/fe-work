@@ -60,7 +60,7 @@ const store = createStore(
 const plugins = [
   PlannerPlugins.Keyboard(),
   PlannerPlugins.Autosave( 'react-planner_v0' ),
-  PlannerPlugins.ConsoleDebugger(),
+  // PlannerPlugins.ConsoleDebugger(),
 ];
 
 const toolbarButtons = [
