@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
 
@@ -7,6 +7,7 @@ import menuIcon from './../../assets/topbar/list_options_menu_icon.png';
 import logoImage from './../../assets/topbar/FOR2HOME.png';
 import profileUserIcon from './../../assets/topbar/account_profile_user_avatar_icon.png';
 import { useAuthenticateUser } from '../../hooks/useAuthenticateUser';
+import { Context } from '../../context/context';
 
 
 const STYLE_TOPBAR = {
@@ -53,7 +54,8 @@ const STYLE_USER_AVATAR = {
 
 };
 
-export default function Topbar ( { state, projectActions } ) {
+export default function Topbar ( { state } ) {
+  const { projectActions } = useContext( Context );
   const nombre = useAuthenticateUser( state, projectActions );
 
   const showLogin = () => {
@@ -159,7 +161,7 @@ Topbar.propTypes = {
   //toolbarButtons: PropTypes.array
 };
 
-Topbar.contextTypes = {
+// Topbar.contextTypes = {
   //projectActions: PropTypes.object.isRequired,
   //viewer2DActions: PropTypes.object.isRequired,
   //viewer3DActions: PropTypes.object.isRequired,
@@ -167,4 +169,4 @@ Topbar.contextTypes = {
   //holesActions: PropTypes.object.isRequired,
   //itemsActions: PropTypes.object.isRequired,
   //translator: PropTypes.object.isRequired,
-};
+// };

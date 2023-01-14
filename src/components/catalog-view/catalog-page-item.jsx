@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {MdNavigateNext} from 'react-icons/md';
+import { MdNavigateNext } from 'react-icons/md';
 import * as SharedStyle from '../../shared-style';
+import { Context } from '../../context/context';
 
 const STYLE_BOX = {
   width: '14em',
@@ -30,7 +31,7 @@ const STYLE_TITLE = {
   textAlign: 'center',
   display: 'block',
   marginBottom: '.5em',
-  padding:'1em',
+  padding: '1em',
   textTransform: 'capitalize',
   WebkitTransition: 'all .15s ease-in-out'
 };
@@ -39,8 +40,8 @@ const STYLE_TITLE_HOVERED = {
   ...STYLE_TITLE,
   fontSize: '1.4em',
   transform: 'translateY(-60px)',
-  color:'rgb(28, 166, 252)',
-  marginTop:'0.5em'
+  color: 'rgb(28, 166, 252)',
+  marginTop: '0.5em'
 };
 
 const STYLE_NEXT_HOVER = {
@@ -63,35 +64,35 @@ const CONTAINER_DIV = {
 
 export default class CatalogPageItem extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {hover: false};
+  constructor ( props ) {
+    super( props );
+    this.state = { hover: false };
   }
 
-  changePage(newPage) {
-    this.context.projectActions.changeCatalogPage(newPage, this.props.oldPage.name)
+  changePage ( newPage ) {
+    this.context.projectActions.changeCatalogPage( newPage, this.props.oldPage.name );
   }
 
-  render() {
+  render () {
     let page = this.props.page;
     let hover = this.state.hover;
 
     return (
       <div
-        style={hover ? STYLE_BOX_HOVER : STYLE_BOX}
-        onClick={e => this.changePage(page.name)}
-        onMouseEnter={e => this.setState({hover: true})}
-        onMouseLeave={e => this.setState({hover: false})}
+        style={ hover ? STYLE_BOX_HOVER : STYLE_BOX }
+        onClick={ e => this.changePage( page.name ) }
+        onMouseEnter={ e => this.setState( { hover: true } ) }
+        onMouseLeave={ e => this.setState( { hover: false } ) }
       >
-        {hover ?
-          <div style={CONTAINER_DIV}>
-            <b style={STYLE_TITLE_HOVERED}>{page.label}</b>
-            <MdNavigateNext style={STYLE_NEXT_HOVER}/>
+        { hover ?
+          <div style={ CONTAINER_DIV }>
+            <b style={ STYLE_TITLE_HOVERED }>{ page.label }</b>
+            <MdNavigateNext style={ STYLE_NEXT_HOVER } />
           </div>
           :
-          <div style={CONTAINER_DIV}>
-            <b style={STYLE_TITLE}>{page.label}</b>
-          </div>}
+          <div style={ CONTAINER_DIV }>
+            <b style={ STYLE_TITLE }>{ page.label }</b>
+          </div> }
 
       </div>
     );
@@ -103,6 +104,8 @@ CatalogPageItem.propTypes = {
   oldPage: PropTypes.object.isRequired,
 };
 
-CatalogPageItem.contextTypes = {
-  projectActions: PropTypes.object.isRequired
-};
+CatalogPageItem.contextType = Context;
+
+// CatalogPageItem.contextTypes = {
+//   projectActions: PropTypes.object.isRequired
+// };

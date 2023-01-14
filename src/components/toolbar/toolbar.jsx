@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, useContext } from 'react';
 import PropTypes from 'prop-types';
 import ToolbarButton from './toolbar-button';
 import If from '../../utils/react-if';
@@ -19,6 +19,7 @@ import miCatalogo from './../../assets/toolbar/Mi_catalogo.png';
 
 // Salgar
 import img_salgar from './../../assets/salgar/toolBar/banyoSalgar.png';
+import { Context } from '../../context/context';
 
 // const STYLE_ICON_TEXT = {
 //   fontSize: '10px',
@@ -71,9 +72,11 @@ export default function Toolbar ( {
   state,
   width,
   height,
-  projectActions
+  // projectActions
 
 } ) {
+
+  const { projectActions } = useContext( Context );
 
   const mode = state.get( 'mode' );
   const allMenus = [ 'menuRooms', 'menuConstruccion', 'menuMuebles' ];
@@ -252,7 +255,7 @@ export default function Toolbar ( {
   );
 }
 
-// export default class Toolbar extends Component {
+// export default class Toolbar extends React.Component {
 //   constructor ( props ) {
 //     super( props );
 //     this.state = {};
@@ -522,12 +525,12 @@ Toolbar.propTypes = {
   toolbarButtons: PropTypes.array
 };
 
-Toolbar.contextTypes = {
-  projectActions: PropTypes.object.isRequired,
-  viewer2DActions: PropTypes.object.isRequired,
-  viewer3DActions: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired,
-  holesActions: PropTypes.object.isRequired,
-  itemsActions: PropTypes.object.isRequired,
-  translator: PropTypes.object.isRequired,
-};
+// Toolbar.contextTypes = {
+//   projectActions: PropTypes.object.isRequired,
+//   viewer2DActions: PropTypes.object.isRequired,
+//   viewer3DActions: PropTypes.object.isRequired,
+//   linesActions: PropTypes.object.isRequired,
+//   holesActions: PropTypes.object.isRequired,
+//   itemsActions: PropTypes.object.isRequired,
+//   translator: PropTypes.object.isRequired,
+// };

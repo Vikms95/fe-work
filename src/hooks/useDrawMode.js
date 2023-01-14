@@ -8,15 +8,12 @@ export function useDrawMode ( state ) {
   const [ isDrawMode, setIsDrawMode ] = useState( false );
 
   useEffect( () => {
-    console.log( "entering useffect" );
     if ( drawMode || waitingDrawMode ) {
-      console.log( "draw mode" );
       setIsDrawMode( true );
 
     }
 
     else {
-      console.log( "no draw mode" );
       setIsDrawMode( false );
 
     }

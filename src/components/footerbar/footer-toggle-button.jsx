@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
+import { Context } from '../../context/context';
 
 const toggleButtonStyle = {
   width: '5.5em',
@@ -84,12 +85,14 @@ FooterToggleButton.propTypes = {
   title: PropTypes.string
 };
 
-FooterToggleButton.contextTypes = {
-  projectActions: PropTypes.object.isRequired,
-  viewer2DActions: PropTypes.object.isRequired,
-  viewer3DActions: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired,
-  holesActions: PropTypes.object.isRequired,
-  itemsActions: PropTypes.object.isRequired,
-  translator: PropTypes.object.isRequired,
-};
+FooterToggleButton.contextType = Context;
+
+// FooterToggleButton.contextTypes = {
+//   projectActions: PropTypes.object.isRequired,
+//   viewer2DActions: PropTypes.object.isRequired,
+//   viewer3DActions: PropTypes.object.isRequired,
+//   linesActions: PropTypes.object.isRequired,
+//   holesActions: PropTypes.object.isRequired,
+//   itemsActions: PropTypes.object.isRequired,
+//   translator: PropTypes.object.isRequired,
+// };

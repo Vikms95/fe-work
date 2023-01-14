@@ -7,6 +7,7 @@ import CatalogTurnBackPageItem from './catalog-turn-back-page-item';
 import ContentContainer from '../style/content-container';
 import ContentTitle from '../style/content-title';
 import * as SharedStyle from '../../shared-style';
+import { Context } from '../../context/context';
 
 const containerStyle = {
   position: 'fixed',
@@ -159,7 +160,7 @@ export default class CatalogList extends Component {
       this.props.state.catalog.path.forEach( pathName => {
         breadcrumbsNames.push( {
           name: this.context.catalog.getCategory( pathName ).label,
-          action: () => projectActions.goBackToCatalogPage( pathName )
+          action: () => this.context.projectActions.goBackToCatalogPage( pathName )
         } );
       } );
 
@@ -216,11 +217,13 @@ CatalogList.propTypes = {
   style: PropTypes.object
 };
 
-CatalogList.contextTypes = {
-  catalog: PropTypes.object.isRequired,
-  translator: PropTypes.object.isRequired,
-  itemsActions: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired,
-  holesActions: PropTypes.object.isRequired,
-  projectActions: PropTypes.object.isRequired
-};
+CatalogList.contextType = Context;
+
+// CatalogList.contextTypes = {
+//   catalog: PropTypes.object.isRequired,
+//   translator: PropTypes.object.isRequired,
+//   itemsActions: PropTypes.object.isRequired,
+//   linesActions: PropTypes.object.isRequired,
+//   holesActions: PropTypes.object.isRequired,
+//   projectActions: PropTypes.object.isRequired
+// };

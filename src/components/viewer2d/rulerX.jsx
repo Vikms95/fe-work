@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
 import { showMeasure } from '../../utils/changeUnit';
+import { Context } from '../../context/context';
 
 export default function RulerX (
   {
@@ -18,6 +19,7 @@ export default function RulerX (
     positiveUnitsNumber
   } ) {
 
+  const { translator } = useContext( Context );
   const unit = state.getIn( [ 'prefs', 'UNIDADMEDIDA' ] );
   const elementW = unitPixelSize * zoom;
 
@@ -150,9 +152,9 @@ RulerX.defaultProps = {
   markerColor: SharedStyle.SECONDARY_COLOR.main
 };
 
-RulerX.contextTypes = {
-  translator: PropTypes.object.isRequired
-};
+// RulerX.contextTypes = {
+//   translator: PropTypes.object.isRequired
+// };
 
 // export default class RulerX extends Component {
 //   constructor ( props, context ) {

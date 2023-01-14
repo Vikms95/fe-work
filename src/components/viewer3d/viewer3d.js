@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, { Component, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import * as THREE from 'three';
@@ -12,8 +12,209 @@ import diff from 'immutablediff';
 import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
+import { Context } from '../../context/context';
 
-export default class Scene3DViewer extends Component {
+// export default function Scene3DViewer ( props ) {
+//   let camera;
+//   let renderer;
+//   let planData;
+//   const rulerSize = 15; //px
+//   let lastMousePosition = {};
+//   let width = props.width - rulerSize;
+
+//   let height = props.height - rulerSize;
+//   let renderingID = 0;
+
+//   window.__threeRenderer = renderer;
+
+//   renderer =
+//     window.__threeRenderer ||
+//     new THREE.WebGLRenderer( {
+//       antialias: true
+//     } );
+
+//   const context = useContext( Context );
+
+//   const update3DZoom = ( event ) => {
+//     const canvas = document.querySelector( 'canvas' );
+//     const isSelected = getIsElementSelected( this.props.state );
+
+//     if ( !isSelected && canvas ) switch ( event.keyCode ) {
+//       case 187:
+//       case 107:
+//         dispatch3DZoomIn( canvas ); break;
+//       case 189:
+//       case 109:
+//         dispatch3DZoomOut( canvas ); break;
+//     }
+//   };
+
+//   useEffect( () => {
+//     document.addEventListener( 'keydown', update3DZoom );
+
+//     let actions = {
+//       areaActions: context.areaActions,
+//       holesActions: context.holesActions,
+//       itemsActions: context.itemsActions,
+//       linesActions: context.linesActions,
+//       projectActions: context.projectActions
+//     };
+
+//     let { state } = props;
+
+//     let data = state.scene;
+//     let canvasWrapper = ReactDOM.findDOMNode( refs.canvasWrapper );
+//     let scene3D = new THREE.Scene();
+
+//     renderer.setClearColor( new THREE.Color( SharedStyle.COLORS.white ) );
+//     renderer.setSize( width, height );
+
+//     renderer.physicallyCorrectLights = true;
+//     renderer.setPixelRatio( window.devicePixelRatio );
+
+//     renderer.encoding = THREE.sRGBEncoding;
+//     renderer.toneMapping = Number( THREE.LinearToneMapping );
+//     renderer.toneMappingExposure = Math.pow( 2, 0 );
+
+//     const environment = new RoomEnvironment();
+//     const pmremGenerator = new THREE.PMREMGenerator( renderer );
+//     scene3D.environment = pmremGenerator.fromScene( environment, 0.04 ).texture;
+
+//     planData = parseData( state, data, actions, context.catalog );
+//     scene3D.add( planData.plan );
+//     scene3D.add( planData.grid );
+
+//     const aspectRatio = width / height;
+//     let camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
+
+//     scene3D.add( camera );
+
+//     const cameraPositionX = -( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 2;
+//     const cameraPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) / 2 * 10;
+//     const cameraPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 2;
+
+//     camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
+//     camera.up = new THREE.Vector3( 0, 1, 0 );
+
+//     let toIntersect = [ planData.plan ];
+//     let mouse = new THREE.Vector2();
+//     let raycaster = new THREE.Raycaster();
+
+//     const mouseDownEvent = ( event ) => {
+//       lastMousePosition.x = event.offsetX / width * 2 - 1;
+//       lastMousePosition.y = -event.offsetY / height * 2 + 1;
+//     };
+
+//     const mouseUpEvent = ( event ) => {
+//       event.preventDefault();
+
+//       mouse.x = ( event.offsetX / width ) * 2 - 1;
+//       mouse.y = -( event.offsetY / height ) * 2 + 1;
+
+//       if ( Math.abs( mouse.x - lastMousePosition.x ) <= 0.02 && Math.abs( mouse.y - lastMousePosition.y ) <= 0.02 ) {
+
+//         raycaster.setFromCamera( mouse, camera );
+//         let intersects = raycaster.intersectObjects( toIntersect, true );
+
+//         if ( intersects.length > 0 && !( isNaN( intersects[ 0 ].distance ) ) ) {
+//           intersects[ 0 ].object.interact && intersects[ 0 ].object.interact();
+//         } else {
+//           context.projectActions.unselectAll();
+//         }
+//       }
+//     };
+
+//     renderer.domElement.addEventListener( 'mousedown', mouseDownEvent );
+//     renderer.domElement.addEventListener( 'mouseup', mouseUpEvent );
+//     renderer.domElement.style.display = 'block';
+
+//     // add the output of the renderer to the html element
+//     canvasWrapper.appendChild( renderer.domElement );
+
+//     // create orbit controls
+//     let orbitController = new OrbitControls( camera, renderer.domElement );
+
+//     let spotLightTarget = new THREE.Object3D();
+
+//     spotLightTarget.name = 'spotLightTarget';
+
+//     // Sets spotlight position to the target of orbitControll
+//     spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
+
+//     // spotLight1.target = spotLightTarget;
+//     scene3D.add( spotLightTarget );
+
+//     let render = () => {
+//       orbitController.update();
+//       // spotLight1.position.set( camera.position.x, camera.position.y, camera.position.z );
+//       spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
+//       camera.updateMatrix();
+//       camera.updateMatrixWorld();
+
+//       for ( let elemID in planData.sceneGraph.LODs ) {
+//         planData.sceneGraph.LODs[ elemID ].update( camera );
+//       }
+
+//       renderer.render( scene3D, camera );
+//       renderingID = requestAnimationFrame( render );
+//     };
+
+//     render();
+
+//     let orbitControls = orbitController;
+
+//     return () => {
+//       document.removeEventListener( 'keydown', update3DZoom );
+//       cancelAnimationFrame( renderingID );
+
+//       orbitControls.dispose();
+
+//       renderer.domElement.removeEventListener( 'mousedown', mouseDownEvent );
+//       renderer.domElement.removeEventListener( 'mouseup', mouseUpEvent );
+
+//       disposeScene( scene3D );
+//       scene3D.remove( planData.plan );
+//       scene3D.remove( planData.grid );
+
+//       scene3D = null;
+//       planData = null;
+//       camera = null;
+//       orbitControls = null;
+//       renderer.renderLists.dispose();
+//     };
+//   }, [] );
+
+//   useEffect( () => {
+//     let { width, height } = props;
+
+//     let actions = {
+//       areaActions: context.areaActions,
+//       holesActions: context.holesActions,
+//       itemsActions: context.itemsActions,
+//       linesActions: context.linesActions,
+//       projectActions: context.projectActions
+//     };
+
+
+//     width = width;
+//     height = height;
+
+//     camera.aspect = width / height;
+//     camera.updateProjectionMatrix();
+
+//     if ( nextProps.state.scene !== props.state.scene ) {
+//       let changedValues = diff( props.state.scene, nextProps.state.scene );
+//       updateScene( planData, nextProps.state.scene, props.state.scene, changedValues.toJS(), actions, context.catalog );
+//     }
+
+//     renderer.setSize( width, height );
+//   }, [ props.width, props.height ] );
+
+
+//   return React.createElement( 'div', { ref: 'canvasWrapper' } );
+// }
+
+export default class Scene3DViewer extends React.Component {
 
   constructor ( props ) {
     super( props );
@@ -236,11 +437,13 @@ Scene3DViewer.propTypes = {
   height: PropTypes.number.isRequired
 };
 
-Scene3DViewer.contextTypes = {
-  areaActions: PropTypes.object.isRequired,
-  holesActions: PropTypes.object.isRequired,
-  itemsActions: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired,
-  projectActions: PropTypes.object.isRequired,
-  catalog: PropTypes.object
-};
+Scene3DViewer.contextType = Context;
+
+// Scene3DViewer.contextTypes = {
+//   areaActions: PropTypes.object.isRequired,
+//   holesActions: PropTypes.object.isRequired,
+//   itemsActions: PropTypes.object.isRequired,
+//   linesActions: PropTypes.object.isRequired,
+//   projectActions: PropTypes.object.isRequired,
+//   catalog: PropTypes.object
+// };

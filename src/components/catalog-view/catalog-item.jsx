@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FaPlusCircle as IconAdd } from 'react-icons/fa';
 import * as SharedStyle from '../../shared-style';
+import { Context } from '../../context/context';
 
 const STYLE_BOX = {
   width: '14em',
@@ -159,9 +160,11 @@ CatalogItem.propTypes = {
   element: PropTypes.object.isRequired,
 };
 
-CatalogItem.contextTypes = {
-  itemsActions: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired,
-  holesActions: PropTypes.object.isRequired,
-  projectActions: PropTypes.object.isRequired
-};
+CatalogItem.contextType = Context;
+
+// CatalogItem.contextTypes = {
+//   itemsActions: PropTypes.object.isRequired,
+//   linesActions: PropTypes.object.isRequired,
+//   holesActions: PropTypes.object.isRequired,
+//   projectActions: PropTypes.object.isRequired
+// };

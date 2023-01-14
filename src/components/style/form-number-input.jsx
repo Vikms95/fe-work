@@ -1,4 +1,5 @@
-import React, { Component, useEffect, useState } from 'react';
+
+import React, { Component, useContext, useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
 import { KEYBOARD_BUTTON_CODE, MODE_DRAWING_LINE } from '../../constants';
@@ -19,6 +20,7 @@ import {
 
 import { toFixedFloat } from '../../utils/math';
 import { GeometryUtils } from '../../utils/export';
+import { Context } from '../../context/context';
 
 
 const STYLE_INPUT = {
@@ -36,7 +38,7 @@ const STYLE_INPUT = {
   width: '100%',
 };
 
-// export default function FormNumberInput ( props ) {
+// export default function FormNumberInput ( ...props ) {
 //   const {
 //     value,
 //     min,
@@ -61,6 +63,48 @@ const STYLE_INPUT = {
 
 //   } );
 
+//   // const isDifferentPropsValue = ( nextProps ) => {
+//   //   return props.value !== nextProps.value;
+//   // };
+
+
+//   const isEmptyInputAndSingleSelection = () => {
+//     return state.showedValue === 'null' && !state.isMultiSelection;
+//   };
+
+//   //TODO ComponentWillReceiveProps
+//   useMemo( () => {
+//     if ( isEmptyInputAndSingleSelection() ) {
+//       setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
+//     }
+//     //Use props.value?
+//   }, [ ...props, state.showedValue, state.isMultiSelection ] );
+
+
+//   //TODO This could be refactored to several useEffects and later, custom hooks
+//   //TODO ComponentDidUpdate
+//   useEffect( () => {
+//     if ( document.activeElement === state.inputElement ) {
+//       if ( cursor.x !== props.stateRedux.getIn( [ 'mouse', 'x' ] )
+//         || cursor.y !== props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
+//         state.inputElement.select();
+//       }
+//     }
+
+//     cursor = {
+//       x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
+//       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
+//     };
+
+//   }, [ ...props ] );
+
+//   const {
+//     translator,
+//     linesActions,
+//     verticesActions,
+//     projectActions,
+//   } = useContext( Context );
+
 //   const STYLE_NUMERIC_INPUT = { ...STYLE_INPUT, ...style };
 
 //   const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
@@ -78,9 +122,6 @@ const STYLE_INPUT = {
 //     return props.attributeName === 'lineLength' && props.mode === MODE_DRAWING_LINE;
 //   };
 
-//   const isDifferentPropsValue = ( nextProps ) => {
-//     return props.value !== nextProps.value;
-//   };
 
 //   const isCachedAnguloWhileDrawing = () => {
 //     return getCacheAngulo( props.stateRedux ) && props.stateRedux.get( 'mode' ) === MODE_DRAWING_LINE;
@@ -102,10 +143,6 @@ const STYLE_INPUT = {
 
 //   const isSingleSelectionOrInvalidElement = () => {
 //     return !props.sourceElement || !isMultipleSelection( props.stateRedux );
-//   };
-
-//   const isEmptyInputAndSingleSelection = () => {
-//     return state.showedValue === 'null' && !state.isMultiSelection;
 //   };
 
 //   const areArrayValuesDifferent = ( values ) => {
@@ -167,7 +204,7 @@ const STYLE_INPUT = {
 //     // Did not seem to give any problem
 //     // forceUpdate();
 //     if ( !isMultipleSelection( props.stateRedux ) ) {
-//       setState( { showedValue: props.value } );
+//       setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
 //     }
 //   };
 
@@ -175,13 +212,13 @@ const STYLE_INPUT = {
 //   useEffect( () => {
 
 //     if ( isLengthInputWhileDrawing() ) {
-//       setState( { focus: true } );
+//       setState( ( prevState ) => ( { ...prevState, focus: true } ) );
 //       state.inputElement.focus();
 //       state.inputElement.select();
 //     }
 
 //     if ( isCachedAnguloWhileDrawing() && isInputAnguloAndSingleSelection() ) {
-//       setState( { showedValue: parseFloat( getCacheAngulo( props.stateRedux ) ) } );
+//       setState( ( prevState ) => ( { ...prevState, showedValue: parseFloat( getCacheAngulo( props.stateRedux ) ) } ) );
 //       document.addEventListener( 'mousemove', resetAngleInput );
 //     }
 
@@ -191,47 +228,27 @@ const STYLE_INPUT = {
 //     const values = getSelectedPropertyValues( prototype );
 
 //     if ( areArrayValuesDifferent( values ) ) {
-//       setState( { showedValue: null } );
+//       setState( ( prevState ) => ( { ...prevState, showedValue: null } ) );
 //       window.addEventListener( 'click', resetInputOnSelection );
 //     };
 
 //     return () => {
-//       setState( { showedValue: props.value } );
+//       setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
 //       document.removeEventListener( 'mousemove', resetAngleInput );
 //     };
 
-//   }, [] );
-
-//   //TODO This could be refactored to several useEffects and later, custom hooks
-//   useEffect( () => {
-//     if ( document.activeElement === state.inputElement ) {
-//       if ( cursor.x !== props.stateRedux.getIn( [ 'mouse', 'x' ] )
-//         || cursor.y !== props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
-//         state.inputElement.select();
-//       }
-//     }
-
-//     cursor = {
-//       x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
-//       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
-//     };
-
-//     if ( isDifferentPropsValue( props ) || isEmptyInputAndSingleSelection() ) {
-//       setState( { showedValue: props.value } );
-//     }
-//   }, [ props ] );
-
+//   }, [ ...props ] );
 
 //   if ( state.focus ) {
 //     STYLE_NUMERIC_INPUT.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
 //   }
 
 //   if ( !isNaN( min ) && isFinite( min ) && state.showedValue < min ) {
-//     setState( { showedValue: min } );
+//     setState( ( prevState ) => ( { ...prevState, showedValue: min } ) );
 //   };
 
 //   if ( !isNaN( max ) && isFinite( max ) && state.showedValue > max ) {
-//     setState( { showedValue: max } );
+//     setState( ( prevState ) => ( { ...prevState, showedValue: max } ) );
 //   }
 
 //   const currValue = ( regexp.test( state.showedValue ) )
@@ -254,9 +271,9 @@ const STYLE_INPUT = {
 
 //     } else if ( isEscPressedWhileDrawing( keyCode ) ) {
 //       props.projectActions.undo();
-//       context.linesActions.cacheFondo( '' );
-//       context.linesActions.cacheAlto( '' );
-//       context.linesActions.cacheAngulo( '' );
+//       linesActions.cacheFondo( '' );
+//       linesActions.cacheAlto( '' );
+//       linesActions.cacheAngulo( '' );
 
 //     } else if ( isEscPressed( keyCode ) ) {
 //       props.projectActions.unselectAll();
@@ -267,7 +284,7 @@ const STYLE_INPUT = {
 //     const valid = regexp.test( e.nativeEvent.target.value );
 
 //     if ( valid ) {
-//       setState( { showedValue: e.nativeEvent.target.value } );
+//       setState( ( prevState ) => ( { ...prevState, showedValue: e.nativeEvent.target.value } ) );
 
 //       if ( onValid ) {
 //         onValid( e.nativeEvent );
@@ -277,15 +294,15 @@ const STYLE_INPUT = {
 //       onInvalid( e.nativeEvent );
 //     }
 
-//     setState( { valid } );
+//     setState( ( prevState ) => ( { ...prevState, valid: valid } ) );
 //   };
 
 //   const cacheAttributes = () => {
 //     const inputAlto = document.querySelector( '.height' ).value;
 //     const inputFondo = document.querySelector( '.thickness' ).value;
 
-//     context.linesActions.cacheAlto( inputAlto );
-//     context.linesActions.cacheFondo( inputFondo );
+//     linesActions.cacheAlto( inputAlto );
+//     linesActions.cacheFondo( inputFondo );
 //   };
 
 //   const isElementLine = () => (
@@ -334,7 +351,7 @@ const STYLE_INPUT = {
 
 //     const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, keyCode );
 
-//     context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
+//     verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
 
 //     /** DEBUG **/
 
@@ -379,8 +396,8 @@ const STYLE_INPUT = {
 //         onKeyDown={ onKeyDown }
 //         onChange={ onInputChange }
 //         onClick={ () => state.inputElement.select() }
-//         onFocus={ () => setState( { focus: true } ) }
-//         onBlur={ () => setState( { focus: false } ) }
+//         onFocus={ () => setState( ( prevState ) => ( { ...prevState, focus: true } ) ) }
+//         onBlur={ () => setState( ( prevState ) => ( { ...prevState, focus: false } ) ) }
 //       />
 //     </div >
 //   );
@@ -418,6 +435,7 @@ export default class FormNumberInput extends Component {
     this.isInputAnguloAndMultipleSelection = this.isInputAnguloAndMultipleSelection.bind( this );
     this.isSingleSelectionOrInvalidElement = this.isSingleSelectionOrInvalidElement.bind( this );
   }
+
 
   isAttribute () {
     return this.props.attributeName === 'angulo' || this.props.attributeName === 'lineLength';
@@ -553,7 +571,6 @@ export default class FormNumberInput extends Component {
       x: this.props.stateRedux.getIn( [ 'mouse', 'x' ] ),
       y: this.props.stateRedux.getIn( [ 'mouse', 'y' ] ),
     };
-
   }
 
   UNSAFE_componentWillReceiveProps ( nextProps ) {
@@ -578,6 +595,7 @@ export default class FormNumberInput extends Component {
       attributeName,
       sourceElement,
     } = this.props;
+
 
     const numericInputStyle = { ...STYLE_INPUT, ...style };
     const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
@@ -760,16 +778,18 @@ FormNumberInput.propTypes = {
   placeholder: PropTypes.string
 };
 
-FormNumberInput.contextTypes = {
-  catalog: PropTypes.object.isRequired,
-  translator: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired,
-  verticesActions: PropTypes.object.isRequired,
-  projectActions: PropTypes.object.isRequired
-};
+FormNumberInput.contextType = Context;
+
+// FormNumberInput.contextTypes = {
+//   catalog: PropTypes.object.isRequired,
+//   translator: PropTypes.object.isRequired,
+//   linesActions: PropTypes.object.isRequired,
+//   verticesActions: PropTypes.object.isRequired,
+//   projectActions: PropTypes.object.isRequired
+// };
 
 FormNumberInput.defaultProps = {
-  value: 0,
+  value: 500,
   style: {},
   min: Number.MIN_SAFE_INTEGER,
   max: Number.MAX_SAFE_INTEGER,

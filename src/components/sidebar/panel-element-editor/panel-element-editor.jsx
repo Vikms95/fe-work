@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Seq, fromJS } from 'immutable';
 import ElementEditor from './element-editor';
@@ -8,6 +9,7 @@ import {
   MODE_DRAGGING_VERTEX, MODE_DRAGGING_ITEM, MODE_DRAGGING_HOLE, MODE_FITTING_IMAGE, MODE_UPLOADING_IMAGE,
   MODE_ROTATING_ITEM
 } from '../../../constants';
+import { Context } from '../../../context/context';
 
 
 const validModesToShowPanel =
@@ -21,10 +23,12 @@ const validModesToShowPanel =
 
 export default function PanelElementEditor ( {
   state,
-  catalog,
-  projectActions,
-  linesActions
+  // catalog,
+  // projectActions,
+  // linesActions
 } ) {
+
+  const { catalog, projectActions, linesActions } = useContext( Context );
 
   let { scene, mode } = state;
   if ( validModesToShowPanel.includes( mode ) === false ) return null;
@@ -78,7 +82,7 @@ PanelElementEditor.propTypes = {
   state: PropTypes.object.isRequired,
 };
 
-PanelElementEditor.contextTypes = {
-  projectActions: PropTypes.object.isRequired,
-  translator: PropTypes.object.isRequired
-};
+// PanelElementEditor.contextTypes = {
+//   projectActions: PropTypes.object.isRequired,
+//   translator: PropTypes.object.isRequired
+// };

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
 import { showMeasure } from '../../utils/changeUnit';
+import { Context } from '../../context/context';
 
 export default function RulerY (
   {
@@ -19,6 +20,7 @@ export default function RulerY (
 
   } ) {
 
+  const { translator } = useContext( Context );
   const unit = state.getIn( [ 'prefs', 'UNIDADMEDIDA' ] );
   const elementH = unitPixelSize * zoom;
 
@@ -153,9 +155,9 @@ RulerY.defaultProps = {
   markerColor: SharedStyle.SECONDARY_COLOR.main
 };
 
-RulerY.contextTypes = {
-  translator: PropTypes.object.isRequired
-};
+// RulerY.contextTypes = {
+//   translator: PropTypes.object.isRequired
+// };
 
 
 // export default class RulerY extends Component {

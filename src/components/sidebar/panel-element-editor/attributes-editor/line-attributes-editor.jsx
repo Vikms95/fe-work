@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { PropertyLengthMeasure, PropertyNumber } from '../../../../catalog/properties/export';
+import { Context } from '../../../../context/context';
 
 const tableStyle = { width: '100%' };
 const firstTdStyle = { width: '6em' };
@@ -17,8 +18,11 @@ export default function LineAttributesEditor (
     projectActions,
     attributeFormData,
     ...rest
-  }, { translator } ) {
+  },
+  // { translator } 
+) {
 
+  const { translator } = useContext( Context );
   //let name = attributeFormData.has( 'name' ) ? attributeFormData.get( 'name' ) : element.name;
   //let vertexOne = attributeFormData.has( 'vertexOne' ) ? attributeFormData.get( 'vertexOne' ) : null;
   //let vertexTwo = attributeFormData.has( 'vertexTwo' ) ? attributeFormData.get( 'vertexTwo' ) : null;
@@ -76,6 +80,6 @@ LineAttributesEditor.propTypes = {
   state: PropTypes.object.isRequired
 };
 
-LineAttributesEditor.contextTypes = {
-  translator: PropTypes.object.isRequired,
-};
+// LineAttributesEditor.contextTypes = {
+//   translator: PropTypes.object.isRequired,
+// };

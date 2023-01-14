@@ -9,6 +9,7 @@ import {
   FormSubmitButton,
   CancelButton
 } from '../style/export';
+import { Context } from '../../context/context';
 
 export default class ProjectConfigurator extends Component {
 
@@ -97,7 +98,9 @@ ProjectConfigurator.propTypes = {
   state: PropTypes.object.isRequired,
 };
 
-ProjectConfigurator.contextTypes = {
-  projectActions: PropTypes.object.isRequired,
-  translator: PropTypes.object.isRequired,
-};
+ProjectConfigurator.contextType = Context;
+
+// ProjectConfigurator.contextTypes = {
+//   projectActions: PropTypes.object.isRequired,
+//   translator: PropTypes.object.isRequired,
+// };

@@ -32,6 +32,7 @@ export default function PropertyLengthMeasure (
     attributeFormData,
   }, { catalog } ) {
 
+
   let _unit = unit;
   let length = value.get( 'length' ) || 0;
   let _length = showMeasure( length, _unit ) || value.get( '_length' );
@@ -131,6 +132,7 @@ PropertyLengthMeasure.propTypes = {
   internalState: PropTypes.object,
 };
 
-PropertyLengthMeasure.contextTypes = {
-  catalog: PropTypes.object.isRequired
-};
+
+// PropertyLengthMeasure.contextTypes = {
+//   catalog: PropTypes.object.isRequired
+// };

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
 
 import { Auth } from '../../proxies/export';
+import { Context } from '../../context/context';
 
 const STYLE = {
   backgroundColor: SharedStyle.COLORS.white,
@@ -29,7 +30,10 @@ const STYLE_INPUT = {
   border: '1px solid #ccc'
 };
 
-export default function LoginComponent ( { projectActions } ) {
+export default function LoginComponent ( {
+  //  projectActions 
+} ) {
+  const { projectActions } = useContext( Context );
   const [ state, setState ] = useState( {
     correo: '',
     password: '',
@@ -212,12 +216,12 @@ LoginComponent.propTypes = {
   //toolbarButtons: PropTypes.array
 };
 
-LoginComponent.contextTypes = {
-  projectActions: PropTypes.object.isRequired,
+// LoginComponent.contextTypes = {
+  // projectActions: PropTypes.object.isRequired,
   //viewer2DActions: PropTypes.object.isRequired,
   //viewer3DActions: PropTypes.object.isRequired,
   //linesActions: PropTypes.object.isRequired,
   //holesActions: PropTypes.object.isRequired,
   //itemsActions: PropTypes.object.isRequired,
   //translator: PropTypes.object.isRequired,
-};
+// };

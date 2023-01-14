@@ -10,6 +10,7 @@ import diff from 'immutablediff';
 import { initPointerLock } from "./pointer-lock-navigation";
 import { firstPersonOnKeyDown, firstPersonOnKeyUp } from "./libs/first-person-controls";
 import * as SharedStyle from '../../shared-style';
+import { Context } from '../../context/context';
 
 export default class Viewer3DFirstPerson extends Component {
 
@@ -327,11 +328,13 @@ Viewer3DFirstPerson.propTypes = {
   height: PropTypes.number.isRequired
 };
 
-Viewer3DFirstPerson.contextTypes = {
-  areaActions: PropTypes.object.isRequired,
-  holesActions: PropTypes.object.isRequired,
-  itemsActions: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired,
-  projectActions: PropTypes.object.isRequired,
-  catalog: PropTypes.object
-};
+Viewer3DFirstPerson.contextType = Context;
+
+// Viewer3DFirstPerson.contextTypes = {
+//   areaActions: PropTypes.object.isRequired,
+//   holesActions: PropTypes.object.isRequired,
+//   itemsActions: PropTypes.object.isRequired,
+//   linesActions: PropTypes.object.isRequired,
+//   projectActions: PropTypes.object.isRequired,
+//   catalog: PropTypes.object
+// };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import { INITIAL_VALUE, fitSelection, ReactSVGPanZoom, TOOL_NONE, TOOL_PAN, TOOL_ZOOM_IN, TOOL_ZOOM_OUT, TOOL_AUTO } from 'react-svg-pan-zoom';
@@ -7,6 +7,7 @@ import State from './state';
 import * as SharedStyle from '../../shared-style';
 import { RulerX, RulerY } from './export';
 import { getIsGuia2D, getViewer2D, getRejillaTotal2D, getUserZoom } from '../../selectors/selectors';
+import { Context } from '../../context/context';
 
 function mode2Tool ( mode ) {
   switch ( mode ) {
@@ -98,6 +99,17 @@ export default function Viewer2D (
     update2DView
   },
   {
+    // catalog,
+    // areaActions,
+    // itemsActions,
+    // linesActions,
+    // holesActions,
+    // projectActions,
+    // viewer2DActions,
+    // verticesActions,
+  } ) {
+
+  const {
     catalog,
     areaActions,
     itemsActions,
@@ -106,7 +118,7 @@ export default function Viewer2D (
     projectActions,
     viewer2DActions,
     verticesActions,
-  } ) {
+  } = useContext( Context );
 
   const { viewer2D, mode, scene } = state;
   const layerID = scene.selectedLayer;
@@ -478,13 +490,13 @@ Viewer2D.propTypes = {
   height: PropTypes.number.isRequired,
 };
 
-Viewer2D.contextTypes = {
-  viewer2DActions: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired,
-  holesActions: PropTypes.object.isRequired,
-  verticesActions: PropTypes.object.isRequired,
-  itemsActions: PropTypes.object.isRequired,
-  areaActions: PropTypes.object.isRequired,
-  projectActions: PropTypes.object.isRequired,
-  catalog: PropTypes.object.isRequired,
-};
+// Viewer2D.contextTypes = {
+//   viewer2DActions: PropTypes.object.isRequired,
+//   linesActions: PropTypes.object.isRequired,
+//   holesActions: PropTypes.object.isRequired,
+//   verticesActions: PropTypes.object.isRequired,
+//   itemsActions: PropTypes.object.isRequired,
+//   areaActions: PropTypes.object.isRequired,
+//   projectActions: PropTypes.object.isRequired,
+//   catalog: PropTypes.object.isRequired,
+// };

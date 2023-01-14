@@ -9,6 +9,7 @@ import {
 } from '../../constants';
 import * as SharedStyle from '../../shared-style';
 import { MdSearch } from 'react-icons/md';
+import { Context } from '../../context/context';
 
 const VISIBILITY_MODE = {
   MODE_IDLE, MODE_2D_ZOOM_IN, MODE_2D_ZOOM_OUT, MODE_2D_PAN, MODE_3D_VIEW, MODE_3D_FIRST_PERSON,
@@ -232,11 +233,13 @@ PanelLayerElement.propTypes = {
   layers: PropTypes.object.isRequired,
 };
 
-PanelLayerElement.contextTypes = {
-  catalog: PropTypes.object.isRequired,
-  translator: PropTypes.object.isRequired,
-  itemsActions: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired,
-  holesActions: PropTypes.object.isRequired,
-  projectActions: PropTypes.object.isRequired
-};
+PanelLayerElement.contextType = Context;
+
+// PanelLayerElement.contextTypes = {
+//   catalog: PropTypes.object.isRequired,
+//   translator: PropTypes.object.isRequired,
+//   itemsActions: PropTypes.object.isRequired,
+//   linesActions: PropTypes.object.isRequired,
+//   holesActions: PropTypes.object.isRequired,
+//   projectActions: PropTypes.object.isRequired
+// };

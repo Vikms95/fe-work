@@ -10,6 +10,8 @@ import Catalog from './catalog/catalog';
 import actions from './actions/export';
 import { getIsElementSelected } from './selectors/selectors';
 import { objectsMap } from './utils/objects-utils';
+import { Context } from './context/context';
+
 
 import {
   ToolbarComponents,
@@ -46,11 +48,11 @@ const wrapperStyle = {
   flexFlow: 'row nowrap'
 };
 
-export const Context = createContext( {
-  ...objectsMap( actions, () => PropTypes.object ),
-  translator: new Translator(),
-  catalog: new Catalog()
-} );
+// export const Context = createContext( {
+//   ...objectsMap( actions, () => PropTypes.object ),
+//   translator: new Translator(),
+//   catalog: new Catalog()
+// } );
 
 // export function ReactPlanner ( props, context ) {
 
@@ -269,7 +271,16 @@ export const Context = createContext( {
 //   );
 // }
 
+// 
 
+//TODO move to context.js
+const setupContextObject = ( props ) => {
+  return {
+    ...objectsMap( actions, actionNamespace => props[ actionNamespace ] ),
+    translator: props.translator,
+    catalog: props.catalog,
+  };
+};
 
 class ReactPlanner extends Component {
   constructor ( props ) {
@@ -285,6 +296,8 @@ class ReactPlanner extends Component {
 
     this.refViewer = React.createRef();
     this.timeout = false;
+    this.contextObject = null;
+
 
     this.panUp = this.panUp.bind( this );
     this.zoomIn = this.zoomIn.bind( this );
@@ -298,14 +311,6 @@ class ReactPlanner extends Component {
     this.update2DViewOnState = this.update2DViewOnState.bind( this );
 
     this.getState = this.getState.bind( this );
-  }
-
-  getChildContext () {
-    return {
-      ...objectsMap( actions, actionNamespace => this.props[ actionNamespace ] ),
-      translator: this.props.translator,
-      catalog: this.props.catalog,
-    };
   }
 
   // UseEffect con []
@@ -323,6 +328,8 @@ class ReactPlanner extends Component {
     plugins.forEach( plugin => plugin( state, stateExtractor, projectActions ) );
     projectActions.initCatalog( catalog );
     projectActions.SetPreference( prefs, prefsInfo );
+    this.contextObject = setupContextObject( this.props );
+
   }
 
   UNSAFE_componentWillReceiveProps ( nextProps ) {
@@ -339,17 +346,17 @@ class ReactPlanner extends Component {
 
     // This can go on its own useEffect(() => {}, [props])
 
-    // const delay = 500;
-    // const autosaveKey = 'react-planner_v0';
+    const delay = 500;
+    const autosaveKey = 'react-planner_v0';
 
-    // if ( !autosaveKey ) return;
-    // if ( !localStorage ) return;
+    if ( !autosaveKey ) return;
+    if ( !localStorage ) return;
 
-    // if ( this.timeout ) clearTimeout( this.timeout );
+    if ( this.timeout ) clearTimeout( this.timeout );
 
-    // this.timeout = setTimeout( () => {
-    //   localStorage.setItem( autosaveKey, JSON.stringify( plannerState.scene.toJS() ) );
-    // }, delay );
+    this.timeout = setTimeout( () => {
+      localStorage.setItem( autosaveKey, JSON.stringify( plannerState.scene.toJS() ) );
+    }, delay );
   }
 
 
@@ -446,79 +453,79 @@ class ReactPlanner extends Component {
 
 
   render () {
-    const { update2DView } = this;
+    const { update2DView, contextObject } = this;
     const { width, height, state, stateExtractor, ...props } = this.props;
     const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = this.state;
     let extractedState = stateExtractor( state );
 
-
-
     return (
       <div>
-        <MainComponent state={ state } { ...props } />
+        <Context.Provider value={ contextObject } >
+          <MainComponent state={ state } { ...props } />
 
-        <TopBar state={ extractedState } { ...props } />
+          <TopBar state={ extractedState } { ...props } />
 
-        <div style={ { ...wrapperStyle, height } }>
+          <div style={ { ...wrapperStyle, height } }>
 
-          <Toolbar
-            width={ toolbarW }
-            height={ toolbarH }
-            state={ extractedState }
-            { ...props }
-          />
-
-          <div style={ { position: 'relative' } }>
-
-            <MenuRooms
-              state={ state }
-              { ...props }
-            />
-            <MenuConstruccion
-              state={ state }
-              { ...props }
-            />
-            <MenuMuebles
-              state={ state }
-              { ...props }
-            />
-            <LoginComponent state={ extractedState } { ...props } />
-            <RegisterComponent state={ state } { ...props } />
-            <MenuPreferencias state={ state } { ...props } />
-
-            <Content
-              style={ { position: 'absolute', zIndex: '0' } }
-              width={ contentW }
-              height={ contentH }
+            <Toolbar
+              width={ toolbarW }
+              height={ toolbarH }
               state={ extractedState }
-              refViewer2D={ this.refViewer }
-              update2DView={ update2DView }
-              onWheel={ event => event.preventDefault() }
               { ...props }
             />
 
+            <div style={ { position: 'relative' } }>
+
+              <MenuRooms
+                state={ state }
+                { ...props }
+              />
+              <MenuConstruccion
+                state={ state }
+                { ...props }
+              />
+              <MenuMuebles
+                state={ state }
+                { ...props }
+              />
+              <LoginComponent state={ extractedState } { ...props } />
+              <RegisterComponent state={ state } { ...props } />
+              <MenuPreferencias state={ state } { ...props } />
+
+              <Content
+                style={ { position: 'absolute', zIndex: '0' } }
+                width={ contentW }
+                height={ contentH }
+                state={ extractedState }
+                refViewer2D={ this.refViewer }
+                update2DView={ update2DView }
+                onWheel={ event => event.preventDefault() }
+                { ...props }
+              />
+
+            </div>
+
+            <Sidebar
+              state={ extractedState }
+              width={ sideBarW }
+              height={ sideBarH }
+              { ...props }
+            />
+
+            { this.refViewer && (
+              <Direction
+                width={ directionW }
+                state={ extractedState }
+                refViewer2D={ this.refViewer }
+                handleZoom2D={ this.handleZoom2D }
+                update2DView={ update2DView }
+                { ...props }
+
+              />
+            )
+            }
           </div>
-
-          <Sidebar
-            state={ extractedState }
-            width={ sideBarW }
-            height={ sideBarH }
-            { ...props }
-          />
-
-          { this.refViewer && (
-            <Direction
-              width={ directionW }
-              state={ extractedState }
-              refViewer2D={ this.refViewer }
-              handleZoom2D={ this.handleZoom2D }
-              update2DView={ update2DView }
-              { ...props }
-
-            />
-          )
-          }
-        </div>
+        </Context.Provider>
       </div >
     );
   }
@@ -543,15 +550,15 @@ ReactPlanner.propTypes = {
   //prefs: PropTypes.object,
 };
 
-ReactPlanner.contextTypes = {
-  store: PropTypes.object.isRequired,
-};
+// ReactPlanner.contextTypes = {
+//   store: PropTypes.object.isRequired,
+// };
 
-ReactPlanner.childContextTypes = {
-  ...objectsMap( actions, () => PropTypes.object ),
-  translator: PropTypes.object,
-  catalog: PropTypes.object,
-};
+// ReactPlanner.childContextTypes = {
+//   ...objectsMap( actions, () => PropTypes.object ),
+//   translator: PropTypes.object,
+//   catalog: PropTypes.object,
+// };
 
 ReactPlanner.defaultProps = {
   translator: new Translator(),

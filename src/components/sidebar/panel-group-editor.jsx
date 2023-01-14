@@ -13,6 +13,7 @@ import {
   MODE_DRAGGING_VERTEX, MODE_DRAGGING_ITEM, MODE_DRAGGING_HOLE, MODE_FITTING_IMAGE, MODE_UPLOADING_IMAGE,
   MODE_ROTATING_ITEM
 } from '../../constants';
+import { Context } from '../../context/context';
 
 const VISIBILITY_MODE = {
   MODE_IDLE, MODE_2D_ZOOM_IN, MODE_2D_ZOOM_OUT, MODE_2D_PAN, MODE_3D_VIEW, MODE_3D_FIRST_PERSON,
@@ -176,12 +177,14 @@ PanelGroupEditor.propTypes = {
   groupID: PropTypes.string
 };
 
-PanelGroupEditor.contextTypes = {
-  catalog: PropTypes.object.isRequired,
-  translator: PropTypes.object.isRequired,
-  itemsActions: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired,
-  holesActions: PropTypes.object.isRequired,
-  groupsActions: PropTypes.object.isRequired,
-  projectActions: PropTypes.object.isRequired
-};
+PanelGroupEditor.contextType = Context;
+
+// PanelGroupEditor.contextTypes = {
+//   catalog: PropTypes.object.isRequired,
+//   translator: PropTypes.object.isRequired,
+//   itemsActions: PropTypes.object.isRequired,
+//   linesActions: PropTypes.object.isRequired,
+//   holesActions: PropTypes.object.isRequired,
+//   groupsActions: PropTypes.object.isRequired,
+//   projectActions: PropTypes.object.isRequired
+// };

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as SharedStyle from '../../shared-style';
 import { FaTimes as IconClose } from 'react-icons/fa';
+import { Context } from '../../context/context';
 
 const labelContainerStyle = {
   width: 'auto',
@@ -180,12 +181,14 @@ FooterContentButton.propTypes = {
   titleStyle: PropTypes.object
 };
 
-FooterContentButton.contextTypes = {
-  projectActions: PropTypes.object.isRequired,
-  viewer2DActions: PropTypes.object.isRequired,
-  viewer3DActions: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired,
-  holesActions: PropTypes.object.isRequired,
-  itemsActions: PropTypes.object.isRequired,
-  translator: PropTypes.object.isRequired,
-};
+FooterContentButton.contextType = Context;
+
+// FooterContentButton.contextTypes = {
+//   projectActions: PropTypes.object.isRequired,
+//   viewer2DActions: PropTypes.object.isRequired,
+//   viewer3DActions: PropTypes.object.isRequired,
+//   linesActions: PropTypes.object.isRequired,
+//   holesActions: PropTypes.object.isRequired,
+//   itemsActions: PropTypes.object.isRequired,
+//   translator: PropTypes.object.isRequired,
+// };

@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {MdNavigateBefore} from 'react-icons/md';
+import { MdNavigateBefore } from 'react-icons/md';
 import * as SharedStyle from '../../shared-style';
+import { Context } from '../../context/context';
 
 const STYLE_BOX = {
   width: '14em',
@@ -48,28 +49,28 @@ const CONTAINER_DIV = {
 
 export default class CatalogTurnBackPageItem extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {hover: false};
+  constructor ( props ) {
+    super( props );
+    this.state = { hover: false };
   }
 
-  changePage(newPage) {
-    this.context.projectActions.goBackToCatalogPage(newPage)
+  changePage ( newPage ) {
+    this.context.projectActions.goBackToCatalogPage( newPage );
   }
 
-  render() {
+  render () {
     let page = this.props.page;
     let hover = this.state.hover;
 
     return (
       <div
-        style={hover ? STYLE_BOX_HOVER : STYLE_BOX}
-        onClick={e => this.changePage(page.name)}
-        onMouseEnter={e => this.setState({hover: true})}
-        onMouseLeave={e => this.setState({hover: false})}
+        style={ hover ? STYLE_BOX_HOVER : STYLE_BOX }
+        onClick={ e => this.changePage( page.name ) }
+        onMouseEnter={ e => this.setState( { hover: true } ) }
+        onMouseLeave={ e => this.setState( { hover: false } ) }
       >
-        <div style={CONTAINER_DIV}>
-          <MdNavigateBefore style={ !hover ? STYLE_BACK : STYLE_BACK_HOVER}/>
+        <div style={ CONTAINER_DIV }>
+          <MdNavigateBefore style={ !hover ? STYLE_BACK : STYLE_BACK_HOVER } />
         </div>
 
       </div>
@@ -81,6 +82,8 @@ CatalogTurnBackPageItem.propTypes = {
   page: PropTypes.object.isRequired
 };
 
-CatalogTurnBackPageItem.contextTypes = {
-  projectActions: PropTypes.object.isRequired
-};
+CatalogTurnBackPageItem.contextType = Context;
+
+// CatalogTurnBackPageItem.contextTypes = {
+//   projectActions: PropTypes.object.isRequired
+// };

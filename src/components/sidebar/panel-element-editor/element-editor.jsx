@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Map, fromJS } from 'immutable';
 import AttributesEditor from './attributes-editor/attributes-editor';
@@ -12,7 +12,7 @@ import { Line } from '../../../class/export';
 import { MODE_DRAWING_LINE } from '../../../constants';
 import { PropertyLengthMeasure } from '../../../catalog/properties/export';
 import { getCacheAngulo, isMultipleSelection } from '../../../selectors/selectors';
-import { useSelector } from 'react-redux';
+import { Context } from '../../../context/context';
 
 const PRECISION = 2;
 
@@ -46,11 +46,13 @@ const STYLE_ICON_HEAD = {
 //     state: appState,
 //   } = props;
 
-//   const {
-//     catalog,
-//     projectActions,
-//     linesActions
-//   } = context;
+//   // const {
+//   //   catalog,
+//   //   projectActions,
+//   //   linesActions
+//   // } = context;
+
+//   const { catalog, projectActions, linesActions } = useContext( Context );
 
 //   const mode = appState.getIn( [ 'mode' ] );
 
@@ -1059,9 +1061,11 @@ ElementEditor.propTypes = {
   layer: PropTypes.object.isRequired
 };
 
-ElementEditor.contextTypes = {
-  projectActions: PropTypes.object.isRequired,
-  linesActions: PropTypes.object.isRequired,
-  catalog: PropTypes.object.isRequired,
-  translator: PropTypes.object.isRequired,
-};
+ElementEditor.contextType = Context;
+
+// ElementEditor.contextTypes = {
+//   projectActions: PropTypes.object.isRequired,
+//   linesActions: PropTypes.object.isRequired,
+//   catalog: PropTypes.object.isRequired,
+//   translator: PropTypes.object.isRequired,
+// };
