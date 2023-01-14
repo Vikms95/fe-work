@@ -48,12 +48,6 @@ const wrapperStyle = {
   flexFlow: 'row nowrap'
 };
 
-// export const Context = createContext( {
-//   ...objectsMap( actions, () => PropTypes.object ),
-//   translator: new Translator(),
-//   catalog: new Catalog()
-// } );
-
 // export function ReactPlanner ( props, context ) {
 
 //   const refViewer = useRef( null );

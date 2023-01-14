@@ -11,6 +11,7 @@ export const Context = createContext( {
   catalog: {}
 } );
 
-export const ContextProvider = Context.Provider;
 export const ContextConsumer = Context.Consumer;
+export const ContextProvider = Context.Provider;
+
 
