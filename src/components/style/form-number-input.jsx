@@ -21,6 +21,7 @@ import {
 import { toFixedFloat } from '../../utils/math';
 import { GeometryUtils } from '../../utils/export';
 import { Context } from '../../context/context';
+import { usePrevProps } from '../../hooks/usePrevProps';
 
 
 const STYLE_INPUT = {
@@ -63,38 +64,6 @@ export default function FormNumberInput ( props ) {
 
   const context = useContext( Context );
 
-  let cursor = {
-    x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
-    y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
-  };
-
-  const isAttribute = () => {
-    return props.attributeName === 'angulo' || props.attributeName === 'lineLength';
-  };
-
-  const resetAngleInput = () => {
-    if ( state.showedValue !== 0 )
-      setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
-  };
-
-  const getProperty = ( element ) => {
-    return element.getIn( [ 'properties', props.attributeName, 'length' ] );
-  };
-
-  const getAttribute = ( line ) => {
-    if ( !line.vertices ) return;
-    const layerID = getLayerID( props.stateRedux );
-    const layer = props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
-
-    const { v_a, v_b } = getElementVertices( line, layer );
-    const { lineLength, angulo } = getElementAttributes( line, layer, v_a, v_b );
-
-    if ( props.attributeName === 'lineLength' ) {
-      return toFixedFloat( lineLength, 2 );
-    }
-    return angulo.angle;
-  };
-
 
   //**------------------  REPLACE LIFECYCLE------------------------------- */
 
@@ -130,11 +99,7 @@ export default function FormNumberInput ( props ) {
     }
   }, [] );
 
-  const val = useRef();
-
-  useEffect( () => {
-    val.current = props;
-  }, [ props ] );
+  const prevProps = usePrevProps( props );
 
   useEffect( () => {
     const isSingleSelectionOrInvalidElement = () => {
@@ -182,7 +147,7 @@ export default function FormNumberInput ( props ) {
       setState( ( prevState ) => ( { ...prevState, showedValue: null } ) );
       window.addEventListener( 'click', resetInputOnSelection );
     };
-  }, [ val.current ] );
+  }, [ prevProps ] );
 
   //todo TRY componentWillUnmount 
   //todo TRY used to make sure that the value from props is the one similar to componentWillUnmount
@@ -192,7 +157,7 @@ export default function FormNumberInput ( props ) {
       setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
       document.removeEventListener( 'mousemove', resetAngleInput );
     };
-  }, [ val.current, props.value ] );
+  }, [ prevProps, props.value ] );
 
 
   //todo componentDidUpdate
@@ -224,6 +189,41 @@ export default function FormNumberInput ( props ) {
 
 
   //**------------------  REPLACE LIFECYCLE------------------------------- */
+
+
+
+  let cursor = {
+    x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
+    y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
+  };
+
+  const isAttribute = () => {
+    return props.attributeName === 'angulo' || props.attributeName === 'lineLength';
+  };
+
+  const resetAngleInput = () => {
+    if ( state.showedValue !== 0 )
+      setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
+  };
+
+  const getProperty = ( element ) => {
+    return element.getIn( [ 'properties', props.attributeName, 'length' ] );
+  };
+
+  const getAttribute = ( line ) => {
+    if ( !line.vertices ) return;
+    const layerID = getLayerID( props.stateRedux );
+    const layer = props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
+
+    const { v_a, v_b } = getElementVertices( line, layer );
+    const { lineLength, angulo } = getElementAttributes( line, layer, v_a, v_b );
+
+    if ( props.attributeName === 'lineLength' ) {
+      return toFixedFloat( lineLength, 2 );
+    }
+    return angulo.angle;
+  };
+
 
   const numericInputStyle = { ...STYLE_INPUT, ...style };
   const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
