@@ -167,6 +167,11 @@ export default function FormNumberInput ( props ) {
       setState( ( prevState ) => ( { ...prevState, showedValue: null } ) );
       window.addEventListener( 'click', resetInputOnSelection );
     };
+
+    return () => {
+      setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
+      document.removeEventListener( 'mousemove', resetAngleInput );
+    };
   }, [ val.current ] );
 
   //todo TRY componentWillUnmount 
@@ -174,7 +179,6 @@ export default function FormNumberInput ( props ) {
 
   useEffect( () => {
     return () => {
-      console.log( 'test restoring value when component unmounts' );
       setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
       document.removeEventListener( 'mousemove', resetAngleInput );
     };
