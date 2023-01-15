@@ -39,727 +39,717 @@ const STYLE_INPUT = {
   width: '100%',
 };
 
-// export default function FormNumberInput ( props ) {
-//   const {
-//     value,
-//     min,
-//     max,
-//     style,
-//     onValid,
-//     onChange,
-//     onInvalid,
-//     precision,
-//     stateRedux,
-//     placeholder,
-//     attributeName,
-//     sourceElement,
-//   } = props;
-
-//   const context = useContext( Context );
-
-//   const [ state, setState ] = useState( {
-//     focus: false,
-//     valid: true,
-//     // Switched to null
-//     showedValue: value,
-//     inputElement: null
-//   } );
-
-//   //**------------------  REPLACE LIFECYCLE------------------------------- */
-
-//   //todo componentDidMount
-//   //todo TRY like this, if not, keep following these solutions
-//   // https://atomizedobjects.com/blog/react/using-componentdidmount-in-react-hooks/
-//   const prevProps = usePrevProps( props );
-
-//   useEffect( () => {
-//     const isLengthInputWhileDrawing = () => {
-//       return props.attributeName === 'lineLength' && props.mode === MODE_DRAWING_LINE;
-//     };
-
-//     const isCachedAnguloWhileDrawing = () => {
-//       return getCacheAngulo( props.stateRedux ) && props.stateRedux.get( 'mode' ) === MODE_DRAWING_LINE;
-//     };
-
-//     const isInputAnguloAndSingleSelection = () => {
-//       return props.attributeName === 'angulo' && !isMultipleSelection();
-//     };
-
-//     if ( isLengthInputWhileDrawing() ) {
-//       console.log( 'test setting focus to true' );
-//       setState( ( prevState ) => ( { ...prevState, focus: true } ) );
-//       state.inputElement.focus();
-//       state.inputElement.select();
-//     }
-
-//     if ( isCachedAnguloWhileDrawing() && isInputAnguloAndSingleSelection() ) {
-//       console.log( 'test setting bc its angulo, single selection and its cached' );
-//       setState( ( prevState ) => ( {
-//         ...prevState, showedValue: parseFloat( getCacheAngulo( props.stateRedux ) )
-//       } ) );
-
-//       document.addEventListener( 'mousemove', resetAngleInput );
-//     }
-//   }, [] );
-
-//   useEffect( () => {
-//     const isSingleSelectionOrInvalidElement = () => {
-//       return !props.sourceElement || !isMultipleSelection( props.stateRedux );
-//     };
-
-//     const areArrayValuesDifferent = ( values ) => {
-//       return !values.every( el => el === values[ 0 ] );
-//     };
-
-//     const resetInputOnSelection = () => {
-//       if ( !isMultipleSelection( props.stateRedux ) ) {
-//         console.log( 'test reseting input on selection' );
-//         setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
-//       }
-//     };
-
-//     if ( isSingleSelectionOrInvalidElement() ) return;
-
-//     const getSelectedPropertyValues = ( prototype ) => {
-//       let valuesArray = [];
-//       const elements = getSelectedPrototypeElements( props.stateRedux, prototype );
-
-//       if ( isAttribute() ) {
-//         for ( const { 1: element } of elements ) {
-
-//           const attribute = getAttribute( element );
-//           valuesArray.push( attribute );
-//         }
-
-//       } else {
-//         for ( const { 1: element } of elements ) {
-
-//           const property = getProperty( element );
-//           valuesArray.push( property );
-//         }
-//       }
-
-//       return valuesArray;
-//     };
-
-//     const prototype = props.sourceElement.get( 'prototype' );
-//     const values = getSelectedPropertyValues( prototype );
-
-//     if ( areArrayValuesDifferent( values ) ) {
-//       console.log( 'test setting showedvalue to null bc of multiselection and dif values' );
-//       setState( ( prevState ) => ( { ...prevState, showedValue: null } ) );
-//       window.addEventListener( 'click', resetInputOnSelection );
-//     };
-//   }, [ prevProps ] );
-
-
-//   //todo TRY componentWillUnmount 
-//   //todo TRY used to make sure that the value from props is the one similar to componentWillUnmount
-//   useEffect( () => {
-//     return () => {
-//       console.log( 'test changing value cause of component unmounted' );
-//       setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
-//     };
-//   }, [ prevProps, props.value ] );
-
-
-//   let cursor = {
-//     x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
-//     y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
-//   };
-
-//   //todo componentDidUpdate
-//   useEffect( () => {
-//     if ( document.activeElement === state.inputElement ) {
-//       console.log( "test updating cursor" );
-//       if ( cursor.x !== props.stateRedux.getIn( [ 'mouse', 'x' ] ) ||
-//         cursor.y !== props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
-//         state.inputElement.select();
-//       }
-//     }
-
-//     cursor = {
-//       x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
-//       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
-//     };
-
-//   } );
-
-
-//   //todo componentWillReceiveProps
-//   useEffect( () => {
-//     const isNullInputAndSingleSelection = () => {
-//       return state.showedValue === 'null' && !isMultipleSelection();
-//     };
-
-//     if ( isNullInputAndSingleSelection() ) {
-//       console.log( "test changing the value cause of input null and single selection" );
-//       setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
-//     }
-//   }, [ props, state.showedValue, isMultipleSelection() ] );
-
-
-//   //**------------------  REPLACE LIFECYCLE------------------------------- */
-
-//   const STYLE_NUMERIC_INPUT = { ...STYLE_INPUT, ...style };
-//   const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
-
-//   if ( state.focus ) {
-//     STYLE_NUMERIC_INPUT.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
-//   }
-
-//   if ( !isNaN( min ) && isFinite( min ) && state.showedValue < min ) {
-//     console.log( "test changing the value cause nan" );
-//     setState( ( prevState ) => ( { ...prevState, showedValue: min } ) );
-//   };
-
-//   if ( !isNaN( max ) && isFinite( max ) && state.showedValue > max ) {
-//     console.log( "test changing the value cause nan" );
-//     setState( ( prevState ) => ( { ...prevState, showedValue: max } ) );
-//   }
-
-//   const currValue = ( regexp.test( state.showedValue ) )
-//     ? state.showedValue
-//     : parseFloat( state.showedValue ).toFixed( precision );
-
-//   const isDifferentValue =
-//     ( parseFloat( props.value ).toFixed( precision ) ) !==
-//     parseFloat( state.showedValue ).toFixed( precision );
-
-//   const isAttribute = () => {
-//     return props.attributeName === 'angulo' || props.attributeName === 'lineLength';
-//   };
-
-//   const resetAngleInput = () => {
-//     if ( state.showedValue !== 0 ) {
-//       console.log( "test changing the value cause of angle reseted" );
-//       setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
-//     }
-//   };
-
-//   const getProperty = ( element ) => {
-//     return element.getIn( [ 'properties', props.attributeName, 'length' ] );
-//   };
-
-//   const getAttribute = ( line ) => {
-//     if ( !line.vertices ) return;
-//     const layerID = getLayerID( props.stateRedux );
-//     const layer = props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
-
-//     const { v_a, v_b } = getElementVertices( line, layer );
-//     const { lineLength, angulo } = getElementAttributes( line, layer, v_a, v_b );
-
-//     if ( props.attributeName === 'lineLength' ) {
-//       return toFixedFloat( lineLength, 2 );
-//     }
-//     return angulo.angle;
-//   };
-
-//   const onKeyDown = ( e ) => {
-//     const keyCode = e.keyCode || e.which;
-
-//     if ( isSaveButtonPressed( keyCode ) ) {
-//       saveFn( e, keyCode );
-
-//     } else if ( isArrowPressedOnLength( keyCode ) ) {
-//       onArrrowPress( e, keyCode );
-
-//     } else if ( isEscPressedWhileDrawing( keyCode ) ) {
-//       props.projectActions.undo();
-//       context.linesActions.cacheFondo( '' );
-//       context.linesActions.cacheAlto( '' );
-//       context.linesActions.cacheAngulo( '' );
-
-//     } else if ( isEscPressed( keyCode ) ) {
-//       props.projectActions.unselectAll();
-//     }
-//   };
-
-//   const onInputChange = ( e ) => {
-//     const valid = regexp.test( e.nativeEvent.target.value );
-
-//     if ( valid ) {
-//       console.log( "test changing the value cause valid" );
-//       setState( ( prevState ) => ( { ...prevState, showedValue: e.nativeEvent.target.value } ) );
-
-//       if ( onValid ) {
-//         onValid( e.nativeEvent );
-//       }
-
-//     } else if ( onInvalid ) {
-//       onInvalid( e.nativeEvent );
-//     }
-//     console.log( "test changing the valid state value" );
-//     setState( ( prevState ) => ( { ...prevState, valid: valid } ) );
-//   };
-
-//   const cacheAttributes = () => {
-//     const inputAlto = document.querySelector( '.height' ).value;
-//     const inputFondo = document.querySelector( '.thickness' ).value;
-
-//     context.linesActions.cacheAlto( inputAlto );
-//     context.linesActions.cacheFondo( inputFondo );
-//   };
-
-//   const isElementLine = () => (
-//     props.sourceElement.get( 'prototype' ) === 'lines'
-//   );
-
-//   const saveFn = ( e, keyCode ) => {
-//     e.stopPropagation();
-//     console.log( "test saving the value on saveFn" );
-
-//     if ( state.valid === false ) return;
-//     if ( state.showedValue === null ) return;
-
-//     let savedValue;
-
-//     savedValue = ( state.showedValue !== '' && state.showedValue !== '-' )
-//       ? parseFloat( state.showedValue )
-//       : 0;
-
-//     if ( isElementLine() ) {
-//       cacheAttributes();
-//     }
-
-//     onChange( {
-//       target: {
-//         isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER,
-//         value: ( attributeName === 'angulo' )
-//           ? savedValue
-//           : convertMeasureToOriginal( savedValue, props.unit )
-//       }
-//     } );
-//   };
-
-//   const onArrrowPress = ( e, keyCode ) => {
-//     e.preventDefault();
-
-//     const state = stateRedux;
-
-//     const layerID = getLayerID( state );
-//     const { vertice1ID, vertice2ID } = getLineVerticesID( sourceElement );
-
-//     if ( vertice1ID === vertice2ID ) return;
-
-//     let { x: x1, y: y1 } = getVerticeCoords( state, layerID, vertice1ID );
-//     let { x: x2, y: y2 } = getVerticeCoords( state, layerID, vertice2ID );
-//     if ( !x1 || !y1 || !x2 || !y2 ) return;
-
-//     const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, keyCode );
-
-//     context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
-//   };
-
-//   const isEscPressed = ( keyCode ) => (
-//     keyCode == KEYBOARD_BUTTON_CODE.ESC
-//   );
-
-//   const isSaveButtonPressed = ( keyCode ) => (
-//     ( keyCode == KEYBOARD_BUTTON_CODE.ENTER ) ||
-//     ( keyCode == KEYBOARD_BUTTON_CODE.TAB && isDifferentValue )
-//   );
-
-//   const isArrowPressedOnLength = ( keyCode ) => (
-//     ( attributeName === 'lineLength' ) &&
-//     ( KEYBOARD_BUTTON_CODE.ARROW_KEYS.includes( keyCode ) )
-//   );
-
-//   const isEscPressedWhileDrawing = ( keyCode ) => (
-//     ( keyCode == KEYBOARD_BUTTON_CODE.ESC ) &&
-//     ( props.mode === MODE_DRAWING_LINE )
-//   );
-
-//   return (
-//     <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
-
-//       <input
-//         type='number'
-//         value={ currValue }
-//         placeholder={ placeholder }
-//         className={ attributeName }
-//         ref={ c => ( state.inputElement = c ) }
-//         style={ { ...STYLE_NUMERIC_INPUT, fontFamily: 'Calibri', fontWidth: 'lighter' } }
-//         onKeyDown={ onKeyDown }
-//         onChange={ onInputChange }
-//         onClick={ () => state.inputElement.select() }
-//         onFocus={ () => setState( ( prevState ) => {
-//           console.log( 'test changing focus to true' );
-//           return { ...prevState, focus: true };
-//         } ) }
-//         onBlur={ () => setState( ( prevState ) => {
-//           console.log( 'test changing focus to false' );
-//           return { ...prevState, focus: false };
-//         } ) }
-//       />
-
-//     </div >
-//   );
-// };
-
-
-export default class FormNumberInput extends Component {
-  constructor ( props, context ) {
-    super( props, context );
-
-    this.state = {
-      focus: false,
-      valid: true,
-      showedValue: props.value,
-      inputElement: null
+export default function FormNumberInput ( props ) {
+  const {
+    value,
+    min,
+    max,
+    style,
+    onValid,
+    onChange,
+    onInvalid,
+    precision,
+    stateRedux,
+    placeholder,
+    attributeName,
+    sourceElement,
+  } = props;
+
+  const context = useContext( Context );
+  const [ isFocus, setIsFocus ] = useState( false );
+  const [ showedValue, setShowedValue ] = useState( value );
+
+  const [ state, setState ] = useState( {
+    valid: true,
+    // Switched to null
+    showedValue: value,
+    inputElement: null
+  } );
+
+  //**------------------  REPLACE LIFECYCLE------------------------------- */
+
+  //todo componentDidMount
+  //todo TRY like this, if not, keep following these solutions
+  // https://atomizedobjects.com/blog/react/using-componentdidmount-in-react-hooks/
+  const prevProps = usePrevProps( props );
+
+  useEffect( () => {
+    const isLengthInputWhileDrawing = () => {
+      return props.attributeName === 'lineLength' && props.mode === MODE_DRAWING_LINE;
     };
 
-    this.cursor = {
+    const isCachedAnguloWhileDrawing = () => {
+      return getCacheAngulo( props.stateRedux ) && props.stateRedux.get( 'mode' ) === MODE_DRAWING_LINE;
+    };
+
+    const isInputAnguloAndSingleSelection = () => {
+      return props.attributeName === 'angulo' && !isMultipleSelection();
+    };
+
+    if ( isLengthInputWhileDrawing() ) {
+      console.log( 'test setting focus to true' );
+      setIsFocus( true );
+      state.inputElement.focus();
+      state.inputElement.select();
+    }
+
+    if ( isCachedAnguloWhileDrawing() && isInputAnguloAndSingleSelection() ) {
+      console.log( 'test setting bc its angulo, single selection and its cached' );
+      setState( ( prevState ) => ( {
+        ...prevState, showedValue: parseFloat( getCacheAngulo( props.stateRedux ) )
+      } ) );
+
+      document.addEventListener( 'mousemove', resetAngleInput );
+    }
+  }, [] );
+
+  useEffect( () => {
+    const isSingleSelectionOrInvalidElement = () => {
+      return !props.sourceElement || !isMultipleSelection( props.stateRedux );
+    };
+
+    const areArrayValuesDifferent = ( values ) => {
+      return !values.every( el => el === values[ 0 ] );
+    };
+
+    const resetInputOnSelection = () => {
+      if ( !isMultipleSelection( props.stateRedux ) ) {
+        console.log( 'test reseting input on selection' );
+        setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
+      }
+    };
+
+    if ( isSingleSelectionOrInvalidElement() ) return;
+
+    const getSelectedPropertyValues = ( prototype ) => {
+      let valuesArray = [];
+      const elements = getSelectedPrototypeElements( props.stateRedux, prototype );
+
+      if ( isAttribute() ) {
+        for ( const { 1: element } of elements ) {
+
+          const attribute = getAttribute( element );
+          valuesArray.push( attribute );
+        }
+
+      } else {
+        for ( const { 1: element } of elements ) {
+
+          const property = getProperty( element );
+          valuesArray.push( property );
+        }
+      }
+
+      return valuesArray;
+    };
+
+    const prototype = props.sourceElement.get( 'prototype' );
+    const values = getSelectedPropertyValues( prototype );
+
+    if ( areArrayValuesDifferent( values ) ) {
+      console.log( 'test setting showedvalue to null bc of multiselection and dif values' );
+      setState( ( prevState ) => ( { ...prevState, showedValue: null } ) );
+      window.addEventListener( 'click', resetInputOnSelection );
+    };
+  }, [ prevProps ] );
+
+
+  //todo TRY componentWillUnmount 
+  //todo TRY used to make sure that the value from props is the one similar to componentWillUnmount
+  useEffect( () => {
+    return () => {
+      console.log( 'test changing value cause of component unmounted' );
+      setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
+    };
+  }, [ prevProps, props.value ] );
+
+
+  let cursor = useRef( null );
+
+  //todo componentDidUpdate
+  useEffect( () => {
+    if ( cursor.current && document.activeElement === state.inputElement ) {
+      if ( cursor.current.x !== props.stateRedux.getIn( [ 'mouse', 'x' ] ) ||
+        cursor.current.y !== props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
+        state.inputElement.select();
+      }
+    }
+
+    cursor.current = {
       x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
     };
 
-    this.isAttribute = this.isAttribute.bind( this );
-    this.getProperty = this.getProperty.bind( this );
-    this.getAttribute = this.getAttribute.bind( this );
-    this.resetAngleInput = this.resetAngleInput.bind( this );
-    this.isDifferentPropsValue = this.isDifferentPropsValue.bind( this );
-    this.resetInputOnSelection = this.resetInputOnSelection.bind( this );
-    this.areArrayValuesDifferent = this.areArrayValuesDifferent.bind( this );
-    this.getSelectedPropertyValues = this.getSelectedPropertyValues.bind( this );
-    this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
-    this.isElementsOfSamePrototype = this.isElementsOfSamePrototype.bind( this );
-    this.isCachedAnguloWhileDrawing = this.isCachedAnguloWhileDrawing.bind( this );
-    this.isEmptyInputAndSingleSelection = this.isEmptyInputAndSingleSelection.bind( this );
-    this.isInputAnguloAndSingleSelection = this.isInputAnguloAndSingleSelection.bind( this );
-    this.isInputAnguloAndMultipleSelection = this.isInputAnguloAndMultipleSelection.bind( this );
-    this.isSingleSelectionOrInvalidElement = this.isSingleSelectionOrInvalidElement.bind( this );
-  }
+  }, [ props.value ] );
 
 
-  isAttribute () {
-    return this.props.attributeName === 'angulo' || this.props.attributeName === 'lineLength';
-  }
+  //todo componentWillReceiveProps
+  useEffect( () => {
+    const isNullInputAndSingleSelection = () => {
+      return state.showedValue === 'null' && !isMultipleSelection();
+    };
 
-  isLengthInputWhileDrawing () {
-    return this.props.attributeName === 'lineLength' && this.props.mode === MODE_DRAWING_LINE;
-  }
-
-  isDifferentPropsValue ( nextProps ) {
-    return this.props.value !== nextProps.value;
-  }
-
-  isCachedAnguloWhileDrawing () {
-    return getCacheAngulo( this.props.stateRedux ) && this.props.stateRedux.get( 'mode' ) === MODE_DRAWING_LINE;
-  }
-
-  isInputAnguloAndSingleSelection () {
-    return this.props.attributeName === 'angulo' && !isMultipleSelection();
-  }
-
-  isInputAnguloAndMultipleSelection () {
-    return this.props.attributeName === 'angulo' && isMultipleSelection();
-  }
-
-  isElementsOfSamePrototype ( element ) {
-    if ( this.props.sourceElement ) {
-      return element[ 0 ] === this.props.sourceElement.get( 'prototype' );
+    if ( isNullInputAndSingleSelection() ) {
+      console.log( "test changing the value cause of input null and single selection" );
+      setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
     }
+  }, [ props, state.showedValue, isMultipleSelection() ] );
+
+
+  //**------------------  REPLACE LIFECYCLE------------------------------- */
+
+  const STYLE_NUMERIC_INPUT = { ...STYLE_INPUT, ...style };
+  const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
+
+  if ( isFocus ) {
+    STYLE_NUMERIC_INPUT.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
   }
 
-  isSingleSelectionOrInvalidElement () {
-    return !this.props.sourceElement || !isMultipleSelection( this.props.stateRedux );
+  if ( !isNaN( min ) && isFinite( min ) && state.showedValue < min ) {
+    console.log( "test changing the value cause nan" );
+    setState( ( prevState ) => ( { ...prevState, showedValue: min } ) );
+  };
+
+  if ( !isNaN( max ) && isFinite( max ) && state.showedValue > max ) {
+    console.log( "test changing the value cause nan" );
+    setState( ( prevState ) => ( { ...prevState, showedValue: max } ) );
   }
 
-  isEmptyInputAndSingleSelection () {
-    return this.state.showedValue === 'null' && !this.state.isMultiSelection;
-  }
+  const currValue = ( regexp.test( state.showedValue ) )
+    ? state.showedValue
+    : parseFloat( state.showedValue ).toFixed( precision );
 
-  areArrayValuesDifferent ( values ) {
-    return !values.every( el => el === values[ 0 ] );
-  }
+  const isDifferentValue =
+    ( parseFloat( props.value ).toFixed( precision ) ) !==
+    parseFloat( state.showedValue ).toFixed( precision );
 
-  resetAngleInput () {
-    if ( this.state.showedValue !== 0 )
-      this.setState( { showedValue: this.props.value } );
-  }
+  const isAttribute = () => {
+    return props.attributeName === 'angulo' || props.attributeName === 'lineLength';
+  };
 
-  getProperty ( element ) {
-    return element.getIn( [ 'properties', this.props.attributeName, 'length' ] );
-  }
+  const resetAngleInput = () => {
+    if ( state.showedValue !== 0 ) {
+      console.log( "test changing the value cause of angle reseted" );
+      setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
+    }
+  };
 
-  getAttribute ( line ) {
+  const getProperty = ( element ) => {
+    return element.getIn( [ 'properties', props.attributeName, 'length' ] );
+  };
+
+  const getAttribute = ( line ) => {
     if ( !line.vertices ) return;
-    const layerID = getLayerID( this.props.stateRedux );
-    const layer = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
+    const layerID = getLayerID( props.stateRedux );
+    const layer = props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
 
     const { v_a, v_b } = getElementVertices( line, layer );
     const { lineLength, angulo } = getElementAttributes( line, layer, v_a, v_b );
 
-    if ( this.props.attributeName === 'lineLength' ) {
+    if ( props.attributeName === 'lineLength' ) {
       return toFixedFloat( lineLength, 2 );
     }
     return angulo.angle;
-  }
-
-  getSelectedPropertyValues ( prototype ) {
-    let valuesArray = [];
-    const elements = getSelectedPrototypeElements( this.props.stateRedux, prototype );
-
-    if ( this.isAttribute() ) {
-      for ( const { 1: element } of elements ) {
-
-        const attribute = this.getAttribute( element );
-        valuesArray.push( attribute );
-      }
-
-    } else {
-      for ( const { 1: element } of elements ) {
-
-        const property = this.getProperty( element );
-        valuesArray.push( property );
-      }
-    }
-
-    return valuesArray;
-  }
-
-  componentDidMount () {
-    if ( this.isLengthInputWhileDrawing() ) {
-      this.setState( { focus: true } );
-      this.state.inputElement.focus();
-      this.state.inputElement.select();
-    }
-
-    if ( this.isCachedAnguloWhileDrawing() && this.isInputAnguloAndSingleSelection() ) {
-      this.setState( { showedValue: parseFloat( getCacheAngulo( this.props.stateRedux ) ) } );
-      document.addEventListener( 'mousemove', this.resetAngleInput );
-    }
-
-    if ( this.isSingleSelectionOrInvalidElement() ) return;
-
-    const prototype = this.props.sourceElement.get( 'prototype' );
-    const values = this.getSelectedPropertyValues( prototype );
-
-    if ( this.areArrayValuesDifferent( values ) ) {
-      this.setState( { showedValue: null } );
-      window.addEventListener( 'click', this.resetInputOnSelection );
-    };
-  }
-
-  resetInputOnSelection () {
-    if ( !isMultipleSelection( this.props.stateRedux ) ) {
-      this.setState( { showedValue: this.props.value } );
-    }
-  }
-
-  componentWillUnmount () {
-    this.setState( { showedValue: this.props.value } );
-    document.removeEventListener( 'mousemove', this.resetAngleInput );
-    // window.removeEventListener( 'click', this.resetInputOnSelection );
   };
 
-  componentDidUpdate ( nextProps ) {
-    if ( document.activeElement === this.state.inputElement ) {
-      if ( this.cursor.x !== this.props.stateRedux.getIn( [ 'mouse', 'x' ] )
-        || this.cursor.y !== this.props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
-        console.log( 'selecting' );
-        this.state.inputElement.select();
-      }
+  const onKeyDown = ( e ) => {
+    const keyCode = e.keyCode || e.which;
+
+    if ( isSaveButtonPressed( keyCode ) ) {
+      saveFn( e, keyCode );
+
+    } else if ( isArrowPressedOnLength( keyCode ) ) {
+      onArrrowPress( e, keyCode );
+
+    } else if ( isEscPressedWhileDrawing( keyCode ) ) {
+      props.projectActions.undo();
+      context.linesActions.cacheFondo( '' );
+      context.linesActions.cacheAlto( '' );
+      context.linesActions.cacheAngulo( '' );
+
+    } else if ( isEscPressed( keyCode ) ) {
+      props.projectActions.unselectAll();
     }
-
-    this.cursor = {
-      x: this.props.stateRedux.getIn( [ 'mouse', 'x' ] ),
-      y: this.props.stateRedux.getIn( [ 'mouse', 'y' ] ),
-    };
-  }
-
-  UNSAFE_componentWillReceiveProps ( nextProps ) {
-    if ( this.isDifferentPropsValue( nextProps ) || this.isEmptyInputAndSingleSelection() ) {
-      this.setState( { showedValue: nextProps.value } );
-    }
-  }
-
-
-  render () {
-    const {
-      value,
-      min,
-      max,
-      style,
-      onValid,
-      onChange,
-      onInvalid,
-      precision,
-      stateRedux,
-      placeholder,
-      attributeName,
-      sourceElement,
-    } = this.props;
-
-    const numericInputStyle = { ...STYLE_INPUT, ...style };
-    const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
-
-    if ( this.state.focus ) {
-      numericInputStyle.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
-    }
-
-    if ( !isNaN( min ) && isFinite( min ) && this.state.showedValue < min ) {
-      this.setState( { showedValue: min } );
-    };
-
-    if ( !isNaN( max ) && isFinite( max ) && this.state.showedValue > max ) {
-      this.setState( { showedValue: max } );
-    }
-
-    const currValue = ( regexp.test( this.state.showedValue ) )
-      ? this.state.showedValue
-      : parseFloat( this.state.showedValue ).toFixed( precision );
-
-    const isDifferentValue =
-      ( parseFloat( this.props.value ).toFixed( precision ) ) !==
-      parseFloat( this.state.showedValue ).toFixed( precision );
-
-
-    const onKeyDown = ( e ) => {
-      const keyCode = e.keyCode || e.which;
-
-      if ( isSaveButtonPressed( keyCode ) ) {
-        saveFn( e, keyCode );
-
-      } else if ( isArrowPressedOnLength( keyCode ) ) {
-        onArrrowPress( e, keyCode );
-
-      } else if ( isEscPressedWhileDrawing( keyCode ) ) {
-        this.props.projectActions.undo();
-        this.context.linesActions.cacheFondo( '' );
-        this.context.linesActions.cacheAlto( '' );
-        this.context.linesActions.cacheAngulo( '' );
-
-      } else if ( isEscPressed( keyCode ) ) {
-        this.props.projectActions.unselectAll();
-      }
-    };
-
-    const onInputChange = ( e ) => {
-      const valid = regexp.test( e.nativeEvent.target.value );
-
-      if ( valid ) {
-        this.setState( { showedValue: e.nativeEvent.target.value } );
-
-        if ( onValid ) {
-          onValid( e.nativeEvent );
-        }
-
-      } else if ( onInvalid ) {
-        onInvalid( e.nativeEvent );
-      }
-
-      this.setState( { valid } );
-    };
-
-    const cacheAttributes = () => {
-      const inputAlto = document.querySelector( '.height' ).value;
-      const inputFondo = document.querySelector( '.thickness' ).value;
-
-      this.context.linesActions.cacheAlto( inputAlto );
-      this.context.linesActions.cacheFondo( inputFondo );
-    };
-
-    const isElementLine = () => (
-      this.props.sourceElement.get( 'prototype' ) === 'lines'
-    );
-
-    const saveFn = ( e, keyCode ) => {
-      e.stopPropagation();
-      if ( this.state.valid === false ) return;
-      if ( this.state.showedValue === null ) return;
-
-      let savedValue;
-
-      savedValue =
-        ( this.state.showedValue !== '' && this.state.showedValue !== '-' )
-          ? parseFloat( this.state.showedValue )
-          : 0;
-
-      if ( isElementLine() ) {
-        cacheAttributes();
-      }
-
-      onChange( {
-        target: {
-          isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER,
-          value: ( attributeName === 'angulo' )
-            ? savedValue
-            : convertMeasureToOriginal( savedValue, this.props.unit )
-        }
-      } );
-    };
-
-    const onArrrowPress = ( e, keyCode ) => {
-      e.preventDefault();
-
-      const state = stateRedux;
-
-      const layerID = getLayerID( state );
-      const { vertice1ID, vertice2ID } = getLineVerticesID( sourceElement );
-
-      if ( vertice1ID === vertice2ID ) return;
-
-      let { x: x1, y: y1 } = getVerticeCoords( state, layerID, vertice1ID );
-      let { x: x2, y: y2 } = getVerticeCoords( state, layerID, vertice2ID );
-      if ( !x1 || !y1 || !x2 || !y2 ) return;
-
-      const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, keyCode );
-
-      this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
-
-      /** DEBUG **/
-
-      const layer = getLayerValue( state );
-      let v2First = sourceElement.v2First;
-      let v_a = layer.vertices.get( sourceElement.vertices.get( !v2First ? 0 : 1 ) );
-      let v_b = layer.vertices.get( sourceElement.vertices.get( 1 ) );
-
-      let distance = GeometryUtils.pointsDistance( v_a.x, v_a.y, v_b.x, v_b.y );
-
-    };
-
-    const isEscPressed = ( keyCode ) => (
-      keyCode == KEYBOARD_BUTTON_CODE.ESC
-    );
-
-    const isSaveButtonPressed = ( keyCode ) => (
-      ( keyCode == KEYBOARD_BUTTON_CODE.ENTER ) ||
-      ( keyCode == KEYBOARD_BUTTON_CODE.TAB && isDifferentValue )
-    );
-
-    const isArrowPressedOnLength = ( keyCode ) => (
-      ( attributeName === 'lineLength' ) &&
-      ( KEYBOARD_BUTTON_CODE.ARROW_KEYS.includes( keyCode ) )
-    );
-
-    const isEscPressedWhileDrawing = ( keyCode ) => (
-      ( keyCode == KEYBOARD_BUTTON_CODE.ESC ) &&
-      ( this.props.mode === MODE_DRAWING_LINE )
-    );
-
-    return (
-      <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
-
-        <input
-          type='number'
-          value={ currValue }
-          placeholder={ placeholder }
-          className={ attributeName }
-          ref={ c => ( this.state.inputElement = c ) }
-          style={ { ...numericInputStyle, fontFamily: 'Calibri', fontWidth: 'lighter' } }
-          onKeyDown={ onKeyDown }
-          onChange={ onInputChange }
-          onClick={ () => this.state.inputElement.select() }
-          onFocus={ () => this.setState( { focus: true } ) }
-          onBlur={ () => this.setState( { focus: false } ) }
-        />
-
-      </div >
-    );
   };
-}
+
+  const onInputChange = ( e ) => {
+    const valid = regexp.test( e.nativeEvent.target.value );
+
+    if ( valid ) {
+      console.log( "test changing the value cause valid" );
+      setState( ( prevState ) => ( { ...prevState, showedValue: e.nativeEvent.target.value } ) );
+
+      if ( onValid ) {
+        onValid( e.nativeEvent );
+      }
+
+    } else if ( onInvalid ) {
+      onInvalid( e.nativeEvent );
+    }
+    console.log( "test changing the valid state value" );
+    setState( ( prevState ) => ( { ...prevState, valid: valid } ) );
+  };
+
+  const cacheAttributes = () => {
+    const inputAlto = document.querySelector( '.height' ).value;
+    const inputFondo = document.querySelector( '.thickness' ).value;
+
+    context.linesActions.cacheAlto( inputAlto );
+    context.linesActions.cacheFondo( inputFondo );
+  };
+
+  const isElementLine = () => (
+    props.sourceElement.get( 'prototype' ) === 'lines'
+  );
+
+  const saveFn = ( e, keyCode ) => {
+    e.stopPropagation();
+    console.log( "test saving the value on saveFn" );
+
+    if ( state.valid === false ) return;
+    if ( state.showedValue === null ) return;
+
+    let savedValue;
+
+    savedValue = ( state.showedValue !== '' && state.showedValue !== '-' )
+      ? parseFloat( state.showedValue )
+      : 0;
+
+    if ( isElementLine() ) {
+      cacheAttributes();
+    }
+
+    onChange( {
+      target: {
+        isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER,
+        value: ( attributeName === 'angulo' )
+          ? savedValue
+          : convertMeasureToOriginal( savedValue, props.unit )
+      }
+    } );
+  };
+
+  const onArrrowPress = ( e, keyCode ) => {
+    e.preventDefault();
+
+    const state = stateRedux;
+
+    const layerID = getLayerID( state );
+    const { vertice1ID, vertice2ID } = getLineVerticesID( sourceElement );
+
+    if ( vertice1ID === vertice2ID ) return;
+
+    let { x: x1, y: y1 } = getVerticeCoords( state, layerID, vertice1ID );
+    let { x: x2, y: y2 } = getVerticeCoords( state, layerID, vertice2ID );
+    if ( !x1 || !y1 || !x2 || !y2 ) return;
+
+    const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, keyCode );
+
+    context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
+  };
+
+  const isEscPressed = ( keyCode ) => (
+    keyCode == KEYBOARD_BUTTON_CODE.ESC
+  );
+
+  const isSaveButtonPressed = ( keyCode ) => (
+    ( keyCode == KEYBOARD_BUTTON_CODE.ENTER ) ||
+    ( keyCode == KEYBOARD_BUTTON_CODE.TAB && isDifferentValue )
+  );
+
+  const isArrowPressedOnLength = ( keyCode ) => (
+    ( attributeName === 'lineLength' ) &&
+    ( KEYBOARD_BUTTON_CODE.ARROW_KEYS.includes( keyCode ) )
+  );
+
+  const isEscPressedWhileDrawing = ( keyCode ) => (
+    ( keyCode == KEYBOARD_BUTTON_CODE.ESC ) &&
+    ( props.mode === MODE_DRAWING_LINE )
+  );
+
+  return (
+    <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
+
+      <input
+        type='number'
+        value={ currValue }
+        placeholder={ placeholder }
+        className={ attributeName }
+        ref={ c => ( state.inputElement = c ) }
+        style={ { ...STYLE_NUMERIC_INPUT, fontFamily: 'Calibri', fontWidth: 'lighter' } }
+        onKeyDown={ onKeyDown }
+        onChange={ onInputChange }
+        onClick={ () => state.inputElement.select() }
+        onFocus={ () => setIsFocus( true ) }
+        onBlur={ () => setIsFocus( false ) }
+      />
+    </div >
+  );
+};
+
+
+// export default class FormNumberInput extends Component {
+//   constructor ( props, context ) {
+//     super( props, context );
+
+//     this.state = {
+//       focus: false,
+//       valid: true,
+//       showedValue: props.value,
+//       inputElement: null
+//     };
+
+//     this.cursor = {
+//       x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
+//       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
+//     };
+
+//     this.isAttribute = this.isAttribute.bind( this );
+//     this.getProperty = this.getProperty.bind( this );
+//     this.getAttribute = this.getAttribute.bind( this );
+//     this.resetAngleInput = this.resetAngleInput.bind( this );
+//     this.isDifferentPropsValue = this.isDifferentPropsValue.bind( this );
+//     this.resetInputOnSelection = this.resetInputOnSelection.bind( this );
+//     this.areArrayValuesDifferent = this.areArrayValuesDifferent.bind( this );
+//     this.getSelectedPropertyValues = this.getSelectedPropertyValues.bind( this );
+//     this.isLengthInputWhileDrawing = this.isLengthInputWhileDrawing.bind( this );
+//     this.isElementsOfSamePrototype = this.isElementsOfSamePrototype.bind( this );
+//     this.isCachedAnguloWhileDrawing = this.isCachedAnguloWhileDrawing.bind( this );
+//     this.isEmptyInputAndSingleSelection = this.isEmptyInputAndSingleSelection.bind( this );
+//     this.isInputAnguloAndSingleSelection = this.isInputAnguloAndSingleSelection.bind( this );
+//     this.isInputAnguloAndMultipleSelection = this.isInputAnguloAndMultipleSelection.bind( this );
+//     this.isSingleSelectionOrInvalidElement = this.isSingleSelectionOrInvalidElement.bind( this );
+//   }
+
+
+//   isAttribute () {
+//     return this.props.attributeName === 'angulo' || this.props.attributeName === 'lineLength';
+//   }
+
+//   isLengthInputWhileDrawing () {
+//     return this.props.attributeName === 'lineLength' && this.props.mode === MODE_DRAWING_LINE;
+//   }
+
+//   isDifferentPropsValue ( nextProps ) {
+//     return this.props.value !== nextProps.value;
+//   }
+
+//   isCachedAnguloWhileDrawing () {
+//     return getCacheAngulo( this.props.stateRedux ) && this.props.stateRedux.get( 'mode' ) === MODE_DRAWING_LINE;
+//   }
+
+//   isInputAnguloAndSingleSelection () {
+//     return this.props.attributeName === 'angulo' && !isMultipleSelection();
+//   }
+
+//   isInputAnguloAndMultipleSelection () {
+//     return this.props.attributeName === 'angulo' && isMultipleSelection();
+//   }
+
+//   isElementsOfSamePrototype ( element ) {
+//     if ( this.props.sourceElement ) {
+//       return element[ 0 ] === this.props.sourceElement.get( 'prototype' );
+//     }
+//   }
+
+//   isSingleSelectionOrInvalidElement () {
+//     return !this.props.sourceElement || !isMultipleSelection( this.props.stateRedux );
+//   }
+
+//   isEmptyInputAndSingleSelection () {
+//     return this.state.showedValue === 'null' && !this.state.isMultiSelection;
+//   }
+
+//   areArrayValuesDifferent ( values ) {
+//     return !values.every( el => el === values[ 0 ] );
+//   }
+
+//   resetAngleInput () {
+//     if ( this.state.showedValue !== 0 )
+//       this.setState( { showedValue: this.props.value } );
+//   }
+
+//   getProperty ( element ) {
+//     return element.getIn( [ 'properties', this.props.attributeName, 'length' ] );
+//   }
+
+//   getAttribute ( line ) {
+//     if ( !line.vertices ) return;
+//     const layerID = getLayerID( this.props.stateRedux );
+//     const layer = this.props.stateRedux.getIn( [ 'scene', 'layers', layerID ] );
+
+//     const { v_a, v_b } = getElementVertices( line, layer );
+//     const { lineLength, angulo } = getElementAttributes( line, layer, v_a, v_b );
+
+//     if ( this.props.attributeName === 'lineLength' ) {
+//       return toFixedFloat( lineLength, 2 );
+//     }
+//     return angulo.angle;
+//   }
+
+//   getSelectedPropertyValues ( prototype ) {
+//     let valuesArray = [];
+//     const elements = getSelectedPrototypeElements( this.props.stateRedux, prototype );
+
+//     if ( this.isAttribute() ) {
+//       for ( const { 1: element } of elements ) {
+
+//         const attribute = this.getAttribute( element );
+//         valuesArray.push( attribute );
+//       }
+
+//     } else {
+//       for ( const { 1: element } of elements ) {
+
+//         const property = this.getProperty( element );
+//         valuesArray.push( property );
+//       }
+//     }
+
+//     return valuesArray;
+//   }
+
+//   componentDidMount () {
+//     if ( this.isLengthInputWhileDrawing() ) {
+//       this.setState( { focus: true } );
+//       this.state.inputElement.focus();
+//       this.state.inputElement.select();
+//     }
+
+//     if ( this.isCachedAnguloWhileDrawing() && this.isInputAnguloAndSingleSelection() ) {
+//       this.setState( { showedValue: parseFloat( getCacheAngulo( this.props.stateRedux ) ) } );
+//       document.addEventListener( 'mousemove', this.resetAngleInput );
+//     }
+
+//     if ( this.isSingleSelectionOrInvalidElement() ) return;
+
+//     const prototype = this.props.sourceElement.get( 'prototype' );
+//     const values = this.getSelectedPropertyValues( prototype );
+
+//     if ( this.areArrayValuesDifferent( values ) ) {
+//       this.setState( { showedValue: null } );
+//       window.addEventListener( 'click', this.resetInputOnSelection );
+//     };
+//   }
+
+//   resetInputOnSelection () {
+//     if ( !isMultipleSelection( this.props.stateRedux ) ) {
+//       this.setState( { showedValue: this.props.value } );
+//     }
+//   }
+
+//   componentWillUnmount () {
+//     this.setState( { showedValue: this.props.value } );
+//     document.removeEventListener( 'mousemove', this.resetAngleInput );
+//     // window.removeEventListener( 'click', this.resetInputOnSelection );
+//   };
+
+//   componentDidUpdate ( nextProps ) {
+//     if ( document.activeElement === this.state.inputElement ) {
+//       if ( this.cursor.x !== this.props.stateRedux.getIn( [ 'mouse', 'x' ] )
+//         || this.cursor.y !== this.props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
+//         console.log( 'test selecting' );
+//         this.state.inputElement.select();
+//       }
+//     }
+
+//     this.cursor = {
+//       x: this.props.stateRedux.getIn( [ 'mouse', 'x' ] ),
+//       y: this.props.stateRedux.getIn( [ 'mouse', 'y' ] ),
+//     };
+//   }
+
+//   UNSAFE_componentWillReceiveProps ( nextProps ) {
+//     if ( this.isDifferentPropsValue( nextProps ) || this.isEmptyInputAndSingleSelection() ) {
+//       this.setState( { showedValue: nextProps.value } );
+//     }
+//   }
+
+
+//   render () {
+//     const {
+//       value,
+//       min,
+//       max,
+//       style,
+//       onValid,
+//       onChange,
+//       onInvalid,
+//       precision,
+//       stateRedux,
+//       placeholder,
+//       attributeName,
+//       sourceElement,
+//     } = this.props;
+
+//     const numericInputStyle = { ...STYLE_INPUT, ...style };
+//     const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
+
+//     if ( this.state.focus ) {
+//       numericInputStyle.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
+//     }
+
+//     if ( !isNaN( min ) && isFinite( min ) && this.state.showedValue < min ) {
+//       this.setState( { showedValue: min } );
+//     };
+
+//     if ( !isNaN( max ) && isFinite( max ) && this.state.showedValue > max ) {
+//       this.setState( { showedValue: max } );
+//     }
+
+//     const currValue = ( regexp.test( this.state.showedValue ) )
+//       ? this.state.showedValue
+//       : parseFloat( this.state.showedValue ).toFixed( precision );
+
+//     const isDifferentValue =
+//       ( parseFloat( this.props.value ).toFixed( precision ) ) !==
+//       parseFloat( this.state.showedValue ).toFixed( precision );
+
+
+//     const onKeyDown = ( e ) => {
+//       const keyCode = e.keyCode || e.which;
+
+//       if ( isSaveButtonPressed( keyCode ) ) {
+//         saveFn( e, keyCode );
+
+//       } else if ( isArrowPressedOnLength( keyCode ) ) {
+//         onArrrowPress( e, keyCode );
+
+//       } else if ( isEscPressedWhileDrawing( keyCode ) ) {
+//         this.props.projectActions.undo();
+//         this.context.linesActions.cacheFondo( '' );
+//         this.context.linesActions.cacheAlto( '' );
+//         this.context.linesActions.cacheAngulo( '' );
+
+//       } else if ( isEscPressed( keyCode ) ) {
+//         this.props.projectActions.unselectAll();
+//       }
+//     };
+
+//     const onInputChange = ( e ) => {
+//       const valid = regexp.test( e.nativeEvent.target.value );
+
+//       if ( valid ) {
+//         this.setState( { showedValue: e.nativeEvent.target.value } );
+
+//         if ( onValid ) {
+//           onValid( e.nativeEvent );
+//         }
+
+//       } else if ( onInvalid ) {
+//         onInvalid( e.nativeEvent );
+//       }
+
+//       this.setState( { valid } );
+//     };
+
+//     const cacheAttributes = () => {
+//       const inputAlto = document.querySelector( '.height' ).value;
+//       const inputFondo = document.querySelector( '.thickness' ).value;
+
+//       this.context.linesActions.cacheAlto( inputAlto );
+//       this.context.linesActions.cacheFondo( inputFondo );
+//     };
+
+//     const isElementLine = () => (
+//       this.props.sourceElement.get( 'prototype' ) === 'lines'
+//     );
+
+//     const saveFn = ( e, keyCode ) => {
+//       e.stopPropagation();
+//       if ( this.state.valid === false ) return;
+//       if ( this.state.showedValue === null ) return;
+
+//       let savedValue;
+
+//       savedValue =
+//         ( this.state.showedValue !== '' && this.state.showedValue !== '-' )
+//           ? parseFloat( this.state.showedValue )
+//           : 0;
+
+//       if ( isElementLine() ) {
+//         cacheAttributes();
+//       }
+
+//       onChange( {
+//         target: {
+//           isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER,
+//           value: ( attributeName === 'angulo' )
+//             ? savedValue
+//             : convertMeasureToOriginal( savedValue, this.props.unit )
+//         }
+//       } );
+//     };
+
+//     const onArrrowPress = ( e, keyCode ) => {
+//       e.preventDefault();
+
+//       const state = stateRedux;
+
+//       const layerID = getLayerID( state );
+//       const { vertice1ID, vertice2ID } = getLineVerticesID( sourceElement );
+
+//       if ( vertice1ID === vertice2ID ) return;
+
+//       let { x: x1, y: y1 } = getVerticeCoords( state, layerID, vertice1ID );
+//       let { x: x2, y: y2 } = getVerticeCoords( state, layerID, vertice2ID );
+//       if ( !x1 || !y1 || !x2 || !y2 ) return;
+
+//       const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, keyCode );
+
+//       this.context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
+
+//       /** DEBUG **/
+
+//       const layer = getLayerValue( state );
+//       let v2First = sourceElement.v2First;
+//       let v_a = layer.vertices.get( sourceElement.vertices.get( !v2First ? 0 : 1 ) );
+//       let v_b = layer.vertices.get( sourceElement.vertices.get( 1 ) );
+
+//       let distance = GeometryUtils.pointsDistance( v_a.x, v_a.y, v_b.x, v_b.y );
+
+//     };
+
+//     const isEscPressed = ( keyCode ) => (
+//       keyCode == KEYBOARD_BUTTON_CODE.ESC
+//     );
+
+//     const isSaveButtonPressed = ( keyCode ) => (
+//       ( keyCode == KEYBOARD_BUTTON_CODE.ENTER ) ||
+//       ( keyCode == KEYBOARD_BUTTON_CODE.TAB && isDifferentValue )
+//     );
+
+//     const isArrowPressedOnLength = ( keyCode ) => (
+//       ( attributeName === 'lineLength' ) &&
+//       ( KEYBOARD_BUTTON_CODE.ARROW_KEYS.includes( keyCode ) )
+//     );
+
+//     const isEscPressedWhileDrawing = ( keyCode ) => (
+//       ( keyCode == KEYBOARD_BUTTON_CODE.ESC ) &&
+//       ( this.props.mode === MODE_DRAWING_LINE )
+//     );
+
+//     return (
+//       <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
+
+//         <input
+//           type='number'
+//           value={ currValue }
+//           placeholder={ placeholder }
+//           className={ attributeName }
+//           ref={ c => ( this.state.inputElement = c ) }
+//           style={ { ...numericInputStyle, fontFamily: 'Calibri', fontWidth: 'lighter' } }
+//           onKeyDown={ onKeyDown }
+//           onChange={ onInputChange }
+//           onClick={ () => this.state.inputElement.select() }
+//           onFocus={ () => this.setState( { focus: true } ) }
+//           onBlur={ () => this.setState( { focus: false } ) }
+//         />
+
+//       </div >
+//     );
+//   };
+// }
 
 FormNumberInput.propTypes = {
   value: PropTypes.oneOfType( [ PropTypes.number, PropTypes.string ] ),
