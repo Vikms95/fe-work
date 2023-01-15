@@ -341,16 +341,6 @@ export default function FormNumberInput ( props ) {
     const { modifiedX, modifiedY } = Line.modifyCoordsOnKeyDown( x1, x2, y1, y2, keyCode );
 
     context.verticesActions.dragVertex( modifiedX, modifiedY, layerID, vertice2ID );
-
-    /** DEBUG **/
-
-    const layer = getLayerValue( state );
-    let v2First = sourceElement.v2First;
-    let v_a = layer.vertices.get( sourceElement.vertices.get( !v2First ? 0 : 1 ) );
-    let v_b = layer.vertices.get( sourceElement.vertices.get( 1 ) );
-
-    let distance = GeometryUtils.pointsDistance( v_a.x, v_a.y, v_b.x, v_b.y );
-
   };
 
   const isEscPressed = ( keyCode ) => (
