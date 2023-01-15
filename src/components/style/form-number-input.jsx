@@ -58,13 +58,8 @@ export default function FormNumberInput ( props ) {
   const context = useContext( Context );
   const [ isFocus, setIsFocus ] = useState( false );
   const [ showedValue, setShowedValue ] = useState( value );
-
-  const [ state, setState ] = useState( {
-    valid: true,
-    // Switched to null
-    showedValue: value,
-    inputElement: null
-  } );
+  const [ isInputValud, setIsInputValid ] = useState( true );
+  const inputElement = useRef( null );
 
   //**------------------  REPLACE LIFECYCLE------------------------------- */
 
@@ -89,15 +84,13 @@ export default function FormNumberInput ( props ) {
     if ( isLengthInputWhileDrawing() ) {
       console.log( 'test setting focus to true' );
       setIsFocus( true );
-      state.inputElement.focus();
-      state.inputElement.select();
+      inputElement.current.focus();
+      inputElement.current.select();
     }
 
     if ( isCachedAnguloWhileDrawing() && isInputAnguloAndSingleSelection() ) {
       console.log( 'test setting bc its angulo, single selection and its cached' );
-      setState( ( prevState ) => ( {
-        ...prevState, showedValue: parseFloat( getCacheAngulo( props.stateRedux ) )
-      } ) );
+      setShowedValue( () => parseFloat( getCacheAngulo( props.stateRedux ) ) );
 
       document.addEventListener( 'mousemove', resetAngleInput );
     }
@@ -115,7 +108,7 @@ export default function FormNumberInput ( props ) {
     const resetInputOnSelection = () => {
       if ( !isMultipleSelection( props.stateRedux ) ) {
         console.log( 'test reseting input on selection' );
-        setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
+        setShowedValue( () => props.value );
       }
     };
 
@@ -148,7 +141,8 @@ export default function FormNumberInput ( props ) {
 
     if ( areArrayValuesDifferent( values ) ) {
       console.log( 'test setting showedvalue to null bc of multiselection and dif values' );
-      setState( ( prevState ) => ( { ...prevState, showedValue: null } ) );
+      setShowedValue( () => null );
+
       window.addEventListener( 'click', resetInputOnSelection );
     };
   }, [ prevProps ] );
@@ -159,7 +153,7 @@ export default function FormNumberInput ( props ) {
   useEffect( () => {
     return () => {
       console.log( 'test changing value cause of component unmounted' );
-      setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
+      setShowedValue( () => props.value );
     };
   }, [ prevProps, props.value ] );
 
@@ -168,10 +162,10 @@ export default function FormNumberInput ( props ) {
 
   //todo componentDidUpdate
   useEffect( () => {
-    if ( cursor.current && document.activeElement === state.inputElement ) {
+    if ( cursor.current && document.activeElement === inputElement.current ) {
       if ( cursor.current.x !== props.stateRedux.getIn( [ 'mouse', 'x' ] ) ||
         cursor.current.y !== props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
-        state.inputElement.select();
+        inputElement.current.select();
       }
     }
 
@@ -186,14 +180,14 @@ export default function FormNumberInput ( props ) {
   //todo componentWillReceiveProps
   useEffect( () => {
     const isNullInputAndSingleSelection = () => {
-      return state.showedValue === 'null' && !isMultipleSelection();
+      return showedValue === 'null' && !isMultipleSelection();
     };
 
     if ( isNullInputAndSingleSelection() ) {
       console.log( "test changing the value cause of input null and single selection" );
-      setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
+      setShowedValue( () => props.value );
     }
-  }, [ props, state.showedValue, isMultipleSelection() ] );
+  }, [ props, showedValue, isMultipleSelection() ] );
 
 
   //**------------------  REPLACE LIFECYCLE------------------------------- */
@@ -205,32 +199,32 @@ export default function FormNumberInput ( props ) {
     STYLE_NUMERIC_INPUT.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
   }
 
-  if ( !isNaN( min ) && isFinite( min ) && state.showedValue < min ) {
+  if ( !isNaN( min ) && isFinite( min ) && showedValue < min ) {
     console.log( "test changing the value cause nan" );
-    setState( ( prevState ) => ( { ...prevState, showedValue: min } ) );
+    setShowedValue( () => min );
   };
 
-  if ( !isNaN( max ) && isFinite( max ) && state.showedValue > max ) {
+  if ( !isNaN( max ) && isFinite( max ) && showedValue > max ) {
     console.log( "test changing the value cause nan" );
-    setState( ( prevState ) => ( { ...prevState, showedValue: max } ) );
+    setShowedValue( () => max );
   }
 
-  const currValue = ( regexp.test( state.showedValue ) )
-    ? state.showedValue
-    : parseFloat( state.showedValue ).toFixed( precision );
+  const currValue = ( regexp.test( showedValue ) )
+    ? showedValue
+    : parseFloat( showedValue ).toFixed( precision );
 
   const isDifferentValue =
     ( parseFloat( props.value ).toFixed( precision ) ) !==
-    parseFloat( state.showedValue ).toFixed( precision );
+    parseFloat( showedValue ).toFixed( precision );
 
   const isAttribute = () => {
     return props.attributeName === 'angulo' || props.attributeName === 'lineLength';
   };
 
   const resetAngleInput = () => {
-    if ( state.showedValue !== 0 ) {
+    if ( showedValue !== 0 ) {
       console.log( "test changing the value cause of angle reseted" );
-      setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
+      setShowedValue( () => props.value );
     }
   };
 
@@ -277,7 +271,7 @@ export default function FormNumberInput ( props ) {
 
     if ( valid ) {
       console.log( "test changing the value cause valid" );
-      setState( ( prevState ) => ( { ...prevState, showedValue: e.nativeEvent.target.value } ) );
+      setShowedValue( () => e.nativeEvent.target.value );
 
       if ( onValid ) {
         onValid( e.nativeEvent );
@@ -287,7 +281,7 @@ export default function FormNumberInput ( props ) {
       onInvalid( e.nativeEvent );
     }
     console.log( "test changing the valid state value" );
-    setState( ( prevState ) => ( { ...prevState, valid: valid } ) );
+    setIsInputValid( () => true );
   };
 
   const cacheAttributes = () => {
@@ -306,13 +300,13 @@ export default function FormNumberInput ( props ) {
     e.stopPropagation();
     console.log( "test saving the value on saveFn" );
 
-    if ( state.valid === false ) return;
-    if ( state.showedValue === null ) return;
+    if ( isInputValud === false ) return;
+    if ( showedValue === null ) return;
 
     let savedValue;
 
-    savedValue = ( state.showedValue !== '' && state.showedValue !== '-' )
-      ? parseFloat( state.showedValue )
+    savedValue = ( showedValue !== '' && showedValue !== '-' )
+      ? parseFloat( showedValue )
       : 0;
 
     if ( isElementLine() ) {
@@ -375,11 +369,11 @@ export default function FormNumberInput ( props ) {
         value={ currValue }
         placeholder={ placeholder }
         className={ attributeName }
-        ref={ c => ( state.inputElement = c ) }
+        ref={ c => ( inputElement.current = c ) }
         style={ { ...STYLE_NUMERIC_INPUT, fontFamily: 'Calibri', fontWidth: 'lighter' } }
         onKeyDown={ onKeyDown }
         onChange={ onInputChange }
-        onClick={ () => state.inputElement.select() }
+        onClick={ () => inputElement.current.select() }
         onFocus={ () => setIsFocus( true ) }
         onBlur={ () => setIsFocus( false ) }
       />

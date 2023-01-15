@@ -18,27 +18,27 @@ import { useToggle } from '../../../hooks/useToggle';
 
 const PRECISION = 2;
 
-const STYLE_ATTR_PROP_SEPARATOR = {
-  margin: '0.5em 0.25em 0.5em 0',
-  border: '2px solid ' + SharedStyle.SECONDARY_COLOR.alt,
-  position: 'relative',
-  height: '2.5em',
-  borderRadius: '2px'
-};
+// const STYLE_ATTR_PROP_SEPARATOR = {
+//   margin: '0.5em 0.25em 0.5em 0',
+//   border: '2px solid ' + SharedStyle.SECONDARY_COLOR.alt,
+//   position: 'relative',
+//   height: '2.5em',
+//   borderRadius: '2px'
+// };
 
-const STYLE_HEAD_ACTION = {
-  position: 'absolute',
-  right: '0.5em',
-  top: '0.5em'
-};
+// const STYLE_HEAD_ACTION = {
+//   position: 'absolute',
+//   right: '0.5em',
+//   top: '0.5em'
+// };
 
-const STYLE_ICON_HEAD = {
-  float: 'right',
-  margin: '-3px 4px 0px 0px',
-  padding: 0,
-  cursor: 'pointer',
-  fontSize: '1.4em'
-};
+// const STYLE_ICON_HEAD = {
+//   float: 'right',
+//   margin: '-3px 4px 0px 0px',
+//   padding: 0,
+//   cursor: 'pointer',
+//   fontSize: '1.4em'
+// };
 
 // export default function ElementEditor ( props ) {
 //   const { state, element } = props;
@@ -496,6 +496,7 @@ export default class ElementEditor extends Component {
     this.save( { propertiesFormData, isEnter: isEnter || false } );
 
   }
+
 
   // Here the values taken from the form data are saved in state
   save ( { propertiesFormData, attributesFormData, isEnter } ) {
