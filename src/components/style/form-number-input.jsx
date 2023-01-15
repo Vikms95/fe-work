@@ -55,6 +55,7 @@ export default function FormNumberInput ( props ) {
     sourceElement,
   } = props;
 
+  const context = useContext( Context );
   const [ state, setState ] = useState( {
     focus: false,
     valid: true,
@@ -62,15 +63,12 @@ export default function FormNumberInput ( props ) {
     inputElement: null
   } );
 
-  const context = useContext( Context );
-
-
   //**------------------  REPLACE LIFECYCLE------------------------------- */
 
   //todo componentDidMount
   //todo TRY like this, if not, keep following these solutions
   // https://atomizedobjects.com/blog/react/using-componentdidmount-in-react-hooks/
-
+  const prevProps = usePrevProps( props );
 
   useEffect( () => {
     const isLengthInputWhileDrawing = () => {
@@ -98,8 +96,6 @@ export default function FormNumberInput ( props ) {
       document.addEventListener( 'mousemove', resetAngleInput );
     }
   }, [] );
-
-  const prevProps = usePrevProps( props );
 
   useEffect( () => {
     const isSingleSelectionOrInvalidElement = () => {
@@ -151,7 +147,6 @@ export default function FormNumberInput ( props ) {
 
   //todo TRY componentWillUnmount 
   //todo TRY used to make sure that the value from props is the one similar to componentWillUnmount
-
   useEffect( () => {
     return () => {
       setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
@@ -190,12 +185,33 @@ export default function FormNumberInput ( props ) {
 
   //**------------------  REPLACE LIFECYCLE------------------------------- */
 
-
-
   let cursor = {
     x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
     y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
   };
+
+  const numericInputStyle = { ...STYLE_INPUT, ...style };
+  const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
+
+  if ( state.focus ) {
+    numericInputStyle.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
+  }
+
+  if ( !isNaN( min ) && isFinite( min ) && state.showedValue < min ) {
+    setState( ( prevState ) => ( { ...prevState, showedValue: min } ) );
+  };
+
+  if ( !isNaN( max ) && isFinite( max ) && state.showedValue > max ) {
+    setState( ( prevState ) => ( { ...prevState, showedValue: max } ) );
+  }
+
+  const currValue = ( regexp.test( state.showedValue ) )
+    ? state.showedValue
+    : parseFloat( state.showedValue ).toFixed( precision );
+
+  const isDifferentValue =
+    ( parseFloat( props.value ).toFixed( precision ) ) !==
+    parseFloat( state.showedValue ).toFixed( precision );
 
   const isAttribute = () => {
     return props.attributeName === 'angulo' || props.attributeName === 'lineLength';
@@ -223,31 +239,6 @@ export default function FormNumberInput ( props ) {
     }
     return angulo.angle;
   };
-
-
-  const numericInputStyle = { ...STYLE_INPUT, ...style };
-  const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
-
-  if ( state.focus ) {
-    numericInputStyle.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
-  }
-
-  if ( !isNaN( min ) && isFinite( min ) && state.showedValue < min ) {
-    setState( ( prevState ) => ( { ...prevState, showedValue: min } ) );
-  };
-
-  if ( !isNaN( max ) && isFinite( max ) && state.showedValue > max ) {
-    setState( ( prevState ) => ( { ...prevState, showedValue: max } ) );
-  }
-
-  const currValue = ( regexp.test( state.showedValue ) )
-    ? state.showedValue
-    : parseFloat( state.showedValue ).toFixed( precision );
-
-  const isDifferentValue =
-    ( parseFloat( props.value ).toFixed( precision ) ) !==
-    parseFloat( state.showedValue ).toFixed( precision );
-
 
   const onKeyDown = ( e ) => {
     const keyCode = e.keyCode || e.which;
