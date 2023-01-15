@@ -88,6 +88,11 @@ export default function FormNumberInput ( props ) {
   //todo TRY like this, if not, keep following these solutions
   // https://atomizedobjects.com/blog/react/using-componentdidmount-in-react-hooks/
 
+  const val = useRef();
+
+  useEffect( () => {
+    val.current = props;
+  }, [ props ] );
 
   useEffect( () => {
     const isLengthInputWhileDrawing = () => {
@@ -158,18 +163,14 @@ export default function FormNumberInput ( props ) {
     const values = getSelectedPropertyValues( prototype );
 
     if ( areArrayValuesDifferent( values ) ) {
+      console.log( 'test changing component cause it mounted and array values are different' );
       setState( ( prevState ) => ( { ...prevState, showedValue: null } ) );
       window.addEventListener( 'click', resetInputOnSelection );
     };
-  }, [] );
+  }, [ val.current ] );
 
   //todo TRY componentWillUnmount 
   //todo TRY used to make sure that the value from props is the one similar to componentWillUnmount
-  const val = useRef();
-
-  useEffect( () => {
-    val.current = props;
-  }, [ props ] );
 
   useEffect( () => {
     return () => {
