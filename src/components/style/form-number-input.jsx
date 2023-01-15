@@ -190,11 +190,11 @@ export default function FormNumberInput ( props ) {
     y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
   };
 
-  const numericInputStyle = { ...STYLE_INPUT, ...style };
+  const STYLE_NUMERIC_INPUT = { ...STYLE_INPUT, ...style };
   const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
 
   if ( state.focus ) {
-    numericInputStyle.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
+    STYLE_NUMERIC_INPUT.border = `1px solid ${ SharedStyle.SECONDARY_COLOR.main }`;
   }
 
   if ( !isNaN( min ) && isFinite( min ) && state.showedValue < min ) {
@@ -363,7 +363,7 @@ export default function FormNumberInput ( props ) {
         placeholder={ placeholder }
         className={ attributeName }
         ref={ c => ( state.inputElement = c ) }
-        style={ { ...numericInputStyle, fontFamily: 'Calibri', fontWidth: 'lighter' } }
+        style={ { ...STYLE_NUMERIC_INPUT, fontFamily: 'Calibri', fontWidth: 'lighter' } }
         onKeyDown={ onKeyDown }
         onChange={ onInputChange }
         onClick={ () => state.inputElement.select() }
