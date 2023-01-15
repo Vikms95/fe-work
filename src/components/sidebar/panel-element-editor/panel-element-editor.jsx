@@ -1,5 +1,5 @@
 
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Seq, fromJS } from 'immutable';
 import ElementEditor from './element-editor';
@@ -9,7 +9,6 @@ import {
   MODE_DRAGGING_VERTEX, MODE_DRAGGING_ITEM, MODE_DRAGGING_HOLE, MODE_FITTING_IMAGE, MODE_UPLOADING_IMAGE,
   MODE_ROTATING_ITEM
 } from '../../../constants';
-import { Context } from '../../../context/context';
 
 
 const validModesToShowPanel =
@@ -21,30 +20,21 @@ const validModesToShowPanel =
     MODE_ROTATING_ITEM, MODE_UPLOADING_IMAGE, MODE_FITTING_IMAGE
   ];
 
-export default function PanelElementEditor ( {
-  state,
-  // catalog,
-  // projectActions,
-  // linesActions
-} ) {
+export default function PanelElementEditor ( { state } ) {
 
-  const { catalog, projectActions, linesActions } = useContext( Context );
-
-  let { scene, mode } = state;
+  const { scene, mode } = state;
   if ( validModesToShowPanel.includes( mode ) === false ) return null;
 
   const componentRenderer = ( element, layer ) => {
     return (
       <div key={ element.id }>
         <ElementEditor
-          element={ element }
-          layer={ layer }
           state={ state }
-          catalog={ catalog }
-          projectActions={ projectActions }
-          linesActions={ linesActions }
+          layer={ layer }
+          element={ element }
         />
-      </div> );
+      </div>
+    );
   };
 
   const lastElementSelectedID = fromJS( state.getIn( [ 'scene', 'selectedElementsHistory' ] ) ).first();

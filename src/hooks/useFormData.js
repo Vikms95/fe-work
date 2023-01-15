@@ -10,11 +10,11 @@ import { getCacheAngulo, isMultipleSelection } from '../selectors/selectors';
 export function useFormData ( props, context ) {
   const PRECISION = 2;
 
-
   const [ formData, setFormData ] = useState( {
     attributesFormData: initAttrData( props.element, props.layer ),
     propertiesFormData: initPropData( props.element ),
   } );
+
 
   useEffect( () => {
     let { element, layer } = props;
@@ -26,7 +26,6 @@ export function useFormData ( props, context ) {
 
 
   function initAttrData ( element, layer ) {
-
     element = ( typeof element.misc === 'object' )
       ? element.set( 'misc', new Map( element.misc ) )
       : element;
@@ -280,7 +279,6 @@ export function useFormData ( props, context ) {
   };
 
   const { attributesFormData, propertiesFormData } = formData;
-
   return {
     formData,
     attributes: attributesFormData,

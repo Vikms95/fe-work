@@ -7,20 +7,17 @@ const tableStyle = { width: '100%' };
 const firstTdStyle = { width: '6em' };
 const inputStyle = { textAlign: 'left' };
 
-export default function LineAttributesEditor (
-  {
-    mode,
-    unit,
-    state,
-    element,
-    position,
-    onUpdate,
-    projectActions,
-    attributeFormData,
-    ...rest
-  },
-  // { translator } 
-) {
+export default function LineAttributesEditor ( {
+  mode,
+  unit,
+  state,
+  element,
+  position,
+  onUpdate,
+  projectActions,
+  attributeFormData,
+  ...rest
+} ) {
 
   const { translator } = useContext( Context );
   //let name = attributeFormData.has( 'name' ) ? attributeFormData.get( 'name' ) : element.name;
