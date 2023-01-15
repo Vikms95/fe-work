@@ -192,10 +192,10 @@ export default function FormNumberInput ( props ) {
       setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
       document.removeEventListener( 'mousemove', resetAngleInput );
     };
-  }, [ val.current ] );
+  }, [ val.current, props.value ] );
 
 
-  //todo componentDidUpdate, without DA since no state is being set inside the hook
+  //todo componentDidUpdate
   useEffect( () => {
     if ( document.activeElement === state.inputElement ) {
       if ( cursor.x !== props.stateRedux.getIn( [ 'mouse', 'x' ] )
@@ -208,7 +208,7 @@ export default function FormNumberInput ( props ) {
       x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
     };
-  } );
+  }, [ document.activeElement, state.inputElement ] );
 
 
   //todo componentWillReceiveProps
@@ -220,7 +220,7 @@ export default function FormNumberInput ( props ) {
     if ( isEmptyInputAndSingleSelection() ) {
       setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
     }
-  }, [ props ] );
+  }, [ props, state.showedValue, state.isMultiSelection ] );
 
 
   //**------------------  REPLACE LIFECYCLE------------------------------- */
@@ -300,6 +300,7 @@ export default function FormNumberInput ( props ) {
 
   const saveFn = ( e, keyCode ) => {
     e.stopPropagation();
+
     if ( state.valid === false ) return;
     if ( state.showedValue === null ) return;
 

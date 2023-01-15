@@ -59,329 +59,39 @@ const setupContextObject = ( props ) => {
   };
 };
 
-function ReactPlanner ( props ) {
+// function ReactPlanner ( props ) {
 
 
-  useEffect( () => {
-    const foo = () => {
-      let {
-        state,
-        catalog,
-        prefs,
-        plugins,
-        prefsInfo,
-        stateExtractor,
-        projectActions,
-      } = props;
+//   useEffect( () => {
+//     const foo = () => {
+//       let {
+//         state,
+//         catalog,
+//         prefs,
+//         plugins,
+//         prefsInfo,
+//         stateExtractor,
+//         projectActions,
+//       } = props;
 
-      plugins.forEach( plugin => plugin( state, stateExtractor, projectActions ) );
-      projectActions.initCatalog( catalog );
-      projectActions.SetPreference( prefs, prefsInfo );
-    };
-    foo();
-  }, [] );
-
-
-  //todo componentWillReceiveProps
-  useMemo( () => {
-    let { stateExtractor, state, projectActions, catalog } = props;
-
-    let plannerState = stateExtractor( state );
-    // let catalogReady = plannerState.getIn( [ 'catalog', 'ready' ] );
-
-    // if ( !catalogReady ) {
-    //   projectActions.initCatalog( catalog );
-    // }
-
-    // This can go on its own useEffect(() => {}, [props])
-
-    const delay = 500;
-    const autosaveKey = 'react-planner_v0';
-
-    if ( !autosaveKey ) return;
-    if ( !localStorage ) return;
-
-    if ( timeout ) clearTimeout( timeout );
-
-    timeout = setTimeout( () => {
-      localStorage.setItem( autosaveKey, JSON.stringify( plannerState.scene.toJS() ) );
-    }, delay );
-  }, [ ...props ] );
-
-  const { width, height, state, stateExtractor, ...rest } = props;
-
-  const [ sizes, setSizes ] = useState( {
-    contentW: props.width - toolbarW + 14.6,
-    contentH: props.height - footerBarH,
-    toolbarH: props.height - 72, // 72 from topBar Height
-    sideBarW: props.width - 257, // 257 from sideBar Width
-    sideBarH: props.height - ( 82 + 120 ), // 72 from topBar Height and 130 from direction Height con los px de los borders
-    directionW: props.width - 257, // 257 from direction Width
-
-  } );
-
-  const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = sizes;
-
-  const refViewer = useRef();
-  let timeout = false;
-  const [ contextObject, setContextObject ] = useState( null );
-  const [ isContextLoaded, setIsContextLoaded ] = useState( false );
-
-  useEffect( () => {
-    if ( isContextLoaded === false ) {
-      setContextObject( () => setupContextObject( props ) );
-      setIsContextLoaded( ( prevIsContextLoaded ) => !prevIsContextLoaded );
-    }
-  } );
-
-  //todo componentWillMount
-  // const foo = () => {
-  //   let {
-  //     projectActions,
-  //     catalog,
-  //     stateExtractor,
-  //     plugins,
-  //     prefs,
-  //     prefsInfo,
-  //     state
-  //   } = props;
-
-  //   plugins.forEach( plugin => plugin( state, stateExtractor, projectActions ) );
-  //   projectActions.initCatalog( catalog );
-  //   projectActions.SetPreference( prefs, prefsInfo );
-  // };
-
-  // useComponentWillMount( foo );
-
-  const getState = () => {
-    return props.stateExtractor( props.state );
-  };
-
-  const isElementSelected = () => {
-    const { state } = props;
-    const plannerState = getState( state );
-    return getIsElementSelected( plannerState );
-  };
-
-  const panUp = ( value ) => {
-    return { ...value, f: value.f + 50 };
-  };
-
-  const panDown = ( value ) => {
-    return { ...value, f: value.f - 50 };
-  };
-
-  const panLeft = ( value ) => {
-    return { ...value, e: value.e + 50 };
-  };
-
-  const panRight = ( value ) => {
-    return { ...value, e: value.e - 50 };
-  };
-
-  const zoomIn = () => {
-    refViewer.current.zoomOnViewerCenter( 1.03 );
-  };
-
-  const zoomOut = () => {
-    refViewer.current.zoomOnViewerCenter( 0.97 );
-  };
-
-  const update2DView = ( value, event ) => {
-    const isKeystroke = getEventType( event );
-    const direction = getEventDirection( event, isKeystroke );
-
-    if ( isClickWithoutSelection( direction ) ) {
-      value = update2DViewObject( value, direction );
-    }
-
-    return update2DViewOnState( value );
-  };
-
-  const getEventDirection = ( event, isKeyStroke ) => {
-    if ( !event ) return;
-    if ( isKeyStroke ) return event.key;
-    return event.target.id;
-  };
-
-  const getEventType = ( event ) => {
-    if ( !event ) return;
-    return typeof event.key === 'string';
-  };
-
-  const isClickWithoutSelection = ( input, isKeyStroke ) => {
-    const isSelected = isElementSelected();
-    return input && !isKeyStroke && !isSelected;
-  };
-
-  const update2DViewObject = ( value, directionPressed ) => {
-    switch ( directionPressed ) {
-      case 'ArrowUp':
-        return panUp( value );
-      case 'ArrowDown':
-        return panDown( value );
-      case 'ArrowRight':
-        return panRight( value );
-      case 'ArrowLeft':
-        return panLeft( value );
-
-      case '+':
-      case 'ZoomIn':
-        return zoomIn();
-
-      case '-':
-      case 'ZoomOut':
-        return zoomOut();
-
-      default:
-        return value;
-    }
-  };
-
-  const update2DViewOnState = ( value ) => {
-    if ( !value ) return;
-    props.projectActions.updateZoomScale( value.a );
-    return props.viewer2DActions.updateCameraView( value );
-  };
-
-  const extractedState = stateExtractor( state );
-
-  if ( contextObject === null ) return;
-
-  return (
-    <div>
-      <Context.Provider value={ contextObject } >
-        <MainComponent state={ state } { ...props } />
-
-        <TopBar state={ extractedState }
-        // { ...props }
-        />
-
-        <div style={ { ...wrapperStyle, height } }>
-
-          <Toolbar
-            width={ toolbarW }
-            height={ toolbarH }
-            state={ extractedState }
-          // { ...props }
-          />
-
-          <div style={ { position: 'relative' } }>
-
-            <MenuRooms
-              state={ state }
-              { ...props }
-            />
-            <MenuConstruccion
-              state={ state }
-              { ...props }
-            />
-            <MenuMuebles
-              state={ state }
-              { ...props }
-            />
-            <LoginComponent state={ extractedState } { ...props } />
-            <RegisterComponent state={ state } { ...props } />
-            <MenuPreferencias state={ state } { ...props } />
-
-            <Content
-              style={ { position: 'absolute', zIndex: '0' } }
-              width={ contentW }
-              height={ contentH }
-              state={ extractedState }
-              refViewer2D={ refViewer }
-              update2DView={ update2DView }
-              onWheel={ event => event.preventDefault() }
-            // { ...props }
-            />
-
-          </div>
-
-          <Sidebar
-            state={ extractedState }
-            width={ sideBarW }
-            height={ sideBarH }
-          // { ...props }
-          />
-
-          { refViewer && (
-            <Direction
-              width={ directionW }
-              state={ extractedState }
-              refViewer2D={ refViewer }
-              update2DView={ update2DView }
-            // { ...props }
-
-            />
-          )
-          }
-        </div>
-      </Context.Provider>
-    </div >
-  );
-}
-
-
-// class ReactPlanner extends Component {
-//   constructor ( props ) {
-//     super( props );
-//     this.state = {
-//       contentW: props.width - toolbarW + 14.6,
-//       contentH: props.height - footerBarH,
-//       toolbarH: props.height - 72, // 72 from topBar Height
-//       sideBarW: props.width - 257, // 257 from sideBar Width
-//       sideBarH: props.height - ( 82 + 120 ), // 72 from topBar Height and 130 from direction Height con los px de los borders
-//       directionW: props.width - 257, // 257 from direction Width
+//       plugins.forEach( plugin => plugin( state, stateExtractor, projectActions ) );
+//       projectActions.initCatalog( catalog );
+//       projectActions.SetPreference( prefs, prefsInfo );
 //     };
-
-//     this.refViewer = React.createRef();
-//     this.timeout = false;
-//     this.contextObject = null;
+//     foo();
+//   }, [] );
 
 
-//     this.panUp = this.panUp.bind( this );
-//     this.zoomIn = this.zoomIn.bind( this );
-//     this.panDown = this.panDown.bind( this );
-//     this.zoomOut = this.zoomOut.bind( this );
-//     this.panLeft = this.panLeft.bind( this );
-//     this.panRight = this.panRight.bind( this );
-
-//     this.update2DView = this.update2DView.bind( this );
-//     this.update2DViewObject = this.update2DViewObject.bind( this );
-//     this.update2DViewOnState = this.update2DViewOnState.bind( this );
-
-//     this.getState = this.getState.bind( this );
-//   }
-
-//   // UseEffect con []
-//   componentWillMount () {
-//     let {
-//       projectActions,
-//       catalog,
-//       stateExtractor,
-//       plugins,
-//       prefs,
-//       prefsInfo,
-//       state
-//     } = this.props;
-
-//     plugins.forEach( plugin => plugin( state, stateExtractor, projectActions ) );
-//     projectActions.initCatalog( catalog );
-//     projectActions.SetPreference( prefs, prefsInfo );
-//     this.contextObject = setupContextObject( this.props );
-//   }
-
-//   UNSAFE_componentWillReceiveProps ( nextProps ) {
-//     // useEffect(() => {}, [props])
-
-//     let { stateExtractor, state, projectActions, catalog } = nextProps;
+//   //todo componentWillReceiveProps
+//   useMemo( () => {
+//     let { stateExtractor, state, projectActions, catalog } = props;
 
 //     let plannerState = stateExtractor( state );
-//     let catalogReady = plannerState.getIn( [ 'catalog', 'ready' ] );
+//     // let catalogReady = plannerState.getIn( [ 'catalog', 'ready' ] );
 
-//     if ( !catalogReady ) {
-//       projectActions.initCatalog( catalog );
-//     }
+//     // if ( !catalogReady ) {
+//     //   projectActions.initCatalog( catalog );
+//     // }
 
 //     // This can go on its own useEffect(() => {}, [props])
 
@@ -391,184 +101,474 @@ function ReactPlanner ( props ) {
 //     if ( !autosaveKey ) return;
 //     if ( !localStorage ) return;
 
-//     if ( this.timeout ) clearTimeout( this.timeout );
+//     if ( timeout ) clearTimeout( timeout );
 
-//     this.timeout = setTimeout( () => {
+//     timeout = setTimeout( () => {
 //       localStorage.setItem( autosaveKey, JSON.stringify( plannerState.scene.toJS() ) );
 //     }, delay );
-//   }
+//   }, [ ...props ] );
 
+//   const { width, height, state, stateExtractor, ...rest } = props;
 
-//   getState () {
-//     return this.props.stateExtractor( this.props.state );
-//   }
+//   const [ sizes, setSizes ] = useState( {
+//     contentW: props.width - toolbarW + 14.6,
+//     contentH: props.height - footerBarH,
+//     toolbarH: props.height - 72, // 72 from topBar Height
+//     sideBarW: props.width - 257, // 257 from sideBar Width
+//     sideBarH: props.height - ( 82 + 120 ), // 72 from topBar Height and 130 from direction Height con los px de los borders
+//     directionW: props.width - 257, // 257 from direction Width
 
-//   isElementSelected () {
-//     const { state } = this.props;
-//     const plannerState = this.getState( state );
+//   } );
+
+//   const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = sizes;
+
+//   const refViewer = useRef();
+//   let timeout = false;
+//   const [ contextObject, setContextObject ] = useState( null );
+//   const [ isContextLoaded, setIsContextLoaded ] = useState( false );
+
+//   useEffect( () => {
+//     if ( isContextLoaded === false ) {
+//       setContextObject( () => setupContextObject( props ) );
+//       setIsContextLoaded( ( prevIsContextLoaded ) => !prevIsContextLoaded );
+//     }
+//   } );
+
+//   //todo componentWillMount
+//   // const foo = () => {
+//   //   let {
+//   //     projectActions,
+//   //     catalog,
+//   //     stateExtractor,
+//   //     plugins,
+//   //     prefs,
+//   //     prefsInfo,
+//   //     state
+//   //   } = props;
+
+//   //   plugins.forEach( plugin => plugin( state, stateExtractor, projectActions ) );
+//   //   projectActions.initCatalog( catalog );
+//   //   projectActions.SetPreference( prefs, prefsInfo );
+//   // };
+
+//   // useComponentWillMount( foo );
+
+//   const getState = () => {
+//     return props.stateExtractor( props.state );
+//   };
+
+//   const isElementSelected = () => {
+//     const { state } = props;
+//     const plannerState = getState( state );
 //     return getIsElementSelected( plannerState );
-//   }
+//   };
 
-//   panUp ( value ) {
+//   const panUp = ( value ) => {
 //     return { ...value, f: value.f + 50 };
-//   }
+//   };
 
-//   panDown ( value ) {
+//   const panDown = ( value ) => {
 //     return { ...value, f: value.f - 50 };
-//   }
+//   };
 
-//   panLeft ( value ) {
+//   const panLeft = ( value ) => {
 //     return { ...value, e: value.e + 50 };
-//   }
+//   };
 
-//   panRight ( value ) {
+//   const panRight = ( value ) => {
 //     return { ...value, e: value.e - 50 };
-//   }
+//   };
 
-//   zoomIn () {
-//     this.refViewer.current.zoomOnViewerCenter( 1.03 );
-//   }
+//   const zoomIn = () => {
+//     refViewer.current.zoomOnViewerCenter( 1.03 );
+//   };
 
-//   zoomOut () {
-//     this.refViewer.current.zoomOnViewerCenter( 0.97 );
-//   }
+//   const zoomOut = () => {
+//     refViewer.current.zoomOnViewerCenter( 0.97 );
+//   };
 
-//   update2DView ( value, event ) {
-//     const isKeystroke = this.getEventType( event );
-//     const direction = this.getEventDirection( event, isKeystroke );
+//   const update2DView = ( value, event ) => {
+//     const isKeystroke = getEventType( event );
+//     const direction = getEventDirection( event, isKeystroke );
 
-//     if ( this.isClickWithoutSelection( direction ) ) {
-//       value = this.update2DViewObject( value, direction );
+//     if ( isClickWithoutSelection( direction ) ) {
+//       value = update2DViewObject( value, direction );
 //     }
 
-//     return this.update2DViewOnState( value );
-//   }
+//     return update2DViewOnState( value );
+//   };
 
-//   getEventDirection ( event, isKeyStroke ) {
+//   const getEventDirection = ( event, isKeyStroke ) => {
 //     if ( !event ) return;
 //     if ( isKeyStroke ) return event.key;
 //     return event.target.id;
-//   }
+//   };
 
-//   getEventType ( event ) {
+//   const getEventType = ( event ) => {
 //     if ( !event ) return;
 //     return typeof event.key === 'string';
-//   }
+//   };
 
-//   isClickWithoutSelection ( input, isKeyStroke ) {
-//     const isSelected = this.isElementSelected();
+//   const isClickWithoutSelection = ( input, isKeyStroke ) => {
+//     const isSelected = isElementSelected();
 //     return input && !isKeyStroke && !isSelected;
-//   }
+//   };
 
-//   update2DViewObject ( value, directionPressed ) {
+//   const update2DViewObject = ( value, directionPressed ) => {
 //     switch ( directionPressed ) {
 //       case 'ArrowUp':
-//         return this.panUp( value );
+//         return panUp( value );
 //       case 'ArrowDown':
-//         return this.panDown( value );
+//         return panDown( value );
 //       case 'ArrowRight':
-//         return this.panRight( value );
+//         return panRight( value );
 //       case 'ArrowLeft':
-//         return this.panLeft( value );
+//         return panLeft( value );
 
 //       case '+':
 //       case 'ZoomIn':
-//         return this.zoomIn();
+//         return zoomIn();
 
 //       case '-':
 //       case 'ZoomOut':
-//         return this.zoomOut();
+//         return zoomOut();
 
 //       default:
 //         return value;
 //     }
-//   }
+//   };
 
-//   update2DViewOnState ( value ) {
+//   const update2DViewOnState = ( value ) => {
 //     if ( !value ) return;
-//     this.props.projectActions.updateZoomScale( value.a );
-//     return this.props.viewer2DActions.updateCameraView( value );
-//   }
+//     props.projectActions.updateZoomScale( value.a );
+//     return props.viewer2DActions.updateCameraView( value );
+//   };
 
+//   const extractedState = stateExtractor( state );
 
-//   render () {
-//     const { update2DView, contextObject } = this;
-//     const { width, height, state, stateExtractor, ...props } = this.props;
-//     const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = this.state;
-//     let extractedState = stateExtractor( state );
+//   if ( contextObject === null ) return;
 
-//     return (
-//       <div>
-//         <Context.Provider value={ contextObject } >
-//           <MainComponent state={ state } { ...props } />
+//   return (
+//     <div>
+//       <Context.Provider value={ contextObject } >
+//         <MainComponent state={ state } { ...props } />
 
-//           <TopBar state={ extractedState } { ...props } />
+//         <TopBar state={ extractedState }
+//         // { ...props }
+//         />
 
-//           <div style={ { ...wrapperStyle, height } }>
+//         <div style={ { ...wrapperStyle, height } }>
 
-//             <Toolbar
-//               width={ toolbarW }
-//               height={ toolbarH }
-//               state={ extractedState }
+//           <Toolbar
+//             width={ toolbarW }
+//             height={ toolbarH }
+//             state={ extractedState }
+//           // { ...props }
+//           />
+
+//           <div style={ { position: 'relative' } }>
+
+//             <MenuRooms
+//               state={ state }
 //               { ...props }
 //             />
-
-//             <div style={ { position: 'relative' } }>
-
-//               <MenuRooms
-//                 state={ state }
-//                 { ...props }
-//               />
-//               <MenuConstruccion
-//                 state={ state }
-//                 { ...props }
-//               />
-//               <MenuMuebles
-//                 state={ state }
-//                 { ...props }
-//               />
-//               <LoginComponent state={ extractedState } { ...props } />
-//               <RegisterComponent state={ state } { ...props } />
-//               <MenuPreferencias state={ state } { ...props } />
-
-//               <Content
-//                 style={ { position: 'absolute', zIndex: '0' } }
-//                 width={ contentW }
-//                 height={ contentH }
-//                 state={ extractedState }
-//                 refViewer2D={ this.refViewer }
-//                 update2DView={ update2DView }
-//                 onWheel={ event => event.preventDefault() }
-//                 { ...props }
-//               />
-
-//             </div>
-
-//             <Sidebar
-//               state={ extractedState }
-//               width={ sideBarW }
-//               height={ sideBarH }
+//             <MenuConstruccion
+//               state={ state }
 //               { ...props }
 //             />
+//             <MenuMuebles
+//               state={ state }
+//               { ...props }
+//             />
+//             <LoginComponent state={ extractedState } { ...props } />
+//             <RegisterComponent state={ state } { ...props } />
+//             <MenuPreferencias state={ state } { ...props } />
 
-//             { this.refViewer && (
-//               <Direction
-//                 width={ directionW }
-//                 state={ extractedState }
-//                 refViewer2D={ this.refViewer }
-//                 handleZoom2D={ this.handleZoom2D }
-//                 update2DView={ update2DView }
-//                 { ...props }
+//             <Content
+//               style={ { position: 'absolute', zIndex: '0' } }
+//               width={ contentW }
+//               height={ contentH }
+//               state={ extractedState }
+//               refViewer2D={ refViewer }
+//               update2DView={ update2DView }
+//               onWheel={ event => event.preventDefault() }
+//             // { ...props }
+//             />
 
-//               />
-//             )
-//             }
 //           </div>
-//         </Context.Provider>
-//       </div >
-//     );
-//   }
+
+//           <Sidebar
+//             state={ extractedState }
+//             width={ sideBarW }
+//             height={ sideBarH }
+//           // { ...props }
+//           />
+
+//           { refViewer && (
+//             <Direction
+//               width={ directionW }
+//               state={ extractedState }
+//               refViewer2D={ refViewer }
+//               update2DView={ update2DView }
+//             // { ...props }
+
+//             />
+//           )
+//           }
+//         </div>
+//       </Context.Provider>
+//     </div >
+//   );
 // }
+
+
+class ReactPlanner extends Component {
+  constructor ( props ) {
+    super( props );
+    this.state = {
+      contentW: props.width - toolbarW + 14.6,
+      contentH: props.height - footerBarH,
+      toolbarH: props.height - 72, // 72 from topBar Height
+      sideBarW: props.width - 257, // 257 from sideBar Width
+      sideBarH: props.height - ( 82 + 120 ), // 72 from topBar Height and 130 from direction Height con los px de los borders
+      directionW: props.width - 257, // 257 from direction Width
+    };
+
+    this.refViewer = React.createRef();
+    this.timeout = false;
+    this.contextObject = null;
+
+
+    this.panUp = this.panUp.bind( this );
+    this.zoomIn = this.zoomIn.bind( this );
+    this.panDown = this.panDown.bind( this );
+    this.zoomOut = this.zoomOut.bind( this );
+    this.panLeft = this.panLeft.bind( this );
+    this.panRight = this.panRight.bind( this );
+
+    this.update2DView = this.update2DView.bind( this );
+    this.update2DViewObject = this.update2DViewObject.bind( this );
+    this.update2DViewOnState = this.update2DViewOnState.bind( this );
+
+    this.getState = this.getState.bind( this );
+  }
+
+  // UseEffect con []
+  componentWillMount () {
+    let {
+      projectActions,
+      catalog,
+      stateExtractor,
+      plugins,
+      prefs,
+      prefsInfo,
+      state
+    } = this.props;
+
+    plugins.forEach( plugin => plugin( state, stateExtractor, projectActions ) );
+    projectActions.initCatalog( catalog );
+    projectActions.SetPreference( prefs, prefsInfo );
+    this.contextObject = setupContextObject( this.props );
+  }
+
+  UNSAFE_componentWillReceiveProps ( nextProps ) {
+    // useEffect(() => {}, [props])
+
+    let { stateExtractor, state, projectActions, catalog } = nextProps;
+
+    let plannerState = stateExtractor( state );
+    let catalogReady = plannerState.getIn( [ 'catalog', 'ready' ] );
+
+    if ( !catalogReady ) {
+      projectActions.initCatalog( catalog );
+    }
+
+    // This can go on its own useEffect(() => {}, [props])
+
+    const delay = 500;
+    const autosaveKey = 'react-planner_v0';
+
+    if ( !autosaveKey ) return;
+    if ( !localStorage ) return;
+
+    if ( this.timeout ) clearTimeout( this.timeout );
+
+    this.timeout = setTimeout( () => {
+      localStorage.setItem( autosaveKey, JSON.stringify( plannerState.scene.toJS() ) );
+    }, delay );
+  }
+
+
+  getState () {
+    return this.props.stateExtractor( this.props.state );
+  }
+
+  isElementSelected () {
+    const { state } = this.props;
+    const plannerState = this.getState( state );
+    return getIsElementSelected( plannerState );
+  }
+
+  panUp ( value ) {
+    return { ...value, f: value.f + 50 };
+  }
+
+  panDown ( value ) {
+    return { ...value, f: value.f - 50 };
+  }
+
+  panLeft ( value ) {
+    return { ...value, e: value.e + 50 };
+  }
+
+  panRight ( value ) {
+    return { ...value, e: value.e - 50 };
+  }
+
+  zoomIn () {
+    this.refViewer.current.zoomOnViewerCenter( 1.03 );
+  }
+
+  zoomOut () {
+    this.refViewer.current.zoomOnViewerCenter( 0.97 );
+  }
+
+  update2DView ( value, event ) {
+    const isKeystroke = this.getEventType( event );
+    const direction = this.getEventDirection( event, isKeystroke );
+
+    if ( this.isClickWithoutSelection( direction ) ) {
+      value = this.update2DViewObject( value, direction );
+    }
+
+    return this.update2DViewOnState( value );
+  }
+
+  getEventDirection ( event, isKeyStroke ) {
+    if ( !event ) return;
+    if ( isKeyStroke ) return event.key;
+    return event.target.id;
+  }
+
+  getEventType ( event ) {
+    if ( !event ) return;
+    return typeof event.key === 'string';
+  }
+
+  isClickWithoutSelection ( input, isKeyStroke ) {
+    const isSelected = this.isElementSelected();
+    return input && !isKeyStroke && !isSelected;
+  }
+
+  update2DViewObject ( value, directionPressed ) {
+    switch ( directionPressed ) {
+      case 'ArrowUp':
+        return this.panUp( value );
+      case 'ArrowDown':
+        return this.panDown( value );
+      case 'ArrowRight':
+        return this.panRight( value );
+      case 'ArrowLeft':
+        return this.panLeft( value );
+
+      case '+':
+      case 'ZoomIn':
+        return this.zoomIn();
+
+      case '-':
+      case 'ZoomOut':
+        return this.zoomOut();
+
+      default:
+        return value;
+    }
+  }
+
+  update2DViewOnState ( value ) {
+    if ( !value ) return;
+    this.props.projectActions.updateZoomScale( value.a );
+    return this.props.viewer2DActions.updateCameraView( value );
+  }
+
+
+  render () {
+    const { update2DView, contextObject } = this;
+    const { width, height, state, stateExtractor, ...props } = this.props;
+    const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = this.state;
+    let extractedState = stateExtractor( state );
+
+    return (
+      <div>
+        <Context.Provider value={ contextObject } >
+          <MainComponent state={ state } { ...props } />
+
+          <TopBar state={ extractedState } { ...props } />
+
+          <div style={ { ...wrapperStyle, height } }>
+
+            <Toolbar
+              width={ toolbarW }
+              height={ toolbarH }
+              state={ extractedState }
+              { ...props }
+            />
+
+            <div style={ { position: 'relative' } }>
+
+              <MenuRooms
+                state={ state }
+                { ...props }
+              />
+              <MenuConstruccion
+                state={ state }
+                { ...props }
+              />
+              <MenuMuebles
+                state={ state }
+                { ...props }
+              />
+              <LoginComponent state={ extractedState } { ...props } />
+              <RegisterComponent state={ state } { ...props } />
+              <MenuPreferencias state={ state } { ...props } />
+
+              <Content
+                style={ { position: 'absolute', zIndex: '0' } }
+                width={ contentW }
+                height={ contentH }
+                state={ extractedState }
+                refViewer2D={ this.refViewer }
+                update2DView={ update2DView }
+                onWheel={ event => event.preventDefault() }
+                { ...props }
+              />
+
+            </div>
+
+            <Sidebar
+              state={ extractedState }
+              width={ sideBarW }
+              height={ sideBarH }
+              { ...props }
+            />
+
+            { this.refViewer && (
+              <Direction
+                width={ directionW }
+                state={ extractedState }
+                refViewer2D={ this.refViewer }
+                handleZoom2D={ this.handleZoom2D }
+                update2DView={ update2DView }
+                { ...props }
+
+              />
+            )
+            }
+          </div>
+        </Context.Provider>
+      </div >
+    );
+  }
+}
 
 ReactPlanner.propTypes = {
   translator: PropTypes.instanceOf( Translator ),
