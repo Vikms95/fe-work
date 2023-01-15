@@ -39,8 +39,20 @@ const STYLE_INPUT = {
 };
 
 export default function FormNumberInput ( props ) {
-
-  const context = useContext( Context );
+  const {
+    value,
+    min,
+    max,
+    style,
+    onValid,
+    onChange,
+    onInvalid,
+    precision,
+    stateRedux,
+    placeholder,
+    attributeName,
+    sourceElement,
+  } = props;
 
   const [ state, setState ] = useState( {
     focus: false,
@@ -48,6 +60,8 @@ export default function FormNumberInput ( props ) {
     showedValue: props.value,
     inputElement: null
   } );
+
+  const context = useContext( Context );
 
   let cursor = {
     x: props.stateRedux.getIn( [ 'mouse', 'x' ] ),
@@ -88,11 +102,6 @@ export default function FormNumberInput ( props ) {
   //todo TRY like this, if not, keep following these solutions
   // https://atomizedobjects.com/blog/react/using-componentdidmount-in-react-hooks/
 
-  const val = useRef();
-
-  useEffect( () => {
-    val.current = props;
-  }, [ props ] );
 
   useEffect( () => {
     const isLengthInputWhileDrawing = () => {
@@ -107,21 +116,6 @@ export default function FormNumberInput ( props ) {
       return props.attributeName === 'angulo' && !isMultipleSelection();
     };
 
-    const isSingleSelectionOrInvalidElement = () => {
-      return !props.sourceElement || !isMultipleSelection( props.stateRedux );
-    };
-
-    const areArrayValuesDifferent = ( values ) => {
-      return !values.every( el => el === values[ 0 ] );
-    };
-
-    const resetInputOnSelection = () => {
-      if ( !isMultipleSelection( props.stateRedux ) ) {
-        console.log( "test reseting input on selection" );
-        setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
-      }
-    };
-
     if ( isLengthInputWhileDrawing() ) {
       setState( ( prevState ) => ( { ...prevState, focus: true } ) );
       state.inputElement.focus();
@@ -134,6 +128,28 @@ export default function FormNumberInput ( props ) {
       } ) );
       document.addEventListener( 'mousemove', resetAngleInput );
     }
+  }, [] );
+
+  const val = useRef();
+
+  useEffect( () => {
+    val.current = props;
+  }, [ props ] );
+
+  useEffect( () => {
+    const isSingleSelectionOrInvalidElement = () => {
+      return !props.sourceElement || !isMultipleSelection( props.stateRedux );
+    };
+
+    const areArrayValuesDifferent = ( values ) => {
+      return !values.every( el => el === values[ 0 ] );
+    };
+
+    const resetInputOnSelection = () => {
+      if ( !isMultipleSelection( props.stateRedux ) ) {
+        setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
+      }
+    };
 
     if ( isSingleSelectionOrInvalidElement() ) return;
 
@@ -163,14 +179,8 @@ export default function FormNumberInput ( props ) {
     const values = getSelectedPropertyValues( prototype );
 
     if ( areArrayValuesDifferent( values ) ) {
-      console.log( 'test changing component cause it mounted and array values are different' );
       setState( ( prevState ) => ( { ...prevState, showedValue: null } ) );
       window.addEventListener( 'click', resetInputOnSelection );
-    };
-
-    return () => {
-      setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
-      document.removeEventListener( 'mousemove', resetAngleInput );
     };
   }, [ val.current ] );
 
@@ -208,29 +218,12 @@ export default function FormNumberInput ( props ) {
     };
 
     if ( isEmptyInputAndSingleSelection() ) {
-      console.log( "test restoring the value cause of empty input and single selection" );
       setState( ( prevState ) => ( { ...prevState, showedValue: props.value } ) );
     }
-
   }, [ props ] );
 
 
   //**------------------  REPLACE LIFECYCLE------------------------------- */
-
-  const {
-    value,
-    min,
-    max,
-    style,
-    onValid,
-    onChange,
-    onInvalid,
-    precision,
-    stateRedux,
-    placeholder,
-    attributeName,
-    sourceElement,
-  } = props;
 
   const numericInputStyle = { ...STYLE_INPUT, ...style };
   const regexp = new RegExp( `^-?([0-9]+)?\\.?([0-9]{0,${ precision }})?$` );
@@ -240,12 +233,10 @@ export default function FormNumberInput ( props ) {
   }
 
   if ( !isNaN( min ) && isFinite( min ) && state.showedValue < min ) {
-    console.log( 'test restoring value to ', min );
     setState( ( prevState ) => ( { ...prevState, showedValue: min } ) );
   };
 
   if ( !isNaN( max ) && isFinite( max ) && state.showedValue > max ) {
-    console.log( 'test restoring value to ', max );
     setState( ( prevState ) => ( { ...prevState, showedValue: max } ) );
   }
 
@@ -282,7 +273,6 @@ export default function FormNumberInput ( props ) {
     const valid = regexp.test( e.nativeEvent.target.value );
 
     if ( valid ) {
-      console.log( 'test update value cause its valid' );
       setState( ( prevState ) => ( { ...prevState, showedValue: e.nativeEvent.target.value } ) );
 
       if ( onValid ) {
@@ -381,13 +371,6 @@ export default function FormNumberInput ( props ) {
     ( keyCode == KEYBOARD_BUTTON_CODE.ESC ) &&
     ( props.mode === MODE_DRAWING_LINE )
   );
-
-
-  if ( attributeName === 'lineLength' ) {
-    console.log( "test formnumberinput length rendered" );
-    console.log( state.showedValue );
-
-  }
 
   return (
     <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
