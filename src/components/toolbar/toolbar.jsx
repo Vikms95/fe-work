@@ -72,8 +72,6 @@ export default function Toolbar ( {
   state,
   width,
   height,
-  // projectActions
-
 } ) {
 
   const { projectActions } = useContext( Context );

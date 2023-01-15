@@ -55,6 +55,7 @@ const STYLE_USER_AVATAR = {
 };
 
 export default function Topbar ( { state } ) {
+
   const { projectActions } = useContext( Context );
   const nombre = useAuthenticateUser( state, projectActions );
 
@@ -106,10 +107,12 @@ export default function Topbar ( { state } ) {
 //   }
 
 //   componentWillReceiveProps ( nextProps ) {
+
 //     let { state, projectActions } = nextProps;
 //     let userAuthenticated = state.get( 'userAuthenticated' );
 
 //     if ( userAuthenticated )
+
 //       this.callGetUser().then( data => projectActions.SetUserAuthenticated( false ) );
 //   }
 
@@ -162,6 +165,7 @@ Topbar.propTypes = {
 };
 
 // Topbar.contextTypes = {
+
   //projectActions: PropTypes.object.isRequired,
   //viewer2DActions: PropTypes.object.isRequired,
   //viewer3DActions: PropTypes.object.isRequired,

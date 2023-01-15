@@ -67,13 +67,13 @@ const STYLE_BUTTONS_DIRECTION = {
   cursor: 'pointer',
 };
 
-export default function Direction (
-  { state,
-    width,
-    update2DView,
-    projectActions,
-    viewer3DActions
-  } ) {
+export default function Direction ( {
+  state,
+  width,
+  update2DView,
+  projectActions,
+  viewer3DActions
+} ) {
 
   const viewer2DState = state.get( 'viewer2D' ).toJS();
   const mode = state.getIn( [ 'mode' ] );

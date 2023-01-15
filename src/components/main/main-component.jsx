@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import newProject from './../../assets/main/newProject.png';
 import existingProject from './../../assets/main/existsProject.png';
@@ -8,6 +8,7 @@ import lavabo from './../../assets/main/lavabo.png';
 import hogar from './../../assets/main/hogar.png';
 import * as SharedStyle from '../../shared-style';
 import { useSlideShow } from '../../hooks/useSlideShow';
+import { Context } from '../../context/context';
 
 const STYLE = {
   width: '100%',
@@ -56,7 +57,8 @@ const STYLE_LYRICS = {
   marginBottom: '1.3em',
 };
 
-export default function MainComponent ( { projectActions } ) {
+export default function MainComponent () {
+  const { projectActions } = useContext( Context );
   const index = useSlideShow();
 
   const loadNewProject = ( e ) => {

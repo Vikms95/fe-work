@@ -1,5 +1,5 @@
 import React,
-{ Component, useEffect, useRef, useState, createContext }
+{ Component, useEffect, useRef, useState, useMemo }
   from 'react';
 
 import PropTypes from 'prop-types';
@@ -31,6 +31,7 @@ import {
 
 import { VERSION } from './version';
 import './styles/export';
+import { useComponentWillMount } from './hooks/useComponentWillMount';
 
 const { Toolbar } = ToolbarComponents;
 const { Sidebar } = SidebarComponents;
@@ -48,65 +49,96 @@ const wrapperStyle = {
   flexFlow: 'row nowrap'
 };
 
-// export function ReactPlanner ( props, context ) {
 
-//   const refViewer = useRef( null );
+//TODO move to context.js
+const setupContextObject = ( props ) => {
+  return {
+    ...objectsMap( actions, actionNamespace => props[ actionNamespace ] ),
+    translator: props.translator,
+    catalog: props.catalog,
+  };
+};
 
-//   const [ sizes, setSizes ] = useState( {
-//     toolbarH: props.height - 72, // 72 from topBar Height
-//     sideBarW: props.width - 257, // 257 from sideBar Width
-//     directionW: props.width - 257, // 257 from direction Width
-//     sideBarH: props.height - ( 82 + 120 ), // 72 from topBar Height and 130 from direction Height con los px de los borders
-//     contentH: props.height - footerBarH,
-//     contentW: props.width - toolbarW + 14.6,
-//   } );
+// function ReactPlanner ( props ) {
 
-//   const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = sizes;
-//   const { height, state, stateExtractor } = props;
+//   //todo componentWillReceiveProps
+//   useMemo( () => {
+//     let { stateExtractor, state, projectActions, catalog } = props;
 
-//   const contextObject = {
-//     ...objectsMap( actions, actionNamespace => props[ actionNamespace ] ),
-//     translator: props.translator,
-//     catalog: props.catalog,
-//   };
-
-
-//   useEffect( () => {
-//     const { store } = context;
-
-//     const {
-//       projectActions,
-//       catalog,
-//       stateExtractor,
-//       plugins,
-//       prefs,
-//       prefsInfo
-//     } = props;
-
-//     plugins.forEach( plugin => plugin( store, stateExtractor ) );
-//     projectActions.initCatalog( catalog );
-//     projectActions.SetPreference( prefs, prefsInfo );
-
-//   }, [] );
-
-//   useEffect( () => {
-//     const { stateExtractor, state, projectActions, catalog } = props;
-//     const plannerState = stateExtractor( state );
-//     const catalogReady = plannerState.getIn( [ 'catalog', 'ready' ] );
+//     let plannerState = stateExtractor( state );
+//     let catalogReady = plannerState.getIn( [ 'catalog', 'ready' ] );
 
 //     if ( !catalogReady ) {
 //       projectActions.initCatalog( catalog );
 //     }
 
-//   }, [ props ] );
+//     // This can go on its own useEffect(() => {}, [props])
 
+//     const delay = 500;
+//     const autosaveKey = 'react-planner_v0';
+
+//     if ( !autosaveKey ) return;
+//     if ( !localStorage ) return;
+
+//     if ( timeout ) clearTimeout( timeout );
+
+//     timeout = setTimeout( () => {
+//       localStorage.setItem( autosaveKey, JSON.stringify( plannerState.scene.toJS() ) );
+//     }, delay );
+//   }, [ ...props ] );
+
+//   const { width, height, state, stateExtractor, ...rest } = props;
+
+//   const [ sizes, setSizes ] = useState( {
+//     contentW: props.width - toolbarW + 14.6,
+//     contentH: props.height - footerBarH,
+//     toolbarH: props.height - 72, // 72 from topBar Height
+//     sideBarW: props.width - 257, // 257 from sideBar Width
+//     sideBarH: props.height - ( 82 + 120 ), // 72 from topBar Height and 130 from direction Height con los px de los borders
+//     directionW: props.width - 257, // 257 from direction Width
+
+//   } );
+
+//   const { contentH, contentW, directionW, sideBarH, sideBarW, toolbarH } = sizes;
+
+//   const refViewer = useRef();
+//   let timeout = false;
+//   const [ contextObject, setContextObject ] = useState( null );
+//   const [ isContextLoaded, setIsContextLoaded ] = useState( false );
+
+//   useEffect( () => {
+//     if ( isContextLoaded === false ) {
+//       setContextObject( () => setupContextObject( props ) );
+//       setIsContextLoaded( ( prevIsContextLoaded ) => !prevIsContextLoaded );
+//     }
+//   } );
+
+//   //todo componentWillMount
+//   const foo = () => {
+//     let {
+//       projectActions,
+//       catalog,
+//       stateExtractor,
+//       plugins,
+//       prefs,
+//       prefsInfo,
+//       state
+//     } = props;
+
+//     plugins.forEach( plugin => plugin( state, stateExtractor, projectActions ) );
+//     projectActions.initCatalog( catalog );
+//     projectActions.SetPreference( prefs, prefsInfo );
+//   };
+
+//   useComponentWillMount( foo );
 
 //   const getState = () => {
 //     return props.stateExtractor( props.state );
 //   };
 
 //   const isElementSelected = () => {
-//     const plannerState = getState();
+//     const { state } = props;
+//     const plannerState = getState( state );
 //     return getIsElementSelected( plannerState );
 //   };
 
@@ -187,27 +219,30 @@ const wrapperStyle = {
 
 //   const update2DViewOnState = ( value ) => {
 //     if ( !value ) return;
-
 //     props.projectActions.updateZoomScale( value.a );
 //     return props.viewer2DActions.updateCameraView( value );
 //   };
 
 //   const extractedState = stateExtractor( state );
 
+//   if ( contextObject === null ) return;
+
 //   return (
 //     <div>
-//       <Context.Provider value={ contextObject }>
-
+//       <Context.Provider value={ contextObject } >
 //         <MainComponent state={ state } { ...props } />
 
-//         <TopBar state={ extractedState } { ...props } />
+//         <TopBar state={ extractedState }
+//         // { ...props }
+//         />
 
 //         <div style={ { ...wrapperStyle, height } }>
+
 //           <Toolbar
 //             width={ toolbarW }
 //             height={ toolbarH }
 //             state={ extractedState }
-//             { ...props }
+//           // { ...props }
 //           />
 
 //           <div style={ { position: 'relative' } }>
@@ -233,10 +268,10 @@ const wrapperStyle = {
 //               width={ contentW }
 //               height={ contentH }
 //               state={ extractedState }
-//               refViewer2D={ refViewer.current }
+//               refViewer2D={ refViewer }
 //               update2DView={ update2DView }
 //               onWheel={ event => event.preventDefault() }
-//               { ...props }
+//             // { ...props }
 //             />
 
 //           </div>
@@ -245,19 +280,19 @@ const wrapperStyle = {
 //             state={ extractedState }
 //             width={ sideBarW }
 //             height={ sideBarH }
-//             { ...props }
+//           // { ...props }
 //           />
 
-//           {
-//             refViewer.current && (
-//               <Direction
-//                 width={ directionW }
-//                 state={ extractedState }
-//                 refViewer2D={ refViewer.current }
-//                 update2DView={ update2DView }
-//                 { ...props }
-//               />
-//             )
+//           { refViewer && (
+//             <Direction
+//               width={ directionW }
+//               state={ extractedState }
+//               refViewer2D={ refViewer }
+//               update2DView={ update2DView }
+//             // { ...props }
+
+//             />
+//           )
 //           }
 //         </div>
 //       </Context.Provider>
@@ -265,16 +300,6 @@ const wrapperStyle = {
 //   );
 // }
 
-// 
-
-//TODO move to context.js
-const setupContextObject = ( props ) => {
-  return {
-    ...objectsMap( actions, actionNamespace => props[ actionNamespace ] ),
-    translator: props.translator,
-    catalog: props.catalog,
-  };
-};
 
 class ReactPlanner extends Component {
   constructor ( props ) {
@@ -323,7 +348,6 @@ class ReactPlanner extends Component {
     projectActions.initCatalog( catalog );
     projectActions.SetPreference( prefs, prefsInfo );
     this.contextObject = setupContextObject( this.props );
-
   }
 
   UNSAFE_componentWillReceiveProps ( nextProps ) {
