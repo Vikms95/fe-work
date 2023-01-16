@@ -2,9 +2,9 @@ import { Box3, BoxHelper } from 'three';
 // import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import MTLLoader from './mtl-loader-new';
+import { MTLLoader } from './mtl-loader-new';
 // import OBJLoader from './obj-loader';
-// import GLTFLoader from './gltf-loader';
+// import { GLTFLoader } from './gltf-loader-new';
 
 export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm, normalizeOrigin ) {
   let mtlLoader = new MTLLoader();
@@ -59,7 +59,6 @@ export function loadGLTF ( input ) {
         // esta en mm
         object.scale.set( 10, 10, 10 );
       }
-      console.log( object.children.name );
       if ( object.children[ 0 ].name === "Columna" ) {
         object.scale.set( 100, 100, 100 );
       }
