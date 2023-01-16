@@ -357,6 +357,7 @@ MTLLoader.MaterialCreator.prototype = {
     };
     var mapImages = this.mapImages;
 
+    //todo mirar esta función
     var resolveURL = function ( baseUrl, url ) {
       if ( mapImages[ url ] )
         return mapImages[ url ];
@@ -405,6 +406,7 @@ MTLLoader.MaterialCreator.prototype = {
 
           var texParams = this.getTextureParams( value, params );
 
+          //todo se usa aquí
           params.map = this.loadTexture( resolveURL( this.baseUrl, texParams.url ) );
           params.map.repeat.copy( texParams.scale );
           params.map.offset.copy( texParams.offset );
@@ -532,7 +534,9 @@ MTLLoader.MaterialCreator.prototype = {
 
   loadTexture: function ( url, mapping, onLoad, onProgress, onError ) {
 
+    //todo Introducido por Oscar
     var texture = cacheTextures.get( url );
+    //
 
     if ( texture )
       return texture;

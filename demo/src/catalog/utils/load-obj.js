@@ -54,8 +54,13 @@ export function loadGLTF ( input ) {
     gltfLoader.load( input.gltfFile, glt => {
       let object = glt.scene;
 
+      console.log( 'test', object );
       if ( input.tocm ) {
         // esta en mm
+        object.scale.set( 10, 10, 10 );
+      }
+      console.log( object.children.name );
+      if ( object.children[ 0 ].name === "Columna" ) {
         object.scale.set( 100, 100, 100 );
       }
 

@@ -19,8 +19,10 @@ const height = 50;  // cm
 
 const glbInfo =
 {
-  gltfFile: glb, width, height, depth, rotation: { y: -90 }, tocm: true, normalizeOrigin: false
-  //rotation: { y: 180 }
+  gltfFile: glb, width, height, depth,
+  tocm: true,
+  normalizeOrigin: false,
+  rotation: { y: 180 }
 };
 
 export default {

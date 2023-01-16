@@ -537,6 +537,8 @@ Toolbar.propTypes = {
   toolbarButtons: PropTypes.array
 };
 
+Toolbar.contextType = Context;
+
 // Toolbar.contextTypes = {
 //   projectActions: PropTypes.object.isRequired,
 //   viewer2DActions: PropTypes.object.isRequired,

@@ -107,12 +107,14 @@ class Project {
     if ( name == UNIDADMEDIDA )
       state = state.setIn( [ 'scene', 'unit' ], value );
 
+    console.log( "completed" );
     return { updatedState: state };
   }
 
   static updatePreferenceFailed ( state, nombre, value, error ) {
     alert( error.detail || error.statusText || error.status || error );
 
+    console.log( "failed" );
     return { updatedState: state };
   }
 
