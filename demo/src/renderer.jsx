@@ -67,16 +67,6 @@ const toolbarButtons = [
   ToolbarScreenshotButton,
 ];
 
-const dispatch = store.dispatch;
-
-getState = ( state, action ) => {
-  state = getPlannerState( state, action );
-
-  if ( typeof state === 'function' )
-    state = state( dispatch );
-
-  return state;
-};
 
 // Mock prefs to simulate backend fetch
 const data = {
@@ -191,6 +181,17 @@ const data = {
 
 const container = document.getElementById( 'app' );
 const root = createRoot( container );
+const dispatch = store.dispatch;
+
+getState = ( state, action ) => {
+  state = getPlannerState( state, action );
+
+  if ( typeof state === 'function' )
+    state = state( dispatch );
+
+  return state;
+};
+
 
 root.render( (
   <Provider store={ store }>
