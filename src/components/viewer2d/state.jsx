@@ -9,34 +9,35 @@ const guideStyle = {
   strokewidth: '2.5px'
 };
 
-export default function State({ state, catalog }) {
+export default function State ( { state, catalog } ) {
 
   let { activeSnapElement, snapElements, scene } = state;
 
   // Se divide entre 10 para pasarlo a cm
-  let rejillaTotal = (state.getIn(['prefs', 'T/REJILLATOTAL2D']) / 10)
+  let rejillaTotal = ( state.getIn( [ 'prefs', 'T/REJILLATOTAL2D' ] ) / 10 );
+
 
   let { width, height } = scene;
 
   activeSnapElement = activeSnapElement ?
-    <Snap snap={activeSnapElement} width={`'${rejillaTotal}'`} height={`'${rejillaTotal}'`} /> : null;
+    <Snap snap={ activeSnapElement } width={ `'${ rejillaTotal }'` } height={ `'${ rejillaTotal }'` } /> : null;
   // snapElements = snapElements.map((snap,id) => <Snap key={id} snap={snap} width={scene.width} height={scene.height}/>);
   snapElements = null; //only for debug purpose
 
   return (
     <g>
-      <rect x="0" y="0" width={`'${rejillaTotal}'`} height={`'${rejillaTotal}'`} fill={SharedStyle.COLORS.white} />
-      <g transform={`translate(0, ${rejillaTotal}) scale(1, -1)`} id="svg-drawing-paper">
+      <rect x="0" y="0" width={ `'${ rejillaTotal }'` } height={ `'${ rejillaTotal }'` } fill={ SharedStyle.COLORS.white } />
+      <g transform={ `translate(0, ${ rejillaTotal }) scale(1, -1)` } id="svg-drawing-paper">
 
-        <Scene state={state} scene={scene} catalog={catalog} />
-        {scene.getIn(['guides', 'horizontal']).entrySeq().map(([hgKey, hgVal]) => <line id={'hGuide' + hgKey} key={hgKey} x1={0} y1={hgVal} x2={rejillaTotal} y2={hgVal} style={guideStyle} />)}
-        {scene.getIn(['guides', 'vertical']).entrySeq().map(([vgKey, vgVal]) => <line key={vgKey} x1={vgVal} y1={0} x2={vgVal} y2={rejillaTotal} style={guideStyle} />)}
-        {activeSnapElement}
-        {snapElements}
+        <Scene state={ state } scene={ scene } catalog={ catalog } />
+        { scene.getIn( [ 'guides', 'horizontal' ] ).entrySeq().map( ( [ hgKey, hgVal ] ) => <line id={ 'hGuide' + hgKey } key={ hgKey } x1={ 0 } y1={ hgVal } x2={ rejillaTotal } y2={ hgVal } style={ guideStyle } /> ) }
+        { scene.getIn( [ 'guides', 'vertical' ] ).entrySeq().map( ( [ vgKey, vgVal ] ) => <line key={ vgKey } x1={ vgVal } y1={ 0 } x2={ vgVal } y2={ rejillaTotal } style={ guideStyle } /> ) }
+        { activeSnapElement }
+        { snapElements }
 
       </g>
     </g>
-  )
+  );
 }
 
 State.propTypes = {

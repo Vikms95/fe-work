@@ -677,7 +677,7 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
     pivot.add( item3D );
 
     pivot.rotation.y = item.rotation * Math.PI / 180;
-    pivot.position.x = item.x;
+    pivot.position.x = item.x + 100; // Items had a slight offset to the x axis
     pivot.position.y = layer.altitude;
     pivot.position.z = -item.y;
 

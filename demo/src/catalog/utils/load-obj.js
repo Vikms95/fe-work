@@ -8,7 +8,7 @@ import { MTLLoader } from './mtl-loader-new';
 
 export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm, normalizeOrigin ) {
   let mtlLoader = new MTLLoader();
-
+  console.log( "mtloader is being used" );
   mtlLoader.setResourcePath( imgPath );
 
   if ( mapImages )
@@ -49,12 +49,12 @@ export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm
 
 export function loadGLTF ( input ) {
   let gltfLoader = new GLTFLoader();
+  console.log( "gltfloader is being used" );
 
   return new Promise( ( resolve, reject ) => {
     gltfLoader.load( input.gltfFile, glt => {
       let object = glt.scene;
 
-      console.log( 'test', object );
       if ( input.tocm ) {
         // esta en mm
         object.scale.set( 10, 10, 10 );

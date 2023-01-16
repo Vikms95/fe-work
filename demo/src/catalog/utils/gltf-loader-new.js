@@ -59,6 +59,7 @@ import {
   TriangleStripDrawMode,
   Vector2,
   Vector3,
+  LoadingManager,
   VectorKeyframeTrack,
   sRGBEncoding
 } from 'three';
