@@ -1,7 +1,7 @@
-import React,
-{ Component, useEffect, useRef, useState, useMemo }
-  from 'react';
 
+import React, { Component, useEffect, useRef, useState, useMemo } from 'react';
+
+import './utils/wdyr';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -625,4 +625,5 @@ function mapDispatchToProps ( dispatch ) {
 }
 
 export default connect( mapStateToProps, mapDispatchToProps )( ReactPlanner );
+
 

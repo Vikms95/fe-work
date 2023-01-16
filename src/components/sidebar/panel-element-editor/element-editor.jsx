@@ -704,6 +704,7 @@ export default class ElementEditor extends Component {
   }
 }
 
+
 ElementEditor.propTypes = {
   state: PropTypes.object.isRequired,
   element: PropTypes.object.isRequired,

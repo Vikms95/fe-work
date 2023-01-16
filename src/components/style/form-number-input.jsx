@@ -745,6 +745,7 @@ export default class FormNumberInput extends Component {
   };
 }
 
+
 FormNumberInput.propTypes = {
   value: PropTypes.oneOfType( [ PropTypes.number, PropTypes.string ] ),
   style: PropTypes.object,
