@@ -56,10 +56,14 @@ const STYLE_INPUT = {
 //   } = props;
 
 //   const context = useContext( Context );
+
 //   const [ isFocus, setIsFocus ] = useState( false );
 //   const [ showedValue, setShowedValue ] = useState( value );
 //   const [ isInputValud, setIsInputValid ] = useState( true );
-//   const inputElement = useRef( null );
+
+//   let inputElement = useRef( null );
+//   let cursor = useRef( null );
+
 
 //   //**------------------  REPLACE LIFECYCLE------------------------------- */
 
@@ -69,9 +73,6 @@ const STYLE_INPUT = {
 //   const prevProps = usePrevProps( props );
 
 //   useEffect( () => {
-//     const isLengthInputWhileDrawing = () => {
-//       return props.attributeName === 'lineLength' && props.mode === MODE_DRAWING_LINE;
-//     };
 
 //     const isCachedAnguloWhileDrawing = () => {
 //       return getCacheAngulo( props.stateRedux ) && props.stateRedux.get( 'mode' ) === MODE_DRAWING_LINE;
@@ -81,12 +82,7 @@ const STYLE_INPUT = {
 //       return props.attributeName === 'angulo' && !isMultipleSelection();
 //     };
 
-//     if ( isLengthInputWhileDrawing() ) {
-//       console.log( 'test setting focus to true' );
-//       setIsFocus( true );
-//       inputElement.current.focus();
-//       inputElement.current.select();
-//     }
+
 
 //     if ( isCachedAnguloWhileDrawing() && isInputAnguloAndSingleSelection() ) {
 //       console.log( 'test setting bc its angulo, single selection and its cached' );
@@ -148,6 +144,19 @@ const STYLE_INPUT = {
 //   }, [ prevProps ] );
 
 
+//   useEffect( () => {
+//     const isLengthInputWhileDrawing = () => {
+//       return props.attributeName === 'lineLength' && props.mode === MODE_DRAWING_LINE;
+//     };
+
+//     if ( isLengthInputWhileDrawing() ) {
+//       console.log( 'test setting focus to true' );
+//       setIsFocus( true );
+//       inputElement.current.focus();
+//       inputElement.current.select();
+//     }
+//   } );
+
 //   //todo TRY componentWillUnmount 
 //   //todo TRY used to make sure that the value from props is the one similar to componentWillUnmount
 //   useEffect( () => {
@@ -158,13 +167,18 @@ const STYLE_INPUT = {
 //   }, [ prevProps, props.value ] );
 
 
-//   let cursor = useRef( null );
 
 //   //todo componentDidUpdate
 //   useEffect( () => {
-//     if ( cursor.current && document.activeElement === inputElement.current ) {
-//       if ( cursor.current.x !== props.stateRedux.getIn( [ 'mouse', 'x' ] ) ||
-//         cursor.current.y !== props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
+//     console.log( 'selecting cursor current', cursor.current );
+//     console.log( 'selecting is document same', document.activeElement === inputElement.current );
+//     if ( cursor.current && props.attributeName === 'lineLength' ) {
+//       console.log( 'selecting is x same', cursor.current.x !== stateRedux.getIn( [ 'mouse', 'x' ] ) );
+//       console.log( 'selecting is y same', cursor.current.y !== stateRedux.getIn( [ 'mouse', 'y' ] ) );
+//       if ( cursor.current.x !== stateRedux.getIn( [ 'mouse', 'x' ] ) ||
+//         cursor.current.y !== stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
+
+//         console.log( "selecting while", showedValue );
 //         inputElement.current.select();
 //       }
 //     }
@@ -174,7 +188,7 @@ const STYLE_INPUT = {
 //       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
 //     };
 
-//   }, [ props.value ] );
+//   } );
 
 
 //   //todo componentWillReceiveProps
@@ -369,7 +383,7 @@ const STYLE_INPUT = {
 //         value={ currValue }
 //         placeholder={ placeholder }
 //         className={ attributeName }
-//         ref={ c => ( inputElement.current = c ) }
+//         ref={ inputElement }
 //         style={ { ...STYLE_NUMERIC_INPUT, fontFamily: 'Calibri', fontWidth: 'lighter' } }
 //         onKeyDown={ onKeyDown }
 //         onChange={ onInputChange }

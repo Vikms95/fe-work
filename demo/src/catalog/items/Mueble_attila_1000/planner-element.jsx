@@ -33,9 +33,11 @@ export default {
   prototype: 'items',
 
   info: {
-    title: 'Mueble attila 1000',
+    title: 'Mueble Oscar',
+    // title: 'Mueble attila 1000',
     tag: [ 'furnishings', 'leather' ],
-    description: 'Mueble attila 1000',
+    // description: 'Mueble attila 1000',
+    description: 'Mueble de entrada para pruebas',
     image: require( './Mueble_attila_1000.jpg' ),
     width: width,
     depth: depth,
