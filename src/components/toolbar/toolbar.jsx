@@ -107,6 +107,7 @@ export default function Toolbar ( {
             showAndHideMenus( 'menuRooms' );
           } }
           img={ paredes }
+          active={ false }
           //TODO: Poner en el translator
           text={ 'Paredes' } >
         </ToolbarButton >
@@ -122,6 +123,7 @@ export default function Toolbar ( {
             e.stopPropagation();
             showAndHideMenus( 'menuConstruccion' );
           } }
+          active={ false }
           img={ construccion }
           //TODO: Poner en el translator
           text={ 'Construccion' }>
@@ -139,6 +141,7 @@ export default function Toolbar ( {
             showAndHideMenus( 'menuMuebles' );
           } }
           img={ img_salgar }
+          active={ false }
           //TODO: Poner en el translator
           text={ 'Baño Salgar' }>
         </ToolbarButton>
@@ -152,6 +155,7 @@ export default function Toolbar ( {
           tooltip={ 'Electrodomésticos' }
           onClick={ event => projectActions.openCatalog() }
           img={ electros }
+          active={ false }
           //TODO: Poner en el translator
           text={ 'Electrodomésticos' }>
         </ToolbarButton>
