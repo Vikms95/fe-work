@@ -1,8 +1,8 @@
 import { Box3, BoxHelper } from 'three';
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
+// import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-// import MTLLoader from './mtl-loader';
+import MTLLoader from './mtl-loader-new';
 // import OBJLoader from './obj-loader';
 // import GLTFLoader from './gltf-loader';
 

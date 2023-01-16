@@ -1,0 +1,300 @@
+{
+  "asset": {
+    "generator": "Khronos glTF Blender I/O v1.8.19",
+    "version": "2.0"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "Mueble attila 1000",
+      "rotation": [
+        0.5,
+        0.4999999701976776,
+        -0.5000000596046448,
+        0.4999999403953552
+      ],
+      "scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582
+      ]
+    }
+  ],
+  "extensionsUsed": [
+    "KHR_materials_clearcoat"
+  ],
+  "materials": [
+    {
+      "name": "varnish",
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 1
+        }
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "Dyn_ARMAZONESCLIENTE_UVmapped",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.21570000052452087,
+          0.21570000052452087,
+          0.21570000052452087,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.8999999761581421
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "Dyn_TIRADOR_UVmapped",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5881999731063843,
+          0.5881999731063843,
+          0.7372999787330627,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.8999999761581421
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "extras": {
+        "targetNames": [
+          "ANCHO"
+        ]
+      },
+      "name": "Mueble attila 1000",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0,
+          "targets": [
+            {
+              "POSITION": 4,
+              "NORMAL": 5
+            }
+          ]
+        },
+        {
+          "attributes": {
+            "POSITION": 6,
+            "NORMAL": 7,
+            "TEXCOORD_0": 8
+          },
+          "indices": 9,
+          "material": 1,
+          "targets": [
+            {
+              "POSITION": 10,
+              "NORMAL": 11
+            }
+          ]
+        }
+      ],
+      "weights": [
+        0
+      ]
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 3287,
+      "max": [
+        997.0001220703125,
+        452.0000915527344,
+        0.00009999999747378752
+      ],
+      "min": [
+        0,
+        -0.00009999999747378752,
+        -540.0001220703125
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 3287,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 3287,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5123,
+      "count": 7521,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 3287,
+      "max": [
+        421.2218017578125,
+        0.000030517578125,
+        0
+      ],
+      "min": [
+        -423.0269470214844,
+        -0.000030517578125,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5126,
+      "count": 3287,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5126,
+      "count": 496,
+      "max": [
+        979,
+        451.0002136230469,
+        -214.5612030029297
+      ],
+      "min": [
+        17.999900817871094,
+        435,
+        -490.5000915527344
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 7,
+      "componentType": 5126,
+      "count": 496,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 8,
+      "componentType": 5126,
+      "count": 496,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 9,
+      "componentType": 5123,
+      "count": 1008,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 10,
+      "componentType": 5126,
+      "count": 496,
+      "max": [
+        421.2218017578125,
+        0.000030517578125,
+        0
+      ],
+      "min": [
+        -423.0269470214844,
+        -0.000030517578125,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 11,
+      "componentType": 5126,
+      "count": 496,
+      "type": "VEC3"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 39444,
+      "byteOffset": 0
+    },
+    {
+      "buffer": 0,
+      "byteLength": 39444,
+      "byteOffset": 39444
+    },
+    {
+      "buffer": 0,
+      "byteLength": 26296,
+      "byteOffset": 78888
+    },
+    {
+      "buffer": 0,
+      "byteLength": 15044,
+      "byteOffset": 105184
+    },
+    {
+      "buffer": 0,
+      "byteLength": 39444,
+      "byteOffset": 120228
+    },
+    {
+      "buffer": 0,
+      "byteLength": 39444,
+      "byteOffset": 159672
+    },
+    {
+      "buffer": 0,
+      "byteLength": 5952,
+      "byteOffset": 199116
+    },
+    {
+      "buffer": 0,
+      "byteLength": 5952,
+      "byteOffset": 205068
+    },
+    {
+      "buffer": 0,
+      "byteLength": 3968,
+      "byteOffset": 211020
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2016,
+      "byteOffset": 214988
+    },
+    {
+      "buffer": 0,
+      "byteLength": 5952,
+      "byteOffset": 217004
+    },
+    {
+      "buffer": 0,
+      "byteLength": 5952,
+      "byteOffset": 222956
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Mueble_attila_1000_data.bin",
+      "byteLength": 228908
+    }
+  ]
+}
