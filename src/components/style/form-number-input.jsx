@@ -60,7 +60,7 @@ const STYLE_INPUT = {
 //   const [ isFocus, setIsFocus ] = useState( false );
 //   const [ showedValue, setShowedValue ] = useState( value );
 //   const [ isInputValud, setIsInputValid ] = useState( true );
-
+//   // const [ inputElement, setInputElement ] = useState( null );
 //   let inputElement = useRef( null );
 //   let cursor = useRef( null );
 
@@ -170,15 +170,12 @@ const STYLE_INPUT = {
 
 //   //todo componentDidUpdate
 //   useEffect( () => {
-//     console.log( 'selecting cursor current', cursor.current );
-//     console.log( 'selecting is document same', document.activeElement === inputElement.current );
-//     if ( cursor.current && props.attributeName === 'lineLength' ) {
-//       console.log( 'selecting is x same', cursor.current.x !== stateRedux.getIn( [ 'mouse', 'x' ] ) );
-//       console.log( 'selecting is y same', cursor.current.y !== stateRedux.getIn( [ 'mouse', 'y' ] ) );
+//     console.log( 'test', document.activeElement );
+//     console.log( 'test', inputElement.current );
+//     if ( cursor.current && document.activeElement === inputElement.current ) {
 //       if ( cursor.current.x !== stateRedux.getIn( [ 'mouse', 'x' ] ) ||
 //         cursor.current.y !== stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
 
-//         console.log( "selecting while", showedValue );
 //         inputElement.current.select();
 //       }
 //     }
@@ -188,7 +185,7 @@ const STYLE_INPUT = {
 //       y: props.stateRedux.getIn( [ 'mouse', 'y' ] ),
 //     };
 
-//   } );
+//   }, [ document.activeElement ] );
 
 
 //   //todo componentWillReceiveProps
@@ -383,7 +380,7 @@ const STYLE_INPUT = {
 //         value={ currValue }
 //         placeholder={ placeholder }
 //         className={ attributeName }
-//         ref={ inputElement }
+//         ref={ c => attributeName === 'lineLength' && ( inputElement.current = c ) }
 //         style={ { ...STYLE_NUMERIC_INPUT, fontFamily: 'Calibri', fontWidth: 'lighter' } }
 //         onKeyDown={ onKeyDown }
 //         onChange={ onInputChange }
@@ -549,10 +546,12 @@ export default class FormNumberInput extends Component {
   componentWillUnmount () {
     this.setState( { showedValue: this.props.value } );
     document.removeEventListener( 'mousemove', this.resetAngleInput );
-    // window.removeEventListener( 'click', this.resetInputOnSelection );
+    window.removeEventListener( 'click', this.resetInputOnSelection );
   };
 
-  componentDidUpdate ( nextProps ) {
+  componentDidUpdate () {
+    console.log( 'test', document.activeElement );
+    console.log( 'test', this.state.inputElement );
     if ( document.activeElement === this.state.inputElement ) {
       if ( this.cursor.x !== this.props.stateRedux.getIn( [ 'mouse', 'x' ] )
         || this.cursor.y !== this.props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
