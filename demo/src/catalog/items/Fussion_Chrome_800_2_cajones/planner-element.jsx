@@ -1,6 +1,6 @@
 import { BoxHelper, Box3, ObjectLoader, Object3D } from 'three';
 import { loadGLTF } from '../../utils/load-obj';
-import { getObject3d, selectedObject3d, sizeParametricObject3d } from '../../utils/objects3d-utils';
+import { getObject3d, selectedObject3d, sizeParametricObject3d, cacheLoadedObjects, cacheLoadingObjects } from '../../utils/objects3d-utils';
 import path from 'path';
 import convert from 'convert-units';
 
@@ -94,6 +94,7 @@ export default {
   },
 
   render3D: function ( element, layer, scene ) {
+    console.log( 'test render3D from mueble' );
     let loadItem = () =>
       loadGLTF( glbInfo );
 
@@ -114,6 +115,8 @@ export default {
 
       return obj;
       */
+      console.log( 'test cacheloaded', cacheLoadedObjects );
+      console.log( 'test cacheloading', cacheLoadedObjects );
       sizeParametricObject3d( object, element );
 
       return object;
@@ -122,7 +125,7 @@ export default {
   },
 
   updateRender3D: ( element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild ) => {
-
+    console.log( 'test updaterender3D from mueble' );
     let noPerf = () => { selfDestroy(); return selfBuild(); };
 
     /*

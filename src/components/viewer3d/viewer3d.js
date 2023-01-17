@@ -282,9 +282,6 @@ export default class Scene3DViewer extends React.Component {
     scene3D.environment = pmremGenerator.fromScene( environment, 0.04 ).texture;
 
     const planData = parseData( state, data, actions, this.context.catalog );
-    console.log( 'plandata', planData );
-    planData.plan.position.x += 100;
-    planData.grid.position.x += 100;
     scene3D.add( planData.plan );
     scene3D.add( planData.grid );
 

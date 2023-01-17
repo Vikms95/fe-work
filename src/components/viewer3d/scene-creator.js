@@ -5,7 +5,7 @@ import { verticesDistance, angleVector } from '../../utils/geometry';
 import { Line } from '../../class/export';
 
 export function parseData ( state, sceneData, actions, catalog ) {
-
+  console.log( 'test parsing data' );
   let planData = {};
 
   planData.sceneGraph = {
@@ -42,6 +42,7 @@ export function parseData ( state, sceneData, actions, catalog ) {
 }
 
 function createLayerObjects ( layer, planData, sceneData, actions, catalog ) {
+  console.log( 'test creater layer objects' );
 
   let promises = [];
 
@@ -85,7 +86,6 @@ function createLayerObjects ( layer, planData, sceneData, actions, catalog ) {
 }
 
 export function updateScene ( planData, sceneData, oldSceneData, diffArray, actions, catalog ) {
-  console.log( 'hi' );
   let splitted = diffArray.map( el => { return { op: el.op, path: el.path.split( '/' ), value: el.value }; } );
   let filteredDiffs = filterDiffs( splitted, sceneData, oldSceneData );
 
@@ -448,6 +448,8 @@ function removeItem ( planData, layerId, itemID ) {
 
 //TODO generate an area's replace if vertex has been changed
 function addObject ( modifiedPath, layer, planData, actions, sceneData, oldSceneData, catalog ) {
+  console.log( 'test add object' );
+
   if ( modifiedPath.length === 5 ) {
     let addPromise = null, addAction = null;
 
@@ -513,6 +515,7 @@ function addHole ( sceneData, planData, layer, holeID, catalog, holesActions ) {
     let holeHeight = holeData.properties.getIn( [ 'height', 'length' ] );
 
     pivot.rotation.y = alpha;
+
     /*
      // Codigo obj O => center
     pivot.position.x = vertex0.x + distance * offset * Math.cos(alpha) - center[2] * Math.sin(alpha);
@@ -520,8 +523,12 @@ function addHole ( sceneData, planData, layer, holeID, catalog, holesActions ) {
     //pivot.position.y = holeAltitude + holeHeight - center[1] + layer.altitude;
     pivot.position.z = -vertex0.y - distance * offset * Math.sin(alpha) - center[2] * Math.cos(alpha);
     */
+
+    //todo Posicionamiento objeto del hole
+    // Añado 5 para ajustarlo al agujero de momento
     pivot.position.x = vertex0.x + distance * offset * Math.cos( alpha );
     pivot.position.y = holeAltitude + layer.altitude;
+    // Resto 15 para ajustarlo al agujero de momento
     pivot.position.z = -vertex0.y - distance * offset * Math.sin( alpha );
 
     planData.plan.add( pivot );
@@ -663,6 +670,7 @@ function updateArea ( sceneData, oldSceneData, planData, layer, areaID, differen
 }
 
 function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
+  console.log( 'test additem' );
 
   let item = layer.getIn( [ 'items', itemID ] );
 
@@ -700,6 +708,8 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
 }
 
 function updateItem ( sceneData, oldSceneData, planData, layer, itemID, differences, catalog, itemsActions, selfDestroy, selfBuild ) {
+  console.log( 'test updateitem' );
+
   let item = layer.getIn( [ 'items', itemID ] );
   let oldItem = oldSceneData.getIn( [ 'layers', layer.id, 'items', itemID ] );
   let mesh = planData.sceneGraph.layers[ layer.id ].items[ itemID ];

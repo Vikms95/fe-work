@@ -47,18 +47,20 @@ export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm
   } );
 }
 
+//todo input == glbInfo
 export function loadGLTF ( input ) {
   let gltfLoader = new GLTFLoader();
-  console.log( "gltfloader is being used" );
 
   return new Promise( ( resolve, reject ) => {
-    gltfLoader.load( input.gltfFile, glt => {
-      let object = glt.scene;
+    gltfLoader.load( input.gltfFile, gltf => {
+      let object = gltf.scene;
 
       if ( input.tocm ) {
         // esta en mm
         object.scale.set( 10, 10, 10 );
       }
+
+      //todo solo para testear mueble armario
       if ( object.children[ 0 ].name === "Columna" ) {
         object.scale.set( 100, 100, 100 );
       }

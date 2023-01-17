@@ -1,13 +1,15 @@
 import { BoxHelper } from 'three';
 
-let cacheLoadingObjects = new Map();
-let cacheLoadedObjects = new Map();
+export let cacheLoadingObjects = new Map();
+export let cacheLoadedObjects = new Map();
 
 export function getObject3d ( name, loadObj ) {
   let object = cacheLoadedObjects.get( name );
 
-  if ( object )
+  //todo this is returning when the texture is lost
+  if ( object ) {
     return Promise.resolve( object.clone() );
+  }
 
   let promise = cacheLoadingObjects.get( name );
 
@@ -17,12 +19,16 @@ export function getObject3d ( name, loadObj ) {
       cacheLoadingObjects.delete( name );
 
       return object.clone();
+
     } );
   }
-  else
+  else {
     promise = promise.then( object => object.clone() );
+  }
 
   cacheLoadingObjects.set( name, promise );
+
+
 
   return promise;
 }
