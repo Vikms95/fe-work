@@ -272,14 +272,14 @@ export default class Scene3DViewer extends React.Component {
 
     this.renderer.physicallyCorrectLights = true;
     this.renderer.setPixelRatio( window.devicePixelRatio );
-
     this.renderer.encoding = THREE.sRGBEncoding;
+
     this.renderer.toneMapping = Number( THREE.LinearToneMapping );
     this.renderer.toneMappingExposure = Math.pow( 2, 0 );
 
     const environment = new RoomEnvironment();
     const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    scene3D.environment = pmremGenerator.fromScene( environment, 0.04 ).texture;
+    scene3D.environment = pmremGenerator.fromScene( environment, 0.5 ).texture;
 
     const planData = parseData( state, data, actions, this.context.catalog );
     scene3D.add( planData.plan );
@@ -298,14 +298,16 @@ export default class Scene3DViewer extends React.Component {
     camera.up = new THREE.Vector3( 0, 1, 0 );
 
 
-    // let light = new THREE.AmbientLight( 0xafafaf ); // soft white light
-    // scene3D.add( light );
+    const ambientLight = new THREE.AmbientLight( 0xffffff, 0.5 );
+    scene3D.add( ambientLight );
 
-    // Add another light
+    // // Add another light;
 
-    // let spotLight1 = new THREE.DirectionalLight( 'white', 0.5 );
-    // spotLight1.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
-    // scene3D.add( spotLight1 );
+    const pointLight = new THREE.SpotLight( 0xffffff, 0.5 );
+    pointLight.position.x = 2;
+    pointLight.position.y = 3;
+    pointLight.position.z = 4;
+    scene3D.add( pointLight );
 
 
     let toIntersect = [ planData.plan ];
@@ -346,20 +348,20 @@ export default class Scene3DViewer extends React.Component {
     // create orbit controls
     let orbitController = new OrbitControls( camera, this.renderer.domElement );
 
-    let spotLightTarget = new THREE.Object3D();
+    let pointLightTarget = new THREE.Object3D();
 
-    spotLightTarget.name = 'spotLightTarget';
+    // spotLightTarget.name = 'spotLightTarget';
 
     // Sets spotlight position to the target of orbitControll
-    spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
+    pointLight.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
 
-    // spotLight1.target = spotLightTarget;
-    scene3D.add( spotLightTarget );
+    pointLight.target = pointLightTarget;
+    scene3D.add( pointLightTarget );
 
     let render = () => {
       orbitController.update();
-      // spotLight1.position.set( camera.position.x, camera.position.y, camera.position.z );
-      spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
+      pointLight.position.set( camera.position.x, camera.position.y, camera.position.z );
+      pointLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
       camera.updateMatrix();
       camera.updateMatrixWorld();
 

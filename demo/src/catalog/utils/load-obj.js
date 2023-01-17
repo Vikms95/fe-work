@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { Box3, BoxHelper } from 'three';
 // import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -8,7 +9,6 @@ import { MTLLoader } from './mtl-loader-new';
 
 export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm, normalizeOrigin ) {
   let mtlLoader = new MTLLoader();
-  console.log( "mtloader is being used" );
   mtlLoader.setResourcePath( imgPath );
 
   if ( mapImages )
@@ -54,6 +54,28 @@ export function loadGLTF ( input ) {
   return new Promise( ( resolve, reject ) => {
     gltfLoader.load( input.gltfFile, gltf => {
       let object = gltf.scene;
+
+      //*apply effects to all materials
+      console.log( 'test', gltf );
+      object.traverse( node => {
+        // Mate
+        if ( node instanceof THREE.Mesh && node.material ) {
+          if ( object.name === 'Scene_Mate' ) {
+            node.material.roughness = 1;
+            node.material.metalness = 1;
+
+          } else if ( object.name === 'Scene_Brillo' ) {
+            node.material.roughness = 0;
+            node.material.metalness = 0;
+
+          } else if ( object.name === 'Scene_Mate_Rugoso' ) {
+
+          } else if ( object.name === 'Scene_Brillo_Rugoso' ) {
+
+          }
+        };
+      } );
+
 
       if ( input.tocm ) {
         // esta en mm

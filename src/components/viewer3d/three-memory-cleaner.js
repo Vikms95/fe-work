@@ -10,6 +10,7 @@ function disposeTexture ( texture ) {
   texture.dispose();
 }
 
+//**POSIBLE CULPRIT OF TEXTURE BUG? */
 const isEmptyNestedMaterialArray = ( material ) => (
   typeof material.materials === 'undefined' ||
   typeof material.materials.length === 'undefined'
