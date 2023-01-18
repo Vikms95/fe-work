@@ -6,9 +6,9 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from './mtl-loader-new';
 // import OBJLoader from './obj-loader';
 // import { GLTFLoader } from './gltf-loader-new';
-import blueTextureFile from '../items/Fussion_Chrome_800_2_cajones_6/RAL 5017.jpg';
-import woodTextureFile from '../items/Fussion_Chrome_800_2_cajones_6/34232 Arizona Pine s.jpg';
-import woodRoughnessFile from '../items/Fussion_Chrome_800_2_cajones_6/34232 Arizona Pine s bump.jpg';
+import blueTextureFile from '../items/_Victor-Cubo-Azul-Mate/RAL 5017.jpg';
+import woodTextureFile from '../items/_Victor-Cubo-Azul-Mate/34232 Arizona Pine s.jpg';
+import woodRoughnessFile from '../items/_Victor-Cubo-Azul-Mate/34232 Arizona Pine s bump.jpg';
 
 export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm, normalizeOrigin ) {
   let mtlLoader = new MTLLoader();
