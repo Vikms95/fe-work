@@ -310,7 +310,7 @@ export default class Scene3DViewer extends React.Component {
 
     // Add another light
 
-    let spotLight1 = new THREE.SpotLight( 'white', 1550.0 );
+    let spotLight1 = new THREE.SpotLight( 'white', 550.0 );
     spotLight1.position.copy( camera.position );
     spotLight1.decay = 1;
     scene3D.add( spotLight1 );

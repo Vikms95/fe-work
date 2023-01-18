@@ -26,11 +26,11 @@ const glbInfo =
 };
 
 export default {
-  name: 'Fussion_Chrome_800_2_cajones_7',
+  name: 'Fussion_Chrome_800_2_cajones_8',
   prototype: 'items',
 
   info: {
-    title: 'Cubo_Víctor_Madera',
+    title: 'Cubo_Víctor_Madera_Rugosa',
     // title: 'Fussion Chrome 800 2 cajones',
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
