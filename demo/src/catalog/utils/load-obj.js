@@ -6,7 +6,8 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from './mtl-loader-new';
 // import OBJLoader from './obj-loader';
 // import { GLTFLoader } from './gltf-loader-new';
-import textureFile from './RAL 5017.jpg';
+import blueTextureFile from '../items/Fussion_Chrome_800_2_cajones_6/RAL 5017.jpg';
+import woodTextureFile from '../items/Fussion_Chrome_800_2_cajones_6/34232 Arizona Pine s.jpg';
 
 export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm, normalizeOrigin ) {
   let mtlLoader = new MTLLoader();
@@ -58,10 +59,27 @@ export function loadGLTF ( input ) {
 
 
       //Cubo
-      if ( object.name === 'Scene_Cube' ) {
+      if ( object.name === 'Scene_Cube_Blue' ) {
         const firstMesh = object.children[ 0 ].children[ 0 ].clone();
         const secondMesh = object.children[ 0 ].children[ 1 ].clone();
-        const texture = new THREE.TextureLoader().load( textureFile );
+        const texture = new THREE.TextureLoader().load( blueTextureFile );
+
+        const oldMaterialParams1 = firstMesh.material.clone();
+        const oldGeoParams1 = firstMesh.geometry.clone();
+        const newMaterial1 = new MeshStandardMaterial( { map: texture } ).clone( oldMaterialParams1 );
+
+        const oldMaterialParams2 = secondMesh.material.clone();
+        const oldGeoParams2 = secondMesh.geometry.clone();
+        const newMaterial2 = new MeshStandardMaterial( { map: texture } ).clone( oldMaterialParams2 );
+
+
+        object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
+        object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
+
+      } else if ( object.name === 'Scene_Cube_Wood' ) {
+        const firstMesh = object.children[ 0 ].children[ 0 ].clone();
+        const secondMesh = object.children[ 0 ].children[ 1 ].clone();
+        const texture = new THREE.TextureLoader().load( woodTextureFile );
 
         const oldMaterialParams1 = firstMesh.material.clone();
         const oldGeoParams1 = firstMesh.geometry.clone();
