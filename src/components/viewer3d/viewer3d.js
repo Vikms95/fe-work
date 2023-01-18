@@ -274,12 +274,12 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.encoding = THREE.sRGBEncoding;
 
-    this.renderer.toneMapping = Number( THREE.LinearToneMapping );
-    this.renderer.toneMappingExposure = Math.pow( 2, 0 );
+    // this.renderer.toneMapping = Number( THREE.LinearToneMapping );
+    // this.renderer.toneMappingExposure = Math.pow( 2, 0 );
 
     const environment = new RoomEnvironment();
     const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    scene3D.environment = pmremGenerator.fromScene( environment, 0.5 ).texture;
+    scene3D.environment = pmremGenerator.fromScene( environment ).texture;
 
     const planData = parseData( state, data, actions, this.context.catalog );
     scene3D.add( planData.plan );
@@ -308,7 +308,6 @@ export default class Scene3DViewer extends React.Component {
     pointLight.position.y = 3;
     pointLight.position.z = 4;
     scene3D.add( pointLight );
-
 
     let toIntersect = [ planData.plan ];
     let mouse = new THREE.Vector2();

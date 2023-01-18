@@ -7,7 +7,7 @@ import convert from 'convert-units';
 import React from 'react';
 import { object } from 'prop-types';
 
-const glb = require( './Fussion_Chrome_800_2_cajones.glb' );
+const glb = require( './Fussion_Chrome_800_2_cajones_2.glb' );
 
 const width =
 {
@@ -26,7 +26,7 @@ const glbInfo =
 };
 
 export default {
-  name: 'Fussion_Chrome_800_2_cajones',
+  name: 'Fussion_Chrome_800_2_cajones_2',
   prototype: 'items',
 
   info: {

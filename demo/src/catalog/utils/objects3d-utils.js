@@ -2,6 +2,7 @@ import { BoxHelper } from 'three';
 
 export let cacheLoadingObjects = new Map();
 export let cacheLoadedObjects = new Map();
+export let cacheLoadedTextures = {};
 
 export function getObject3d ( name, loadObj ) {
   let object = cacheLoadedObjects.get( name );

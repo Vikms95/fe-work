@@ -56,17 +56,44 @@ export function loadGLTF ( input ) {
       let object = gltf.scene;
 
       //*apply effects to all materials
-      console.log( 'test', gltf );
       object.traverse( node => {
-        // Mate
         if ( node instanceof THREE.Mesh && node.material ) {
           if ( object.name === 'Scene_Mate' ) {
-            node.material.roughness = 1;
-            node.material.metalness = 1;
+            node.material.roughness = 0.75;
+            node.material.metalness = 0;
 
           } else if ( object.name === 'Scene_Brillo' ) {
-            node.material.roughness = 0;
+            let paramMaterialMap;
+
+
+            if ( node.material.map ) {
+              paramMaterialMap = node.material.map.clone();
+              paramMaterialMap.needsUpdate = true;
+
+            }
+
+            const paramPhysical = {
+              clearcoat: 1.0,
+              clearcoatMap: paramMaterialMap ? paramMaterialMap : null,
+              clearcoatNormalMap: paramMaterialMap ? paramMaterialMap : null,
+              clearcoatRoughness: 0.1,
+              alphaMap: paramMaterialMap ? paramMaterialMap : null,
+            };
+
+            const paramGeo = node.geometry.clone();
+            const paramMaterial = node.material.clone();
+            const newMaterial = new THREE.MeshPhysicalMaterial( paramPhysical ).clone( paramMaterial );
+
+            if ( paramMaterialMap ) {
+              newMaterial.map = paramMaterialMap;
+            }
+
+            node = new THREE.Mesh( paramGeo, newMaterial );
+
+            node.material.roughness = 1;
             node.material.metalness = 0;
+
+            console.log( 'test', node.material );
 
           } else if ( object.name === 'Scene_Mate_Rugoso' ) {
 
