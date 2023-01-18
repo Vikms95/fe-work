@@ -6,6 +6,7 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from './mtl-loader-new';
 // import OBJLoader from './obj-loader';
 // import { GLTFLoader } from './gltf-loader-new';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
 
 export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm, normalizeOrigin ) {
   let mtlLoader = new MTLLoader();
@@ -59,9 +60,7 @@ export function loadGLTF ( input ) {
       object.traverse( node => {
         if ( node instanceof THREE.Mesh && node.material ) {
           if ( node.material.name === "Cromado" ) {
-            node.material.emissive = new THREE.Color( 'grey' );
-            node.material.emissiveIntensity = 0.5;
-            node.material.roughness = 0;
+            node.material.roughness = 0.3;
             node.material.metalness = 1;
           }
 
@@ -71,48 +70,20 @@ export function loadGLTF ( input ) {
             node.material.opacity = 0.05;
 
           }
-          // if ( object.name === 'Scene_Mate' ) {
-          //   node.material.roughness = 0.75;
-          //   node.material.metalness = 0;
 
-          // } else if ( object.name === 'Scene_Brillo' ) {
-          // let paramMaterialMap;
+          if ( object.name === 'Scene_Mate' ) {
+            node.material.roughness = 0.75;
+            node.material.metalness = 0;
 
+          } else if ( object.name === 'Scene_Brillo' ) {
+            node.material.roughness = 0.5;
+            node.material.metalness = 0;
 
-          // if ( node.material.map ) {
-          //   paramMaterialMap = node.material.map.clone();
-          //   paramMaterialMap.needsUpdate = true;
+          } else if ( object.name === 'Scene_Mate_Rugoso' ) {
 
-          // }
+          } else if ( object.name === 'Scene_Brillo_Rugoso' ) {
 
-          // const paramPhysical = {
-          //   clearcoat: 1.0,
-          //   clearcoatMap: paramMaterialMap ? paramMaterialMap : null,
-          //   clearcoatNormalMap: paramMaterialMap ? paramMaterialMap : null,
-          //   clearcoatRoughness: 0.1,
-          //   alphaMap: paramMaterialMap ? paramMaterialMap : null,
-          // };
-
-          // const paramGeo = node.geometry.clone();
-          // const paramMaterial = node.material.clone();
-          // const newMaterial = new THREE.MeshPhysicalMaterial( paramPhysical ).clone( paramMaterial );
-
-          // if ( paramMaterialMap ) {
-          //   newMaterial.map = paramMaterialMap;
-          // }
-
-          // node = new THREE.Mesh( paramGeo, newMaterial );
-
-          // node.material.roughness = 0.25;
-          // node.material.metalness = 0;
-
-          // console.log( 'test', node.material );
-
-          // } else if ( object.name === 'Scene_Mate_Rugoso' ) {
-
-          // } else if ( object.name === 'Scene_Brillo_Rugoso' ) {
-
-          // }
+          }
         };
       } );
 

@@ -274,41 +274,51 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.encoding = THREE.sRGBEncoding;
 
-    // this.renderer.toneMapping = Number( THREE.LinearToneMapping );
-    // this.renderer.toneMappingExposure = Math.pow( 2, 0 );
+    this.renderer.toneMapping = Number( THREE.LinearToneMapping );
+    this.renderer.toneMappingExposure = Math.pow( 2, 0 );
 
     const environment = new RoomEnvironment();
     const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    scene3D.environment = pmremGenerator.fromScene( environment ).texture;
+    const { texture } = pmremGenerator.fromScene( environment );
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    scene3D.environment = texture;
 
     const planData = parseData( state, data, actions, this.context.catalog );
     scene3D.add( planData.plan );
     scene3D.add( planData.grid );
 
-    const aspectRatio = this.width / this.height;
-    const camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
+    let aspectRatio = this.width / this.height;
+    let camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
 
     scene3D.add( camera );
 
-    const cameraPositionX = -( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 2;
-    const cameraPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) / 2 * 10;
-    const cameraPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 2;
+    // Set position for the camera
+    let cameraPositionX = -( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 2;
+    let cameraPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) / 2 * 10;
+    let cameraPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 2;
 
     camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
     camera.up = new THREE.Vector3( 0, 1, 0 );
 
+    // HELPER AXIS
+    // let axisHelper = new THREE.AxisHelper( 100 );
+    // scene3D.add( axisHelper );
 
-    const ambientLight = new THREE.AmbientLight( 0xffffff, 0.5 );
-    scene3D.add( ambientLight );
+    // LIGHT
+    let light = new THREE.AmbientLight( 0xafafaf ); // soft white light
+    scene3D.add( light );
 
-    // // Add another light;
+    // Add another light
 
-    const pointLight = new THREE.SpotLight( 0xffffff, 0.5 );
-    pointLight.position.x = 2;
-    pointLight.position.y = 3;
-    pointLight.position.z = 4;
-    scene3D.add( pointLight );
+    let spotLight1 = new THREE.SpotLight( 'white', 1550.0 );
+    spotLight1.position.copy( camera.position );
+    spotLight1.decay = 1;
+    scene3D.add( spotLight1 );
 
+    // const spotLightHelper = new THREE.SpotLightHelper( spotLight1 );
+    // scene3D.add( spotLightHelper );
+
+    // OBJECT PICKING
     let toIntersect = [ planData.plan ];
     let mouse = new THREE.Vector2();
     let raycaster = new THREE.Raycaster();
@@ -346,21 +356,18 @@ export default class Scene3DViewer extends React.Component {
 
     // create orbit controls
     let orbitController = new OrbitControls( camera, this.renderer.domElement );
+    let spotLightTarget = new THREE.Object3D();
 
-    let pointLightTarget = new THREE.Object3D();
+    spotLightTarget.name = 'spotLightTarget';
+    spotLightTarget.position.copy( orbitController.target );
 
-    // spotLightTarget.name = 'spotLightTarget';
-
-    // Sets spotlight position to the target of orbitControll
-    pointLight.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
-
-    pointLight.target = pointLightTarget;
-    scene3D.add( pointLightTarget );
+    scene3D.add( spotLightTarget );
+    spotLight1.target = spotLightTarget;
 
     let render = () => {
       orbitController.update();
-      pointLight.position.set( camera.position.x, camera.position.y, camera.position.z );
-      pointLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
+      spotLight1.position.copy( camera.position );
+      spotLightTarget.position.copy( orbitController.target );
       camera.updateMatrix();
       camera.updateMatrixWorld();
 
