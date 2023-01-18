@@ -102,9 +102,9 @@ export function loadGLTF ( input ) {
         object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
         object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
 
-        object.children[ 0 ].children[ 0 ].material.roughness = 0.50;
+        object.children[ 0 ].children[ 0 ].material.roughness = 0.4;
         object.children[ 0 ].children[ 0 ].material.metalness = 0;
-        object.children[ 0 ].children[ 1 ].material.roughness = 0.50;
+        object.children[ 0 ].children[ 1 ].material.roughness = 0.4;
         object.children[ 0 ].children[ 1 ].material.metalness = 0;
 
       }
@@ -191,9 +191,9 @@ export function loadGLTF ( input ) {
         object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
         object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
 
-        object.children[ 0 ].children[ 0 ].material.roughness = 0.5;
+        object.children[ 0 ].children[ 0 ].material.roughness = 0.4;
         object.children[ 0 ].children[ 0 ].material.metalness = 0;
-        object.children[ 0 ].children[ 1 ].material.roughness = 0.5;
+        object.children[ 0 ].children[ 1 ].material.roughness = 0.4;
         object.children[ 0 ].children[ 1 ].material.metalness = 0;
 
 
@@ -309,9 +309,9 @@ export function loadGLTF ( input ) {
         object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
         object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
 
-        object.children[ 0 ].children[ 0 ].material.roughness = 0.5;
+        object.children[ 0 ].children[ 0 ].material.roughness = 0.4;
         object.children[ 0 ].children[ 0 ].material.metalness = 0;
-        object.children[ 0 ].children[ 1 ].material.roughness = 0.5;
+        object.children[ 0 ].children[ 1 ].material.roughness = 0.4;
         object.children[ 0 ].children[ 1 ].material.metalness = 0;
 
 
