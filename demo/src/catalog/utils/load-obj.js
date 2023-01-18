@@ -1,12 +1,12 @@
 import * as THREE from 'three';
-import { Box3, BoxHelper } from 'three';
+import { Box3, BoxHelper, MeshStandardMaterial } from 'three';
 // import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from './mtl-loader-new';
 // import OBJLoader from './obj-loader';
 // import { GLTFLoader } from './gltf-loader-new';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
+import textureFile from './RAL 5017.jpg';
 
 export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm, normalizeOrigin ) {
   let mtlLoader = new MTLLoader();
@@ -56,36 +56,58 @@ export function loadGLTF ( input ) {
     gltfLoader.load( input.gltfFile, gltf => {
       let object = gltf.scene;
 
+
+      //Cubo
+      if ( object.name === 'Scene_Cube' ) {
+        const firstMesh = object.children[ 0 ].children[ 0 ].clone();
+        const secondMesh = object.children[ 0 ].children[ 1 ].clone();
+        const texture = new THREE.TextureLoader().load( textureFile );
+
+        const oldMaterialParams1 = firstMesh.material.clone();
+        const oldGeoParams1 = firstMesh.geometry.clone();
+        const newMaterial1 = new MeshStandardMaterial( { map: texture } ).clone( oldMaterialParams1 );
+
+        const oldMaterialParams2 = secondMesh.material.clone();
+        const oldGeoParams2 = secondMesh.geometry.clone();
+        const newMaterial2 = new MeshStandardMaterial( { map: texture } ).clone( oldMaterialParams2 );
+
+
+        object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
+        object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
+
+      } else {
+        object.traverse( node => {
+          if ( node instanceof THREE.Mesh && node.material ) {
+            //Mampara
+            if ( node.material.name === "Cromado" ) {
+              node.material.roughness = 0.3;
+              node.material.metalness = 1;
+            }
+
+            if ( node.material.name === 'Cristal' ) {
+              node.material.roughness = 0.25;
+              node.material.metalness = 0;
+              node.material.opacity = 0.05;
+
+            }
+
+            //Armarios
+            if ( object.name === 'Scene_Mate' ) {
+              node.material.roughness = 0.75;
+              node.material.metalness = 0;
+
+            } else if ( object.name === 'Scene_Brillo' ) {
+              node.material.roughness = 0.5;
+              node.material.metalness = 0;
+              console.log( 'test', node );
+
+            }
+
+          }
+        } );
+
+      }
       //*apply effects to all materials
-      object.traverse( node => {
-        if ( node instanceof THREE.Mesh && node.material ) {
-          if ( node.material.name === "Cromado" ) {
-            node.material.roughness = 0.3;
-            node.material.metalness = 1;
-          }
-
-          if ( node.material.name === 'Cristal' ) {
-            node.material.roughness = 0.25;
-            node.material.metalness = 0;
-            node.material.opacity = 0.05;
-
-          }
-
-          if ( object.name === 'Scene_Mate' ) {
-            node.material.roughness = 0.75;
-            node.material.metalness = 0;
-
-          } else if ( object.name === 'Scene_Brillo' ) {
-            node.material.roughness = 0.5;
-            node.material.metalness = 0;
-
-          } else if ( object.name === 'Scene_Mate_Rugoso' ) {
-
-          } else if ( object.name === 'Scene_Brillo_Rugoso' ) {
-
-          }
-        };
-      } );
 
 
       if ( input.tocm ) {
@@ -95,8 +117,10 @@ export function loadGLTF ( input ) {
 
       //todo solo para testear mueble armario
       const nodeName = object.children[ 0 ].name;
-      console.log( nodeName );
-      if ( nodeName === "Columna" || nodeName === "Mampara_HELSINKI_1000-1040" ) {
+      if ( nodeName === "Columna" ||
+        nodeName === "Mampara_HELSINKI_1000-1040" ||
+        nodeName === "Cube" ) {
+
         object.scale.set( 100, 100, 100 );
       }
 
