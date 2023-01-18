@@ -60,7 +60,7 @@ export function loadGLTF ( input ) {
 
 
       //Cubo
-      if ( object.name === 'Scene_Cube_Blue' ) {
+      if ( object.name === 'Scene_Cube_Blue_Mate' ) {
         const firstMesh = object.children[ 0 ].children[ 0 ].clone();
         const secondMesh = object.children[ 0 ].children[ 1 ].clone();
         const texture = new THREE.TextureLoader().load( blueTextureFile );
@@ -75,11 +75,64 @@ export function loadGLTF ( input ) {
         const oldGeoParams2 = secondMesh.geometry.clone();
         const newMaterial2 = new MeshStandardMaterial( { map: texture } ).clone( oldMaterialParams2 );
 
+        object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
+        object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
+
+        object.children[ 0 ].children[ 0 ].material.roughness = 0.75;
+        object.children[ 0 ].children[ 0 ].material.metalness = 0;
+        object.children[ 0 ].children[ 1 ].material.roughness = 0.75;
+        object.children[ 0 ].children[ 1 ].material.metalness = 0;
+
+      }
+      else if ( object.name === 'Scene_Cube_Blue_Brillo' ) {
+        const firstMesh = object.children[ 0 ].children[ 0 ].clone();
+        const secondMesh = object.children[ 0 ].children[ 1 ].clone();
+        const texture = new THREE.TextureLoader().load( blueTextureFile );
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+
+        const oldMaterialParams1 = firstMesh.material.clone();
+        const oldGeoParams1 = firstMesh.geometry.clone();
+        const newMaterial1 = new MeshStandardMaterial( { map: texture } ).clone( oldMaterialParams1 );
+
+        const oldMaterialParams2 = secondMesh.material.clone();
+        const oldGeoParams2 = secondMesh.geometry.clone();
+        const newMaterial2 = new MeshStandardMaterial( { map: texture } ).clone( oldMaterialParams2 );
 
         object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
         object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
 
-      } else if ( object.name === 'Scene_Cube_Wood' ) {
+        object.children[ 0 ].children[ 0 ].material.roughness = 0.50;
+        object.children[ 0 ].children[ 0 ].material.metalness = 0;
+        object.children[ 0 ].children[ 1 ].material.roughness = 0.50;
+        object.children[ 0 ].children[ 1 ].material.metalness = 0;
+
+      }
+      else if ( object.name === 'Scene_Cube_Blue_BrilloAlto' ) {
+        const firstMesh = object.children[ 0 ].children[ 0 ].clone();
+        const secondMesh = object.children[ 0 ].children[ 1 ].clone();
+        const texture = new THREE.TextureLoader().load( blueTextureFile );
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+
+        const oldMaterialParams1 = firstMesh.material.clone();
+        const oldGeoParams1 = firstMesh.geometry.clone();
+        const newMaterial1 = new MeshStandardMaterial( { map: texture } ).clone( oldMaterialParams1 );
+
+        const oldMaterialParams2 = secondMesh.material.clone();
+        const oldGeoParams2 = secondMesh.geometry.clone();
+        const newMaterial2 = new MeshStandardMaterial( { map: texture } ).clone( oldMaterialParams2 );
+
+        object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
+        object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
+
+        object.children[ 0 ].children[ 0 ].material.roughness = 0.3;
+        object.children[ 0 ].children[ 0 ].material.metalness = 0;
+        object.children[ 0 ].children[ 1 ].material.roughness = 0.3;
+        object.children[ 0 ].children[ 1 ].material.metalness = 0;
+
+      }
+      else if ( object.name === "Scene_Cube_Wood_Mate" ) {
         const firstMesh = object.children[ 0 ].children[ 0 ].clone();
         const secondMesh = object.children[ 0 ].children[ 1 ].clone();
         const loader = new THREE.TextureLoader();
@@ -102,11 +155,82 @@ export function loadGLTF ( input ) {
           map: colorTexture,
         } ).clone( oldMaterialParams2 );
 
+        object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
+        object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
+
+        object.children[ 0 ].children[ 0 ].material.roughness = 0.75;
+        object.children[ 0 ].children[ 0 ].material.metalness = 0;
+        object.children[ 0 ].children[ 1 ].material.roughness = 0.75;
+        object.children[ 0 ].children[ 1 ].material.metalness = 0;
+
+
+      }
+      else if ( object.name === "Scene_Cube_Wood_Brillo" ) {
+        const firstMesh = object.children[ 0 ].children[ 0 ].clone();
+        const secondMesh = object.children[ 0 ].children[ 1 ].clone();
+        const loader = new THREE.TextureLoader();
+
+        const colorTexture = loader.load( woodTextureFile );
+        colorTexture.wrapS = THREE.RepeatWrapping;
+        colorTexture.wrapT = THREE.RepeatWrapping;
+
+        const oldMaterialParams1 = firstMesh.material.clone();
+        const oldGeoParams1 = firstMesh.geometry.clone();
+
+        const newMaterial1 = new MeshStandardMaterial( {
+          map: colorTexture,
+        } ).clone( oldMaterialParams1 );
+
+        const oldMaterialParams2 = secondMesh.material.clone();
+        const oldGeoParams2 = secondMesh.geometry.clone();
+
+        const newMaterial2 = new MeshStandardMaterial( {
+          map: colorTexture,
+        } ).clone( oldMaterialParams2 );
 
         object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
         object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
 
-      } else if ( object.name === 'Scene_Cube_Wood_Roughness' ) {
+        object.children[ 0 ].children[ 0 ].material.roughness = 0.5;
+        object.children[ 0 ].children[ 0 ].material.metalness = 0;
+        object.children[ 0 ].children[ 1 ].material.roughness = 0.5;
+        object.children[ 0 ].children[ 1 ].material.metalness = 0;
+
+
+      }
+      else if ( object.name === "Scene_Cube_Wood_BrilloAlto" ) {
+        const firstMesh = object.children[ 0 ].children[ 0 ].clone();
+        const secondMesh = object.children[ 0 ].children[ 1 ].clone();
+        const loader = new THREE.TextureLoader();
+
+        const colorTexture = loader.load( woodTextureFile );
+        colorTexture.wrapS = THREE.RepeatWrapping;
+        colorTexture.wrapT = THREE.RepeatWrapping;
+
+        const oldMaterialParams1 = firstMesh.material.clone();
+        const oldGeoParams1 = firstMesh.geometry.clone();
+
+        const newMaterial1 = new MeshStandardMaterial( {
+          map: colorTexture,
+        } ).clone( oldMaterialParams1 );
+
+        const oldMaterialParams2 = secondMesh.material.clone();
+        const oldGeoParams2 = secondMesh.geometry.clone();
+
+        const newMaterial2 = new MeshStandardMaterial( {
+          map: colorTexture,
+        } ).clone( oldMaterialParams2 );
+
+        object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
+        object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
+
+        object.children[ 0 ].children[ 0 ].material.roughness = 0.3;
+        object.children[ 0 ].children[ 0 ].material.metalness = 0;
+        object.children[ 0 ].children[ 1 ].material.roughness = 0.3;
+        object.children[ 0 ].children[ 1 ].material.metalness = 0;
+
+      }
+      else if ( object.name === "Scene_Cube_Wood_Roughness_Mate" ) {
         const firstMesh = object.children[ 0 ].children[ 0 ].clone();
         const secondMesh = object.children[ 0 ].children[ 1 ].clone();
         const loader = new THREE.TextureLoader();
@@ -142,7 +266,99 @@ export function loadGLTF ( input ) {
         object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
         object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
 
-      } else {
+        object.children[ 0 ].children[ 0 ].material.roughness = 0.75;
+        object.children[ 0 ].children[ 0 ].material.metalness = 0;
+        object.children[ 0 ].children[ 1 ].material.roughness = 0.75;
+        object.children[ 0 ].children[ 1 ].material.metalness = 0;
+
+
+      }
+      else if ( object.name === "Scene_Cube_Wood_Rough_Brillo" ) {
+        const firstMesh = object.children[ 0 ].children[ 0 ].clone();
+        const secondMesh = object.children[ 0 ].children[ 1 ].clone();
+        const loader = new THREE.TextureLoader();
+
+        const colorTexture = loader.load( woodTextureFile );
+        const roughnessTexture = loader.load( woodRoughnessFile );
+        colorTexture.wrapS = THREE.RepeatWrapping;
+        colorTexture.wrapT = THREE.RepeatWrapping;
+        colorTexture.minFilter = THREE.NearestFilter;
+        roughnessTexture.wrapS = THREE.RepeatWrapping;
+        roughnessTexture.wrapT = THREE.RepeatWrapping;
+        roughnessTexture.minFilter = THREE.NearestFilter;
+
+        const oldMaterialParams1 = firstMesh.material.clone();
+        const oldGeoParams1 = firstMesh.geometry.clone();
+
+        const newMaterial1 = new MeshStandardMaterial( {
+          map: colorTexture,
+          transparent: true,
+          roughnessMap: roughnessTexture
+        } ).clone( oldMaterialParams1 );
+
+        const oldMaterialParams2 = secondMesh.material.clone();
+        const oldGeoParams2 = secondMesh.geometry.clone();
+
+        const newMaterial2 = new MeshStandardMaterial( {
+          map: colorTexture,
+          roughnessMap: roughnessTexture,
+          transparent: true,
+        } ).clone( oldMaterialParams2 );
+
+
+        object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
+        object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
+
+        object.children[ 0 ].children[ 0 ].material.roughness = 0.5;
+        object.children[ 0 ].children[ 0 ].material.metalness = 0;
+        object.children[ 0 ].children[ 1 ].material.roughness = 0.5;
+        object.children[ 0 ].children[ 1 ].material.metalness = 0;
+
+
+      }
+      else if ( object.name === "Scene_Cube_Wood_Rough_BrilloAlto" ) {
+        const firstMesh = object.children[ 0 ].children[ 0 ].clone();
+        const secondMesh = object.children[ 0 ].children[ 1 ].clone();
+        const loader = new THREE.TextureLoader();
+
+        const colorTexture = loader.load( woodTextureFile );
+        const roughnessTexture = loader.load( woodRoughnessFile );
+        colorTexture.wrapS = THREE.RepeatWrapping;
+        colorTexture.wrapT = THREE.RepeatWrapping;
+        colorTexture.minFilter = THREE.NearestFilter;
+        roughnessTexture.wrapS = THREE.RepeatWrapping;
+        roughnessTexture.wrapT = THREE.RepeatWrapping;
+        roughnessTexture.minFilter = THREE.NearestFilter;
+
+        const oldMaterialParams1 = firstMesh.material.clone();
+        const oldGeoParams1 = firstMesh.geometry.clone();
+
+        const newMaterial1 = new MeshStandardMaterial( {
+          map: colorTexture,
+          transparent: true,
+          roughnessMap: roughnessTexture
+        } ).clone( oldMaterialParams1 );
+
+        const oldMaterialParams2 = secondMesh.material.clone();
+        const oldGeoParams2 = secondMesh.geometry.clone();
+
+        const newMaterial2 = new MeshStandardMaterial( {
+          map: colorTexture,
+          roughnessMap: roughnessTexture,
+          transparent: true,
+        } ).clone( oldMaterialParams2 );
+
+
+        object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
+        object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
+
+        object.children[ 0 ].children[ 0 ].material.roughness = 0.5;
+        object.children[ 0 ].children[ 0 ].material.metalness = 0;
+        object.children[ 0 ].children[ 1 ].material.roughness = 0.5;
+        object.children[ 0 ].children[ 1 ].material.metalness = 0;
+
+      }
+      else {
         object.traverse( node => {
           if ( node instanceof THREE.Mesh && node.material ) {
             //Mampara
@@ -166,7 +382,6 @@ export function loadGLTF ( input ) {
             } else if ( object.name === 'Scene_Brillo' ) {
               node.material.roughness = 0.5;
               node.material.metalness = 0;
-              console.log( 'test', node );
 
             }
 
