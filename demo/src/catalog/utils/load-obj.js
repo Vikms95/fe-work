@@ -58,48 +58,61 @@ export function loadGLTF ( input ) {
       //*apply effects to all materials
       object.traverse( node => {
         if ( node instanceof THREE.Mesh && node.material ) {
-          if ( object.name === 'Scene_Mate' ) {
-            node.material.roughness = 0.75;
+          if ( node.material.name === "Cromado" ) {
+            node.material.emissive = new THREE.Color( 'grey' );
+            node.material.emissiveIntensity = 0.5;
+            node.material.roughness = 0;
+            node.material.metalness = 1;
+          }
+
+          if ( node.material.name === 'Cristal' ) {
+            node.material.roughness = 0.25;
             node.material.metalness = 0;
-
-          } else if ( object.name === 'Scene_Brillo' ) {
-            let paramMaterialMap;
-
-
-            if ( node.material.map ) {
-              paramMaterialMap = node.material.map.clone();
-              paramMaterialMap.needsUpdate = true;
-
-            }
-
-            const paramPhysical = {
-              clearcoat: 1.0,
-              clearcoatMap: paramMaterialMap ? paramMaterialMap : null,
-              clearcoatNormalMap: paramMaterialMap ? paramMaterialMap : null,
-              clearcoatRoughness: 0.1,
-              alphaMap: paramMaterialMap ? paramMaterialMap : null,
-            };
-
-            const paramGeo = node.geometry.clone();
-            const paramMaterial = node.material.clone();
-            const newMaterial = new THREE.MeshPhysicalMaterial( paramPhysical ).clone( paramMaterial );
-
-            if ( paramMaterialMap ) {
-              newMaterial.map = paramMaterialMap;
-            }
-
-            node = new THREE.Mesh( paramGeo, newMaterial );
-
-            node.material.roughness = 1;
-            node.material.metalness = 0;
-
-            console.log( 'test', node.material );
-
-          } else if ( object.name === 'Scene_Mate_Rugoso' ) {
-
-          } else if ( object.name === 'Scene_Brillo_Rugoso' ) {
+            node.material.opacity = 0.05;
 
           }
+          // if ( object.name === 'Scene_Mate' ) {
+          //   node.material.roughness = 0.75;
+          //   node.material.metalness = 0;
+
+          // } else if ( object.name === 'Scene_Brillo' ) {
+          // let paramMaterialMap;
+
+
+          // if ( node.material.map ) {
+          //   paramMaterialMap = node.material.map.clone();
+          //   paramMaterialMap.needsUpdate = true;
+
+          // }
+
+          // const paramPhysical = {
+          //   clearcoat: 1.0,
+          //   clearcoatMap: paramMaterialMap ? paramMaterialMap : null,
+          //   clearcoatNormalMap: paramMaterialMap ? paramMaterialMap : null,
+          //   clearcoatRoughness: 0.1,
+          //   alphaMap: paramMaterialMap ? paramMaterialMap : null,
+          // };
+
+          // const paramGeo = node.geometry.clone();
+          // const paramMaterial = node.material.clone();
+          // const newMaterial = new THREE.MeshPhysicalMaterial( paramPhysical ).clone( paramMaterial );
+
+          // if ( paramMaterialMap ) {
+          //   newMaterial.map = paramMaterialMap;
+          // }
+
+          // node = new THREE.Mesh( paramGeo, newMaterial );
+
+          // node.material.roughness = 0.25;
+          // node.material.metalness = 0;
+
+          // console.log( 'test', node.material );
+
+          // } else if ( object.name === 'Scene_Mate_Rugoso' ) {
+
+          // } else if ( object.name === 'Scene_Brillo_Rugoso' ) {
+
+          // }
         };
       } );
 
@@ -110,7 +123,9 @@ export function loadGLTF ( input ) {
       }
 
       //todo solo para testear mueble armario
-      if ( object.children[ 0 ].name === "Columna" ) {
+      const nodeName = object.children[ 0 ].name;
+      console.log( nodeName );
+      if ( nodeName === "Columna" || nodeName === "Mampara_HELSINKI_1000-1040" ) {
         object.scale.set( 100, 100, 100 );
       }
 
