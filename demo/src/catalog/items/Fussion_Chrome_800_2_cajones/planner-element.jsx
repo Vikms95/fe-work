@@ -26,7 +26,7 @@ const glbInfo =
 };
 
 export default {
-  name: 'Fussion_Chrome_800_2_cajones',
+  name: 'Fussion_Chrome_800_2_cajones_83723',
   prototype: 'items',
 
   info: {
