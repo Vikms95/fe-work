@@ -58,8 +58,26 @@ export function loadGLTF ( input ) {
     gltfLoader.load( input.gltfFile, gltf => {
       let object = gltf.scene;
 
+      const mateValues = {
+        roughness: 0.75,
+        metallnes: 0
+      };
+
+      const brilloValues = {
+        roughness: 0.50,
+        metallnes: 0
+
+      };
+
+      const brilloAltoValues = {
+        roughness: 0.30,
+        metallnes: 0
+
+      };
 
       //Cubo
+      console.log( object.name );
+
       if ( object.name === 'Scene_Cube_Blue_Mate' ) {
         const firstMesh = object.children[ 0 ].children[ 0 ].clone();
         const secondMesh = object.children[ 0 ].children[ 1 ].clone();
@@ -266,10 +284,10 @@ export function loadGLTF ( input ) {
         object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
         object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
 
-        object.children[ 0 ].children[ 0 ].material.roughness = 0.75;
-        object.children[ 0 ].children[ 0 ].material.metalness = 0;
-        object.children[ 0 ].children[ 1 ].material.roughness = 0.75;
-        object.children[ 0 ].children[ 1 ].material.metalness = 0;
+        object.children[ 0 ].children[ 0 ].material.roughness = mateValues.roughness;
+        object.children[ 0 ].children[ 0 ].material.metalness = mateValues.metallnes;
+        object.children[ 0 ].children[ 1 ].material.roughness = mateValues.roughness;
+        object.children[ 0 ].children[ 1 ].material.metalness = mateValues.metallnes;
 
 
       }
@@ -309,10 +327,10 @@ export function loadGLTF ( input ) {
         object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
         object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
 
-        object.children[ 0 ].children[ 0 ].material.roughness = 0.5;
-        object.children[ 0 ].children[ 0 ].material.metalness = 0;
-        object.children[ 0 ].children[ 1 ].material.roughness = 0.5;
-        object.children[ 0 ].children[ 1 ].material.metalness = 0;
+        object.children[ 0 ].children[ 0 ].material.roughness = brilloValues.roughness;
+        object.children[ 0 ].children[ 0 ].material.metalness = brilloValues.metallnes;
+        object.children[ 0 ].children[ 1 ].material.roughness = brilloValues.roughness;
+        object.children[ 0 ].children[ 1 ].material.metalness = brilloValues.metallnes;
 
 
       }
@@ -335,7 +353,6 @@ export function loadGLTF ( input ) {
 
         const newMaterial1 = new MeshStandardMaterial( {
           map: colorTexture,
-          transparent: true,
           roughnessMap: roughnessTexture
         } ).clone( oldMaterialParams1 );
 
@@ -345,17 +362,16 @@ export function loadGLTF ( input ) {
         const newMaterial2 = new MeshStandardMaterial( {
           map: colorTexture,
           roughnessMap: roughnessTexture,
-          transparent: true,
         } ).clone( oldMaterialParams2 );
 
 
         object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
         object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
 
-        object.children[ 0 ].children[ 0 ].material.roughness = 0.5;
-        object.children[ 0 ].children[ 0 ].material.metalness = 0;
-        object.children[ 0 ].children[ 1 ].material.roughness = 0.5;
-        object.children[ 0 ].children[ 1 ].material.metalness = 0;
+        object.children[ 0 ].children[ 0 ].material.roughness = brilloAltoValues.roughness;
+        object.children[ 0 ].children[ 0 ].material.metalness = brilloAltoValues.metallnes;
+        object.children[ 0 ].children[ 1 ].material.roughness = brilloAltoValues.roughness;
+        object.children[ 0 ].children[ 1 ].material.metalness = brilloAltoValues.metallnes;
 
       }
       else {
