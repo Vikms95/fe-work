@@ -277,11 +277,11 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.toneMapping = Number( THREE.LinearToneMapping );
     this.renderer.toneMappingExposure = Math.pow( 2, 0 );
 
-    // const environment = new RoomEnvironment();
-    // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    // const { texture } = pmremGenerator.fromScene( environment );
-    // texture.mapping = THREE.EquirectangularReflectionMapping;
-    // scene3D.environment = texture;
+    const environment = new RoomEnvironment();
+    const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+    const { texture } = pmremGenerator.fromScene( environment );
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    scene3D.environment = texture;
 
     const planData = parseData( state, data, actions, this.context.catalog );
 
