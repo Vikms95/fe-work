@@ -187,7 +187,7 @@ export default {
     */
 
     if ( differences.indexOf( 'rotation' ) !== -1 ) {
-      mesh.rotation.y = 0 * Math.PI / 180;
+      mesh.rotation.y = element.rotation * Math.PI / 180;
       return Promise.resolve( mesh );
     }
 
