@@ -14,8 +14,19 @@ const width =
   min: 100,  // cm
   max: 184  // cm
 };
-const depth = 45.2;  // cm
-const height = 50;  // cm
+
+const depth = {
+  min: 45.2,
+  max: 100
+};
+
+const height = {
+  min: 45.2,
+  max: 100
+};
+
+// const depth = 45.2;  // cm
+// const height = 50;  // cm
 
 const glbInfo =
 {
@@ -49,7 +60,23 @@ export default {
         length: 100,
         unit: 'cm'
       }
-    }
+    },
+    depth: {
+      label: "Fondo",
+      type: "length-measure",
+      defaultValue: {
+        length: 50,
+        unit: 'cm'
+      }
+    },
+    height: {
+      label: "Alto",
+      type: "length-measure",
+      defaultValue: {
+        length: 50,
+        unit: 'cm'
+      }
+    },
   },
 
   render2D: function ( element, layer, scene ) {

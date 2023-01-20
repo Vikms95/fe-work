@@ -186,28 +186,28 @@ export function loadGLTF ( input ) {
       else if ( object.name === "Scene_Cube_Wood_Brillo" ) {
         const firstMesh = object.children[ 0 ].children[ 0 ].clone();
         const secondMesh = object.children[ 0 ].children[ 1 ].clone();
-        const loadingManager = new THREE.LoadingManager();
-        const loader = new THREE.TextureLoader( loadingManager );
+        const loader = new THREE.TextureLoader();
 
-        const box1 = new THREE.Box3();
-        firstMesh.geometry.computeBoundingBox();
-        box1.copy( firstMesh.geometry.boundingBox ).applyMatrix4( firstMesh.matrixWorld );
-        const measure1 = new THREE.Vector3();
-        const sizeBox1 = box1.getSize( measure1 );
+        // const box1 = new THREE.Box3();
+        // firstMesh.geometry.computeBoundingBox();
+        // box1.copy( firstMesh.geometry.boundingBox ).applyMatrix4( firstMesh.matrixWorld );
+        // const measure1 = new THREE.Vector3();
+        // const sizeBox1 = box1.getSize( measure1 );
 
-        const box2 = new THREE.Box3();
-        secondMesh.geometry.computeBoundingBox();
-        box2.copy( secondMesh.geometry.boundingBox ).applyMatrix4( secondMesh.matrixWorld );
-        const measure2 = new THREE.Vector3();
-        const sizeBox2 = box2.getSize( measure2 );
+        // const box2 = new THREE.Box3();
+        // secondMesh.geometry.computeBoundingBox();
+        // box2.copy( secondMesh.geometry.boundingBox ).applyMatrix4( secondMesh.matrixWorld );
+        // const measure2 = new THREE.Vector3();
+        // const sizeBox2 = box2.getSize( measure2 );
 
-        console.log( 'size 1', measure1 );
-        console.log( 'size 2', measure2 );
+        // console.log( 'size 1', measure1 );
+        // console.log( 'size 2', measure2 );
 
         const colorTexture = loader.load( woodTextureFile );
-        colorTexture.wrapS = THREE.RepeatWrapping;
-        colorTexture.wrapT = THREE.RepeatWrapping;
-
+        // colorTexture.wrapS = THREE.RepeatWrapping;
+        // colorTexture.wrapT = THREE.RepeatWrapping;
+        colorTexture.repeat.set( 2, 2 );
+        colorTexture.needsUpdate = true;
 
         const oldMaterialParams1 = firstMesh.material.clone();
         const oldGeoParams1 = firstMesh.geometry.clone();
@@ -416,6 +416,14 @@ export function loadGLTF ( input ) {
             } else if ( object.name === 'Scene_Brillo' ) {
               node.material.roughness = 0.5;
               node.material.metalness = 0;
+              if ( node.material.map !== null ) {
+                const colorTexture = node.material.map;
+                colorTexture.wrapT = THREE.RepeatWrapping;
+                colorTexture.wrapS = THREE.RepeatWrapping;
+                colorTexture.repeat.set( 2, 2 );
+                node.material.map = colorTexture;
+              }
+              console.log( 'test', node );
 
             }
 
