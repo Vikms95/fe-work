@@ -50,26 +50,44 @@ export default {
         length: 100,
         unit: 'cm'
       }
+    },
+    depth: {
+      label: "Fondo",
+      type: "length-measure",
+      defaultValue: {
+        length: 45.2,
+        unit: 'cm'
+      }
+    },
+    height: {
+      label: 'Alto',
+      type: 'length-measure',
+      defaultValue: {
+        length: 100,
+        unit: 'cm'
+      }
     }
   },
 
   render2D: function ( element, layer, scene ) {
+    console.log( 'scene values', scene );
     let width = ( typeof ( element.width ) == 'object' ) ? element.properties.get( 'width' ).get( 'length' ) : element.width;
-    // let depth = ( typeof ( element.depth ) == 'object' ) ? element.properties.get( 'depth' ).get( 'length' ) : element.depth;
-    let depth = ( typeof ( element.depth ) === 'object' ) ? element.getIn( [ 'depth', 'length' ] ) : element.depth;
-    // let angle = element.rotation + 90;
+    let depth = element.properties.get( 'depth' ).get( 'length' );
+    let height = element.properties.get( 'height' ).get( 'length' );
     let angle = element.rotation + 90;
     let textRotation = Math.sin( angle * Math.PI / 180 ) < 0 ? 180 : 0;
 
     let style = { stroke: element.selected ? '#0096fd' : '#000', strokeWidth: '2px', fill: '#84e1ce' };
     let arrow_style = { stroke: element.selected ? '#0096fd' : null, strokeWidth: '2px', fill: '#84e1ce' };
 
+    console.log( 'cube new width', width );
     console.log( 'cube new depth', depth );
+    console.log( 'cube new height', height );
 
     return (
       <g>
         {/*<g transform={`translate(${-width / 2},${-depth / 2})`}>*/ }
-        <rect x="0" y="0" width={ width } height={ depth } style={ style } />
+        < rect x="0" y="0" width={ width } height={ depth } style={ style } />
         <line x1={ width / 2 } x2={ width / 2 } y1={ depth } y2={ 1.5 * depth }
           style={ arrow_style } />
         <line
@@ -94,7 +112,7 @@ export default {
         >
           { element.type }
         </text>
-      </g>
+      </g >
     );
   },
 
@@ -107,17 +125,17 @@ export default {
       /*
       let obj = new Object3D();
       let bbox = new BoxHelper(object, 0x99c3fb);
-
+  
       bbox.material.linewidth = 100;
       bbox.renderOrder = 1000;
       bbox.material.depthTest = false;
       obj.add(bbox);
       obj.add(object);
       //object.add(bbox);
-
+  
       //selectedObject3d(object, element.selected);
       //sizeParametricObject3d(object, glbInfo, element);
-
+  
       return obj;
       */
       console.log( 'test cacheloaded', cacheLoadedObjects );
@@ -141,7 +159,7 @@ export default {
         bbox.renderOrder = 1000;
         bbox.material.depthTest = false;
         mesh.add(bbox);
-
+  
         return Promise.resolve(mesh);
       }
     }
@@ -155,7 +173,7 @@ export default {
       //  }
       //});
       selectedObject3d(mesh, element.selected);
-
+  
       return Promise.resolve(mesh);
     }
     */

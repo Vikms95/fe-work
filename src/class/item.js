@@ -260,7 +260,10 @@ class Item {
   }
 
   static setProperties ( state, layerID, itemID, properties ) {
+    console.log( 'test new properties', properties );
+    console.log( 'test state before merge', state );
     state = state.mergeIn( [ 'scene', 'layers', layerID, 'items', itemID, 'properties' ], properties );
+    console.log( 'test state after merge', state );
 
     return {
       updatedState: state

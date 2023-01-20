@@ -11,7 +11,6 @@ for ( let x in Areas ) catalog.registerElement( Areas[ x ] );
 for ( let x in Lines ) catalog.registerElement( Lines[ x ] );
 for ( let x in Holes ) catalog.registerElement( Holes[ x ] );
 for ( let x in Items ) catalog.registerElement( Items[ x ] );
-console.log( catalog );
 
 // Create category and add items
 catalog.registerCategory( 'windows', 'Windows', [ Holes.window, Holes.sashWindow, Holes.venetianBlindWindow, Holes.windowCurtain ] );

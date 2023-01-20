@@ -84,7 +84,9 @@ export default function ( state, action ) {
       return Project.unselectAll( state ).updatedState;
 
     case SET_PROPERTIES:
+      console.log( 'test state inside reducer before', state );
       state = state.merge( { sceneHistory: history.historyPush( state.sceneHistory, state.scene ) } );
+      console.log( 'test state inside reducer after', state );
       return Project.setProperties( state, state.getIn( [ 'scene', 'selectedLayer' ] ), action.properties ).updatedState;
 
     case NEXT_DRAWING_ITEM:

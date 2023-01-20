@@ -248,31 +248,32 @@ export default class ElementEditor extends Component {
 
     switch ( element.prototype ) {
       case 'items': {
-        let depth = element.depth;
-        let height = element.depth;
-        let _unit = element.misc.get( '_unitLength' ) || this.context.catalog.unit;
-        let _depthLength = convert( depth ).from( this.context.catalog.unit ).to( _unit );
-        let _depthHeight = convert( height ).from( this.context.catalog.unit ).to( _unit );
+        return new Map( { element } );
+        // let depth = element.depth;
+        // let height = element.depth;
+        // let _unit = element.misc.get( '_unitLength' ) || this.context.catalog.unit;
+        // let _depthLength = convert( depth ).from( this.context.catalog.unit ).to( _unit );
+        // let _depthHeight = convert( height ).from( this.context.catalog.unit ).to( _unit );
 
-        console.log( element );
-        return new Map( {
-          id: element.id,
-          type: element.type,
-          prototype: element.prototype,
-          name: element.name,
-          description: element.description,
-          image: element.image,
-          misc: element.misc,
-          selected: element.selected,
-          properties: element.properties,
-          visible: element.visible,
-          x: element.x,
-          y: element.y,
-          rotation: element.rotation,
-          width: element.width,
-          depth: new Map( { length: depth, _length: _depthLength, _unit } ),
-          height: new Map( { length: height, _length: _depthHeight, _unit } ),
-        } );
+        // console.log( element );
+        // return new Map( {
+        //   id: element.id,
+        //   type: element.type,
+        //   prototype: element.prototype,
+        //   name: element.name,
+        //   description: element.description,
+        //   image: element.image,
+        //   misc: element.misc,
+        //   selected: element.selected,
+        //   properties: element.properties,
+        //   visible: element.visible,
+        //   x: element.x,
+        //   y: element.y,
+        //   rotation: element.rotation,
+        //   width: element.width,
+        //   depth: new Map( { length: depth, _length: _depthLength, _unit } ),
+        //   height: new Map( { length: height, _length: _depthHeight, _unit } ),
+        // } );
       }
       case 'lines': {
 
@@ -525,7 +526,10 @@ export default class ElementEditor extends Component {
   updateProperty ( propertyName, value, isEnter ) {
     let { state: { propertiesFormData } } = this;
 
+    console.log( 'properties', propertiesFormData );
+    console.log( 'properties', propertyName );
     propertiesFormData = propertiesFormData.setIn( [ propertyName, 'currentValue' ], value );
+    console.log( 'properties after set', propertiesFormData );
     this.setState( { propertiesFormData } );
     this.save( { propertiesFormData, isEnter: isEnter || false } );
 
@@ -538,6 +542,7 @@ export default class ElementEditor extends Component {
       let properties = propertiesFormData.map( data => {
         return data.get( 'currentValue' );
       } );
+
       this.context.projectActions.setProperties( properties );
     }
 

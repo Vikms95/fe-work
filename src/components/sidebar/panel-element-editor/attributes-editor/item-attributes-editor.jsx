@@ -30,43 +30,43 @@ export default function ItemAttributesEditor ( {
   let isHeightAttribute = position === 2;
 
 
-  // return null;
-  // }
-  if ( isHeightAttribute ) {
-
-    return (
-      <PropertyLengthMeasure
-        mode={ state.get( 'mode' ) }
-        unit={ 'mm' }
-        stateRedux={ state }
-        value={ itemHeight }
-        sourceElement={ element }
-        attributeName='height'
-        projectActions={ projectActions }
-        attributeFormData={ attributeFormData }
-        configs={ { label: 'Alto', min: 0, max: Infinity, precision: 2 } }
-        onUpdate={ ( mapped, isEnter ) => onUpdate( 'height', mapped, isEnter ) }
-      />
-    );
-
-  } else if ( isDepthAttribute ) {
-    return (
-      <PropertyLengthMeasure
-        mode={ state.get( 'mode' ) }
-        unit={ 'mm' }
-        stateRedux={ state }
-        value={ itemDepth }
-        sourceElement={ element }
-        attributeName='depth'
-        projectActions={ projectActions }
-        attributeFormData={ attributeFormData }
-        configs={ { label: 'Fondo', min: 0, max: Infinity, precision: 2 } }
-        onUpdate={ ( mapped, isEnter ) => onUpdate( 'depth', mapped, isEnter ) }
-      />
-    );
-
-  }
+  return null;
 }
+//   if ( isHeightAttribute ) {
+
+//     return (
+//       <PropertyLengthMeasure
+//         mode={ state.get( 'mode' ) }
+//         unit={ 'mm' }
+//         stateRedux={ state }
+//         value={ itemHeight }
+//         sourceElement={ element }
+//         attributeName='height'
+//         projectActions={ projectActions }
+//         attributeFormData={ attributeFormData }
+//         configs={ { label: 'Alto', min: 0, max: Infinity, precision: 2 } }
+//         onUpdate={ ( mapped, isEnter ) => onUpdate( 'height', mapped, isEnter ) }
+//       />
+//     );
+
+//   } else if ( isDepthAttribute ) {
+//     return (
+//       <PropertyLengthMeasure
+//         mode={ state.get( 'mode' ) }
+//         unit={ 'mm' }
+//         stateRedux={ state }
+//         value={ itemDepth }
+//         sourceElement={ element }
+//         attributeName='depth'
+//         projectActions={ projectActions }
+//         attributeFormData={ attributeFormData }
+//         configs={ { label: 'Fondo', min: 0, max: Infinity, precision: 2 } }
+//         onUpdate={ ( mapped, isEnter ) => onUpdate( 'depth', mapped, isEnter ) }
+//       />
+//     );
+
+//   }
+// }
 
 //todo old code
 //   return (
