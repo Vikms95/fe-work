@@ -88,6 +88,8 @@ export function getMorphObject3d ( object, element ) {
 }
 
 export function sizeParametricObject3d ( object, element ) {
+  console.log( 'element', element );
+  console.log( 'object', object );
   let morph = getMorphObject3d( object, element );
   let hasMorph = false;
 

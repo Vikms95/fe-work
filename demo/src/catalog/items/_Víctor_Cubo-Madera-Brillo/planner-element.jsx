@@ -15,8 +15,20 @@ const width =
   max: 184  // cm
 };
 
-const depth = 45.2;  // cm
-const height = 50;  // cm
+//todo pedir min y max del morph
+const depth = {
+  min: 50,
+  max: 500,
+};
+
+//todo idem
+const height = {
+  min: 50,
+  max: 500
+};
+
+// const depth = 45.2;  // cm
+// const height = 50;  // cm
 
 const glbInfo =
 {
@@ -55,7 +67,7 @@ export default {
       label: "Fondo",
       type: "length-measure",
       defaultValue: {
-        length: 45.2,
+        length: 50,
         unit: 'cm'
       }
     },
@@ -63,26 +75,22 @@ export default {
       label: 'Alto',
       type: 'length-measure',
       defaultValue: {
-        length: 100,
+        length: 50,
         unit: 'cm'
       }
     }
   },
 
   render2D: function ( element, layer, scene ) {
-    console.log( 'scene values', scene );
+    console.log( 'scene values', element );
     let width = ( typeof ( element.width ) == 'object' ) ? element.properties.get( 'width' ).get( 'length' ) : element.width;
     let depth = element.properties.get( 'depth' ).get( 'length' );
-    let height = element.properties.get( 'height' ).get( 'length' );
+    // let height = element.properties.get( 'height' ).get( 'length' );
     let angle = element.rotation + 90;
     let textRotation = Math.sin( angle * Math.PI / 180 ) < 0 ? 180 : 0;
 
     let style = { stroke: element.selected ? '#0096fd' : '#000', strokeWidth: '2px', fill: '#84e1ce' };
     let arrow_style = { stroke: element.selected ? '#0096fd' : null, strokeWidth: '2px', fill: '#84e1ce' };
-
-    console.log( 'cube new width', width );
-    console.log( 'cube new depth', depth );
-    console.log( 'cube new height', height );
 
     return (
       <g>

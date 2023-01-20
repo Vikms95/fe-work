@@ -14,9 +14,18 @@ const width =
   min: 100,  // cm
   max: 184  // cm
 };
-const depth = 45.2;  // cm
-const height = 50;  // cm
 
+//todo pedir min y max del morph
+const depth = {
+  min: 50,
+  max: 5000,
+};
+
+//todo idem
+const height = {
+  min: 50,
+  max: 5000
+};
 const glbInfo =
 {
   gltfFile: glb, width, height, depth,
@@ -49,10 +58,28 @@ export default {
         length: 100,
         unit: 'cm'
       }
+    },
+    depth: {
+      label: "Fondo",
+      type: "length-measure",
+      defaultValue: {
+        length: 50,
+        unit: 'cm'
+      }
+    },
+    height: {
+      label: 'Alto',
+      type: 'length-measure',
+      defaultValue: {
+        length: 50,
+        unit: 'cm'
+      }
     }
   },
 
+
   render2D: function ( element, layer, scene ) {
+    console.log( 'brilloalto element', element );
     let width = ( typeof ( element.width ) == 'object' ) ? element.properties.get( 'width' ).get( 'length' ) : element.width;
     let depth = ( typeof ( element.depth ) == 'object' ) ? element.properties.get( 'depth' ).get( 'length' ) : element.depth;
     let angle = element.rotation + 90;
@@ -102,17 +129,17 @@ export default {
       /*
       let obj = new Object3D();
       let bbox = new BoxHelper(object, 0x99c3fb);
-
+ 
       bbox.material.linewidth = 100;
       bbox.renderOrder = 1000;
       bbox.material.depthTest = false;
       obj.add(bbox);
       obj.add(object);
       //object.add(bbox);
-
+ 
       //selectedObject3d(object, element.selected);
       //sizeParametricObject3d(object, glbInfo, element);
-
+ 
       return obj;
       */
       console.log( 'test cacheloaded', cacheLoadedObjects );
@@ -136,7 +163,7 @@ export default {
         bbox.renderOrder = 1000;
         bbox.material.depthTest = false;
         mesh.add(bbox);
-
+ 
         return Promise.resolve(mesh);
       }
     }
@@ -150,7 +177,7 @@ export default {
       //  }
       //});
       selectedObject3d(mesh, element.selected);
-
+ 
       return Promise.resolve(mesh);
     }
     */

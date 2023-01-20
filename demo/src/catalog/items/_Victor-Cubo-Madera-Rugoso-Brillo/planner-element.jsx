@@ -14,9 +14,18 @@ const width =
   min: 100,  // cm
   max: 184  // cm
 };
-const depth = 45.2;  // cm
-const height = 50;  // cm
 
+//todo pedir min y max del morph
+const depth = {
+  min: 50,
+  max: 500,
+};
+
+//todo idem
+const height = {
+  min: 50,
+  max: 500
+};
 const glbInfo =
 {
   gltfFile: glb, width, height, depth,
@@ -47,6 +56,22 @@ export default {
       type: "length-measure",
       defaultValue: {
         length: 100,
+        unit: 'cm'
+      }
+    },
+    depth: {
+      label: "Fondo",
+      type: "length-measure",
+      defaultValue: {
+        length: 50,
+        unit: 'cm'
+      }
+    },
+    height: {
+      label: 'Alto',
+      type: 'length-measure',
+      defaultValue: {
+        length: 50,
         unit: 'cm'
       }
     }
