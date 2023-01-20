@@ -277,15 +277,28 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.toneMapping = Number( THREE.LinearToneMapping );
     this.renderer.toneMappingExposure = Math.pow( 2, 0 );
 
-    const environment = new RoomEnvironment();
-    const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    const { texture } = pmremGenerator.fromScene( environment );
-    texture.mapping = THREE.EquirectangularReflectionMapping;
-    scene3D.environment = texture;
+    // const environment = new RoomEnvironment();
+    // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+    // const { texture } = pmremGenerator.fromScene( environment );
+    // texture.mapping = THREE.EquirectangularReflectionMapping;
+    // scene3D.environment = texture;
 
     const planData = parseData( state, data, actions, this.context.catalog );
+
+
     scene3D.add( planData.plan );
     scene3D.add( planData.grid );
+
+    // const testLight = new THREE.SpotLight( 'red', 2.0 );
+    // testLight.decay = 0;
+    // // x: 196.375132321884, y: 0, z: -1824.8086683287383
+    // testLight.position.set( 196.375132321884, -50, 0 );
+    // scene3D.add( testLight );
+
+    // const testHelper = new THREE.SpotLightHelper( testLight, 'red' );
+    // testHelper.position.set( 196.375132321884, -50, 0 );
+    // scene3D.add( testHelper );
+    // console.log( scene3D );
 
     let aspectRatio = this.width / this.height;
     let camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );

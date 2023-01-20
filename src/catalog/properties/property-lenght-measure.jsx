@@ -15,22 +15,21 @@ const internalTableStyle = { borderCollapse: 'collapse' };
 const secondTdStyle = { padding: 0 };
 const unitContainerStyle = { width: '5em' };
 
-export default function PropertyLengthMeasure (
-  {
-    unit,
-    mode,
-    state,
-    value,
-    onValid,
-    configs,
-    onUpdate,
-    stateRedux,
-    internalState,
-    attributeName,
-    sourceElement,
-    projectActions,
-    attributeFormData,
-  }, { catalog } ) {
+export default function PropertyLengthMeasure ( {
+  unit,
+  mode,
+  state,
+  value,
+  onValid,
+  configs,
+  onUpdate,
+  stateRedux,
+  internalState,
+  attributeName,
+  sourceElement,
+  projectActions,
+  attributeFormData,
+} ) {
 
 
   let _unit = unit;
@@ -70,21 +69,16 @@ export default function PropertyLengthMeasure (
     >
       <tbody>
         <tr>
-
           <td style={ PropertyStyle.firstTdStyle }>
-
             <FormLabel>
               { label }
             </FormLabel>
-
           </td>
-
           <td style={ secondTdStyle }>
             <table style={ internalTableStyle }>
               <tbody>
                 <tr>
                   <td>
-
                     <FormNumberInput
                       mode={ mode }
                       unit={ _unit }
@@ -99,7 +93,6 @@ export default function PropertyLengthMeasure (
                       onChange={ event => update( event.target.value, _unit, event.target.isEnter ) }
                       { ...configRest }
                     />
-
                   </td>
                   {/* SELECT UNIDADES */ }
                   {/* <td style={unitContainerStyle}>

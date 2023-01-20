@@ -5,7 +5,6 @@ import { verticesDistance, angleVector } from '../../utils/geometry';
 import { Line } from '../../class/export';
 
 export function parseData ( state, sceneData, actions, catalog ) {
-  console.log( 'test parsing data' );
   let planData = {};
 
   planData.sceneGraph = {
@@ -42,7 +41,6 @@ export function parseData ( state, sceneData, actions, catalog ) {
 }
 
 function createLayerObjects ( layer, planData, sceneData, actions, catalog ) {
-  console.log( 'test creater layer objects' );
 
   let promises = [];
 
@@ -448,7 +446,6 @@ function removeItem ( planData, layerId, itemID ) {
 
 //TODO generate an area's replace if vertex has been changed
 function addObject ( modifiedPath, layer, planData, actions, sceneData, oldSceneData, catalog ) {
-  console.log( 'test add object' );
 
   if ( modifiedPath.length === 5 ) {
     let addPromise = null, addAction = null;
@@ -670,7 +667,6 @@ function updateArea ( sceneData, oldSceneData, planData, layer, areaID, differen
 }
 
 function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
-  console.log( 'test additem' );
 
   let item = layer.getIn( [ 'items', itemID ] );
 
@@ -708,7 +704,6 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
 }
 
 function updateItem ( sceneData, oldSceneData, planData, layer, itemID, differences, catalog, itemsActions, selfDestroy, selfBuild ) {
-  console.log( 'test updateitem' );
 
   let item = layer.getIn( [ 'items', itemID ] );
   let oldItem = oldSceneData.getIn( [ 'layers', layer.id, 'items', itemID ] );

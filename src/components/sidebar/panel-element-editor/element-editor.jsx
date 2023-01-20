@@ -240,7 +240,7 @@ export default class ElementEditor extends Component {
   }
 
 
-  initAttrData ( element, layer, state ) {
+  initAttrData ( element, layer ) {
 
     element = ( typeof element.misc === 'object' )
       ? element.set( 'misc', new Map( element.misc ) )
@@ -248,7 +248,31 @@ export default class ElementEditor extends Component {
 
     switch ( element.prototype ) {
       case 'items': {
-        return new Map( element );
+        let depth = element.depth;
+        let height = element.depth;
+        let _unit = element.misc.get( '_unitLength' ) || this.context.catalog.unit;
+        let _depthLength = convert( depth ).from( this.context.catalog.unit ).to( _unit );
+        let _depthHeight = convert( height ).from( this.context.catalog.unit ).to( _unit );
+
+        console.log( element );
+        return new Map( {
+          id: element.id,
+          type: element.type,
+          prototype: element.prototype,
+          name: element.name,
+          description: element.description,
+          image: element.image,
+          misc: element.misc,
+          selected: element.selected,
+          properties: element.properties,
+          visible: element.visible,
+          x: element.x,
+          y: element.y,
+          rotation: element.rotation,
+          width: element.width,
+          depth: new Map( { length: depth, _length: _depthLength, _unit } ),
+          height: new Map( { length: height, _length: _depthHeight, _unit } ),
+        } );
       }
       case 'lines': {
 
@@ -310,11 +334,12 @@ export default class ElementEditor extends Component {
     }
   }
 
-  initPropData ( element, layer, state ) {
+  initPropData ( element ) {
     let { catalog } = this.context;
     let catalogElement = catalog.getElement( element.type );
 
     let mapped = {};
+
     for ( let name in catalogElement.properties ) {
       mapped[ name ] = new Map( {
         currentValue: element.properties.has( name )
@@ -334,12 +359,21 @@ export default class ElementEditor extends Component {
 
     switch ( this.props.element.prototype ) {
       case 'items': {
+        console.log( 'test', value );
+        console.log( 'test', attributeName );
+        console.log( 'test', attributesFormData );
         attributesFormData = attributesFormData.set( attributeName, value );
+        console.log( 'attsdata after set', attributesFormData );
+        // this.setState( { attributesFormData } );
         break;
       }
       case 'lines':
 
+        console.log( 'test line value', value );
+        console.log( 'test line name', attributeName );
+        console.log( 'test line form', attributesFormData );
         attributesFormData = attributesFormData.set( attributeName, value );
+        console.log( 'test line form after set', attributesFormData );
         this.setState( { attributesFormData } );
 
         if ( isEnter && !isMultipleSelection( this.props.state ) ) {
@@ -586,7 +620,6 @@ export default class ElementEditor extends Component {
           projectActions={ this.context.projectActions }
           unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
         />
-
         { propertiesFormData.entrySeq()
           .map( ( [ propertyName, data ] ) => {
 

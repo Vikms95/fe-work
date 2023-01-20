@@ -223,6 +223,7 @@ class Item {
     let itemID = rotatingSupport.get( 'itemID' );
     let item = state.getIn( [ 'scene', 'layers', layerID, 'items', itemID ] );
 
+    console.log( 'item desde', item );
     let deltaX = x - item.x;
     let deltaY = y - item.y;
     let rotation = Math.atan2( deltaY, deltaX ) * 180 / Math.PI - 90;
@@ -233,6 +234,7 @@ class Item {
     if ( 85 < rotation && rotation < 90 ) rotation = 90;
     if ( -270 < rotation && rotation < -265 ) rotation = 90;
 
+    console.log( 'rot', rotation );
     item = item.merge( {
       rotation,
     } );

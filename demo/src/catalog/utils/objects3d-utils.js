@@ -45,11 +45,13 @@ export function selectedObject3d ( object, selected ) {
 export function getMorphObject3d ( object, element ) {
   let morph = [];
 
+  console.log( 'object', object );
   object.traverse( o => {
     if ( o.isMesh && o.morphTargetInfluences ) {
       Object.keys( o.morphTargetDictionary ).forEach( key => {
-        if ( key.includes( "ANCHO" ) || key.includes( "width" ) ) {
+        if ( key.includes( "ANCHO" ) || key.includes( "width" ) || key.includes( '0' ) ) {
           if ( element.properties.has( 'width' ) && element.width && element.width.min && element.width.max )
+            //
             morph.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ key ],
@@ -58,7 +60,7 @@ export function getMorphObject3d ( object, element ) {
               max: element.width.max
             } );
         }
-        if ( key.includes( "ALTO" ) || key.includes( "height" ) ) {
+        if ( key.includes( "ALTO" ) || key.includes( "height" ) || key.includes( '1' ) ) {
           if ( element.properties.has( 'height' ) && element.height && element.height.min && element.height.max )
             morph.push( {
               mesh: o,
@@ -68,7 +70,7 @@ export function getMorphObject3d ( object, element ) {
               max: element.height.max
             } );
         }
-        if ( key.includes( "FONDO" ) || key.includes( "depth" ) ) {
+        if ( key.includes( "FONDO" ) || key.includes( "depth" ) || key.includes( '2' ) ) {
           if ( element.properties.has( 'depth' ) && element.depth && element.depth.min && element.depth.max )
             morph.push( {
               mesh: o,

@@ -57,6 +57,7 @@ export function loadGLTF ( input ) {
   return new Promise( ( resolve, reject ) => {
     gltfLoader.load( input.gltfFile, gltf => {
       let object = gltf.scene;
+      //*apply effects to all materials
 
       const mateValues = {
         roughness: 0.75,
@@ -76,7 +77,6 @@ export function loadGLTF ( input ) {
       };
 
       //Cubo
-      console.log( object.name );
 
       if ( object.name === 'Scene_Cube_Blue_Mate' ) {
         const firstMesh = object.children[ 0 ].children[ 0 ].clone();
@@ -267,7 +267,6 @@ export function loadGLTF ( input ) {
 
         const newMaterial1 = new MeshStandardMaterial( {
           map: colorTexture,
-          transparent: true,
           roughnessMap: roughnessTexture
         } ).clone( oldMaterialParams1 );
 
@@ -277,16 +276,15 @@ export function loadGLTF ( input ) {
         const newMaterial2 = new MeshStandardMaterial( {
           map: colorTexture,
           roughnessMap: roughnessTexture,
-          transparent: true,
         } ).clone( oldMaterialParams2 );
 
 
         object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
         object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
 
-        object.children[ 0 ].children[ 0 ].material.roughness = mateValues.roughness;
+        object.children[ 0 ].children[ 0 ].material.roughness = 1;
         object.children[ 0 ].children[ 0 ].material.metalness = mateValues.metallnes;
-        object.children[ 0 ].children[ 1 ].material.roughness = mateValues.roughness;
+        object.children[ 0 ].children[ 1 ].material.roughness = 1;
         object.children[ 0 ].children[ 1 ].material.metalness = mateValues.metallnes;
 
 
@@ -405,7 +403,6 @@ export function loadGLTF ( input ) {
         } );
 
       }
-      //*apply effects to all materials
 
 
       if ( input.tocm ) {

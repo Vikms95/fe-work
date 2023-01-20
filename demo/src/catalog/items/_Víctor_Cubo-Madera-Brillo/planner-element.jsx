@@ -14,6 +14,7 @@ const width =
   min: 100,  // cm
   max: 184  // cm
 };
+
 const depth = 45.2;  // cm
 const height = 50;  // cm
 
@@ -54,12 +55,16 @@ export default {
 
   render2D: function ( element, layer, scene ) {
     let width = ( typeof ( element.width ) == 'object' ) ? element.properties.get( 'width' ).get( 'length' ) : element.width;
-    let depth = ( typeof ( element.depth ) == 'object' ) ? element.properties.get( 'depth' ).get( 'length' ) : element.depth;
+    // let depth = ( typeof ( element.depth ) == 'object' ) ? element.properties.get( 'depth' ).get( 'length' ) : element.depth;
+    let depth = ( typeof ( element.depth ) === 'object' ) ? element.getIn( [ 'depth', 'length' ] ) : element.depth;
+    // let angle = element.rotation + 90;
     let angle = element.rotation + 90;
     let textRotation = Math.sin( angle * Math.PI / 180 ) < 0 ? 180 : 0;
 
     let style = { stroke: element.selected ? '#0096fd' : '#000', strokeWidth: '2px', fill: '#84e1ce' };
     let arrow_style = { stroke: element.selected ? '#0096fd' : null, strokeWidth: '2px', fill: '#84e1ce' };
+
+    console.log( 'cube new depth', depth );
 
     return (
       <g>
@@ -156,7 +161,7 @@ export default {
     */
 
     if ( differences.indexOf( 'rotation' ) !== -1 ) {
-      mesh.rotation.y = element.rotation * Math.PI / 180;
+      mesh.rotation.y = 0 * Math.PI / 180;
       return Promise.resolve( mesh );
     }
 

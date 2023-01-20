@@ -5,27 +5,27 @@ import LineAttributesEditor from './line-attributes-editor';
 import HoleAttributesEditor from './hole-attributes-editor';
 
 
-export default function AttributesEditor (
-  {
-    unit,
-    mode,
-    state,
-    element,
-    onValid,
-    position,
-    onUpdate,
-    attributeFormData,
-    ...rest
-  } ) {
+export default function AttributesEditor ( {
+  unit,
+  mode,
+  state,
+  element,
+  onValid,
+  position,
+  onUpdate,
+  attributeFormData,
+  ...rest
+} ) {
 
   switch ( element.prototype ) {
     case 'items':
       return <ItemAttributesEditor
+        state={ state }
         element={ element }
         onUpdate={ onUpdate }
         onValid={ onValid }
+        position={ position }
         attributeFormData={ attributeFormData }
-        state={ state }
         { ...rest }
       />;
     case 'lines':

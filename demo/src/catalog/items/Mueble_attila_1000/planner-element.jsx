@@ -64,13 +64,16 @@ export default {
   },
 
   render2D: function ( element, layer, scene ) {
+    console.log( 'hi', element );
     let width = ( typeof ( element.width ) == 'object' ) ? element.properties.get( 'width' ).get( 'length' ) : element.width;
-    let depth = ( typeof ( element.depth ) == 'object' ) ? element.properties.get( 'depth' ).get( 'length' ) : element.depth;
+    // let depth = ( typeof ( element.depth ) == 'object' ) ? element.properties.get( 'depth' ).get( 'length' ) : element.depth;
+    let depth = ( typeof ( element.depth ) === 'object' ) ? element.getIn( [ 'depth', 'length' ] ) : element.depth;
     let angle = element.rotation + 90;
     let textRotation = Math.sin( angle * Math.PI / 180 ) < 0 ? 180 : 0;
 
     let style = { stroke: element.selected ? '#0096fd' : '#000', strokeWidth: '2px', fill: '#84e1ce' };
     let arrow_style = { stroke: element.selected ? '#0096fd' : null, strokeWidth: '2px', fill: '#84e1ce' };
+
 
     return (
       <g>
@@ -168,6 +171,8 @@ export default {
       mesh.rotation.y = element.rotation * Math.PI / 180;
       return Promise.resolve( mesh );
     }
+    console.log( mesh );
+    console.log( element );
 
     if ( sizeParametricObject3d( mesh, element ) )
       return Promise.resolve( mesh );

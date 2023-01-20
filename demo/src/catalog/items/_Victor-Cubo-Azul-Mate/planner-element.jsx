@@ -54,7 +54,7 @@ export default {
 
   render2D: function ( element, layer, scene ) {
     let width = ( typeof ( element.width ) == 'object' ) ? element.properties.get( 'width' ).get( 'length' ) : element.width;
-    let depth = ( typeof ( element.depth ) == 'object' ) ? element.properties.get( 'depth' ).get( 'length' ) : element.depth;
+    // let depth = ( typeof ( element.depth ) == 'object' ) ? element.properties.get( 'depth' ).get( 'length' ) : element.depth;
     let angle = element.rotation + 90;
     let textRotation = Math.sin( angle * Math.PI / 180 ) < 0 ? 180 : 0;
 

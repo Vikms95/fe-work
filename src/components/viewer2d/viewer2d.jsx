@@ -230,8 +230,10 @@ export default function Viewer2D (
           break;
 
         case 'items':
-          if ( elementData.part === 'rotation-anchor' )
+          if ( elementData.part === 'rotation-anchor' ) {
+            console.log( "rotating item" );
             itemsActions.beginRotatingItem( elementData.layer, elementData.id, x, y );
+          }
           else
             itemsActions.beginDraggingItem( elementData.layer, elementData.id, x, y );
           break;
