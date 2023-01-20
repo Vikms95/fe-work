@@ -18,13 +18,13 @@ const width =
 //todo pedir min y max del morph
 const depth = {
   min: 50,
-  max: 5000,
+  max: 100,
 };
 
 //todo idem
 const height = {
   min: 50,
-  max: 5000
+  max: 100
 };
 const glbInfo =
 {
