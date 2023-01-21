@@ -121,33 +121,12 @@ export default {
   },
 
   render3D: function ( element, layer, scene ) {
-    console.log( 'test render3D from mueble' );
     let loadItem = () =>
       loadGLTF( glbInfo );
 
     return getObject3d( element.name, loadItem ).then( object => {
-      /*
-      let obj = new Object3D();
-      let bbox = new BoxHelper(object, 0x99c3fb);
-
-      bbox.material.linewidth = 100;
-      bbox.renderOrder = 1000;
-      bbox.material.depthTest = false;
-      obj.add(bbox);
-      obj.add(object);
-      //object.add(bbox);
-
-      //selectedObject3d(object, element.selected);
-      //sizeParametricObject3d(object, glbInfo, element);
-
-      return obj;
-      */
-      console.log( 'test cacheloaded', cacheLoadedObjects );
-      console.log( 'test cacheloading', cacheLoadedObjects );
       sizeParametricObject3d( object, element );
-
       return object;
-
     } );
   },
 
@@ -159,25 +138,30 @@ export default {
       return Promise.resolve( mesh );
     }
 
-    //reference as morphtargetinfluences
-    console.log( 'mesh', mesh );
-    const targetMesh = mesh.children[ 0 ].children[ 0 ].children[ 0 ];
-
-    if ( targetMesh ) {
-      const text = targetMesh.material.map;
-      const values = {
-        width: targetMesh.morphTargetInfluences[ 0 ],
-        height: targetMesh.morphTargetInfluences[ 1 ],
-      };
-
-      text.repeat.set( values.width + 1, values.height + 1 );
-      text.needsUpdate = true;
-      mesh.children[ 0 ].children[ 0 ].children[ 0 ].material.map = text;
-    }
+    if ( sizeParametricObject3d( mesh, element ) ) {
 
 
-    if ( sizeParametricObject3d( mesh, element ) )
+      //reference as morphtargetinfluences
+      console.log( '-', mesh );
+      const targetMesh = mesh.children[ 0 ].children[ 0 ].children[ 0 ];
+
+      if ( targetMesh ) {
+        const text = targetMesh.material.map;
+        console.log( 'morh values', targetMesh.morphTargetInfluences );
+        const values = {
+          width: targetMesh.morphTargetInfluences[ 0 ],
+          height: targetMesh.morphTargetInfluences[ 1 ],
+        };
+
+        //value should be higher the bigger the morph is(and bigger the object)
+        text.repeat.set( values.width + 1, values.height + 1 );
+        text.needsUpdate = true;
+        mesh.children[ 0 ].children[ 0 ].children[ 0 ].material.map = text;
+        console.log( 'test text repeat', text.repeat );
+      }
+
       return Promise.resolve( mesh );
+    }
 
     return noPerf();
   }

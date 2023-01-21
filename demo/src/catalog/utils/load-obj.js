@@ -430,7 +430,6 @@ export function loadGLTF ( input ) {
                 colorTexture.needsUpdate = true;
                 node.material.map = colorTexture;
               };
-              console.log( 'test node', node );
             }
           }
         } );
