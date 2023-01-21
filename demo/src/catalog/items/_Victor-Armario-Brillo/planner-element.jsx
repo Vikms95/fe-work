@@ -1,6 +1,6 @@
 import { BoxHelper, Box3, ObjectLoader, Object3D, Mesh } from 'three';
 import { loadGLTF } from '../../utils/load-obj';
-import { getObject3d, selectedObject3d, sizeParametricObject3d, cacheLoadedObjects, cacheLoadingObjects } from '../../utils/objects3d-utils';
+import { getObject3D, selectedObject3D, sizeParametricObject3D, cacheLoadedObjects, cacheLoadingObjects, repeatTexturesOnMorph } from '../../utils/objects3d-utils';
 import path from 'path';
 import convert from 'convert-units';
 
@@ -124,8 +124,8 @@ export default {
     let loadItem = () =>
       loadGLTF( glbInfo );
 
-    return getObject3d( element.name, loadItem ).then( object => {
-      sizeParametricObject3d( object, element );
+    return getObject3D( element.name, loadItem ).then( object => {
+      sizeParametricObject3D( object, element );
       return object;
     } );
   },
@@ -138,28 +138,8 @@ export default {
       return Promise.resolve( mesh );
     }
 
-    if ( sizeParametricObject3d( mesh, element ) ) {
-
-
-      //reference as morphtargetinfluences
-      console.log( '-', mesh );
-      const targetMesh = mesh.children[ 0 ].children[ 0 ].children[ 0 ];
-
-      if ( targetMesh ) {
-        const text = targetMesh.material.map;
-        console.log( 'morh values', targetMesh.morphTargetInfluences );
-        const values = {
-          width: targetMesh.morphTargetInfluences[ 0 ],
-          height: targetMesh.morphTargetInfluences[ 1 ],
-        };
-
-        //value should be higher the bigger the morph is(and bigger the object)
-        text.repeat.set( values.width + 1, values.height + 1 );
-        text.needsUpdate = true;
-        mesh.children[ 0 ].children[ 0 ].children[ 0 ].material.map = text;
-        console.log( 'test text repeat', text.repeat );
-      }
-
+    if ( sizeParametricObject3D( mesh, element ) ) {
+      repeatTexturesOnMorph( mesh );
       return Promise.resolve( mesh );
     }
 

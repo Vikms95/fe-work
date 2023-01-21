@@ -4,7 +4,7 @@ export let cacheLoadingObjects = new Map();
 export let cacheLoadedObjects = new Map();
 export let cacheLoadedTextures = {};
 
-export function getObject3d ( name, loadObj ) {
+export function getObject3D ( name, loadObj ) {
   let object = cacheLoadedObjects.get( name );
 
   //todo this is returning when the texture is lost
@@ -34,7 +34,7 @@ export function getObject3d ( name, loadObj ) {
   return promise;
 }
 
-export function selectedObject3d ( object, selected ) {
+export function selectedObject3D ( object, selected ) {
   object.traverse( ( child ) => {
     if ( child instanceof BoxHelper ) {
       child.visible = selected;
@@ -42,7 +42,7 @@ export function selectedObject3d ( object, selected ) {
   } );
 }
 
-export function getMorphObject3d ( object, element ) {
+export function getMorphObject3D ( object, element ) {
   let morph = [];
 
   object.traverse( o => {
@@ -86,8 +86,8 @@ export function getMorphObject3d ( object, element ) {
   return morph;
 }
 
-export function sizeParametricObject3d ( object, element ) {
-  let morph = getMorphObject3d( object, element );
+export function sizeParametricObject3D ( object, element ) {
+  let morph = getMorphObject3D( object, element );
   let hasMorph = false;
 
   morph.forEach( m => {
@@ -100,3 +100,32 @@ export function sizeParametricObject3d ( object, element ) {
 
   return hasMorph;
 }
+
+//Se hará con un `traverse`, pero de momento, ese método hace
+//que se pierda la textura al actualizar el visor 3D
+export function repeatTexturesOnMorph ( mesh ) {
+  const targetMesh = mesh.children[ 0 ].children[ 0 ].children[ 2 ];
+  console.log( 'test', targetMesh );
+
+  if ( targetMesh ) {
+    const text = targetMesh.material.map;
+
+    const textSizes = {
+      width: text.source.data.width,
+      height: text.source.data.height,
+    };
+
+    const morphValues = {
+      width: targetMesh.morphTargetInfluences[ 0 ],
+      height: targetMesh.morphTargetInfluences[ 1 ],
+    };
+
+    text.repeat.set(
+      Math.max( 1, morphValues.width / textSizes.width ),
+      Math.max( 1, morphValues.height / textSizes.height )
+    );
+
+    text.needsUpdate = true;
+    mesh.children[ 0 ].children[ 0 ].children[ 2 ].material.map = text;
+  }
+};

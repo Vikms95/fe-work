@@ -204,8 +204,8 @@ export function loadGLTF ( input ) {
         // console.log( 'size 2', measure2 );
 
         const colorTexture = loader.load( woodTextureFile );
-        // colorTexture.wrapS = THREE.RepeatWrapping;
-        // colorTexture.wrapT = THREE.RepeatWrapping;
+        colorTexture.wrapS = THREE.RepeatWrapping;
+        colorTexture.wrapT = THREE.RepeatWrapping;
         colorTexture.repeat.set( 2, 2 );
         colorTexture.needsUpdate = true;
 
@@ -421,12 +421,21 @@ export function loadGLTF ( input ) {
                 colorTexture.wrapT = THREE.RepeatWrapping;
                 colorTexture.wrapS = THREE.RepeatWrapping;
 
-                const values = {
+                const textSizes = {
+                  width: colorTexture.source.data.width,
+                  height: colorTexture.source.data.height,
+                };
+
+                const morphValues = {
                   width: node.morphTargetInfluences[ 0 ],
                   height: node.morphTargetInfluences[ 1 ],
                 };
 
-                colorTexture.repeat.set( values.width + 1, values.height + 1 );
+                colorTexture.repeat.set(
+                  Math.max( 1, morphValues.width / textSizes.width ),
+                  Math.max( 1, morphValues.height / textSizes.height )
+                );
+
                 colorTexture.needsUpdate = true;
                 node.material.map = colorTexture;
               };
