@@ -548,7 +548,6 @@ class MaterialCreator {
     // let texture = cacheTextures.get( url );
     //
 
-    console.log( 'test', url );
     const manager = ( this.manager !== undefined ) ? this.manager : DefaultLoadingManager;
     let loader = manager.getHandler( url );
 

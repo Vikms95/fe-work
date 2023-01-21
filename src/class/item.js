@@ -24,7 +24,6 @@ class Item {
   static create ( state, layerID, type, x, y, rotation ) {
     // 200, 100
     let itemID = IDBroker.acquireID();
-    console.log( 'state.catalog.factoryElement', state.catalog.factoryElement );
     let info = state.catalog.getIn( [ 'elements', type, 'info' ] );
     let options = {
       id: itemID,
@@ -234,7 +233,6 @@ class Item {
     if ( 85 < rotation && rotation < 90 ) rotation = 90;
     if ( -270 < rotation && rotation < -265 ) rotation = 90;
 
-    console.log( 'rot', rotation );
     item = item.merge( {
       rotation,
     } );
@@ -260,10 +258,7 @@ class Item {
   }
 
   static setProperties ( state, layerID, itemID, properties ) {
-    console.log( 'test new properties', properties );
-    console.log( 'test state before merge', state );
     state = state.mergeIn( [ 'scene', 'layers', layerID, 'items', itemID, 'properties' ], properties );
-    console.log( 'test state after merge', state );
 
     return {
       updatedState: state

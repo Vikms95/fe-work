@@ -23,7 +23,6 @@ export default function Item ( { layer, item, scene, catalog } ) {
 
   let { x, y, rotation } = item;
 
-  console.log( item );
   let renderedItem = catalog.getElement( item.type ).render2D( item, layer, scene );
   let width = ( typeof ( item.width ) == 'object' ) ? item.properties.get( 'width' ).get( 'length' ) : item.width;
   //todo commented this bc cubes have depth on attributes

@@ -360,21 +360,13 @@ export default class ElementEditor extends Component {
 
     switch ( this.props.element.prototype ) {
       case 'items': {
-        console.log( 'test', value );
-        console.log( 'test', attributeName );
-        console.log( 'test', attributesFormData );
         attributesFormData = attributesFormData.set( attributeName, value );
-        console.log( 'attsdata after set', attributesFormData );
         // this.setState( { attributesFormData } );
         break;
       }
       case 'lines':
 
-        console.log( 'test line value', value );
-        console.log( 'test line name', attributeName );
-        console.log( 'test line form', attributesFormData );
         attributesFormData = attributesFormData.set( attributeName, value );
-        console.log( 'test line form after set', attributesFormData );
         this.setState( { attributesFormData } );
 
         if ( isEnter && !isMultipleSelection( this.props.state ) ) {
@@ -526,10 +518,7 @@ export default class ElementEditor extends Component {
   updateProperty ( propertyName, value, isEnter ) {
     let { state: { propertiesFormData } } = this;
 
-    console.log( 'properties', propertiesFormData );
-    console.log( 'properties', propertyName );
     propertiesFormData = propertiesFormData.setIn( [ propertyName, 'currentValue' ], value );
-    console.log( 'properties after set', propertiesFormData );
     this.setState( { propertiesFormData } );
     this.save( { propertiesFormData, isEnter: isEnter || false } );
 

@@ -45,7 +45,6 @@ export function selectedObject3d ( object, selected ) {
 export function getMorphObject3d ( object, element ) {
   let morph = [];
 
-  console.log( 'object', object );
   object.traverse( o => {
     if ( o.isMesh && o.morphTargetInfluences ) {
       Object.keys( o.morphTargetDictionary ).forEach( key => {
@@ -88,8 +87,6 @@ export function getMorphObject3d ( object, element ) {
 }
 
 export function sizeParametricObject3d ( object, element ) {
-  console.log( 'element', element );
-  console.log( 'object', object );
   let morph = getMorphObject3d( object, element );
   let hasMorph = false;
 

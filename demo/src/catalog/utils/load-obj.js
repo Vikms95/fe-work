@@ -231,7 +231,6 @@ export function loadGLTF ( input ) {
         object.children[ 0 ].children[ 1 ].material.roughness = 0.4;
         object.children[ 0 ].children[ 1 ].material.metalness = 0;
 
-        console.log( 'test', object.children[ 0 ].children[ 1 ] );
 
 
 
@@ -416,17 +415,23 @@ export function loadGLTF ( input ) {
             } else if ( object.name === 'Scene_Brillo' ) {
               node.material.roughness = 0.5;
               node.material.metalness = 0;
+
               if ( node.material.map !== null ) {
                 const colorTexture = node.material.map;
                 colorTexture.wrapT = THREE.RepeatWrapping;
                 colorTexture.wrapS = THREE.RepeatWrapping;
-                colorTexture.repeat.set( 2, 2 );
+
+                const values = {
+                  width: node.morphTargetInfluences[ 0 ],
+                  height: node.morphTargetInfluences[ 1 ],
+                };
+
+                colorTexture.repeat.set( values.width + 1, values.height + 1 );
+                colorTexture.needsUpdate = true;
                 node.material.map = colorTexture;
-              }
-              console.log( 'test', node );
-
+              };
+              console.log( 'test node', node );
             }
-
           }
         } );
 

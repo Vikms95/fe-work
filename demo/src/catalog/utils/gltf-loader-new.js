@@ -1195,7 +1195,6 @@ class GLTFTextureBasisUExtension {
 
   loadTexture ( textureIndex ) {
 
-    console.log( textureIndex );
     const parser = this.parser;
     const json = parser.json;
 
