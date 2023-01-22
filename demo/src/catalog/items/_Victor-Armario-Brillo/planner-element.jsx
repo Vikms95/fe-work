@@ -1,6 +1,6 @@
 import { BoxHelper, Box3, ObjectLoader, Object3D, Mesh } from 'three';
 import { loadGLTF } from '../../utils/load-obj';
-import { getObject3D, selectedObject3D, sizeParametricObject3D, cacheLoadedObjects, cacheLoadingObjects, repeatTexturesOnMorph } from '../../utils/objects3d-utils';
+import { getObject3d, selectedObject3d, sizeParametricObject3d, cacheLoadedObjects, cacheLoadingObjects, repeatTexturesOnMorph } from '../../utils/objects3d-utils';
 import path from 'path';
 import convert from 'convert-units';
 
@@ -124,8 +124,8 @@ export default {
     let loadItem = () =>
       loadGLTF( glbInfo );
 
-    return getObject3D( element.name, loadItem ).then( object => {
-      sizeParametricObject3D( object, element );
+    return getObject3d( element.name, loadItem ).then( object => {
+      sizeParametricObject3d( object, element );
       return object;
     } );
   },
@@ -138,7 +138,7 @@ export default {
       return Promise.resolve( mesh );
     }
 
-    if ( sizeParametricObject3D( mesh, element ) ) {
+    if ( sizeParametricObject3d( mesh, element ) ) {
       repeatTexturesOnMorph( mesh );
       return Promise.resolve( mesh );
     }

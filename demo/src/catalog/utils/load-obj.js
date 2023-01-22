@@ -187,41 +187,49 @@ export function loadGLTF ( input ) {
         const firstMesh = object.children[ 0 ].children[ 0 ].clone();
         const secondMesh = object.children[ 0 ].children[ 1 ].clone();
         const loader = new THREE.TextureLoader();
-
-        // const box1 = new THREE.Box3();
-        // firstMesh.geometry.computeBoundingBox();
-        // box1.copy( firstMesh.geometry.boundingBox ).applyMatrix4( firstMesh.matrixWorld );
-        // const measure1 = new THREE.Vector3();
-        // const sizeBox1 = box1.getSize( measure1 );
-
-        // const box2 = new THREE.Box3();
-        // secondMesh.geometry.computeBoundingBox();
-        // box2.copy( secondMesh.geometry.boundingBox ).applyMatrix4( secondMesh.matrixWorld );
-        // const measure2 = new THREE.Vector3();
-        // const sizeBox2 = box2.getSize( measure2 );
-
-        // console.log( 'size 1', measure1 );
-        // console.log( 'size 2', measure2 );
-
         const colorTexture = loader.load( woodTextureFile );
-        colorTexture.wrapS = THREE.RepeatWrapping;
-        colorTexture.wrapT = THREE.RepeatWrapping;
-        colorTexture.repeat.set( 2, 2 );
-        colorTexture.needsUpdate = true;
+
+        if ( firstMesh.material.map !== null ) {
+          const colorTexture1 = firstMesh.material.map;
+          colorTexture1.wrapT = THREE.RepeatWrapping;
+          colorTexture1.wrapS = THREE.RepeatWrapping;
+
+          const textSizes = {
+            width: colorTexture1.source.data.width,
+            height: colorTexture1.source.data.height,
+          };
+
+
+          const morphValues1 = {
+            width: firstMesh.morphTargetInfluences[ 0 ],
+            height: firstMesh.morphTargetInfluences[ 1 ],
+          };
+
+          colorTexture1.repeat.set(
+            1 + morphValues1.width,
+            1 + morphValues1.height
+          );
+
+          colorTexture1.needsUpdate = true;
+          firstMesh.material.map = colorTexture1;
+        };
+
 
         const oldMaterialParams1 = firstMesh.material.clone();
         const oldGeoParams1 = firstMesh.geometry.clone();
 
         const newMaterial1 = new MeshStandardMaterial( {
           map: colorTexture,
-        } ).clone( oldMaterialParams1 );
+        }
+        ).clone( oldMaterialParams1 );
 
         const oldMaterialParams2 = secondMesh.material.clone();
         const oldGeoParams2 = secondMesh.geometry.clone();
 
         const newMaterial2 = new MeshStandardMaterial( {
           map: colorTexture,
-        } ).clone( oldMaterialParams2 );
+        }
+        ).clone( oldMaterialParams2 );
 
         object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
         object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
@@ -230,10 +238,6 @@ export function loadGLTF ( input ) {
         object.children[ 0 ].children[ 0 ].material.metalness = 0;
         object.children[ 0 ].children[ 1 ].material.roughness = 0.4;
         object.children[ 0 ].children[ 1 ].material.metalness = 0;
-
-
-
-
       }
       else if ( object.name === "Scene_Cube_Wood_BrilloAlto" ) {
         const firstMesh = object.children[ 0 ].children[ 0 ].clone();
@@ -432,8 +436,8 @@ export function loadGLTF ( input ) {
                 };
 
                 colorTexture.repeat.set(
-                  Math.max( 1, morphValues.width / textSizes.width ),
-                  Math.max( 1, morphValues.height / textSizes.height )
+                  ( 1 + morphValues.width ) * 1.05,
+                  ( 1 + morphValues.height ) * 1.05
                 );
 
                 colorTexture.needsUpdate = true;

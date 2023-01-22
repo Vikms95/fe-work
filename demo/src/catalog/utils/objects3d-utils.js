@@ -1,10 +1,10 @@
-import { BoxHelper } from 'three';
+import { Box3, BoxHelper } from 'three';
 
 export let cacheLoadingObjects = new Map();
 export let cacheLoadedObjects = new Map();
 export let cacheLoadedTextures = {};
 
-export function getObject3D ( name, loadObj ) {
+export function getObject3d ( name, loadObj ) {
   let object = cacheLoadedObjects.get( name );
 
   //todo this is returning when the texture is lost
@@ -34,7 +34,7 @@ export function getObject3D ( name, loadObj ) {
   return promise;
 }
 
-export function selectedObject3D ( object, selected ) {
+export function selectedObject3d ( object, selected ) {
   object.traverse( ( child ) => {
     if ( child instanceof BoxHelper ) {
       child.visible = selected;
@@ -42,7 +42,7 @@ export function selectedObject3D ( object, selected ) {
   } );
 }
 
-export function getMorphObject3D ( object, element ) {
+export function getMorphObject3d ( object, element ) {
   let morph = [];
 
   object.traverse( o => {
@@ -86,8 +86,8 @@ export function getMorphObject3D ( object, element ) {
   return morph;
 }
 
-export function sizeParametricObject3D ( object, element ) {
-  let morph = getMorphObject3D( object, element );
+export function sizeParametricObject3d ( object, element ) {
+  let morph = getMorphObject3d( object, element );
   let hasMorph = false;
 
   morph.forEach( m => {
@@ -104,28 +104,23 @@ export function sizeParametricObject3D ( object, element ) {
 //Se hará con un `traverse`, pero de momento, ese método hace
 //que se pierda la textura al actualizar el visor 3D
 export function repeatTexturesOnMorph ( mesh ) {
-  const targetMesh = mesh.children[ 0 ].children[ 0 ].children[ 2 ];
-  console.log( 'test', targetMesh );
+  const targetMesh = mesh.children[ 0 ].children[ 0 ].children[ 0 ];
+  const texture = targetMesh.material.map;
 
-  if ( targetMesh ) {
-    const text = targetMesh.material.map;
+  console.log( targetMesh );
 
-    const textSizes = {
-      width: text.source.data.width,
-      height: text.source.data.height,
-    };
-
+  if ( targetMesh && texture ) {
     const morphValues = {
       width: targetMesh.morphTargetInfluences[ 0 ],
       height: targetMesh.morphTargetInfluences[ 1 ],
     };
 
-    text.repeat.set(
-      Math.max( 1, morphValues.width / textSizes.width ),
-      Math.max( 1, morphValues.height / textSizes.height )
+    texture.repeat.set(
+      1 + morphValues.width,
+      1 + morphValues.height
     );
 
-    text.needsUpdate = true;
-    mesh.children[ 0 ].children[ 0 ].children[ 2 ].material.map = text;
+    texture.needsUpdate = true;
+    mesh.children[ 0 ].children[ 0 ].children[ 0 ].material.map = texture;
   }
 };

@@ -30,7 +30,7 @@ export default {
   prototype: 'items',
 
   info: {
-    title: 'Mueble_Víctor_Mate_Rugoso',
+    title: 'Mueble_Victor_Mate_Rugoso',
     // title: 'Fussion Chrome 800 2 cajones',
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',

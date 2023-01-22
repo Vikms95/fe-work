@@ -1,6 +1,14 @@
 import { BoxHelper, Box3, ObjectLoader, Object3D } from 'three';
 import { loadGLTF } from '../../utils/load-obj';
-import { getObject3d, selectedObject3d, sizeParametricObject3d, cacheLoadedObjects, cacheLoadingObjects } from '../../utils/objects3d-utils';
+import {
+  getObject3d,
+  selectedObject3d,
+  sizeParametricObject3d,
+  cacheLoadedObjects,
+  cacheLoadingObjects,
+  repeatTexturesOnMorph
+} from '../../utils/objects3d-utils';
+
 import path from 'path';
 import convert from 'convert-units';
 
@@ -82,7 +90,6 @@ export default {
   },
 
   render2D: function ( element, layer, scene ) {
-    console.log( 'scene values', element );
     let width = ( typeof ( element.width ) == 'object' ) ? element.properties.get( 'width' ).get( 'length' ) : element.width;
     let depth = element.properties.get( 'depth' ).get( 'length' );
     // let height = element.properties.get( 'height' ).get( 'length' );
@@ -156,43 +163,18 @@ export default {
   },
 
   updateRender3D: ( element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild ) => {
-    console.log( 'test updaterender3D from mueble' );
     let noPerf = () => { selfDestroy(); return selfBuild(); };
-
-    /*
-    if (differences.indexOf('selected') !== -1) {
-      if (element.selected) {
-        let bbox = new BoxHelper(mesh, 0x99c3fb);
-        bbox.material.linewidth = 5;
-        bbox.renderOrder = 1000;
-        bbox.material.depthTest = false;
-        mesh.add(bbox);
-  
-        return Promise.resolve(mesh);
-      }
-    }
-    */
-
-    /*
-    if (differences.indexOf('selected') !== -1) {
-      //mesh.traverse((child) => {
-      //  if (child instanceof BoxHelper) {
-      //    child.visible = element.selected;
-      //  }
-      //});
-      selectedObject3d(mesh, element.selected);
-  
-      return Promise.resolve(mesh);
-    }
-    */
 
     if ( differences.indexOf( 'rotation' ) !== -1 ) {
       mesh.rotation.y = element.rotation * Math.PI / 180;
       return Promise.resolve( mesh );
     }
 
-    if ( sizeParametricObject3d( mesh, element ) )
+    if ( sizeParametricObject3d( mesh, element ) ) {
+      repeatTexturesOnMorph( mesh );
       return Promise.resolve( mesh );
+
+    }
 
     return noPerf();
   }
