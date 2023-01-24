@@ -369,6 +369,8 @@ function buildWall0 ( element, layer, scene, textures ) {
 
   let merged = new Group();
   merged.add( soul, frontFace, backFace );
+  merged.receiveShadow = true;
+  merged.castShadow = true;
   //merged.add(soul2, frontFace, backFace);
 
   /*

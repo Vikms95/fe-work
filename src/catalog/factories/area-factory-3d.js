@@ -134,7 +134,7 @@ export function createArea ( element, layer, scene, textures ) {
   }
 
   let areaMaterial = new MeshStandardMaterial( {
-    side: DoubleSide,
+    // side: DoubleSide,
     color
   } );
 

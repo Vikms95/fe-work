@@ -15,211 +15,11 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
-import { MeshStandardMaterial, SpotLight } from 'three';
+import { MeshStandardMaterial, PointLight, SpotLight } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 
 
 const AMBIENT_LIGHT = 3;
-
-// export default function Scene3DViewer ( props ) {
-//   let camera;
-//   let renderer;
-//   let planData;
-//   const rulerSize = 15; //px
-//   let lastMousePosition = {};
-//   let width = props.width - rulerSize;
-
-//   let height = props.height - rulerSize;
-//   let renderingID = 0;
-
-//   window.__threeRenderer = renderer;
-
-//   renderer =
-//     window.__threeRenderer ||
-//     new THREE.WebGLRenderer( {
-//       antialias: true
-//     } );
-
-//   const context = useContext( Context );
-
-//   const update3DZoom = ( event ) => {
-//     const canvas = document.querySelector( 'canvas' );
-//     const isSelected = getIsElementSelected( this.props.state );
-
-//     if ( !isSelected && canvas ) switch ( event.keyCode ) {
-//       case 187:
-//       case 107:
-//         dispatch3DZoomIn( canvas ); break;
-//       case 189:
-//       case 109:
-//         dispatch3DZoomOut( canvas ); break;
-//     }
-//   };
-
-//   useEffect( () => {
-//     document.addEventListener( 'keydown', update3DZoom );
-
-//     let actions = {
-//       areaActions: context.areaActions,
-//       holesActions: context.holesActions,
-//       itemsActions: context.itemsActions,
-//       linesActions: context.linesActions,
-//       projectActions: context.projectActions
-//     };
-
-//     let { state } = props;
-
-//     let data = state.scene;
-//     let canvasWrapper = ReactDOM.findDOMNode( refs.canvasWrapper );
-//     let scene3D = new THREE.Scene();
-
-//     renderer.setClearColor( new THREE.Color( SharedStyle.COLORS.white ) );
-//     renderer.setSize( width, height );
-
-//     renderer.physicallyCorrectLights = true;
-//     renderer.setPixelRatio( window.devicePixelRatio );
-
-//     renderer.encoding = THREE.sRGBEncoding;
-//     renderer.toneMapping = Number( THREE.LinearToneMapping );
-//     renderer.toneMappingExposure = Math.pow( 2, 0 );
-
-//     const environment = new RoomEnvironment();
-//     const pmremGenerator = new THREE.PMREMGenerator( renderer );
-//     scene3D.environment = pmremGenerator.fromScene( environment, 0.04 ).texture;
-
-//     planData = parseData( state, data, actions, context.catalog );
-//     scene3D.add( planData.plan );
-//     scene3D.add( planData.grid );
-
-//     const aspectRatio = width / height;
-//     let camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
-
-//     scene3D.add( camera );
-
-//     const cameraPositionX = -( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 2;
-//     const cameraPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) / 2 * 10;
-//     const cameraPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 2;
-
-//     camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
-//     camera.up = new THREE.Vector3( 0, 1, 0 );
-
-//     let toIntersect = [ planData.plan ];
-//     let mouse = new THREE.Vector2();
-//     let raycaster = new THREE.Raycaster();
-
-//     const mouseDownEvent = ( event ) => {
-//       lastMousePosition.x = event.offsetX / width * 2 - 1;
-//       lastMousePosition.y = -event.offsetY / height * 2 + 1;
-//     };
-
-//     const mouseUpEvent = ( event ) => {
-//       event.preventDefault();
-
-//       mouse.x = ( event.offsetX / width ) * 2 - 1;
-//       mouse.y = -( event.offsetY / height ) * 2 + 1;
-
-//       if ( Math.abs( mouse.x - lastMousePosition.x ) <= 0.02 && Math.abs( mouse.y - lastMousePosition.y ) <= 0.02 ) {
-
-//         raycaster.setFromCamera( mouse, camera );
-//         let intersects = raycaster.intersectObjects( toIntersect, true );
-
-//         if ( intersects.length > 0 && !( isNaN( intersects[ 0 ].distance ) ) ) {
-//           intersects[ 0 ].object.interact && intersects[ 0 ].object.interact();
-//         } else {
-//           context.projectActions.unselectAll();
-//         }
-//       }
-//     };
-
-//     renderer.domElement.addEventListener( 'mousedown', mouseDownEvent );
-//     renderer.domElement.addEventListener( 'mouseup', mouseUpEvent );
-//     renderer.domElement.style.display = 'block';
-
-//     // add the output of the renderer to the html element
-//     canvasWrapper.appendChild( renderer.domElement );
-
-//     // create orbit controls
-//     let orbitController = new OrbitControls( camera, renderer.domElement );
-
-//     let spotLightTarget = new THREE.Object3D();
-
-//     spotLightTarget.name = 'spotLightTarget';
-
-//     // Sets spotlight position to the target of orbitControll
-//     spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
-
-//     // spotLight1.target = spotLightTarget;
-//     scene3D.add( spotLightTarget );
-
-//     let render = () => {
-//       orbitController.update();
-//       // spotLight1.position.set( camera.position.x, camera.position.y, camera.position.z );
-//       spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
-//       camera.updateMatrix();
-//       camera.updateMatrixWorld();
-
-//       for ( let elemID in planData.sceneGraph.LODs ) {
-//         planData.sceneGraph.LODs[ elemID ].update( camera );
-//       }
-
-//       renderer.render( scene3D, camera );
-//       renderingID = requestAnimationFrame( render );
-//     };
-
-//     render();
-
-//     let orbitControls = orbitController;
-
-//     return () => {
-//       document.removeEventListener( 'keydown', update3DZoom );
-//       cancelAnimationFrame( renderingID );
-
-//       orbitControls.dispose();
-
-//       renderer.domElement.removeEventListener( 'mousedown', mouseDownEvent );
-//       renderer.domElement.removeEventListener( 'mouseup', mouseUpEvent );
-
-//       disposeScene( scene3D );
-//       scene3D.remove( planData.plan );
-//       scene3D.remove( planData.grid );
-
-//       scene3D = null;
-//       planData = null;
-//       camera = null;
-//       orbitControls = null;
-//       renderer.renderLists.dispose();
-//     };
-//   }, [] );
-
-//   useEffect( () => {
-//     let { width, height } = props;
-
-//     let actions = {
-//       areaActions: context.areaActions,
-//       holesActions: context.holesActions,
-//       itemsActions: context.itemsActions,
-//       linesActions: context.linesActions,
-//       projectActions: context.projectActions
-//     };
-
-
-//     width = width;
-//     height = height;
-
-//     camera.aspect = width / height;
-//     camera.updateProjectionMatrix();
-
-//     if ( nextProps.state.scene !== props.state.scene ) {
-//       let changedValues = diff( props.state.scene, nextProps.state.scene );
-//       updateScene( planData, nextProps.state.scene, props.state.scene, changedValues.toJS(), actions, context.catalog );
-//     }
-
-//     renderer.setSize( width, height );
-//   }, [ props.width, props.height ] );
-
-
-//   return React.createElement( 'div', { ref: 'canvasWrapper' } );
-// }
 
 export default class Scene3DViewer extends React.Component {
 
@@ -241,6 +41,12 @@ export default class Scene3DViewer extends React.Component {
       } );
 
     this.update3DZoom = this.update3DZoom.bind( this );
+    this.enableLightShadow = this.enableLightShadow.bind( this );
+    this.enableRendererShadows = this.enableRendererShadows.bind( this );
+    this.enableMeshCastAndReceiveShadow = this.enableMeshCastAndReceiveShadow.bind( this );
+    this.configureRendererPBR = this.configureRendererPBR.bind( this );
+    this.createAndAddCamera = this.createAndAddCamera.bind( this );
+    this.addLightOnTop = this.addLightOnTop.bind( this );
   }
 
   update3DZoom ( event ) {
@@ -257,8 +63,92 @@ export default class Scene3DViewer extends React.Component {
     }
   }
 
+  enableLightShadow ( light, scene ) {
+    light.castShadow = {
+      shadows: true,
+      exposure: 0.68,
+      // bulbPower: 1700,
+      // hemiIrradiance: 4000
+    };
+
+    if ( light.isSpotLight ) {
+      console.log( 'spotlight' );
+      light.shadow.bias = 0.0001;
+    }
+    if ( light.isPointLight ) {
+      console.log( 'pointlight' );
+      light.shadow.bias = 0.0001;
+    }
+
+    if ( light.isDirectionalLight ) {
+      console.log( 'directionallight' );
+      light.shadow.bias = 0.0001;
+    }
+
+    if ( !light.isSpotLight ) {
+      light.shadow.radius = 10;
+      light.shadow.camera.fov = 90;
+
+      light.shadow.camera.top = 500;
+      light.shadow.camera.bottom = -500;
+      light.shadow.camera.left = -500;
+      light.shadow.camera.right = 500;
+      light.shadow.camera.near = 0.5;
+      light.shadow.camera.far = 450;
+    }
+
+    light.shadow.mapSize.width = 2048;
+    light.shadow.mapSize.height = 2048;
+
+    const helper = new THREE.CameraHelper( light.shadow.camera );
+    scene.add( helper );
+  };
+
+  enableRendererShadows ( renderer ) {
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.needsUpdate = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+  };
+
+  enableMeshCastAndReceiveShadow ( mesh ) {
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+  };
+
+  createAndAddCamera ( scene, planData ) {
+    let aspectRatio = this.width / this.height;
+    let camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
+    scene.add( camera );
+
+    let cameraPositionX = -( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 2;
+    let cameraPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) / 2 * 10;
+    let cameraPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 2;
+
+    camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
+    camera.up = new THREE.Vector3( 0, 1, 0 );
+
+    return { camera };
+  }
+
+  configureRendererPBR ( renderer ) {
+
+    renderer.setClearColor( new THREE.Color( SharedStyle.COLORS.white ) );
+    renderer.setSize( this.width, this.height );
+    renderer.physicallyCorrectLights = false;
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.encoding = THREE.sRGBEncoding;
+
+  }
+
+  addLightOnTop ( light, scene ) {
+    light.position.y += 300;
+    scene.add( light );
+
+    this.enableLightShadow( light, scene );
+
+  }
+
   componentDidMount () {
-    document.addEventListener( 'keydown', this.update3DZoom );
 
     let actions = {
       areaActions: this.context.areaActions,
@@ -271,167 +161,47 @@ export default class Scene3DViewer extends React.Component {
     let { state } = this.props;
 
     let data = state.scene;
-    let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
     let scene3D = new THREE.Scene();
+    let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
 
-    this.renderer.setClearColor( new THREE.Color( SharedStyle.COLORS.white ) );
-    this.renderer.setSize( this.width, this.height );
-
-    this.renderer.physicallyCorrectLights = false;
-    this.renderer.setPixelRatio( window.devicePixelRatio );
-    this.renderer.encoding = THREE.sRGBEncoding;
-
-    // this.renderer.toneMapping = Number( THREE.LinearToneMapping );
-    // this.renderer.toneMappingExposure = Math.pow( 2, 0 );
-
-    //todo mapas y ambientes
-    // const environment = new RoomEnvironment();
-    // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    // const { texture } = pmremGenerator.fromScene( environment );
-    // texture.mapping = THREE.EquirectangularReflectionMapping;
-    // scene3D.environment = texture;
+    //** MAKE RENDERER HIGH QUALITY */
+    this.configureRendererPBR( this.renderer );
+    this.enableRendererShadows( this.renderer );
+    canvasWrapper.appendChild( this.renderer.domElement );
 
 
+    //** PARSE CATALOG */
     const planData = parseData( state, data, actions, this.context.catalog );
 
-    let aspectRatio = this.width / this.height;
-    let camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
+    let toIntersect = [ planData.plan ];
+    let mouse = new THREE.Vector2();
+    let raycaster = new THREE.Raycaster();
+    scene3D.add( planData.plan );
+    scene3D.add( planData.grid );
 
-    scene3D.add( camera );
+    //** CREATE CAMERA */
+    const { camera } = this.createAndAddCamera( scene3D, planData );
 
-    // Set position for the camera
-    let cameraPositionX = -( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 2;
-    let cameraPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) / 2 * 10;
-    let cameraPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 2;
 
-    camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
-    camera.up = new THREE.Vector3( 0, 1, 0 );
+    //** ORBIT CONTROLS */
+    let orbitController = new OrbitControls( camera, this.renderer.domElement );
 
-    //todo AMBIENT LIGHT, luz estándar de ambiente
+
+    //** AMBIENT LIGHT */
     let light = new THREE.AmbientLight( 0xafafaf, 0.3 ); // soft white light
     scene3D.add( light );
 
 
-    //todo SPOTLIGHT, luz que se expande en un cono, se le puede ajustar el ángulo del cono 
-    //todo y de la penumbra 
-    //todo EMITE SOMBRAS
-    // let pointLight = new THREE.SpotLight( 'white', 0.15 );
-    // pointLight.castShadow = {
-    //   shadows: true,
-    //   exposure: 0.68,
-    //   bulbPower: 1700,
-    //   hemiIrradiance: 4000
-    // };
-
-    // pointLight.position.y += 300;
-
-    // pointLight.shadow.radius = 10;
-    // pointLight.shadow.camera.fov = 90;
-    // pointLight.shadow.bias = 0.0001;
-
-    // scene3D.add( pointLight );
-
-    // pointLight.shadow.mapSize.width = 1024;
-    // pointLight.shadow.mapSize.height = 1024;
-    // pointLight.shadow.camera.near = 50;
-    // pointLight.shadow.camera.far = 300;
-
-    // const helper = new THREE.CameraHelper( pointLight.shadow.camera );
-    // scene3D.add( helper );
+    //** ADD TEST LIGHT */
+    this.addLightOnTop(
+      // new THREE.SpotLight( 'white', 0.5 ),
+      // new THREE.PointLight( 'white', 0.5 ),
+      new THREE.DirectionalLight( 'white', 0.5 ),
+      scene3D
+    );
 
 
-
-    //todo DIRECTIONALLIGHT, luz recta infinitamente larga, usada para simular los rayos del sol 
-    //todo EMITE SOMBRAS
-    // const directionalLight = new THREE.DirectionalLight( 'white', 1 );
-    // directionalLight.castShadow = true;
-    // // --
-    // const directionalLightHelper = new THREE.DirectionalLightHelper( directionalLight, 50, 'red' );
-    // directionalLight.position.y += 300;
-
-    // scene3D.add( directionalLight );
-    // scene3D.add( directionalLightHelper );
-
-    // directionalLight.shadow.radius = 50;
-    // directionalLight.shadow.mapSize.width = 1024;
-    // directionalLight.shadow.mapSize.height = 1024;
-    // directionalLight.shadow.camera.near = 50;
-    // directionalLight.shadow.camera.far = 300;
-    // directionalLight.shadow.camera.fov = 300;
-    // directionalLight.shadow.bias = 0.0001;
-
-    // const helper = new THREE.CameraHelper( directionalLight.shadow.camera );
-    // scene3D.add( helper );
-
-    //todo POINTLIGHT, punto que emite luz en todas las direcciones, para bombillas 
-    //todo EMITE SOMBRAS
-    let pointLight = new THREE.PointLight( 'white', 0.75 );
-    pointLight.castShadow = {
-      shadows: true,
-      exposure: 0.68,
-      bulbPower: 1700,
-      hemiIrradiance: 4000
-    };
-
-    pointLight.position.y += 300;
-
-    pointLight.shadow.radius = 10;
-    pointLight.shadow.camera.fov = 60;
-    pointLight.shadow.bias = 0.0001;
-
-    scene3D.add( pointLight );
-
-    pointLight.shadow.mapSize.width = 1024;
-    pointLight.shadow.mapSize.height = 1024;
-    pointLight.shadow.camera.near = 50;
-    pointLight.shadow.camera.far = 400;
-
-    const helper = new THREE.CameraHelper( pointLight.shadow.camera );
-    scene3D.add( helper );
-
-
-    //todo HEMISPHERELIGHT, por arriba de un color, por abajo de otro 
-    //todo NO EMITE SOMBRAS
-    // const hemisphereLight = new THREE.HemisphereLight( 'white', 'white', 0.5 );
-    // const hemisSphereLightHelper = new THREE.HemisphereLightHelper( hemisphereLight, 10 );
-    // scene3D.add( hemisphereLight );
-    // scene3D.add( hemisSphereLightHelper );
-
-    //todo SPOTLIGHT SIGUIENDO A LA CÁMARA Y ORBITCONTROLL
-    let orbitController = new OrbitControls( camera, this.renderer.domElement );
-
-    // let spotLightCamera = new THREE.SpotLight( 'white', 1 );
-    // let spotLightTarget = new THREE.Object3D();
-    // spotLightCamera.position.copy( camera.position );
-    // spotLightCamera.position.x += 100;
-    // scene3D.add( spotLightCamera );
-
-    // spotLightTarget.name = 'spotLightTarget';
-    // spotLightTarget.position.copy( orbitController.target );
-    // spotLightCamera.target = spotLightTarget;
-    // scene3D.add( spotLightTarget );
-
-    const cubeGeo = new THREE.BoxGeometry( 100, 100, 100 );
-    const cubeMat = new THREE.MeshStandardMaterial();
-    const cubeMesh = new THREE.Mesh( cubeGeo, cubeMat );
-    cubeMesh.castShadow = true;
-    cubeMesh.receiveShadow = true;
-    scene3D.add( cubeMesh );
-
-    const cubeGeo2 = new THREE.BoxGeometry( 100, 100, 100 );
-    const cubeMat2 = new THREE.MeshStandardMaterial();
-    const cubeMesh2 = new THREE.Mesh( cubeGeo2, cubeMat2 );
-    cubeMesh.position.y += 125;
-    cubeMesh2.castShadow = true;
-    cubeMesh2.receiveShadow = true;
-    scene3D.add( cubeMesh2 );
-
-
-    // OBJECT PICKING
-    let toIntersect = [ planData.plan ];
-    let mouse = new THREE.Vector2();
-    let raycaster = new THREE.Raycaster();
-
+    //** EVENT LISTENERS */
     this.mouseDownEvent = ( event ) => {
       this.lastMousePosition.x = event.offsetX / this.width * 2 - 1;
       this.lastMousePosition.y = -event.offsetY / this.height * 2 + 1;
@@ -459,62 +229,36 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.domElement.addEventListener( 'mousedown', this.mouseDownEvent );
     this.renderer.domElement.addEventListener( 'mouseup', this.mouseUpEvent );
     this.renderer.domElement.style.display = 'block';
-    this.renderer.shadowMap.enabled = true;
-
-    this.renderer.shadowMap.needsUpdate = true;
-    this.renderer.shadowMap.type = THREE.PCFShadowMap;
-    // add the output of the renderer to the html element
-    canvasWrapper.appendChild( this.renderer.domElement );
-
-    // create orbit controls
-    const clock = new THREE.Clock();
+    document.addEventListener( 'keydown', this.update3DZoom );
 
 
-    const rotateLight = ( light ) => {
-      const elapsedTime = clock.getElapsedTime();
-      const angle = elapsedTime;
-      light.position.x = Math.cos( angle ) * 180;
-      light.position.z = Math.sin( angle ) * 180;
 
-    };
+    //** TEST CUBES */
+    // const geo1 = new THREE.BoxGeometry( 100, 50, 50 );
+    // const mat1 = new THREE.MeshStandardMaterial();
+    // const mesh1 = new THREE.Mesh( geo1, mat1 );
+    // scene3D.add( mesh1 );
 
-    const transitionLight = ( light ) => {
-      if ( ascendDirectional ) {
-        light.position.z += 1;
-        if ( light.position.z > 500 ) {
-          ascendDirectional = false;
-        }
+    // const geo2 = new THREE.BoxGeometry( 100, 50, 50 );
+    // const mat2 = new THREE.MeshStandardMaterial();
+    // const mesh2 = new THREE.Mesh( geo2, mat2 );
+    // mesh2.position.y += 200;
+    // scene3D.add( mesh2 );
 
-      } else if ( !ascendDirectional ) {
-        light.position.z -= 1;
-        if ( light.position.z < -500 ) {
-          ascendDirectional = true;
-        }
-      }
 
-    };
+    //** ENABLE SHADOWS */
+    // this.enableMeshCastAndReceiveShadow( mesh1 );
+    // this.enableMeshCastAndReceiveShadow( mesh2 );
 
-    let ascendDirectional = true;
-
-    scene3D.add( planData.plan );
-    scene3D.add( planData.grid );
 
     let render = () => {
 
-      console.log( scene3D );
-      // // transitionLight( spotlight );
-      rotateLight( pointLight );
-
+      //** UPDATE CAMERAS */
       orbitController.update();
-
-      // spotLightCamera.position.copy( camera.position );
-      // spotLightCamera.position.x += 100;
-      // spotLightTarget.position.copy( orbitController.target );
-
       camera.updateMatrix();
       camera.updateMatrixWorld();
-
       cubeCamera.update( this.renderer, scene3D );
+
 
       for ( let elemID in planData.sceneGraph.LODs ) {
         planData.sceneGraph.LODs[ elemID ].update( camera );
@@ -600,3 +344,31 @@ Scene3DViewer.contextType = Context;
 //   projectActions: PropTypes.object.isRequired,
 //   catalog: PropTypes.object
 // };
+
+
+
+    //** ANIMATE LIGHTS */
+    // const clock = new THREE.Clock();
+    // const rotateLight = ( light ) => {
+    //   const elapsedTime = clock.getElapsedTime();
+    //   const angle = elapsedTime;
+    //   light.position.x = Math.cos( angle ) * 180;
+    //   light.position.z = Math.sin( angle ) * 180;
+
+    // };
+
+    // const transitionLight = ( light ) => {
+    //   if ( ascendDirectional ) {
+    //     light.position.z += 1;
+    //     if ( light.position.z > 500 ) {
+    //       ascendDirectional = false;
+    //     }
+
+    //   } else if ( !ascendDirectional ) {
+    //     light.position.z -= 1;
+    //     if ( light.position.z < -500 ) {
+    //       ascendDirectional = true;
+    //     }
+    //   }
+
+    // };
