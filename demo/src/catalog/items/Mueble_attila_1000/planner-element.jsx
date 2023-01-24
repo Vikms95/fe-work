@@ -25,7 +25,7 @@ const glbInfo =
   gltfFile: glb, width, height, depth,
   tocm: true,
   normalizeOrigin: false,
-  rotation: { y: 90 }
+  rotation: { y: -90 }
 };
 
 export default {

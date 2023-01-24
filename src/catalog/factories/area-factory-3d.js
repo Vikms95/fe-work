@@ -13,7 +13,8 @@ import {
   RepeatWrapping,
   Vector2,
   DoubleSide,
-  BufferAttribute
+  BufferAttribute,
+  MeshStandardMaterial
 } from 'three';
 import * as SharedStyle from '../../shared-style';
 
@@ -132,7 +133,10 @@ export function createArea ( element, layer, scene, textures ) {
     shape.lineTo( vertices[ i ].x, vertices[ i ].y );
   }
 
-  let areaMaterial = new MeshBasicMaterial( { side: DoubleSide, color } );
+  let areaMaterial = new MeshStandardMaterial( {
+    side: DoubleSide,
+    color
+  } );
 
   /* Create holes for the area */
   element.holes.forEach( holeID => {
@@ -152,7 +156,7 @@ export function createArea ( element, layer, scene, textures ) {
 
   // assignUVs( shapeGeometry );
 
-  let boundingBox = new Box3().setFromObject( new Mesh( shapeGeometry, new MeshBasicMaterial() ) );
+  let boundingBox = new Box3().setFromObject( new Mesh( shapeGeometry, new MeshStandardMaterial() ) );
 
   let width = boundingBox.max.x - boundingBox.min.x;
   let height = boundingBox.max.y - boundingBox.min.y;
@@ -162,6 +166,8 @@ export function createArea ( element, layer, scene, textures ) {
   applyTexture( areaMaterial, texture, width, height );
 
   let area = new Mesh( shapeGeometry, areaMaterial );
+  area.receiveShadow = true;
+  area.castShadow = true;
 
   area.rotation.x -= Math.PI / 2;
   area.name = 'floor';

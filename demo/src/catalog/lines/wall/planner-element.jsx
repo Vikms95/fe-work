@@ -15,12 +15,13 @@ const textures = {
   bricks: {
     name: 'Bricks',
     uri: require( './textures/bricks.jpg' ),
-    lengthRepeatScale: 0.01,
-    heightRepeatScale: 0.01,
+    lengthRepeatScale: 0.005,
+    heightRepeatScale: 0.005,
     normal: {
+      //TODO buscar como aplicar esta propiedad al resto de objetos
       uri: require( './textures/bricks-normal.jpg' ),
-      lengthRepeatScale: 0.01,
-      heightRepeatScale: 0.01,
+      lengthRepeatScale: 0.005,
+      heightRepeatScale: 0.005,
       normalScaleX: 0.8,
       normalScaleY: 0.8
     }

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
+import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper';
 import OrbitControls from './libs/orbit-controls';
 // import { OrbitControls } from './libs/orbit-controls-new';
 import { parseData, updateScene } from './scene-creator';
@@ -14,6 +15,11 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
+import { MeshStandardMaterial, SpotLight } from 'three';
+import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
+
+
+const AMBIENT_LIGHT = 3;
 
 // export default function Scene3DViewer ( props ) {
 //   let camera;
@@ -271,35 +277,22 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.setClearColor( new THREE.Color( SharedStyle.COLORS.white ) );
     this.renderer.setSize( this.width, this.height );
 
-    this.renderer.physicallyCorrectLights = true;
+    this.renderer.physicallyCorrectLights = false;
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.encoding = THREE.sRGBEncoding;
 
-    this.renderer.toneMapping = Number( THREE.LinearToneMapping );
-    this.renderer.toneMappingExposure = Math.pow( 2, 0 );
+    // this.renderer.toneMapping = Number( THREE.LinearToneMapping );
+    // this.renderer.toneMappingExposure = Math.pow( 2, 0 );
 
-    const environment = new RoomEnvironment();
-    const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    const { texture } = pmremGenerator.fromScene( environment );
-    texture.mapping = THREE.EquirectangularReflectionMapping;
-    scene3D.environment = texture;
+    //todo mapas y ambientes
+    // const environment = new RoomEnvironment();
+    // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+    // const { texture } = pmremGenerator.fromScene( environment );
+    // texture.mapping = THREE.EquirectangularReflectionMapping;
+    // scene3D.environment = texture;
+
 
     const planData = parseData( state, data, actions, this.context.catalog );
-
-
-    scene3D.add( planData.plan );
-    scene3D.add( planData.grid );
-
-    // const testLight = new THREE.SpotLight( 'red', 2.0 );
-    // testLight.decay = 0;
-    // // x: 196.375132321884, y: 0, z: -1824.8086683287383
-    // testLight.position.set( 196.375132321884, -50, 0 );
-    // scene3D.add( testLight );
-
-    // const testHelper = new THREE.SpotLightHelper( testLight, 'red' );
-    // testHelper.position.set( 196.375132321884, -50, 0 );
-    // scene3D.add( testHelper );
-    // console.log( scene3D );
 
     let aspectRatio = this.width / this.height;
     let camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
@@ -314,23 +307,125 @@ export default class Scene3DViewer extends React.Component {
     camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
     camera.up = new THREE.Vector3( 0, 1, 0 );
 
-    // HELPER AXIS
-    // let axisHelper = new THREE.AxisHelper( 100 );
-    // scene3D.add( axisHelper );
-
-    // LIGHT
-    let light = new THREE.AmbientLight( 0xafafaf ); // soft white light
+    //todo AMBIENT LIGHT, luz estándar de ambiente
+    let light = new THREE.AmbientLight( 0xafafaf, 0.3 ); // soft white light
     scene3D.add( light );
 
-    // Add another light
 
-    let spotLight1 = new THREE.SpotLight( 'white', 550.0 );
-    spotLight1.position.copy( camera.position );
-    spotLight1.decay = 1;
-    scene3D.add( spotLight1 );
+    //todo SPOTLIGHT, luz que se expande en un cono, se le puede ajustar el ángulo del cono 
+    //todo y de la penumbra 
+    //todo EMITE SOMBRAS
+    // let pointLight = new THREE.SpotLight( 'white', 0.15 );
+    // pointLight.castShadow = {
+    //   shadows: true,
+    //   exposure: 0.68,
+    //   bulbPower: 1700,
+    //   hemiIrradiance: 4000
+    // };
 
-    // const spotLightHelper = new THREE.SpotLightHelper( spotLight1 );
-    // scene3D.add( spotLightHelper );
+    // pointLight.position.y += 300;
+
+    // pointLight.shadow.radius = 10;
+    // pointLight.shadow.camera.fov = 90;
+    // pointLight.shadow.bias = 0.0001;
+
+    // scene3D.add( pointLight );
+
+    // pointLight.shadow.mapSize.width = 1024;
+    // pointLight.shadow.mapSize.height = 1024;
+    // pointLight.shadow.camera.near = 50;
+    // pointLight.shadow.camera.far = 300;
+
+    // const helper = new THREE.CameraHelper( pointLight.shadow.camera );
+    // scene3D.add( helper );
+
+
+
+    //todo DIRECTIONALLIGHT, luz recta infinitamente larga, usada para simular los rayos del sol 
+    //todo EMITE SOMBRAS
+    // const directionalLight = new THREE.DirectionalLight( 'white', 1 );
+    // directionalLight.castShadow = true;
+    // // --
+    // const directionalLightHelper = new THREE.DirectionalLightHelper( directionalLight, 50, 'red' );
+    // directionalLight.position.y += 300;
+
+    // scene3D.add( directionalLight );
+    // scene3D.add( directionalLightHelper );
+
+    // directionalLight.shadow.radius = 50;
+    // directionalLight.shadow.mapSize.width = 1024;
+    // directionalLight.shadow.mapSize.height = 1024;
+    // directionalLight.shadow.camera.near = 50;
+    // directionalLight.shadow.camera.far = 300;
+    // directionalLight.shadow.camera.fov = 300;
+    // directionalLight.shadow.bias = 0.0001;
+
+    // const helper = new THREE.CameraHelper( directionalLight.shadow.camera );
+    // scene3D.add( helper );
+
+    //todo POINTLIGHT, punto que emite luz en todas las direcciones, para bombillas 
+    //todo EMITE SOMBRAS
+    let pointLight = new THREE.PointLight( 'white', 0.75 );
+    pointLight.castShadow = {
+      shadows: true,
+      exposure: 0.68,
+      bulbPower: 1700,
+      hemiIrradiance: 4000
+    };
+
+    pointLight.position.y += 300;
+
+    pointLight.shadow.radius = 10;
+    pointLight.shadow.camera.fov = 60;
+    pointLight.shadow.bias = 0.0001;
+
+    scene3D.add( pointLight );
+
+    pointLight.shadow.mapSize.width = 1024;
+    pointLight.shadow.mapSize.height = 1024;
+    pointLight.shadow.camera.near = 50;
+    pointLight.shadow.camera.far = 400;
+
+    const helper = new THREE.CameraHelper( pointLight.shadow.camera );
+    scene3D.add( helper );
+
+
+    //todo HEMISPHERELIGHT, por arriba de un color, por abajo de otro 
+    //todo NO EMITE SOMBRAS
+    // const hemisphereLight = new THREE.HemisphereLight( 'white', 'white', 0.5 );
+    // const hemisSphereLightHelper = new THREE.HemisphereLightHelper( hemisphereLight, 10 );
+    // scene3D.add( hemisphereLight );
+    // scene3D.add( hemisSphereLightHelper );
+
+    //todo SPOTLIGHT SIGUIENDO A LA CÁMARA Y ORBITCONTROLL
+    let orbitController = new OrbitControls( camera, this.renderer.domElement );
+
+    // let spotLightCamera = new THREE.SpotLight( 'white', 1 );
+    // let spotLightTarget = new THREE.Object3D();
+    // spotLightCamera.position.copy( camera.position );
+    // spotLightCamera.position.x += 100;
+    // scene3D.add( spotLightCamera );
+
+    // spotLightTarget.name = 'spotLightTarget';
+    // spotLightTarget.position.copy( orbitController.target );
+    // spotLightCamera.target = spotLightTarget;
+    // scene3D.add( spotLightTarget );
+
+    const cubeGeo = new THREE.BoxGeometry( 100, 100, 100 );
+    const cubeMat = new THREE.MeshStandardMaterial();
+    const cubeMesh = new THREE.Mesh( cubeGeo, cubeMat );
+    cubeMesh.castShadow = true;
+    cubeMesh.receiveShadow = true;
+    scene3D.add( cubeMesh );
+
+    const cubeGeo2 = new THREE.BoxGeometry( 100, 100, 100 );
+    const cubeMat2 = new THREE.MeshStandardMaterial();
+    const cubeMesh2 = new THREE.Mesh( cubeGeo2, cubeMat2 );
+    cubeMesh.position.y += 125;
+    cubeMesh2.castShadow = true;
+    cubeMesh2.receiveShadow = true;
+    scene3D.add( cubeMesh2 );
+
 
     // OBJECT PICKING
     let toIntersect = [ planData.plan ];
@@ -364,26 +459,62 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.domElement.addEventListener( 'mousedown', this.mouseDownEvent );
     this.renderer.domElement.addEventListener( 'mouseup', this.mouseUpEvent );
     this.renderer.domElement.style.display = 'block';
+    this.renderer.shadowMap.enabled = true;
 
+    this.renderer.shadowMap.needsUpdate = true;
+    this.renderer.shadowMap.type = THREE.PCFShadowMap;
     // add the output of the renderer to the html element
     canvasWrapper.appendChild( this.renderer.domElement );
 
     // create orbit controls
-    let orbitController = new OrbitControls( camera, this.renderer.domElement );
-    let spotLightTarget = new THREE.Object3D();
+    const clock = new THREE.Clock();
 
-    spotLightTarget.name = 'spotLightTarget';
-    spotLightTarget.position.copy( orbitController.target );
 
-    scene3D.add( spotLightTarget );
-    spotLight1.target = spotLightTarget;
+    const rotateLight = ( light ) => {
+      const elapsedTime = clock.getElapsedTime();
+      const angle = elapsedTime;
+      light.position.x = Math.cos( angle ) * 180;
+      light.position.z = Math.sin( angle ) * 180;
+
+    };
+
+    const transitionLight = ( light ) => {
+      if ( ascendDirectional ) {
+        light.position.z += 1;
+        if ( light.position.z > 500 ) {
+          ascendDirectional = false;
+        }
+
+      } else if ( !ascendDirectional ) {
+        light.position.z -= 1;
+        if ( light.position.z < -500 ) {
+          ascendDirectional = true;
+        }
+      }
+
+    };
+
+    let ascendDirectional = true;
+
+    scene3D.add( planData.plan );
+    scene3D.add( planData.grid );
 
     let render = () => {
+
+      console.log( scene3D );
+      // // transitionLight( spotlight );
+      rotateLight( pointLight );
+
       orbitController.update();
-      spotLight1.position.copy( camera.position );
-      spotLightTarget.position.copy( orbitController.target );
+
+      // spotLightCamera.position.copy( camera.position );
+      // spotLightCamera.position.x += 100;
+      // spotLightTarget.position.copy( orbitController.target );
+
       camera.updateMatrix();
       camera.updateMatrixWorld();
+
+      cubeCamera.update( this.renderer, scene3D );
 
       for ( let elemID in planData.sceneGraph.LODs ) {
         planData.sceneGraph.LODs[ elemID ].update( camera );

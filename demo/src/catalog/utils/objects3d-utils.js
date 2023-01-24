@@ -106,8 +106,11 @@ export function sizeParametricObject3d ( object, element ) {
 export function repeatTexturesOnMorph ( mesh ) {
   const targetMesh = mesh.children[ 0 ].children[ 0 ].children[ 0 ];
   const texture = targetMesh.material.map;
+  targetMesh.castShadow = true; //default is false
+  targetMesh.receiveShadow = true; //default
 
   console.log( targetMesh );
+  console.log( 'prueba', texture.lengthRepeatScale );
 
   if ( targetMesh && texture ) {
     const morphValues = {
@@ -116,8 +119,8 @@ export function repeatTexturesOnMorph ( mesh ) {
     };
 
     texture.repeat.set(
-      1 + morphValues.width,
-      1 + morphValues.height
+      texture.lengthRepeatScale,
+      texture.heightRepeatScale
     );
 
     texture.needsUpdate = true;

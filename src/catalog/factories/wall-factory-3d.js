@@ -35,13 +35,18 @@ const halfPI = Math.PI / 2;
  * @param length: The lenght of the face
  * @param height: The height of the face
  */
+
 const applyTexture = ( material, texture, length, height ) => {
   let loader = new TextureLoader();
   if ( texture ) {
+
+    console.log( 'prueba1', texture );
     material.map = loader.load( texture.uri );
     material.needsUpdate = true;
     material.map.wrapS = RepeatWrapping;
     material.map.wrapT = RepeatWrapping;
+
+    console.log( 'prueba', length );
     material.map.repeat.set( length * texture.lengthRepeatScale, height * texture.heightRepeatScale );
     material.name = 'wallTexture';
 
@@ -98,9 +103,9 @@ export function buildWall ( element, layer, scene, textures ) {
   const vu = new Vector3().subVectors( p1, p0 ).normalize();
   const v2v2 = new Vector3().subVectors( pv2, p2 );
 
-  let soulMaterial = new MeshBasicMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ), side: DoubleSide/*, wireframe: true*/ } );
-  let frontMaterial = new MeshBasicMaterial( { /*color: 0xFF0000,*/ side: DoubleSide/*, wireframe: true*/ } );
-  let backMaterial = new MeshBasicMaterial( { /*color: 0x00FF00,*/ side: DoubleSide /*, wireframe: true*/ } );
+  let soulMaterial = new MeshStandardMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ), side: DoubleSide/*, wireframe: true*/ } );
+  let frontMaterial = new MeshStandardMaterial( { /*color: 0xFF0000,*/ side: DoubleSide/*, wireframe: true*/ } );
+  let backMaterial = new MeshStandardMaterial( { /*color: 0x00FF00,*/ side: DoubleSide /*, wireframe: true*/ } );
 
   applyTexture( frontMaterial, textures[ element.properties.get( 'textureB' ) ], distance23, height );
   applyTexture( backMaterial, textures[ element.properties.get( 'textureA' ) ], distance, height );
@@ -130,6 +135,7 @@ export function buildWall ( element, layer, scene, textures ) {
     let h3h = new Vector3().addVectors( h3, vhh );
 
     let holeMesh = Box8P.buildBox8P( h0, h1, h0h, h1h, h2, h3, h2h, h3h, wallMaterials );
+
 
     let wallBSP = new ThreeBSP( wall );
     let holeBSP = new ThreeBSP( holeMesh );
@@ -248,10 +254,17 @@ function buildWall0 ( element, layer, scene, textures ) {
   const halfDistance3 = distance3 / 2;
   const halfDistanceSoulFace = distanceSoulFace / 2;
 
-  let soulMaterial = new MeshBasicMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } );
+  let soulMaterial = new MeshStandardMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } );
   let soul = new Mesh( new BoxGeometry( distanceSoulFace, height, thickness - 2 * faceThickness ), soulMaterial );
   let backFace = new Mesh( new BoxGeometry( distance, height, faceThickness ), soulMaterial );
   let frontFace = new Mesh( new BoxGeometry( distance23, height, faceThickness ), soulMaterial );
+  console.log( 'prueba' );
+  soul.receiveShadow = true;
+  soul.castShadow = true;
+  backFace.receiveShadow = true;
+  backFace.castShadow = true;
+  frontFace.receiveShadow = true;
+  frontFace.castShadow = true;
 
   //const alpha = Math.asin((vertex1.y - vertex0.y) / (distance));
   const alpha = angleVector( vu );
@@ -328,8 +341,8 @@ function buildWall0 ( element, layer, scene, textures ) {
 
   //soul2 = soul;
 
-  let frontMaterial = new MeshBasicMaterial();
-  let backMaterial = new MeshBasicMaterial();
+  let frontMaterial = new MeshStandardMaterial();
+  let backMaterial = new MeshStandardMaterial();
 
   applyTexture( frontMaterial, textures[ element.properties.get( 'textureB' ) ], distance23, height );
   applyTexture( backMaterial, textures[ element.properties.get( 'textureA' ) ], distance, height );
@@ -392,6 +405,6 @@ export function updatedWall ( element, layer, scene, textures, mesh, oldElement,
   let wall = mesh.getObjectByName( "wall" );
 
   if ( differences[ 0 ] == 'selected' ) {
-    wall.material.fill( new MeshBasicMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } ), 0, 3 );
+    wall.material.fill( new MeshStandardMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } ), 0, 3 );
   }
 }
