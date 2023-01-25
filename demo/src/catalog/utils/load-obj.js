@@ -9,13 +9,12 @@ import { MTLLoader } from './mtl-loader-new';
 import blueTextureFile from '../items/_Victor-Cubo-Azul-Mate/RAL 5017.jpg';
 import woodTextureFile from '../items/_Victor-Cubo-Azul-Mate/34232 Arizona Pine s.jpg';
 import woodRoughnessFile from '../items/_Victor-Cubo-Azul-Mate/34232 Arizona Pine s bump.jpg';
-import group from '../../../../src/class/group';
-import { instanceOf } from 'prop-types';
 
 
-const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 1024 );
+
+const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256 );
 cubeRenderTarget.texture.type = THREE.HalfFloatType;
-export const cubeCamera = new THREE.CubeCamera( 1, 5000, cubeRenderTarget );
+export const cubeCamera = new THREE.CubeCamera( 1, 1000, cubeRenderTarget );
 
 
 export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm, normalizeOrigin ) {
@@ -93,7 +92,7 @@ const addMetallicAndGlassLook = ( object, node ) => {
 };
 
 const addMirrorLook = ( object, node ) => {
-  if ( node.material.name === 'Espejo' ) {
+  if ( node.material.name === 'Espejo' || node.material.name === 'Cromado' ) {
     const newMaterial = new MeshStandardMaterial( {
       envMap: cubeRenderTarget.texture,
       roughness: 0,
@@ -104,22 +103,52 @@ const addMirrorLook = ( object, node ) => {
   }
 };
 
+const addMateLook = ( object, node ) => {
+  if ( object.name === 'Mate' ) {
+    object.traverse( child => {
+      if ( child instanceof THREE.Mesh ) {
+        child.material.roughness = mateValues.roughness;
+        child.material.metalness = mateValues.metalness;
+      }
+    } );
+  }
+};
+
+const addBrilloLook = ( object, node ) => {
+  if ( object.name === 'Brillo' ) {
+    object.traverse( child => {
+      if ( child instanceof THREE.Mesh ) {
+        child.material.roughness = brilloValues.roughness;
+        child.material.metalness = brilloValues.metalness;
+      }
+    } );
+  }
+};
+
+const addBrilloAltoLook = ( object, node ) => {
+  if ( object.name === 'BrilloAlto' ) {
+    object.traverse( child => {
+      if ( child instanceof THREE.Mesh ) {
+        child.material.roughness = brilloAltoValues.roughness;
+        child.material.metalness = brilloAltoValues.metalness;
+      }
+    } );
+  }
+};
 
 const mateValues = {
   roughness: 0.75,
-  metallnes: 0
+  metalness: 0
 };
 
 const brilloValues = {
   roughness: 0.50,
-  metallnes: 0
-
+  metalness: 0
 };
 
 const brilloAltoValues = {
   roughness: 0.30,
-  metallnes: 0
-
+  metalness: 0
 };
 
 //todo input == glbInfo
@@ -136,6 +165,9 @@ export function loadGLTF ( input ) {
           enableMeshCastAndReceiveShadow( object );
           addMetallicAndGlassLook( object, node );
           addMirrorLook( object, node );
+          addMateLook( object, node );
+          addBrilloLook( object, node );
+          addBrilloAltoLook( object, node );
 
 
           if ( input.tocm ) {
@@ -381,36 +413,6 @@ export function loadGLTF ( input ) {
 //   // object.children[ 0 ].children[ 0 ].material.metalness = 0;
 //   // object.children[ 0 ].children[ 1 ].material.roughness = 0.3;
 //   // object.children[ 0 ].children[ 1 ].material.metalness = 0;
-
-// }
-
-      // //** MUEBLE DE BAÑO */
-      // else if ( object.name === "Scene_BAÑO" ) {
-      //   console.log( 'PLANTA' );
-
-      //   const firstMesh = object.children[ 0 ].children[ 2 ].clone();
-      //   const secondMesh = object.children[ 0 ].children[ 3 ].clone();
-
-      //   const oldMaterialParams1 = firstMesh.material.clone();
-      //   const oldGeoParams1 = firstMesh.geometry.clone();
-
-      //   const newMaterial1 = new MeshStandardMaterial( {
-      //     envMap: cubeRenderTarget.texture,
-      //     roughness: 0,
-      //     metalness: 1
-      //   } ).clone( oldMaterialParams1 );
-
-      //   const oldMaterialParams2 = secondMesh.material.clone();
-      //   const oldGeoParams2 = secondMesh.geometry.clone();
-
-      //   const newMaterial2 = new MeshStandardMaterial( {
-      //     envMap: cubeRenderTarget.texture,
-      //     roughness: 0,
-      //     metalness: 1
-      //   } ).clone( oldMaterialParams2 );
-
-      //   object.children[ 0 ].children[ 2 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
-      //   object.children[ 0 ].children[ 3 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
 
       // }
       // else if ( object.name === "Scene_Cube_Wood_Rough_Brillo" ) {

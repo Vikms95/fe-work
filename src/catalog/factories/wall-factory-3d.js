@@ -146,6 +146,9 @@ export function buildWall ( element, layer, scene, textures ) {
 
   wall.name = "wall";
 
+  wall.receiveShadow = true;
+  // wall.castShadow = true;
+
   return Promise.resolve( wall );
 }
 
@@ -258,13 +261,6 @@ function buildWall0 ( element, layer, scene, textures ) {
   let soul = new Mesh( new BoxGeometry( distanceSoulFace, height, thickness - 2 * faceThickness ), soulMaterial );
   let backFace = new Mesh( new BoxGeometry( distance, height, faceThickness ), soulMaterial );
   let frontFace = new Mesh( new BoxGeometry( distance23, height, faceThickness ), soulMaterial );
-  console.log( 'prueba' );
-  soul.receiveShadow = true;
-  soul.castShadow = true;
-  backFace.receiveShadow = true;
-  backFace.castShadow = true;
-  frontFace.receiveShadow = true;
-  frontFace.castShadow = true;
 
   //const alpha = Math.asin((vertex1.y - vertex0.y) / (distance));
   const alpha = angleVector( vu );
@@ -325,21 +321,13 @@ function buildWall0 ( element, layer, scene, textures ) {
     wallBSP = new ThreeBSP( frontFace );
     wallWithHoleBSP = wallBSP.subtract( holeBSP );
     frontFace = wallWithHoleBSP.toMesh( soulMaterial );
+
+
   } );
 
   soul.name = 'soul';
 
   soul.rotation.y = alpha;
-
-  /*
- 
-  if (distance2 != 0 || distance3 != 0) {
-    let wallBSP = new ThreeBSP(soul);
-  }
- 
-*/
-
-  //soul2 = soul;
 
   let frontMaterial = new MeshStandardMaterial();
   let backMaterial = new MeshStandardMaterial();
@@ -369,8 +357,6 @@ function buildWall0 ( element, layer, scene, textures ) {
 
   let merged = new Group();
   merged.add( soul, frontFace, backFace );
-  merged.receiveShadow = true;
-  merged.castShadow = true;
   //merged.add(soul2, frontFace, backFace);
 
   /*
@@ -405,6 +391,8 @@ function buildWall0 ( element, layer, scene, textures ) {
 export function updatedWall ( element, layer, scene, textures, mesh, oldElement, differences, selfDestroy, selfBuild ) {
   let noPerf = () => { selfDestroy(); return selfBuild(); };
   let wall = mesh.getObjectByName( "wall" );
+  wall.receiveShadow = true;
+  // wall.castShadow = true;
 
   if ( differences[ 0 ] == 'selected' ) {
     wall.material.fill( new MeshStandardMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } ), 0, 3 );

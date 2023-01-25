@@ -47,6 +47,7 @@ export default class Scene3DViewer extends React.Component {
     this.configureRendererPBR = this.configureRendererPBR.bind( this );
     this.createAndAddCamera = this.createAndAddCamera.bind( this );
     this.addLightOnTop = this.addLightOnTop.bind( this );
+    // this.transitionLight = this.transitionLight.bind( this );
   }
 
   update3DZoom ( event ) {
@@ -77,12 +78,12 @@ export default class Scene3DViewer extends React.Component {
     }
     if ( light.isPointLight ) {
       console.log( 'pointlight' );
-      light.shadow.bias = 0.0001;
+      // light.shadow.bias = 0.0001;
     }
 
     if ( light.isDirectionalLight ) {
       console.log( 'directionallight' );
-      light.shadow.bias = 0.0001;
+      // light.shadow.bias = 0.0001;
     }
 
     if ( !light.isSpotLight ) {
@@ -127,7 +128,7 @@ export default class Scene3DViewer extends React.Component {
     camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
     camera.up = new THREE.Vector3( 0, 1, 0 );
 
-    return { camera };
+    return { camera, cameraPositionX, cameraPositionY, cameraPositionZ };
   }
 
   configureRendererPBR ( renderer ) {
@@ -142,11 +143,28 @@ export default class Scene3DViewer extends React.Component {
 
   addLightOnTop ( light, scene ) {
     light.position.y += 300;
+    // light.position.z += 200;
     scene.add( light );
 
     this.enableLightShadow( light, scene );
 
   }
+
+  transitionLight ( light, ascendDirectional ) {
+    if ( ascendDirectional ) {
+      light.position.z += 1;
+      if ( light.position.z > 500 ) {
+        ascendDirectional = false;
+      }
+
+    } else if ( !ascendDirectional ) {
+      light.position.z -= 1;
+      if ( light.position.z < -500 ) {
+        ascendDirectional = true;
+      }
+    }
+
+  };
 
   componentDidMount () {
 
@@ -160,6 +178,7 @@ export default class Scene3DViewer extends React.Component {
 
     let { state } = this.props;
 
+    let ascendDirectional = false;
     let data = state.scene;
     let scene3D = new THREE.Scene();
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
@@ -180,7 +199,8 @@ export default class Scene3DViewer extends React.Component {
     scene3D.add( planData.grid );
 
     //** CREATE CAMERA */
-    const { camera } = this.createAndAddCamera( scene3D, planData );
+    const { camera, cameraPositionX, cameraPositionY, cameraPositionZ } =
+      this.createAndAddCamera( scene3D, planData );
 
 
     //** ORBIT CONTROLS */
@@ -194,11 +214,25 @@ export default class Scene3DViewer extends React.Component {
 
     //** ADD TEST LIGHT */
     this.addLightOnTop(
-      // new THREE.SpotLight( 'white', 0.5 ),
+      new THREE.SpotLight( 'white', 0.5 ),
       // new THREE.PointLight( 'white', 0.5 ),
-      new THREE.DirectionalLight( 'white', 0.5 ),
+      // new THREE.DirectionalLight( 'white', 0.5 ),
       scene3D
     );
+
+    // let spotLight1 = new THREE.SpotLight( 'white', 0.5 );
+    // spotLight1.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
+    // scene3D.add( spotLight1 );
+
+    // let spotLightTarget = new THREE.Object3D();
+
+    // spotLightTarget.name = 'spotLightTarget';
+
+    // // Sets spotlight position to the target of orbitControll
+    // spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
+
+    // spotLight1.target = spotLightTarget;
+    // scene3D.add( spotLightTarget );
 
 
     //** EVENT LISTENERS */
@@ -252,8 +286,12 @@ export default class Scene3DViewer extends React.Component {
 
 
     let render = () => {
+      // spotLight1.position.set( camera.position.x, camera.position.y, camera.position.z );
+      // spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
+
 
       //** UPDATE CAMERAS */
+      console.log( 'scene test', scene3D );
       orbitController.update();
       camera.updateMatrix();
       camera.updateMatrixWorld();
@@ -357,18 +395,3 @@ Scene3DViewer.contextType = Context;
 
     // };
 
-    // const transitionLight = ( light ) => {
-    //   if ( ascendDirectional ) {
-    //     light.position.z += 1;
-    //     if ( light.position.z > 500 ) {
-    //       ascendDirectional = false;
-    //     }
-
-    //   } else if ( !ascendDirectional ) {
-    //     light.position.z -= 1;
-    //     if ( light.position.z < -500 ) {
-    //       ascendDirectional = true;
-    //     }
-    //   }
-
-    // };
