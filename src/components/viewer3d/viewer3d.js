@@ -28,17 +28,15 @@ export default class Scene3DViewer extends React.Component {
     let rulerSize = 15; //px
     this.lastMousePosition = {};
     this.width = props.width - rulerSize;
-
     this.height = props.height - rulerSize;
     this.renderingID = 0;
 
     window.__threeRenderer = this.renderer;
-
     this.renderer =
-      window.__threeRenderer ||
-      new THREE.WebGLRenderer( {
-        antialias: true
-      } );
+      window.__threeRenderer || new THREE.WebGLRenderer( { antialias: true } );
+
+    this.camera = null;
+    this.scene3D = null;
 
     this.update3DZoom = this.update3DZoom.bind( this );
     this.enableLightShadow = this.enableLightShadow.bind( this );
@@ -101,8 +99,8 @@ export default class Scene3DViewer extends React.Component {
     light.shadow.mapSize.width = 2048;
     light.shadow.mapSize.height = 2048;
 
-    const helper = new THREE.CameraHelper( light.shadow.camera );
-    scene.add( helper );
+    // const helper = new THREE.CameraHelper( light.shadow.camera );
+    // scene.add( helper );
   };
 
   enableRendererShadows ( renderer ) {
@@ -118,17 +116,17 @@ export default class Scene3DViewer extends React.Component {
 
   createAndAddCamera ( scene, planData ) {
     let aspectRatio = this.width / this.height;
-    let camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
-    scene.add( camera );
+    this.camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
+    scene.add( this.camera );
 
     let cameraPositionX = -( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 2;
     let cameraPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) / 2 * 10;
     let cameraPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 2;
 
-    camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
-    camera.up = new THREE.Vector3( 0, 1, 0 );
+    this.camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
+    this.camera.up = new THREE.Vector3( 0, 1, 0 );
 
-    return { camera, cameraPositionX, cameraPositionY, cameraPositionZ };
+    return { cameraPositionX, cameraPositionY, cameraPositionZ };
   }
 
   configureRendererPBR ( renderer ) {
@@ -180,13 +178,13 @@ export default class Scene3DViewer extends React.Component {
 
     let ascendDirectional = false;
     let data = state.scene;
-    let scene3D = new THREE.Scene();
+    this.scene3D = new THREE.Scene();
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
 
 
     // const environment = new RoomEnvironment();
     // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    // scene3D.environment = pmremGenerator.fromScene( environment ).texture;
+    // this.scene3D.environment = pmremGenerator.fromScene( environment ).texture;
 
     //** MAKE RENDERER HIGH QUALITY */
     this.configureRendererPBR( this.renderer );
@@ -200,21 +198,21 @@ export default class Scene3DViewer extends React.Component {
     let toIntersect = [ planData.plan ];
     let mouse = new THREE.Vector2();
     let raycaster = new THREE.Raycaster();
-    scene3D.add( planData.plan );
-    scene3D.add( planData.grid );
+    this.scene3D.add( planData.plan );
+    // scene3D.add( planData.grid );
 
     //** CREATE CAMERA */
-    const { camera, cameraPositionX, cameraPositionY, cameraPositionZ } =
-      this.createAndAddCamera( scene3D, planData );
+    const { cameraPositionX, cameraPositionY, cameraPositionZ } =
+      this.createAndAddCamera( this.scene3D, planData );
 
 
     //** ORBIT CONTROLS */
-    let orbitController = new OrbitControls( camera, this.renderer.domElement );
+    let orbitController = new OrbitControls( this.camera, this.renderer.domElement );
 
 
     //** AMBIENT LIGHT */
     let light = new THREE.AmbientLight( 0xafafaf, 0.3 ); // soft white light
-    scene3D.add( light );
+    this.scene3D.add( light );
 
 
     //** ADD TEST LIGHT */
@@ -222,7 +220,7 @@ export default class Scene3DViewer extends React.Component {
       new THREE.SpotLight( 'white', 0.5 ),
       // new THREE.PointLight( 'white', 0.5 ),
       // new THREE.DirectionalLight( 'white', 0.5 ),
-      scene3D
+      this.scene3D
     );
 
     // let spotLight1 = new THREE.SpotLight( 'white', 0.5 );
@@ -254,7 +252,7 @@ export default class Scene3DViewer extends React.Component {
 
       if ( Math.abs( mouse.x - this.lastMousePosition.x ) <= 0.02 && Math.abs( mouse.y - this.lastMousePosition.y ) <= 0.02 ) {
 
-        raycaster.setFromCamera( mouse, camera );
+        raycaster.setFromCamera( mouse, this.camera );
         let intersects = raycaster.intersectObjects( toIntersect, true );
 
         if ( intersects.length > 0 && !( isNaN( intersects[ 0 ].distance ) ) ) {
@@ -296,26 +294,23 @@ export default class Scene3DViewer extends React.Component {
 
 
       //** UPDATE CAMERAS */
-      console.log( 'scene test', scene3D );
       orbitController.update();
-      camera.updateMatrix();
-      camera.updateMatrixWorld();
-      cubeCamera.update( this.renderer, scene3D );
+      this.camera.updateMatrix();
+      this.camera.updateMatrixWorld();
+      cubeCamera.update( this.renderer, this.scene3D );
 
 
       for ( let elemID in planData.sceneGraph.LODs ) {
-        planData.sceneGraph.LODs[ elemID ].update( camera );
+        planData.sceneGraph.LODs[ elemID ].update( this.camera );
       }
 
-      this.renderer.render( scene3D, camera );
+      this.renderer.render( this.scene3D, this.camera );
       this.renderingID = requestAnimationFrame( render );
     };
 
     render();
 
     this.orbitControls = orbitController;
-    this.camera = camera;
-    this.scene3D = scene3D;
     this.planData = planData;
   }
 
@@ -337,6 +332,7 @@ export default class Scene3DViewer extends React.Component {
     this.camera = null;
     this.orbitControls = null;
     this.renderer.renderLists.dispose();
+    this.renderer = null;
   }
 
   UNSAFE_componentWillReceiveProps ( nextProps ) {
