@@ -19,7 +19,7 @@ import { MeshStandardMaterial, PointLight, SpotLight } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 
 
-const AMBIENT_LIGHT = 3;
+// const AMBIENT_LIGHT = 3;
 
 export default class Scene3DViewer extends React.Component {
 
