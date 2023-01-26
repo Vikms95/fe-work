@@ -16,13 +16,15 @@ export default function Content (
     state,
     customContents,
     refViewer2D,
-    update2DView
+    update2DView,
+    isPathTracing
   } ) {
 
   let mode = state.get( 'mode' );
   switch ( mode ) {
     case constants.MODE_3D_VIEW:
       return <Viewer3D
+        isPathTracing={ isPathTracing }
         state={ state }
         width={ width }
         height={ height }

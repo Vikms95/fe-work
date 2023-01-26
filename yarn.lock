@@ -5501,6 +5501,18 @@ terser@^4.1.2:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
+three-gpu-pathtracer@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.npmjs.org/three-gpu-pathtracer/-/three-gpu-pathtracer-0.0.11.tgz"
+  integrity sha512-E7Ft55BBHzT0ajRWbIr8hlgaejDZJEfXPtHb6CdNTWVINApXCvwfpQ9qMciwBHXGeLmlKP/facAe6+LWTvu9Cw==
+  dependencies:
+    three-mesh-bvh "^0.5.19"
+
+three-mesh-bvh@^0.5.19:
+  version "0.5.22"
+  resolved "https://registry.npmjs.org/three-mesh-bvh/-/three-mesh-bvh-0.5.22.tgz"
+  integrity sha512-vi9X78CoEz1VVfkKRpUZQa34SEc0QGDd9Hmyis0aeBRAmjp4BpHQ2URcirBsOvFMNBXqB9Klp8sQ9NCRsUEW0w==
+
 three@0.148.0:
   version "0.148.0"
   resolved "https://registry.npmjs.org/three/-/three-0.148.0.tgz"

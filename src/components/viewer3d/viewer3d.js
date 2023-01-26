@@ -17,7 +17,12 @@ import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
 import { MeshStandardMaterial, PointLight, SpotLight } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
-
+import {
+  PathTracingSceneGenerator,
+  PathTracingRenderer,
+  PhysicalPathTracingMaterial,
+} from 'three-gpu-pathtracer';
+import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass';
 
 // const AMBIENT_LIGHT = 3;
 
@@ -31,12 +36,16 @@ export default class Scene3DViewer extends React.Component {
     this.height = props.height - rulerSize;
     this.renderingID = 0;
 
+    //** VARIABLES THREE */
     window.__threeRenderer = this.renderer;
     this.renderer =
       window.__threeRenderer || new THREE.WebGLRenderer( { antialias: true } );
 
     this.camera = null;
     this.scene3D = null;
+
+    //** VARIABLES PATH TRACER */
+    this.isTracer = false;
 
     this.update3DZoom = this.update3DZoom.bind( this );
     this.enableLightShadow = this.enableLightShadow.bind( this );
@@ -363,6 +372,8 @@ export default class Scene3DViewer extends React.Component {
   }
 
   render () {
+    console.log( this.props.isPathTracing );
+
     return React.createElement( 'div', { ref: 'canvasWrapper' } );
   }
 }

@@ -332,6 +332,7 @@ class ReactPlanner extends Component {
       sideBarW: props.width - 257, // 257 from sideBar Width
       sideBarH: props.height - ( 82 + 120 ), // 72 from topBar Height and 130 from direction Height con los px de los borders
       directionW: props.width - 257, // 257 from direction Width
+      isPathTracing: false
     };
 
     this.refViewer = React.createRef();
@@ -531,12 +532,17 @@ class ReactPlanner extends Component {
               <RegisterComponent state={ state } { ...props } />
               <MenuPreferencias state={ state } { ...props } />
 
+              <button onClick={ () => this.setState(
+                { isPathTracing: !this.state.isPathTracing }
+              ) }>TOGGLE PATHTRACING</button>
+
               <Content
                 style={ { position: 'absolute', zIndex: '0' } }
                 width={ contentW }
                 height={ contentH }
                 state={ extractedState }
                 refViewer2D={ this.refViewer }
+                isPathTracing={ this.state.isPathTracing }
                 update2DView={ update2DView }
                 onWheel={ event => event.preventDefault() }
                 { ...props }
