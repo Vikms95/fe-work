@@ -74,7 +74,7 @@ export default class Scene3DViewer extends React.Component {
 
     if ( light.isSpotLight ) {
       console.log( 'spotlight' );
-      light.shadow.bias = 0.0001;
+      // light.shadow.bias = 0.0001;
     }
     if ( light.isPointLight ) {
       console.log( 'pointlight' );
@@ -182,6 +182,11 @@ export default class Scene3DViewer extends React.Component {
     let data = state.scene;
     let scene3D = new THREE.Scene();
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
+
+
+    // const environment = new RoomEnvironment();
+    // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+    // scene3D.environment = pmremGenerator.fromScene( environment ).texture;
 
     //** MAKE RENDERER HIGH QUALITY */
     this.configureRendererPBR( this.renderer );
