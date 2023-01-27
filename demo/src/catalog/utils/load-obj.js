@@ -92,8 +92,8 @@ const addMetallicAndGlassLook = ( object, node ) => {
   }
 };
 
-const addMirrorLook = ( object, node ) => {
-  if ( node.material.name === 'Espejo' || node.material.name === 'Cromado' ) {
+const addCromadoLook = ( object, node ) => {
+  if ( node.material.name === 'Cromado' ) {
     const newMaterial = new MeshStandardMaterial( {
       envMap: cubeRenderTarget.texture,
       roughness: 0,
@@ -104,19 +104,25 @@ const addMirrorLook = ( object, node ) => {
   }
 };
 
-const createMirror = ( object, node ) => {
-  if ( node.material.name === 'Espejo' ) {
-    const mirrorFront1 = new Reflector(
-      new THREE.PlaneGeometry( 2, 2 ),
-      {
-        color: new THREE.Color( 0x7f7f7f ),
-        //clipBias: 0.003,
-        textureWidth: window.innerWidth * window.devicePixelRatio,
-        textureHeight: window.innerHeight * window.devicePixelRatio
-      }
-    );
-    console.log( 'test', mirrorFront1 );
-  }
+const addMirrorLook = ( object, node ) => {
+
+  // if ( node.material.name === 'Espejo' ) {
+  //   const mirrorFront1 = new Reflector(
+  //     new THREE.PlaneGeometry( 50, 50 ),
+  //     {
+  //       color: new THREE.Color( 0x7f7f7f ),
+  //       //clipBias: 0.003,
+  //       textureWidth: window.innerWidth * window.devicePixelRatio,
+  //       textureHeight: window.innerHeight * window.devicePixelRatio
+  //     }
+  //   );
+  //   console.log( 'node', node );
+  //   console.log( 'node', mirrorFront1 );
+
+  //   mirrorFront1.position.x = node.position.x;
+  //   mirrorFront1.position.y = node.position.y;
+  //   mirrorFront1.position.z = node.position.z;
+  // }
 };
 
 const addMateLook = ( object, node ) => {
@@ -181,7 +187,7 @@ export function loadGLTF ( input ) {
           enableMeshCastAndReceiveShadow( object );
           addMetallicAndGlassLook( object, node );
           addMirrorLook( object, node );
-          createMirror( object, node );
+          addCromadoLook( object, node );
           addMateLook( object, node );
           addBrilloLook( object, node );
           addBrilloAltoLook( object, node );

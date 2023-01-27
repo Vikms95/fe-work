@@ -17,6 +17,7 @@ import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
 import { MeshStandardMaterial, PointLight, SpotLight } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
+import { Reflector } from 'three/examples/jsm/objects/Reflector';
 
 
 const AMBIENT_LIGHT = 3;
@@ -239,6 +240,7 @@ export default class Scene3DViewer extends React.Component {
     // spotLight1.target = spotLightTarget;
     // scene3D.add( spotLightTarget );
 
+    console.log( 'test', scene3D );
 
     //** EVENT LISTENERS */
     this.mouseDownEvent = ( event ) => {
@@ -296,7 +298,6 @@ export default class Scene3DViewer extends React.Component {
 
 
       //** UPDATE CAMERAS */
-      console.log( 'scene test', scene3D );
       orbitController.update();
       camera.updateMatrix();
       camera.updateMatrixWorld();
