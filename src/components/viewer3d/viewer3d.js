@@ -67,14 +67,14 @@ export default class Scene3DViewer extends React.Component {
   enableLightShadow ( light, scene ) {
     light.castShadow = {
       shadows: true,
-      exposure: 0.68,
+      // exposure: 0.68,
       // bulbPower: 1700,
       // hemiIrradiance: 4000
     };
 
     if ( light.isSpotLight ) {
       console.log( 'spotlight' );
-      // light.shadow.bias = 0.0001;
+      // light.shadow.bias = - 0.0005;
     }
     if ( light.isPointLight ) {
       console.log( 'pointlight' );
@@ -86,7 +86,7 @@ export default class Scene3DViewer extends React.Component {
       // light.shadow.bias = 0.0001;
     }
 
-    if ( !light.isSpotLight ) {
+    if ( light.isDirectionalLight ) {
       light.shadow.radius = 10;
       light.shadow.camera.fov = 90;
 
@@ -94,8 +94,8 @@ export default class Scene3DViewer extends React.Component {
       light.shadow.camera.bottom = -500;
       light.shadow.camera.left = -500;
       light.shadow.camera.right = 500;
-      light.shadow.camera.near = 0.5;
-      light.shadow.camera.far = 450;
+      // light.shadow.camera.near = 0.5;
+      // light.shadow.camera.far = 450;
     }
 
     light.shadow.mapSize.width = 2048;

@@ -9,7 +9,7 @@ import { MTLLoader } from './mtl-loader-new';
 import blueTextureFile from '../items/_Victor-Cubo-Azul-Mate/RAL 5017.jpg';
 import woodTextureFile from '../items/_Victor-Cubo-Azul-Mate/34232 Arizona Pine s.jpg';
 import woodRoughnessFile from '../items/_Victor-Cubo-Azul-Mate/34232 Arizona Pine s bump.jpg';
-
+import { Reflector } from 'three/examples/jsm/objects/Reflector';
 
 
 const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256 );
@@ -67,6 +67,7 @@ const enableMeshCastAndReceiveShadow = ( object ) => {
   object.traverse( child => {
     if ( child instanceof THREE.Mesh ) {
       if ( child.material.name !== 'Cristal' ) {
+        child.material.side = THREE.FrontSide;
         child.castShadow = true;
         child.receiveShadow = true;
       }
@@ -100,6 +101,21 @@ const addMirrorLook = ( object, node ) => {
     } );
 
     node.material = newMaterial;
+  }
+};
+
+const createMirror = ( object, node ) => {
+  if ( node.material.name === 'Espejo' ) {
+    const mirrorFront1 = new Reflector(
+      new THREE.PlaneGeometry( 2, 2 ),
+      {
+        color: new THREE.Color( 0x7f7f7f ),
+        //clipBias: 0.003,
+        textureWidth: window.innerWidth * window.devicePixelRatio,
+        textureHeight: window.innerHeight * window.devicePixelRatio
+      }
+    );
+    console.log( 'test', mirrorFront1 );
   }
 };
 
@@ -165,10 +181,10 @@ export function loadGLTF ( input ) {
           enableMeshCastAndReceiveShadow( object );
           addMetallicAndGlassLook( object, node );
           addMirrorLook( object, node );
+          createMirror( object, node );
           addMateLook( object, node );
           addBrilloLook( object, node );
           addBrilloAltoLook( object, node );
-
 
           if ( input.tocm ) {
             object.scale.set( 100, 100, 100 );
