@@ -15,7 +15,7 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
-import { MeshStandardMaterial, PointLight, SpotLight } from 'three';
+import { MeshBasicMaterial, MeshStandardMaterial, PointLight, SpotLight } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 import {
   PathTracingSceneGenerator,
@@ -31,21 +31,23 @@ export default class Scene3DViewer extends React.Component {
   constructor ( props ) {
     super( props );
     let rulerSize = 15; //px
+    this.renderingID = 0;
     this.lastMousePosition = {};
     this.width = props.width - rulerSize;
     this.height = props.height - rulerSize;
-    this.renderingID = 0;
 
     //** VARIABLES THREE */
     window.__threeRenderer = this.renderer;
-    this.renderer =
-      window.__threeRenderer || new THREE.WebGLRenderer( { antialias: true } );
-
+    this.renderer = window.__threeRenderer || new THREE.WebGLRenderer( { antialias: true } );
     this.camera = null;
     this.scene3D = null;
 
     //** VARIABLES PATH TRACER */
-    this.isTracer = false;
+    this.ptMaterial = null;
+    this.ptRenderer = null;
+    this.fsQuad = null;
+    this.generator = null;
+
 
     this.update3DZoom = this.update3DZoom.bind( this );
     this.enableLightShadow = this.enableLightShadow.bind( this );
@@ -174,6 +176,7 @@ export default class Scene3DViewer extends React.Component {
   };
 
   componentDidMount () {
+    let { state } = this.props;
 
     let actions = {
       areaActions: this.context.areaActions,
@@ -183,17 +186,14 @@ export default class Scene3DViewer extends React.Component {
       projectActions: this.context.projectActions
     };
 
-    let { state } = this.props;
-
     let ascendDirectional = false;
     let data = state.scene;
     this.scene3D = new THREE.Scene();
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
 
-
-    // const environment = new RoomEnvironment();
-    // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    // this.scene3D.environment = pmremGenerator.fromScene( environment ).texture;
+    const environment = new RoomEnvironment();
+    const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+    this.scene3D.environment = pmremGenerator.fromScene( environment ).texture;
 
     //** MAKE RENDERER HIGH QUALITY */
     this.configureRendererPBR( this.renderer );
@@ -211,8 +211,7 @@ export default class Scene3DViewer extends React.Component {
     // scene3D.add( planData.grid );
 
     //** CREATE CAMERA */
-    const { cameraPositionX, cameraPositionY, cameraPositionZ } =
-      this.createAndAddCamera( this.scene3D, planData );
+    this.createAndAddCamera( this.scene3D, planData );
 
 
     //** ORBIT CONTROLS */
@@ -277,7 +276,42 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.domElement.style.display = 'block';
     document.addEventListener( 'keydown', this.update3DZoom );
 
+    let setupPathTracing = () => {
+      this.ptMaterial = new PhysicalPathTracingMaterial();
+      this.ptRenderer = new PathTracingRenderer( this.renderer );
+      this.ptRenderer.setSize( window.innerWidth, window.innerHeight );
+      this.ptRenderer.camera = this.camera;
+      this.ptRenderer.material = this.ptMaterial;
 
+      this.fsQuad = new FullScreenQuad( new MeshBasicMaterial( {
+        map: this.ptRenderer.target.texture
+      } ) );
+
+      this.scene3D.updateMatrixWorld();
+      this.generator = new PathTracingSceneGenerator();
+
+      const { bvh, textures, materials, lights } = this.generator.generate( this.scene3D );
+      const geometry = bvh.geometry;
+
+      this.ptMaterial.bvh.updateFrom( bvh );
+
+      // update bvh and geometry attribute textures
+      this.ptMaterial.bvh.updateFrom( bvh );
+      this.ptMaterial.attributesArray.updateFrom(
+        geometry.attributes.normal,
+        geometry.attributes.tangent,
+        geometry.attributes.uv,
+        geometry.attributes.color,
+      );
+
+      // update materials and texture arrays
+      this.ptMaterial.materialIndexAttribute.updateFrom( geometry.attributes.materialIndex );
+      this.ptMaterial.textures.setTextures( this.renderer, 2048, 2048, textures );
+      this.ptMaterial.materials.updateFrom( materials, textures );
+      // update the lights
+      this.ptMaterial.lights.updateFrom( lights );
+
+    };
 
     //** TEST CUBES */
     // const geo1 = new THREE.BoxGeometry( 100, 50, 50 );
@@ -296,11 +330,11 @@ export default class Scene3DViewer extends React.Component {
     // this.enableMeshCastAndReceiveShadow( mesh1 );
     // this.enableMeshCastAndReceiveShadow( mesh2 );
 
+    setupPathTracing();
 
     let render = () => {
       // spotLight1.position.set( camera.position.x, camera.position.y, camera.position.z );
       // spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
-
 
       //** UPDATE CAMERAS */
       orbitController.update();
@@ -308,15 +342,39 @@ export default class Scene3DViewer extends React.Component {
       this.camera.updateMatrixWorld();
       cubeCamera.update( this.renderer, this.scene3D );
 
-
       for ( let elemID in planData.sceneGraph.LODs ) {
         planData.sceneGraph.LODs[ elemID ].update( this.camera );
       }
 
-      this.renderer.render( this.scene3D, this.camera );
+      if ( this.props.isPathTracing ) {
+
+        renderWithPathTracing();
+
+      } else {
+
+        this.renderer.render( this.scene3D, this.camera );
+
+      }
       this.renderingID = requestAnimationFrame( render );
     };
 
+    // Should all this go into componentwillreceiveprops?
+
+
+    let renderWithPathTracing = () => {
+      this.camera.updateMatrixWorld();
+      this.ptRenderer.update();
+
+      // if using alpha = true then the target texture will change every frame
+      // so we must retrieve it before render.
+      this.fsQuad.material.map = this.ptRenderer.target.texture;
+
+      // copy the current state of the path tracer to canvas to display
+      this.fsQuad.render( this.renderer );
+    };
+
+    // Comparar camara antigua, plandata antiguo con el nuevo? 
+    // En caso de que sea el mismo, ejecturar?
     render();
 
     this.orbitControls = orbitController;
@@ -355,7 +413,6 @@ export default class Scene3DViewer extends React.Component {
       projectActions: this.context.projectActions
     };
 
-
     this.width = width;
     this.height = height;
 
@@ -372,8 +429,6 @@ export default class Scene3DViewer extends React.Component {
   }
 
   render () {
-    console.log( this.props.isPathTracing );
-
     return React.createElement( 'div', { ref: 'canvasWrapper' } );
   }
 }

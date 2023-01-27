@@ -92,6 +92,7 @@ const addMetallicAndGlassLook = ( object, node ) => {
 };
 
 const addMirrorLook = ( object, node ) => {
+  //TODO Añadir un espejo en lugar de usar un CubeTarget
   if ( node.material.name === 'Espejo' || node.material.name === 'Cromado' ) {
     const newMaterial = new MeshStandardMaterial( {
       envMap: cubeRenderTarget.texture,
