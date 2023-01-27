@@ -24,8 +24,6 @@ import {
 } from 'three-gpu-pathtracer';
 import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass';
 
-// const AMBIENT_LIGHT = 3;
-
 export default class Scene3DViewer extends React.Component {
 
   constructor ( props ) {
@@ -175,6 +173,57 @@ export default class Scene3DViewer extends React.Component {
 
   };
 
+  setupPathTracing () {
+    this.ptMaterial = new PhysicalPathTracingMaterial();
+    this.ptRenderer = new PathTracingRenderer( this.renderer );
+    this.ptRenderer.setSize( window.innerWidth, window.innerHeight );
+    this.ptRenderer.camera = this.camera;
+    this.ptRenderer.material = this.ptMaterial;
+
+    this.fsQuad = new FullScreenQuad( new MeshBasicMaterial( {
+      map: this.ptRenderer.target.texture
+    } ) );
+
+    this.scene3D.updateMatrixWorld();
+    this.generator = new PathTracingSceneGenerator();
+
+    const { bvh, textures, materials, lights } = this.generator.generate( this.scene3D );
+    const geometry = bvh.geometry;
+
+    this.ptMaterial.bvh.updateFrom( bvh );
+
+    // update bvh and geometry attribute textures
+    this.ptMaterial.bvh.updateFrom( bvh );
+    this.ptMaterial.attributesArray.updateFrom(
+      geometry.attributes.normal,
+      geometry.attributes.tangent,
+      geometry.attributes.uv,
+      geometry.attributes.color,
+    );
+
+    // update materials and texture arrays
+    this.ptMaterial.materialIndexAttribute.updateFrom( geometry.attributes.materialIndex );
+    this.ptMaterial.textures.setTextures( this.renderer, 2048, 2048, textures );
+    this.ptMaterial.materials.updateFrom( materials, textures );
+    // update the lights
+    this.ptMaterial.lights.updateFrom( lights );
+
+  };
+
+
+  renderWithPathTracing () {
+    this.camera.updateMatrixWorld();
+    this.ptRenderer.update();
+
+    // if using alpha = true then the target texture will change every frame
+    // so we must retrieve it before render.
+    this.fsQuad.material.map = this.ptRenderer.target.texture;
+
+    // copy the current state of the path tracer to canvas to display
+    this.fsQuad.render( this.renderer );
+  };
+
+
   componentDidMount () {
     let { state } = this.props;
 
@@ -187,7 +236,6 @@ export default class Scene3DViewer extends React.Component {
     };
 
     let ascendDirectional = false;
-    let data = state.scene;
     this.scene3D = new THREE.Scene();
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
 
@@ -202,6 +250,7 @@ export default class Scene3DViewer extends React.Component {
 
 
     //** PARSE CATALOG */
+    const data = state.scene;
     const planData = parseData( state, data, actions, this.context.catalog );
 
     let toIntersect = [ planData.plan ];
@@ -209,6 +258,7 @@ export default class Scene3DViewer extends React.Component {
     let raycaster = new THREE.Raycaster();
     this.scene3D.add( planData.plan );
     // scene3D.add( planData.grid );
+    console.log( planData.plan );
 
     //** CREATE CAMERA */
     this.createAndAddCamera( this.scene3D, planData );
@@ -230,21 +280,6 @@ export default class Scene3DViewer extends React.Component {
       // new THREE.DirectionalLight( 'white', 0.5 ),
       this.scene3D
     );
-
-    // let spotLight1 = new THREE.SpotLight( 'white', 0.5 );
-    // spotLight1.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
-    // scene3D.add( spotLight1 );
-
-    // let spotLightTarget = new THREE.Object3D();
-
-    // spotLightTarget.name = 'spotLightTarget';
-
-    // // Sets spotlight position to the target of orbitControll
-    // spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
-
-    // spotLight1.target = spotLightTarget;
-    // scene3D.add( spotLightTarget );
-
 
     //** EVENT LISTENERS */
     this.mouseDownEvent = ( event ) => {
@@ -276,66 +311,9 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.domElement.style.display = 'block';
     document.addEventListener( 'keydown', this.update3DZoom );
 
-    let setupPathTracing = () => {
-      this.ptMaterial = new PhysicalPathTracingMaterial();
-      this.ptRenderer = new PathTracingRenderer( this.renderer );
-      this.ptRenderer.setSize( window.innerWidth, window.innerHeight );
-      this.ptRenderer.camera = this.camera;
-      this.ptRenderer.material = this.ptMaterial;
-
-      this.fsQuad = new FullScreenQuad( new MeshBasicMaterial( {
-        map: this.ptRenderer.target.texture
-      } ) );
-
-      this.scene3D.updateMatrixWorld();
-      this.generator = new PathTracingSceneGenerator();
-
-      const { bvh, textures, materials, lights } = this.generator.generate( this.scene3D );
-      const geometry = bvh.geometry;
-
-      this.ptMaterial.bvh.updateFrom( bvh );
-
-      // update bvh and geometry attribute textures
-      this.ptMaterial.bvh.updateFrom( bvh );
-      this.ptMaterial.attributesArray.updateFrom(
-        geometry.attributes.normal,
-        geometry.attributes.tangent,
-        geometry.attributes.uv,
-        geometry.attributes.color,
-      );
-
-      // update materials and texture arrays
-      this.ptMaterial.materialIndexAttribute.updateFrom( geometry.attributes.materialIndex );
-      this.ptMaterial.textures.setTextures( this.renderer, 2048, 2048, textures );
-      this.ptMaterial.materials.updateFrom( materials, textures );
-      // update the lights
-      this.ptMaterial.lights.updateFrom( lights );
-
-    };
-
-    //** TEST CUBES */
-    // const geo1 = new THREE.BoxGeometry( 100, 50, 50 );
-    // const mat1 = new THREE.MeshStandardMaterial();
-    // const mesh1 = new THREE.Mesh( geo1, mat1 );
-    // scene3D.add( mesh1 );
-
-    // const geo2 = new THREE.BoxGeometry( 100, 50, 50 );
-    // const mat2 = new THREE.MeshStandardMaterial();
-    // const mesh2 = new THREE.Mesh( geo2, mat2 );
-    // mesh2.position.y += 200;
-    // scene3D.add( mesh2 );
-
-
-    //** ENABLE SHADOWS */
-    // this.enableMeshCastAndReceiveShadow( mesh1 );
-    // this.enableMeshCastAndReceiveShadow( mesh2 );
-
-    setupPathTracing();
+    this.setupPathTracing();
 
     let render = () => {
-      // spotLight1.position.set( camera.position.x, camera.position.y, camera.position.z );
-      // spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
-
       //** UPDATE CAMERAS */
       orbitController.update();
       this.camera.updateMatrix();
@@ -348,7 +326,7 @@ export default class Scene3DViewer extends React.Component {
 
       if ( this.props.isPathTracing ) {
 
-        renderWithPathTracing();
+        this.renderWithPathTracing();
 
       } else {
 
@@ -359,20 +337,6 @@ export default class Scene3DViewer extends React.Component {
     };
 
     // Should all this go into componentwillreceiveprops?
-
-
-    let renderWithPathTracing = () => {
-      this.camera.updateMatrixWorld();
-      this.ptRenderer.update();
-
-      // if using alpha = true then the target texture will change every frame
-      // so we must retrieve it before render.
-      this.fsQuad.material.map = this.ptRenderer.target.texture;
-
-      // copy the current state of the path tracer to canvas to display
-      this.fsQuad.render( this.renderer );
-    };
-
     // Comparar camara antigua, plandata antiguo con el nuevo? 
     // En caso de que sea el mismo, ejecturar?
     render();
@@ -462,3 +426,40 @@ Scene3DViewer.contextType = Context;
 
     // };
 
+
+        // let spotLight1 = new THREE.SpotLight( 'white', 0.5 );
+    // spotLight1.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
+    // scene3D.add( spotLight1 );
+
+    // let spotLightTarget = new THREE.Object3D();
+
+    // spotLightTarget.name = 'spotLightTarget';
+
+    // // Sets spotlight position to the target of orbitControll
+    // spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
+
+    // spotLight1.target = spotLightTarget;
+    // scene3D.add( spotLightTarget );
+
+
+
+
+    //** TEST CUBES */
+    // const geo1 = new THREE.BoxGeometry( 100, 50, 50 );
+    // const mat1 = new THREE.MeshStandardMaterial();
+    // const mesh1 = new THREE.Mesh( geo1, mat1 );
+    // scene3D.add( mesh1 );
+
+    // const geo2 = new THREE.BoxGeometry( 100, 50, 50 );
+    // const mat2 = new THREE.MeshStandardMaterial();
+    // const mesh2 = new THREE.Mesh( geo2, mat2 );
+    // mesh2.position.y += 200;
+    // scene3D.add( mesh2 );
+
+
+    //** ENABLE SHADOWS */
+    // this.enableMeshCastAndReceiveShadow( mesh1 );
+    // this.enableMeshCastAndReceiveShadow( mesh2 );
+
+          // spotLight1.position.set( camera.position.x, camera.position.y, camera.position.z );
+      // spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
