@@ -21,8 +21,10 @@ import {
   PathTracingSceneGenerator,
   PathTracingRenderer,
   PhysicalPathTracingMaterial,
+  DynamicPathTracingSceneGenerator,
 } from 'three-gpu-pathtracer';
 import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass';
+import { thisExpression } from 'babel-types';
 
 export default class Scene3DViewer extends React.Component {
 
@@ -186,6 +188,7 @@ export default class Scene3DViewer extends React.Component {
 
     this.scene3D.updateMatrixWorld();
     this.generator = new PathTracingSceneGenerator();
+    // this.generator = new DynamicPathTracingSceneGenerator();
 
     const { bvh, textures, materials, lights } = this.generator.generate( this.scene3D );
     const geometry = bvh.geometry;
@@ -212,6 +215,8 @@ export default class Scene3DViewer extends React.Component {
 
 
   renderWithPathTracing () {
+    this.ptRenderer.reset();
+
     this.camera.updateMatrixWorld();
     this.ptRenderer.update();
 
@@ -311,9 +316,9 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.domElement.style.display = 'block';
     document.addEventListener( 'keydown', this.update3DZoom );
 
-    this.setupPathTracing();
 
     let render = () => {
+
       //** UPDATE CAMERAS */
       orbitController.update();
       this.camera.updateMatrix();
@@ -325,6 +330,9 @@ export default class Scene3DViewer extends React.Component {
       }
 
       if ( this.props.isPathTracing ) {
+        if ( this.ptRenderer === null || this.ptMaterial === null ) {
+          this.setupPathTracing();
+        }
 
         this.renderWithPathTracing();
 
@@ -336,9 +344,6 @@ export default class Scene3DViewer extends React.Component {
       this.renderingID = requestAnimationFrame( render );
     };
 
-    // Should all this go into componentwillreceiveprops?
-    // Comparar camara antigua, plandata antiguo con el nuevo? 
-    // En caso de que sea el mismo, ejecturar?
     render();
 
     this.orbitControls = orbitController;
