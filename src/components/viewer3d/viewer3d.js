@@ -66,24 +66,16 @@ export default class Scene3DViewer extends React.Component {
   }
 
   enableLightShadow ( light, scene ) {
-    light.castShadow = {
-      shadows: true,
-      // exposure: 0.68,
-      // bulbPower: 1700,
-      // hemiIrradiance: 4000
-    };
+    light.castShadow = true;
 
     if ( light.isSpotLight ) {
-      console.log( 'spotlight' );
       // light.shadow.bias = - 0.0005;
     }
     if ( light.isPointLight ) {
-      console.log( 'pointlight' );
       // light.shadow.bias = 0.0001;
     }
 
     if ( light.isDirectionalLight ) {
-      console.log( 'directionallight' );
       // light.shadow.bias = 0.0001;
     }
 
@@ -109,7 +101,7 @@ export default class Scene3DViewer extends React.Component {
   enableRendererShadows ( renderer ) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.needsUpdate = true;
-    renderer.shadowMap.type = THREE.PCFShadowMap;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   };
 
   enableMeshCastAndReceiveShadow ( mesh ) {

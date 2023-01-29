@@ -134,7 +134,7 @@ export function createArea ( element, layer, scene, textures ) {
   }
 
   let areaMaterial = new MeshStandardMaterial( {
-    // side: DoubleSide,
+    side: DoubleSide,
     color
   } );
 
@@ -167,7 +167,7 @@ export function createArea ( element, layer, scene, textures ) {
 
   let area = new Mesh( shapeGeometry, areaMaterial );
   area.receiveShadow = true;
-  area.castShadow = true;
+  // area.castShadow = true;
 
   area.rotation.x -= Math.PI / 2;
   area.name = 'floor';

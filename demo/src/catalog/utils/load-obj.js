@@ -106,23 +106,30 @@ const addCromadoLook = ( object, node ) => {
 
 const addMirrorLook = ( object, node ) => {
 
-  // if ( node.material.name === 'Espejo' ) {
-  //   const mirrorFront1 = new Reflector(
-  //     new THREE.PlaneGeometry( 50, 50 ),
-  //     {
-  //       color: new THREE.Color( 0x7f7f7f ),
-  //       //clipBias: 0.003,
-  //       textureWidth: window.innerWidth * window.devicePixelRatio,
-  //       textureHeight: window.innerHeight * window.devicePixelRatio
-  //     }
-  //   );
-  //   console.log( 'node', node );
-  //   console.log( 'node', mirrorFront1 );
+  if ( node.material.name === 'Espejo' ) {
 
-  //   mirrorFront1.position.x = node.position.x;
-  //   mirrorFront1.position.y = node.position.y;
-  //   mirrorFront1.position.z = node.position.z;
-  // }
+    const geometry = new THREE.PlaneGeometry( 1000, 1000 );
+    const options = {
+      // color: 'red',
+      // clipBias: 0.000,
+      textureWidth: window.innerWidth * window.devicePixelRatio,
+      textureHeight: window.innerHeight * window.devicePixelRatio
+    };
+
+    const mirror = new Reflector( geometry, options );
+    mirror.rotateX( Math.PI * 0.5 );
+    mirror.position.set( node.position.x, node.position.y, node.position.z );
+    mirror.castShadow = true;
+
+    object.children[ 0 ].children[ 3 ] = mirror;
+    // object.children[ 0 ].children[ 3 ].position.y = 550;
+    // object.children[ 0 ].children[ 3 ].position.z = -50;
+
+
+    console.log( node );
+    console.log( object );
+  }
+
 };
 
 const addMateLook = ( object, node ) => {
