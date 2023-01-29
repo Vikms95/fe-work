@@ -244,9 +244,9 @@ export default class Scene3DViewer extends React.Component {
     this.scene3D = new THREE.Scene();
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
 
-    const environment = new RoomEnvironment();
-    const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    this.scene3D.environment = pmremGenerator.fromScene( environment ).texture;
+    // const environment = new RoomEnvironment();
+    // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+    // this.scene3D.environment = pmremGenerator.fromScene( environment ).texture;
 
     //** MAKE RENDERER HIGH QUALITY */
     this.configureRendererPBR( this.renderer );
