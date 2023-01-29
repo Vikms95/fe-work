@@ -15,7 +15,7 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
-import { MeshStandardMaterial, PointLight, SpotLight } from 'three';
+import { MeshStandardMaterial, PlaneGeometry, PointLight, SpotLight } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 import { Reflector } from 'three/examples/jsm/objects/Reflector';
 
@@ -94,8 +94,8 @@ export default class Scene3DViewer extends React.Component {
     light.shadow.mapSize.width = 2048;
     light.shadow.mapSize.height = 2048;
 
-    const helper = new THREE.CameraHelper( light.shadow.camera );
-    scene.add( helper );
+    // const helper = new THREE.CameraHelper( light.shadow.camera );
+    // scene.add( helper );
   };
 
   enableRendererShadows ( renderer ) {
@@ -264,6 +264,15 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.domElement.style.display = 'block';
     document.addEventListener( 'keydown', this.update3DZoom );
 
+
+    // const reflector = new Reflector(
+    //   new PlaneGeometry( 50, 50 ),
+    //   {
+    //     textureWidth: window.innerWidth * window.devicePixelRatio,
+    //     textureHeight: window.innerHeight * window.devicePixelRatio
+    //   }
+    // );
+    // scene3D.add( reflector );
 
 
     //** TEST CUBES */

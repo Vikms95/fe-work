@@ -92,12 +92,13 @@ const addMetallicAndGlassLook = ( object, node ) => {
   }
 };
 
-const addCromadoLook = ( object, node ) => {
+const addChromeLook = ( object, node ) => {
   if ( node.material.name === 'Cromado' ) {
     const newMaterial = new MeshStandardMaterial( {
       envMap: cubeRenderTarget.texture,
       roughness: 0,
-      metalness: 1
+      metalness: 1,
+
     } );
 
     node.material = newMaterial;
@@ -107,27 +108,18 @@ const addCromadoLook = ( object, node ) => {
 const addMirrorLook = ( object, node ) => {
 
   if ( node.material.name === 'Espejo' ) {
+    const nodeGeo = node.geometry.clone();
 
-    const geometry = new THREE.PlaneGeometry( 1000, 1000 );
     const options = {
-      // color: 'red',
-      // clipBias: 0.000,
       textureWidth: window.innerWidth * window.devicePixelRatio,
       textureHeight: window.innerHeight * window.devicePixelRatio
     };
 
-    const mirror = new Reflector( geometry, options );
-    mirror.rotateX( Math.PI * 0.5 );
-    mirror.position.set( node.position.x, node.position.y, node.position.z );
-    mirror.castShadow = true;
+    const mirror = new Reflector( nodeGeo, options );
+    // mirror.castShadow = true;
 
     object.children[ 0 ].children[ 3 ] = mirror;
-    // object.children[ 0 ].children[ 3 ].position.y = 550;
-    // object.children[ 0 ].children[ 3 ].position.z = -50;
 
-
-    console.log( node );
-    console.log( object );
   }
 
 };
@@ -194,8 +186,7 @@ export function loadGLTF ( input ) {
           enableMeshCastAndReceiveShadow( object );
           addMetallicAndGlassLook( object, node );
           addMirrorLook( object, node );
-          addCromadoLook( object, node );
-          addMateLook( object, node );
+          addChromeLook( object, node );
           addBrilloLook( object, node );
           addBrilloAltoLook( object, node );
 
