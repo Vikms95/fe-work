@@ -177,9 +177,10 @@ export default class Scene3DViewer extends React.Component {
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
 
 
-    // const environment = new RoomEnvironment();
-    // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    // scene3D.environment = pmremGenerator.fromScene( environment ).texture;
+    const environment = new RoomEnvironment();
+    const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+    scene3D.environment = pmremGenerator.fromScene( environment ).texture;
+
 
     //** MAKE RENDERER HIGH QUALITY */
     this.configureRendererPBR( this.renderer );
@@ -268,6 +269,7 @@ export default class Scene3DViewer extends React.Component {
     // const reflector = new Reflector(
     //   new PlaneGeometry( 50, 50 ),
     //   {
+    //     clipBias: 0.003,
     //     textureWidth: window.innerWidth * window.devicePixelRatio,
     //     textureHeight: window.innerHeight * window.devicePixelRatio
     //   }
