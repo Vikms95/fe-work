@@ -83,7 +83,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
     "shortid": "2.2.14",
-    "three-gpu-pathtracer": "^0.0.11"
+    "three-gpu-pathtracer": "^0.0.12"
   },
   "devDependencies": {
     "@welldone-software/why-did-you-render": "^7.0.1",
