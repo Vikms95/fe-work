@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Box3, BoxHelper, Loader, MeshStandardMaterial } from 'three';
+import { Box3, BoxHelper, Loader, MeshPhysicalMaterial, MeshStandardMaterial } from 'three';
 // import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
@@ -71,6 +71,7 @@ const enableMeshCastAndReceiveShadow = ( object ) => {
   //   case 'Scene_Brillo':
   //   case 'Mampara':
   object.traverse( child => {
+    console.log( 'instancedMesh', child.isIstancedMesh );
     if ( child instanceof THREE.Mesh ) {
       if ( child.material.name !== 'Cristal' ) {
         child.material.side = THREE.FrontSide;
@@ -114,12 +115,21 @@ const addChromeLook = ( object, node ) => {
 const addMirrorLook = ( object, node ) => {
 
   if ( node.material.name === 'Espejo' ) {
-    const newMaterial = new MeshStandardMaterial( {
-      envMap: cubeRenderTarget.texture,
-      roughness: 0.05,
+    // const newMaterial = new MeshStandardMaterial( {
+    //   envMap: cubeRenderTarget.texture,
+    //   roughness: 0.05,
+    //   metalness: 1,
+
+    // } );
+
+    const newMaterial = new MeshPhysicalMaterial( {
+      roughness: 0,
       metalness: 1,
+      transmission: 1,
+      thickness: -1
 
     } );
+
 
     node.material = newMaterial;
   }

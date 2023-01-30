@@ -15,7 +15,7 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
-import { MeshStandardMaterial, PlaneGeometry, PointLight, SpotLight } from 'three';
+import { MeshPhysicalMaterial, MeshStandardMaterial, PlaneGeometry, PointLight, SpotLight } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 import { Reflector } from 'three/examples/jsm/objects/Reflector';
 
@@ -177,9 +177,9 @@ export default class Scene3DViewer extends React.Component {
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
 
 
-    const environment = new RoomEnvironment();
-    const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    scene3D.environment = pmremGenerator.fromScene( environment ).texture;
+    // const environment = new RoomEnvironment();
+    // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+    // scene3D.environment = pmremGenerator.fromScene( environment ).texture;
 
 
     //** MAKE RENDERER HIGH QUALITY */
@@ -266,14 +266,22 @@ export default class Scene3DViewer extends React.Component {
     document.addEventListener( 'keydown', this.update3DZoom );
 
 
-    // const reflector = new Reflector(
-    //   new PlaneGeometry( 50, 50 ),
-    //   {
-    //     clipBias: 0.003,
-    //     textureWidth: window.innerWidth * window.devicePixelRatio,
-    //     textureHeight: window.innerHeight * window.devicePixelRatio
-    //   }
-    // );
+    const reflector = new THREE.Mesh(
+      new PlaneGeometry( 50, 50 ),
+      {
+        clipBias: 0.003,
+        textureWidth: window.innerWidth * window.devicePixelRatio,
+        textureHeight: window.innerHeight * window.devicePixelRatio,
+        encoding: THREE.sRGBEncoding
+
+      },
+      new MeshPhysicalMaterial( {
+        thickness: -1,
+        transmission: 1,
+        roughness: 0,
+        metalness: 1
+      } )
+    );
     // scene3D.add( reflector );
 
 
