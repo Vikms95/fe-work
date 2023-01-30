@@ -335,13 +335,14 @@ export default class Scene3DViewer extends React.Component {
         }
 
         this.renderWithPathTracing();
+        // this.renderingID = requestAnimationFrame( this.fsQuad.render );
 
       } else {
 
         this.renderer.render( this.scene3D, this.camera );
+        this.renderingID = requestAnimationFrame( render );
 
       }
-      this.renderingID = requestAnimationFrame( render );
     };
 
     render();
