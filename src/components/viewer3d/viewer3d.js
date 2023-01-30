@@ -24,7 +24,7 @@ import {
   DynamicPathTracingSceneGenerator,
 } from 'three-gpu-pathtracer';
 import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass';
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
+// import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 // import hdr from './royal_esplanade_2k.hdr';
 
 export default class Scene3DViewer extends React.Component {

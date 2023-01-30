@@ -135,7 +135,9 @@ export default class Viewer3DFirstPerson extends Component {
     let pointer = new Three.Object3D();
     pointer.name = 'pointer';
 
-    let pointerMaterial = new Three.MeshBasicMaterial( { depthTest: false, depthWrite: false, color: SharedStyle.COLORS.black } );
+    //todo replaced by standard to allow path-tracing
+    // let pointerMaterial = new Three.MeshBasicMaterial( { depthTest: false, depthWrite: false, color: SharedStyle.COLORS.black } );
+    let pointerMaterial = new Three.MeshStandardMaterial( { depthTest: false, depthWrite: false, color: SharedStyle.COLORS.black } );
     let pointerGeometry1 = new Three.Geometry();
     pointerGeometry1.vertices.push( new Three.Vector3( -10, 0, 0 ) );
     pointerGeometry1.vertices.push( new Three.Vector3( 10, 0, 0 ) );
