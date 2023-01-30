@@ -48,7 +48,9 @@ export default class Scene3DViewer extends React.Component {
     this.ptRenderer = null;
     this.fsQuad = null;
     this.generator = null;
-
+    this.delaySamples = 0;
+    this.tilesX = 2;
+    this.tilesY = 2;
 
     this.update3DZoom = this.update3DZoom.bind( this );
     this.enableLightShadow = this.enableLightShadow.bind( this );
@@ -57,6 +59,8 @@ export default class Scene3DViewer extends React.Component {
     this.configureRendererPBR = this.configureRendererPBR.bind( this );
     this.createAndAddCamera = this.createAndAddCamera.bind( this );
     this.addLightOnTop = this.addLightOnTop.bind( this );
+    this.setupPathTracing = this.setupPathTracing.bind( this );
+    this.renderWithPathTracing = this.renderWithPathTracing.bind( this );
     // this.transitionLight = this.transitionLight.bind( this );
   }
 
@@ -182,6 +186,7 @@ export default class Scene3DViewer extends React.Component {
     this.ptRenderer.setSize( window.innerWidth, window.innerHeight );
     this.ptRenderer.camera = this.camera;
     this.ptRenderer.material = this.ptMaterial;
+    this.ptRenderer.tiles.set( this.tilesX, this.tilesY );
 
     this.fsQuad = new FullScreenQuad( new MeshBasicMaterial( {
       map: this.ptRenderer.target.texture
@@ -217,18 +222,24 @@ export default class Scene3DViewer extends React.Component {
   };
 
 
-  renderWithPathTracing () {
+  renderWithPathTracing ( render ) {
     this.ptRenderer.reset();
+    console.log( 'test' );
 
     this.camera.updateMatrixWorld();
+    console.log( 'test' );
+
+    console.log( 'before', this.ptRenderer );
     this.ptRenderer.update();
+    console.log( 'after', this.ptRenderer );
 
     console.log( this.ptRenderer.samples );
-    if ( this.ptRenderer.samples < 1 ) {
 
-      this.renderer.render( this.scene3D, this.camera );
+    // if ( this.ptRenderer.samples < 1 ) {
 
-    }
+    // this.renderer.render( this.scene3D, this.camera );
+
+    // }
 
     // if using alpha = true then the target texture will change every frame
     // so we must retrieve it before render.
@@ -256,9 +267,9 @@ export default class Scene3DViewer extends React.Component {
     this.scene3D = new THREE.Scene();
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
 
-    // const environment = new RoomEnvironment();
-    // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    // this.scene3D.environment = pmremGenerator.fromScene( environment ).texture;
+    const environment = new RoomEnvironment();
+    const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+    this.scene3D.environment = pmremGenerator.fromScene( environment ).texture;
 
     //** MAKE RENDERER HIGH QUALITY */
     this.configureRendererPBR( this.renderer );
@@ -349,7 +360,7 @@ export default class Scene3DViewer extends React.Component {
         }
 
         console.log( 'render with path tracing' );
-        this.renderWithPathTracing();
+        this.renderWithPathTracing( render );
 
       } else {
 
@@ -389,7 +400,6 @@ export default class Scene3DViewer extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps ( nextProps ) {
-    console.log( 'update' );
 
     let { width, height } = nextProps;
 
