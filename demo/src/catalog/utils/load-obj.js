@@ -12,9 +12,9 @@ import woodRoughnessFile from '../items/_Victor-Cubo-Azul-Mate/34232 Arizona Pin
 
 
 
-const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256 );
-cubeRenderTarget.texture.type = THREE.HalfFloatType;
-export const cubeCamera = new THREE.CubeCamera( 1, 1000, cubeRenderTarget );
+// const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256 );
+// cubeRenderTarget.texture.type = THREE.HalfFloatType;
+// export const cubeCamera = new THREE.CubeCamera( 1, 1000, cubeRenderTarget );
 
 
 export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm, normalizeOrigin ) {
@@ -96,7 +96,7 @@ const addMirrorLook = ( object, node ) => {
   //TODO Añadir un espejo en lugar de usar un CubeTarget
   if ( node.material.name === 'Espejo' || node.material.name === 'Cromado' ) {
     const newMaterial = new MeshStandardMaterial( {
-      envMap: cubeRenderTarget.texture,
+      // envMap: cubeRenderTarget.texture,
       roughness: 0,
       metalness: 1
     } );

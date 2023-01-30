@@ -24,7 +24,8 @@ import {
   DynamicPathTracingSceneGenerator,
 } from 'three-gpu-pathtracer';
 import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass';
-import { thisExpression } from 'babel-types';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
+// import hdr from './royal_esplanade_2k.hdr';
 
 export default class Scene3DViewer extends React.Component {
 
@@ -190,6 +191,8 @@ export default class Scene3DViewer extends React.Component {
     this.generator = new PathTracingSceneGenerator();
     // this.generator = new DynamicPathTracingSceneGenerator();
 
+
+
     const { bvh, textures, materials, lights } = this.generator.generate( this.scene3D );
     const geometry = bvh.geometry;
 
@@ -220,6 +223,13 @@ export default class Scene3DViewer extends React.Component {
     this.camera.updateMatrixWorld();
     this.ptRenderer.update();
 
+    console.log( this.ptRenderer.samples );
+    if ( this.ptRenderer.samples < 1 ) {
+
+      this.renderer.render( this.scene3D, this.camera );
+
+    }
+
     // if using alpha = true then the target texture will change every frame
     // so we must retrieve it before render.
     this.fsQuad.material.map = this.ptRenderer.target.texture;
@@ -230,6 +240,8 @@ export default class Scene3DViewer extends React.Component {
 
 
   componentDidMount () {
+    console.log( 'mount' );
+
     let { state } = this.props;
 
     let actions = {
@@ -319,11 +331,12 @@ export default class Scene3DViewer extends React.Component {
 
     let render = () => {
 
+
       //** UPDATE CAMERAS */
       orbitController.update();
       this.camera.updateMatrix();
       this.camera.updateMatrixWorld();
-      cubeCamera.update( this.renderer, this.scene3D );
+      // cubeCamera.update( this.renderer, this.scene3D );
 
       for ( let elemID in planData.sceneGraph.LODs ) {
         planData.sceneGraph.LODs[ elemID ].update( this.camera );
@@ -331,18 +344,20 @@ export default class Scene3DViewer extends React.Component {
 
       if ( this.props.isPathTracing ) {
         if ( this.ptRenderer === null || this.ptMaterial === null ) {
+          console.log( 'setting up' );
           this.setupPathTracing();
         }
 
+        console.log( 'render with path tracing' );
         this.renderWithPathTracing();
-        // this.renderingID = requestAnimationFrame( this.fsQuad.render );
 
       } else {
 
+        console.log( 'normal render' );
         this.renderer.render( this.scene3D, this.camera );
-        this.renderingID = requestAnimationFrame( render );
 
       }
+      this.renderingID = requestAnimationFrame( render );
     };
 
     render();
@@ -352,6 +367,7 @@ export default class Scene3DViewer extends React.Component {
   }
 
   componentWillUnmount () {
+    console.log( 'unmount' );
     document.removeEventListener( 'keydown', this.update3DZoom );
     cancelAnimationFrame( this.renderingID );
 
@@ -373,6 +389,8 @@ export default class Scene3DViewer extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps ( nextProps ) {
+    console.log( 'update' );
+
     let { width, height } = nextProps;
 
     let actions = {
