@@ -125,6 +125,10 @@ export default class Scene3DViewer extends React.Component {
     renderer.shadowMap.type = THREE.PCFShadowMap;
   };
 
+  createGeneratedHDR () {
+
+  }
+
   enableMeshCastAndReceiveShadow ( mesh ) {
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -219,21 +223,24 @@ export default class Scene3DViewer extends React.Component {
     // update the lights
     this.ptMaterial.lights.updateFrom( lights );
 
+    window.addEventListener( "resize", this.onResize );
+
+    this.onResize();
+
   };
 
 
   renderWithPathTracing ( render ) {
-    this.ptRenderer.reset();
-    console.log( 'test' );
+    console.log( 'ptrenderer', this.ptRenderer );
+    console.log( 'fsquad', this.fsQuad );
+    console.log( 'generator', this.generator );
+    console.log( 'delaysamples', this.delaySamples );
+
 
     this.camera.updateMatrixWorld();
-    console.log( 'test' );
 
-    console.log( 'before', this.ptRenderer );
     this.ptRenderer.update();
-    console.log( 'after', this.ptRenderer );
 
-    console.log( this.ptRenderer.samples );
 
     // if ( this.ptRenderer.samples < 1 ) {
 
@@ -249,10 +256,28 @@ export default class Scene3DViewer extends React.Component {
     this.fsQuad.render( this.renderer );
   };
 
+  onResize () {
+    let resolutionScale = Math.max( 1 / window.devicePixelRatio, 0.5 );
+    // update rendering resolution
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const scale = resolutionScale;
+    const dpr = window.devicePixelRatio;
+
+    this.ptRenderer.setSize( w * scale * dpr, h * scale * dpr );
+    this.ptRenderer.reset();
+
+    this.renderer.setSize( w, h );
+    this.renderer.setPixelRatio( window.devicePixelRatio * scale );
+
+    const aspect = w / h;
+    this.camera.aspect = aspect;
+    this.camera.updateProjectionMatrix();
+  }
+
+
 
   componentDidMount () {
-    console.log( 'mount' );
-
     let { state } = this.props;
 
     let actions = {
@@ -291,9 +316,16 @@ export default class Scene3DViewer extends React.Component {
     //** CREATE CAMERA */
     this.createAndAddCamera( this.scene3D, planData );
 
-
     //** ORBIT CONTROLS */
     let orbitController = new OrbitControls( this.camera, this.renderer.domElement );
+
+    orbitController.addEventListener( "change", () => {
+      if ( this.ptRenderer && this.props.isPathTracing ) {
+        console.log( 'reset' );
+
+        this.ptRenderer.reset();
+      }
+    } );
 
 
     //** AMBIENT LIGHT */
@@ -341,7 +373,7 @@ export default class Scene3DViewer extends React.Component {
 
 
     let render = () => {
-
+      this.renderingID = requestAnimationFrame( render );
 
       //** UPDATE CAMERAS */
       orbitController.update();
@@ -368,7 +400,6 @@ export default class Scene3DViewer extends React.Component {
         this.renderer.render( this.scene3D, this.camera );
 
       }
-      this.renderingID = requestAnimationFrame( render );
     };
 
     render();
