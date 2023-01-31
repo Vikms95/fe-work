@@ -19,6 +19,7 @@ import { MeshPhysicalMaterial, MeshStandardMaterial, PlaneGeometry, PointLight, 
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 import { Reflector } from 'three/examples/jsm/objects/Reflector';
 
+console.log( Reflector );
 
 const AMBIENT_LIGHT = 3;
 
@@ -195,7 +196,7 @@ export default class Scene3DViewer extends React.Component {
     let mouse = new THREE.Vector2();
     let raycaster = new THREE.Raycaster();
     scene3D.add( planData.plan );
-    scene3D.add( planData.grid );
+    // scene3D.add( planData.grid );
 
     //** CREATE CAMERA */
     const { camera, cameraPositionX, cameraPositionY, cameraPositionZ } =
@@ -266,21 +267,21 @@ export default class Scene3DViewer extends React.Component {
     document.addEventListener( 'keydown', this.update3DZoom );
 
 
-    const reflector = new THREE.Mesh(
+    const reflector = new Reflector(
       new PlaneGeometry( 50, 50 ),
       {
-        clipBias: 0.003,
+        // minFilter: THREE.LinearFilter,
+        // magFilter: THREE.LinearFilter,
+        // format: THREE.RGBFormat,
+        // stencilBuffer: false,
+        // clipBias: 0.003,
         textureWidth: window.innerWidth * window.devicePixelRatio,
         textureHeight: window.innerHeight * window.devicePixelRatio,
-        encoding: THREE.sRGBEncoding
+        encoding: THREE.sRGBEncoding,
+        // multisample: 4,
+        // recursion: 1,
 
-      },
-      new MeshPhysicalMaterial( {
-        thickness: -1,
-        transmission: 1,
-        roughness: 0,
-        metalness: 1
-      } )
+      }
     );
     // scene3D.add( reflector );
 
