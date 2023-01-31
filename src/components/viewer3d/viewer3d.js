@@ -196,7 +196,7 @@ export default class Scene3DViewer extends React.Component {
     let mouse = new THREE.Vector2();
     let raycaster = new THREE.Raycaster();
     scene3D.add( planData.plan );
-    // scene3D.add( planData.grid );
+    scene3D.add( planData.grid );
 
     //** CREATE CAMERA */
     const { camera, cameraPositionX, cameraPositionY, cameraPositionZ } =
