@@ -24,7 +24,7 @@ import {
   DynamicPathTracingSceneGenerator,
 } from 'three-gpu-pathtracer';
 import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass';
-// import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 // import hdr from './royal_esplanade_2k.hdr';
 
 export default class Scene3DViewer extends React.Component {
@@ -197,56 +197,64 @@ export default class Scene3DViewer extends React.Component {
     } ) );
 
     this.scene3D.updateMatrixWorld();
-    this.generator = new PathTracingSceneGenerator();
-    // this.generator = new DynamicPathTracingSceneGenerator();
+
+    const envMapPromise = new RGBELoader()
+      .loadAsync(
+        "https://raw.githubusercontent.com/gkjohnson/3d-demo-data/master/hdri/chinese_garden_1k.hdr"
+      )
+      .then( ( texture ) => {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        // this.scene3D.background = texture;
+        this.scene3D.environment = texture;
+        this.ptRenderer.material.envMapInfo.updateFrom( texture );
+      } ).then( () => {
+
+        this.generator = new PathTracingSceneGenerator();
+        const { bvh, textures, materials, lights } = this.generator.generate( this.scene3D );
+        const geometry = bvh.geometry;
+
+        this.ptMaterial.bvh.updateFrom( bvh );
+
+        // update bvh and geometry attribute textures
+        this.ptMaterial.bvh.updateFrom( bvh );
+        this.ptMaterial.attributesArray.updateFrom(
+          geometry.attributes.normal,
+          geometry.attributes.tangent,
+          geometry.attributes.uv,
+          geometry.attributes.color,
+        );
+
+        // update materials and texture arrays
+        this.ptMaterial.materialIndexAttribute.updateFrom( geometry.attributes.materialIndex );
+        this.ptMaterial.textures.setTextures( this.renderer, 2048, 2048, textures );
+        this.ptMaterial.materials.updateFrom( materials, textures );
+        // update the lights
+        this.ptMaterial.lights.updateFrom( lights );
+
+        window.addEventListener( "resize", this.onResize );
+
+        this.onResize();
+      }
+      );
 
 
-
-    const { bvh, textures, materials, lights } = this.generator.generate( this.scene3D );
-    const geometry = bvh.geometry;
-
-    this.ptMaterial.bvh.updateFrom( bvh );
-
-    // update bvh and geometry attribute textures
-    this.ptMaterial.bvh.updateFrom( bvh );
-    this.ptMaterial.attributesArray.updateFrom(
-      geometry.attributes.normal,
-      geometry.attributes.tangent,
-      geometry.attributes.uv,
-      geometry.attributes.color,
-    );
-
-    // update materials and texture arrays
-    this.ptMaterial.materialIndexAttribute.updateFrom( geometry.attributes.materialIndex );
-    this.ptMaterial.textures.setTextures( this.renderer, 2048, 2048, textures );
-    this.ptMaterial.materials.updateFrom( materials, textures );
-    // update the lights
-    this.ptMaterial.lights.updateFrom( lights );
-
-    window.addEventListener( "resize", this.onResize );
-
-    this.onResize();
 
   };
 
 
   renderWithPathTracing ( render ) {
-    console.log( 'ptrenderer', this.ptRenderer );
-    console.log( 'fsquad', this.fsQuad );
-    console.log( 'generator', this.generator );
-    console.log( 'delaysamples', this.delaySamples );
-
-
     this.camera.updateMatrixWorld();
 
+
+    //todo TENGO QUE PONER LA CONDICIÓN AQUÍ
     this.ptRenderer.update();
 
 
-    // if ( this.ptRenderer.samples < 1 ) {
+    if ( this.ptRenderer.samples < 1 ) {
 
-    // this.renderer.render( this.scene3D, this.camera );
+      this.renderer.render( this.scene3D, this.camera );
 
-    // }
+    }
 
     // if using alpha = true then the target texture will change every frame
     // so we must retrieve it before render.
@@ -321,8 +329,6 @@ export default class Scene3DViewer extends React.Component {
 
     orbitController.addEventListener( "change", () => {
       if ( this.ptRenderer && this.props.isPathTracing ) {
-        console.log( 'reset' );
-
         this.ptRenderer.reset();
       }
     } );
@@ -379,27 +385,34 @@ export default class Scene3DViewer extends React.Component {
       orbitController.update();
       this.camera.updateMatrix();
       this.camera.updateMatrixWorld();
-      // cubeCamera.update( this.renderer, this.scene3D );
 
       for ( let elemID in planData.sceneGraph.LODs ) {
         planData.sceneGraph.LODs[ elemID ].update( this.camera );
       }
 
-      if ( this.props.isPathTracing ) {
-        if ( this.ptRenderer === null || this.ptMaterial === null ) {
-          console.log( 'setting up' );
-          this.setupPathTracing();
-        }
+      if ( !this.props.isPathTracing ) {
+        return this.renderer.render( this.scene3D, this.camera );
+      }
 
-        console.log( 'render with path tracing' );
-        this.renderWithPathTracing( render );
 
-      } else {
+      //** SEPARAR EN 2 FUNCIONES */
 
-        console.log( 'normal render' );
+      if ( this.ptRenderer === null || this.ptMaterial === null ) {
+        this.setupPathTracing();
+      }
+
+      if ( this.props.isPathTracing ) this.ptRenderer.update();
+
+      if ( this.ptRenderer.samples < 1 ) {
+
         this.renderer.render( this.scene3D, this.camera );
 
       }
+
+      this.renderer.autoClear = false;
+      this.fsQuad.material.map = this.ptRenderer.target.texture;
+      this.fsQuad.render( this.renderer );
+      this.renderer.autoClear = true;
     };
 
     render();
