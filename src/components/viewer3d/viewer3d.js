@@ -224,7 +224,7 @@ export default class Scene3DViewer extends React.Component {
 
     //** ADD TEST LIGHT */
     this.addLightOnTop(
-      new THREE.SpotLight( 'white', 0.35 ),
+      new THREE.SpotLight( 'white', 0.40 ),
       // new THREE.PointLight( 'white', 0.5 ),
       // new THREE.DirectionalLight( 'white', 0.5 ),
       scene3D
@@ -287,7 +287,7 @@ export default class Scene3DViewer extends React.Component {
 
       }
     );
-    reflector.position.z -= 161;
+    reflector.position.z -= 161.1; //161
     reflector.position.y += 36.5;
     reflector.position.x += 45;
 
