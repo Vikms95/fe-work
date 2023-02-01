@@ -64,14 +64,30 @@ export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm
 }
 
 
-const enableMeshCastAndReceiveShadow = ( object ) => {
-  // switch ( object.name ) {
-  //   case 'Planta':
-  //   case "Scene_BAÑO":
-  //   case 'Scene_Brillo':
-  //   case 'Mampara':
+const addPorcelainLook = ( object, node ) => {
+  if ( node.material.name === 'Porcelain_Glossy' ) {
+
+    const newMaterial = new MeshPhysicalMaterial( {
+      envMap: cubeRenderTarget.texture,
+      roughness: 0.25,
+      metalness: 0,
+      clearcoat: 1
+    } );
+
+    node.material = newMaterial;
+  };
+};
+
+const addEnvMapIntensity = ( object ) => {
   object.traverse( child => {
-    console.log( 'instancedMesh', child.isIstancedMesh );
+    if ( child instanceof THREE.Mesh ) {
+      child.material.envMapIntensity = 0.25;
+    }
+  } );
+};
+
+const enableMeshCastAndReceiveShadow = ( object ) => {
+  object.traverse( child => {
     if ( child instanceof THREE.Mesh ) {
       if ( child.material.name !== 'Cristal' ) {
         child.material.side = THREE.FrontSide;
@@ -80,24 +96,34 @@ const enableMeshCastAndReceiveShadow = ( object ) => {
       }
     }
   } );
-  // };
 };
 
-const addMetallicAndGlassLook = ( object, node ) => {
-  switch ( node.material.name ) {
-    case 'Cromado':
-      node.material.emissive = new THREE.Color( 'gray' );
-      node.material.roughness = 0.3;
-      node.material.metalness = 1;
-      break;
-    case 'Cristal':
-      node.material.roughness = 0.25;
-      node.material.metalness = 0;
-      node.material.opacity = 0.05;
-      break;
+const addGlassLook = ( object, node ) => {
+  if ( node.material.name === 'Cristal' ) {
+    // const newMaterial = new MeshPhysicalMaterial( {
+    //   roughness: 0.25,
+    //   metalness: 0,
+    //   opacity: 0,
+    //   // transmission: 1,
+    //   transparent: true,
+    //   ior: 1.52
 
+    // } );
+    const newMaterial = new MeshStandardMaterial( {
+      roughness: 0.25,
+      metalness: 0,
+      opacity: 0,
+      // transmission: 1,
+      // transparent: true,
+      // ior: 1.52
+
+    } );
+
+    node.material = newMaterial;
   }
+
 };
+
 
 const addChromeLook = ( object, node ) => {
   if ( node.material.name === 'Cromado' ) {
@@ -122,16 +148,16 @@ const addMirrorLook = ( object, node ) => {
 
     // } );
 
-    const newMaterial = new MeshPhysicalMaterial( {
-      roughness: 0,
-      metalness: 1,
-      transmission: 1,
-      thickness: -1
+    // const newMaterial = new MeshPhysicalMaterial( {
+    //   roughness: 0,
+    //   metalness: 1,
+    //   transmission: 1,
+    //   thickness: -1
 
-    } );
+    // } );
 
 
-    node.material = newMaterial;
+    // node.material = newMaterial;
   }
 
 };
@@ -169,6 +195,51 @@ const addBrilloAltoLook = ( object, node ) => {
   }
 };
 
+const addRoughnessLook = ( object ) => {
+  if ( object.name === 'Scene_Cube_Wood_Rough_Brillo' ) {
+    const firstMesh = object.children[ 0 ].children[ 0 ].clone();
+    const secondMesh = object.children[ 0 ].children[ 1 ].clone();
+
+    const loader = new THREE.TextureLoader();
+    const colorTexture = loader.load( woodTextureFile );
+    const roughnessTexture = loader.load( woodRoughnessFile );
+
+    colorTexture.wrapS = THREE.RepeatWrapping;
+    colorTexture.wrapT = THREE.RepeatWrapping;
+    colorTexture.minFilter = THREE.NearestFilter;
+    roughnessTexture.wrapS = THREE.RepeatWrapping;
+    roughnessTexture.wrapT = THREE.RepeatWrapping;
+    roughnessTexture.minFilter = THREE.NearestFilter;
+
+    const oldMaterialParams1 = firstMesh.material.clone();
+    const oldGeoParams1 = firstMesh.geometry.clone();
+    const newMaterial1 = new MeshStandardMaterial( {
+      map: colorTexture,
+      roughnessMap: roughnessTexture
+    }
+    ).clone( oldMaterialParams1 );
+
+    const oldMaterialParams2 = secondMesh.material.clone();
+    const oldGeoParams2 = secondMesh.geometry.clone();
+    const newMaterial2 = new MeshStandardMaterial( {
+      map: colorTexture,
+      roughnessMap: roughnessTexture,
+    }
+    ).clone( oldMaterialParams2 );
+
+
+    object.children[ 0 ].children[ 0 ] = new THREE.Mesh( oldGeoParams1, newMaterial1 );
+    object.children[ 0 ].children[ 1 ] = new THREE.Mesh( oldGeoParams2, newMaterial2 );
+
+    object.children[ 0 ].children[ 0 ].material.roughness = brilloValues.roughness;
+    object.children[ 0 ].children[ 0 ].material.metalness = brilloValues.metalness;
+    object.children[ 0 ].children[ 1 ].material.roughness = brilloValues.roughness;
+    object.children[ 0 ].children[ 1 ].material.metalness = brilloValues.metalness;
+
+    // object.children[ 0 ].scale.set( 200, 200, 200 );
+  }
+};
+
 const mateValues = {
   roughness: 0.75,
   metalness: 0
@@ -195,12 +266,15 @@ export function loadGLTF ( input ) {
       object.traverse( node => {
 
         if ( node instanceof THREE.Mesh && node.material ) {
+          // addEnvMapIntensity( object );
           enableMeshCastAndReceiveShadow( object );
-          addMetallicAndGlassLook( object, node );
+          addGlassLook( object, node );
           addMirrorLook( object, node );
           addChromeLook( object, node );
+          addPorcelainLook( object, node );
           addBrilloLook( object, node );
           addBrilloAltoLook( object, node );
+          addRoughnessLook( object, node );
 
           if ( input.tocm ) {
             object.scale.set( 100, 100, 100 );

@@ -19,9 +19,11 @@ import { MeshPhysicalMaterial, MeshStandardMaterial, PlaneGeometry, PointLight, 
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 import { Reflector } from 'three/examples/jsm/objects/Reflector';
 
-console.log( Reflector );
-
-const AMBIENT_LIGHT = 3;
+const AMBIENT_LIGHT_INTENSITY = 0.3;
+const SPOT_LIGHT_INTENSITY = 0.25;
+const DIRECTIONAL_LIGHT_INTENSITY = 0.5;
+const REFLECTOR_RESOLUTION = 2048;
+const SHADOW_RESOLUTION = 2048;
 
 export default class Scene3DViewer extends React.Component {
 
@@ -92,8 +94,8 @@ export default class Scene3DViewer extends React.Component {
       // light.shadow.camera.far = 450;
     }
 
-    light.shadow.mapSize.width = 2048;
-    light.shadow.mapSize.height = 2048;
+    light.shadow.mapSize.width = SHADOW_RESOLUTION;
+    light.shadow.mapSize.height = SHADOW_RESOLUTION;
 
     // const helper = new THREE.CameraHelper( light.shadow.camera );
     // scene.add( helper );
@@ -130,14 +132,21 @@ export default class Scene3DViewer extends React.Component {
     renderer.setClearColor( new THREE.Color( SharedStyle.COLORS.white ) );
     renderer.setSize( this.width, this.height );
     renderer.physicallyCorrectLights = false;
-    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setPixelRatio( Math.min( window.devicePixelRatio, 2 ) );
     renderer.encoding = THREE.sRGBEncoding;
 
   }
 
   addLightOnTop ( light, scene ) {
     light.position.y += 300;
-    // light.position.z += 200;
+
+    //todo showcase purposes
+    if ( light.isPointLight ) {
+      light.position.y -= 150;
+      light.position.z += 150;
+      light.position.x -= 125;
+      light.decay = 1.5;
+    }
     scene.add( light );
 
     this.enableLightShadow( light, scene );
@@ -181,6 +190,7 @@ export default class Scene3DViewer extends React.Component {
     // const environment = new RoomEnvironment();
     // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
     // scene3D.environment = pmremGenerator.fromScene( environment ).texture;
+    // scene3D.background = pmremGenerator.fromScene( environment ).texture;
 
 
     //** MAKE RENDERER HIGH QUALITY */
@@ -214,7 +224,7 @@ export default class Scene3DViewer extends React.Component {
 
     //** ADD TEST LIGHT */
     this.addLightOnTop(
-      new THREE.SpotLight( 'white', 0.5 ),
+      new THREE.SpotLight( 'white', 0.35 ),
       // new THREE.PointLight( 'white', 0.5 ),
       // new THREE.DirectionalLight( 'white', 0.5 ),
       scene3D
@@ -266,25 +276,37 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.domElement.style.display = 'block';
     document.addEventListener( 'keydown', this.update3DZoom );
 
-
     const reflector = new Reflector(
-      new PlaneGeometry( 50, 50 ),
+      new PlaneGeometry( 61, 80 ),
       {
-        // minFilter: THREE.LinearFilter,
-        // magFilter: THREE.LinearFilter,
-        // format: THREE.RGBFormat,
-        // stencilBuffer: false,
-        // clipBias: 0.003,
-        textureWidth: window.innerWidth * window.devicePixelRatio,
-        textureHeight: window.innerHeight * window.devicePixelRatio,
+        textureWidth: REFLECTOR_RESOLUTION,
+        textureHeight: REFLECTOR_RESOLUTION,
         encoding: THREE.sRGBEncoding,
-        // multisample: 4,
-        // recursion: 1,
+        recursive: 1,
+        multisample: 1
 
       }
     );
-    // scene3D.add( reflector );
+    reflector.position.z -= 161;
+    reflector.position.y += 36.5;
+    reflector.position.x += 45;
 
+    scene3D.add( reflector );
+
+    // const reflector2 = new Reflector(
+    //   new PlaneGeometry( 61, 80 ),
+    //   {
+    //     textureWidth: REFLECTOR_RESOLUTION,
+    //     textureHeight: REFLECTOR_RESOLUTION,
+    //     encoding: THREE.sRGBEncoding,
+    //     recursive: 1,
+    //     multisample: 1
+
+    //   }
+    // );
+
+    // reflector2.rotation.y = Math.PI;
+    // scene3D.add( reflector2 );
 
     //** TEST CUBES */
     // const geo1 = new THREE.BoxGeometry( 100, 50, 50 );
