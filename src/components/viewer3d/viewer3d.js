@@ -15,9 +15,17 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
-import { MeshPhysicalMaterial, MeshStandardMaterial, PlaneGeometry, PointLight, SpotLight } from 'three';
+import { MeshPhysicalMaterial, MeshBasicMaterial, MeshStandardMaterial, PlaneGeometry, PointLight, SpotLight } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 import { Reflector } from 'three/examples/jsm/objects/Reflector';
+import {
+  PathTracingSceneGenerator,
+  PathTracingRenderer,
+  PhysicalPathTracingMaterial
+} from 'three-gpu-pathtracer';
+
+import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 
 const AMBIENT_LIGHT_INTENSITY = 0.3;
 const SPOT_LIGHT_INTENSITY = 0.25;
@@ -38,11 +46,19 @@ export default class Scene3DViewer extends React.Component {
 
     window.__threeRenderer = this.renderer;
 
-    this.renderer =
-      window.__threeRenderer ||
-      new THREE.WebGLRenderer( {
-        antialias: true
-      } );
+    this.renderer = window.__threeRenderer || new THREE.WebGLRenderer( {
+      antialias: true
+    } );
+    this.camera = null;
+    this.scene3D = null;
+
+    this.ptMaterial = null;
+    this.ptRenderer = null;
+    this.fsQuad = null;
+    this.generator = null;
+    this.delaySamples = 0;
+    this.tilesX = 2;
+    this.tilesY = 2;
 
     this.update3DZoom = this.update3DZoom.bind( this );
     this.enableLightShadow = this.enableLightShadow.bind( this );
@@ -168,6 +184,73 @@ export default class Scene3DViewer extends React.Component {
     }
 
   };
+
+  setupPathTracing () {
+    this.ptMaterial = new PhysicalPathTracingMaterial();
+    this.ptRenderer = new PathTracingRenderer( this.renderer );
+    this.ptRenderer.setSize( window.innerWidth, window.innerHeight );
+    this.ptRenderer.camera = this.camera;
+    this.ptRenderer.material = this.ptMaterial;
+    this.ptRenderer.tiles.set( this.tilesX, this.tilesY );
+
+    this.fsQuad = new FullScreenQuad( new MeshBasicMaterial( {
+      map: this.ptRenderer.target.texture
+    } ) );
+
+    this.scene3D.updateMatrixWorld();
+
+    new RGBELoader()
+      .loadAsync(
+        "https://raw.githubusercontent.com/gkjohnson/3d-demo-data/master/hdri/chinese_garden_1k.hdr"
+      ).then( ( texture ) => {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        this.scene3D.environment = texture;
+        this.ptRenderer.material.envMapInfo.updateFrom( texture );
+      }
+      ).then( () => {
+        this.generator = new PathTracingSceneGenerator();
+        const { bvh, textures, materials, lights } = this.generator.generate( this.scene3D );
+        const geometry = bvh.geometry;
+
+        this.ptMaterial.bvh.updateFrom( bvh );
+
+        this.ptMaterial.bvh.updateFrom( bvh );
+        this.ptMaterial.attributesArray.updateFrom(
+          geometry.attributes.normal,
+          geometry.attributes.tangent,
+          geometry.attributes.uv,
+          geometry.attributes.color
+        );
+
+        this.ptMaterial.materialIndexAttribute.updateFrom( geometry.attributes.materialIndex );
+        this.ptMaterial.textures.setTextures( this.renderer, 2048, 2048, textures );
+        this.ptMaterial.materials.updateFrom( materials, textures );
+        this.ptMaterial.lights.updateFrom( lights );
+
+        window.addEventListener( "resize", this.onResize );
+
+        this.onResize();
+      } );
+  }
+
+  onResize () {
+    let resolutionScale = Math.max( 1 / window.devicePixelRatio, 0.5 );
+
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const scale = resolutionScale;
+    const dpr = window.devicePixelRatio;
+
+    this.ptRenderer.setSize( w * scale * dpr, h * scale * dpr );
+    this.ptRenderer.reset();
+
+    this.renderer.setSize( w, h );
+    this.renderer.setPixelRatio( window.devicePixelRatio * scale );
+
+    const aspect = w / h;
+    this.camera.aspect = aspect;
+    this.camera.updateProjectionMatrix();
+  }
 
   componentDidMount () {
 

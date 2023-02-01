@@ -16,7 +16,8 @@ export default function Content (
     state,
     customContents,
     refViewer2D,
-    update2DView
+    update2DView,
+    isPathTracing
   } ) {
 
   let mode = state.get( 'mode' );
@@ -26,6 +27,7 @@ export default function Content (
         state={ state }
         width={ width }
         height={ height }
+        isPathTracing={ isPathTracing }
       />;
 
     case constants.MODE_3D_FIRST_PERSON:
