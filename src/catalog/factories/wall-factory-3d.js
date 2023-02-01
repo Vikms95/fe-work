@@ -38,38 +38,15 @@ const halfPI = Math.PI / 2;
 
 const applyTexture = ( material, texture, length, height ) => {
   let loader = new TextureLoader();
+  console.log( 'Cambiando textura' );
   if ( texture ) {
-
-    console.log( 'prueba1', texture );
     material.map = loader.load( texture.uri );
     material.needsUpdate = true;
     material.map.wrapS = RepeatWrapping;
     material.map.wrapT = RepeatWrapping;
 
-    console.log( 'prueba', length );
     material.map.repeat.set( length * texture.lengthRepeatScale, height * texture.heightRepeatScale );
     material.name = 'wallTexture';
-
-    // TODO This snippet breaks when 3D view is loaded
-    // if ( texture.normal ) {
-    //   material.normalMap = loader.load( texture.normal.uri );
-    //   material.normalMap.wrapS = RepeatWrapping;
-    //   material.normalMap.wrapT = RepeatWrapping;
-
-    //   material.normalScale =
-    //     new Vector2(
-    //       texture.normal.normalScaleX,
-    //       texture.normal.normalScaleY
-    //     );
-
-    //   material
-    //     .normalMap
-    //     .repeat
-    //     .set(
-    //       length * texture.normal.lengthRepeatScale,
-    //       height * texture.normal.heightRepeatScale
-    //     );
-    // }
   }
 };
 
