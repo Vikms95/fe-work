@@ -125,10 +125,6 @@ export default class Scene3DViewer extends React.Component {
     renderer.shadowMap.type = THREE.PCFShadowMap;
   };
 
-  createGeneratedHDR () {
-
-  }
-
   enableMeshCastAndReceiveShadow ( mesh ) {
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -198,14 +194,14 @@ export default class Scene3DViewer extends React.Component {
 
     this.scene3D.updateMatrixWorld();
 
-    const envMapPromise = new RGBELoader()
+    new RGBELoader()
       .loadAsync(
-        "https://raw.githubusercontent.com/gkjohnson/3d-demo-data/master/hdri/chinese_garden_1k.hdr"
+        "https://raw.githubusercontent.com/gkjohnson/3d-demo-data/master/hdri/hilly_terrain_01_1k.hdr"
       )
       .then( ( texture ) => {
         texture.mapping = THREE.EquirectangularReflectionMapping;
         // this.scene3D.background = texture;
-        this.scene3D.environment = texture;
+        // this.scene3D.environment = texture;
         this.ptRenderer.material.envMapInfo.updateFrom( texture );
       } ).then( () => {
 
@@ -318,7 +314,7 @@ export default class Scene3DViewer extends React.Component {
     let mouse = new THREE.Vector2();
     let raycaster = new THREE.Raycaster();
     this.scene3D.add( planData.plan );
-    // scene3D.add( planData.grid );
+    this.scene3D.add( planData.grid );
     console.log( planData.plan );
 
     //** CREATE CAMERA */
