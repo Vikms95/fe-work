@@ -181,6 +181,8 @@ export default class Scene3DViewer extends React.Component {
 
     let { state } = this.props;
 
+
+    this.renderer.sortObjects = true;
     let ascendDirectional = false;
     let data = state.scene;
     let scene3D = new THREE.Scene();

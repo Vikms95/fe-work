@@ -71,7 +71,8 @@ const addPorcelainLook = ( object, node ) => {
       envMap: cubeRenderTarget.texture,
       roughness: 0.25,
       metalness: 0,
-      clearcoat: 1
+      clearcoat: 1,
+
     } );
 
     node.material = newMaterial;
@@ -100,28 +101,25 @@ const enableMeshCastAndReceiveShadow = ( object ) => {
 
 const addGlassLook = ( object, node ) => {
   if ( node.material.name === 'Cristal' ) {
-    // const newMaterial = new MeshPhysicalMaterial( {
-    //   roughness: 0.25,
-    //   metalness: 0,
-    //   opacity: 0,
-    //   // transmission: 1,
-    //   transparent: true,
-    //   ior: 1.52
-
-    // } );
     const newMaterial = new MeshStandardMaterial( {
       roughness: 0.25,
       metalness: 0,
-      opacity: 0,
-      // transmission: 1,
-      // transparent: true,
-      // ior: 1.52
+      opacity: 0.1,
+      depthWrite: false
 
     } );
 
     node.material = newMaterial;
   }
 
+};
+
+const addEmissive = ( object, node ) => {
+  const newMaterial = new MeshStandardMaterial( {
+    emissiveIntensity: 40
+  } );
+
+  node.material = newMaterial;
 };
 
 
@@ -275,6 +273,8 @@ export function loadGLTF ( input ) {
           addBrilloLook( object, node );
           addBrilloAltoLook( object, node );
           addRoughnessLook( object, node );
+          // addEmissive( object, node );
+
 
           if ( input.tocm ) {
             object.scale.set( 100, 100, 100 );
