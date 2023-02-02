@@ -208,8 +208,8 @@ export default class Scene3DViewer extends React.Component {
       )
       .then( ( texture ) => {
         texture.mapping = THREE.EquirectangularReflectionMapping;
-        this.scene3D.background = texture;
-        this.scene3D.environment = texture;
+        // this.scene3D.background = texture;
+        // this.scene3D.environment = texture;
         this.ptRenderer.material.envMapInfo.updateFrom( texture );
       } ).then( () => {
 
