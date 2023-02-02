@@ -290,7 +290,7 @@ export default class Scene3DViewer extends React.Component {
   }
 
   renderWithThree () {
-
+    this.renderer.toneMapping = THREE.NoToneMapping;
     this.addGridToScene();
     cubeCamera.update( this.renderer, this.scene3D );
     return this.renderer.render( this.scene3D, this.camera );
@@ -314,6 +314,7 @@ export default class Scene3DViewer extends React.Component {
     }
 
     this.removeGridFromScene();
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
     if ( this.props.isPathTracing ) this.ptRenderer.update();
 
@@ -434,7 +435,6 @@ export default class Scene3DViewer extends React.Component {
     //     textureHeight: REFLECTOR_RESOLUTION,
     //     recursive: 1,
     //     multisample: 1,
-    //     color: 'rgba(255,255,255,0.0)'
     //   }
     // );
 

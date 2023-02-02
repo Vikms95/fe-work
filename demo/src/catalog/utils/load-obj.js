@@ -138,24 +138,26 @@ const addChromeLook = ( object, node ) => {
 
 const addMirrorLook = ( object, node ) => {
 
+  //todo en render habitual usar clase Reflector
+  //todo en render con path tracing, usar clase CubeRender
   if ( node.material.name === 'Espejo' ) {
-    // const newMaterial = new MeshStandardMaterial( {
-    //   envMap: cubeRenderTarget.texture,
-    //   roughness: 0.05,
-    //   metalness: 1,
-
-    // } );
+    const newMaterial = new MeshStandardMaterial( {
+      envMap: cubeRenderTarget.texture,
+      roughness: 0.05,
+      metalness: 1,
+    } );
 
     // const newMaterial = new MeshPhysicalMaterial( {
     //   roughness: 0,
     //   metalness: 1,
     //   transmission: 1,
-    //   thickness: -1
+    //   thickness: -1,
+    //   reflectivity:
 
     // } );
 
 
-    // node.material = newMaterial;
+    node.material = newMaterial;
   }
 
 };
