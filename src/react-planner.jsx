@@ -528,16 +528,36 @@ class ReactPlanner extends Component {
                 state={ state }
                 { ...props }
               />
-              <LoginComponent state={ extractedState } { ...props } />
-              <RegisterComponent state={ state } { ...props } />
-              <MenuPreferencias state={ state } { ...props } />
+              <LoginComponent
+                state={ extractedState }
+                { ...props }
+              />
+              <RegisterComponent
+                state={ state }
+                { ...props }
+              />
+              <MenuPreferencias
+                state={ state }
+                { ...props }
+              />
 
-              <button onClick={ ( () => this.setState(
-                { isPathTracing: !this.state.isPathTracing }
-              ) ) }
+              <button
+                style={ {
+                  position: 'absolute',
+                  bottom: '220px',
+                  right: '50px',
+                  zIndex: 2,
+                  padding: '5px',
+                  fontWeight: 900,
+                  color: '#3b476d'
+                } }
+                onClick={ ( () => this.setState(
+                  { isPathTracing: !this.state.isPathTracing }
+                ) ) }
               >
                 CAMBIAR RENDER
               </button>
+
               <Content
                 style={ { position: 'absolute', zIndex: '0' } }
                 width={ contentW }

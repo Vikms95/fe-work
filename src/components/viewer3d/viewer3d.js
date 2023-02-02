@@ -426,7 +426,6 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.domElement.style.display = 'block';
     document.addEventListener( 'keydown', this.update3DZoom );
 
-
     //todo da problemas con el PATH TRACING
     // const reflector = new Reflector(
     //   new THREE.PlaneGeometry( 61, 80 ),
