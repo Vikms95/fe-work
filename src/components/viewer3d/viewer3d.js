@@ -66,6 +66,9 @@ export default class Scene3DViewer extends React.Component {
     this.createAndAddCamera = this.createAndAddCamera.bind( this );
     this.addLightOnTop = this.addLightOnTop.bind( this );
     this.setupPathTracing = this.setupPathTracing.bind( this );
+    this.updateSceneElements = this.updateSceneElements.bind( this );
+    this.renderWithThree = this.renderWithThree.bind( this );
+    this.renderWithPathTracing = this.renderWithPathTracing.bind( this );
     // this.transitionLight = this.transitionLight.bind( this );
   }
 
@@ -261,7 +264,39 @@ export default class Scene3DViewer extends React.Component {
     this.camera.updateProjectionMatrix();
   }
 
+  updateSceneElements ( orbitController, planData ) {
 
+    orbitController.update();
+    this.camera.updateMatrix();
+    this.camera.updateMatrixWorld();
+
+    for ( let elemID in planData.sceneGraph.LODs ) {
+      planData.sceneGraph.LODs[ elemID ].update( this.camera );
+    }
+
+  }
+
+  renderWithThree () {
+    cubeCamera.update( this.renderer, this.scene3D );
+    return this.renderer.render( this.scene3D, this.camera );
+  }
+
+  renderWithPathTracing () {
+    if ( this.ptRenderer === null || this.ptMaterial === null ) {
+      this.setupPathTracing();
+    }
+
+    if ( this.props.isPathTracing ) this.ptRenderer.update();
+
+    if ( this.ptRenderer.samples < 1 ) {
+      this.renderer.render( this.scene3D, this.camera );
+    }
+
+    this.renderer.autoClear = false;
+    this.fsQuad.material.map = this.ptRenderer.target.texture;
+    this.fsQuad.render( this.renderer );
+    this.renderer.autoClear = true;
+  }
 
   componentDidMount () {
     let { state } = this.props;
@@ -355,60 +390,35 @@ export default class Scene3DViewer extends React.Component {
 
 
     //todo da problemas con el PATH TRACING
-    const reflector = new Reflector(
-      new THREE.PlaneGeometry( 61, 80 ),
-      {
-        textureWidth: REFLECTOR_RESOLUTION,
-        textureHeight: REFLECTOR_RESOLUTION,
-        encoding: THREE.sRGBEncoding,
-        recursive: 1,
-        multisample: 1
+    // const reflector = new Reflector(
+    //   new THREE.PlaneGeometry( 61, 80 ),
+    //   {
+    //     textureWidth: REFLECTOR_RESOLUTION,
+    //     textureHeight: REFLECTOR_RESOLUTION,
+    //     encoding: THREE.sRGBEncoding,
+    //     recursive: 1,
+    //     multisample: 1
 
-      }
-    );
-    reflector.position.z -= 161; //161
-    reflector.position.y += 36.5;
-    reflector.position.x += 45;
+    //   }
+    // );
+    // reflector.position.z -= 161; //161
+    // reflector.position.y += 36.5;
+    // reflector.position.x += 45;
 
-    this.scene3D.add( reflector );
+    // this.scene3D.add( reflector );
 
 
-    let render = () => {
+    const render = () => {
+
       this.renderingID = requestAnimationFrame( render );
+      this.updateSceneElements( orbitController, planData );
 
-      //** UPDATE CAMERAS */
-      orbitController.update();
-      this.camera.updateMatrix();
-      this.camera.updateMatrixWorld();
+      if ( !this.props.isPathTracing )
+        this.renderWithThree();
 
-      for ( let elemID in planData.sceneGraph.LODs ) {
-        planData.sceneGraph.LODs[ elemID ].update( this.camera );
-      }
+      else
+        this.renderWithPathTracing();
 
-      if ( !this.props.isPathTracing ) {
-        cubeCamera.update( this.renderer, this.scene3D );
-        return this.renderer.render( this.scene3D, this.camera );
-      }
-
-
-      //** SEPARAR EN 2 FUNCIONES */
-
-      if ( this.ptRenderer === null || this.ptMaterial === null ) {
-        this.setupPathTracing();
-      }
-
-      if ( this.props.isPathTracing ) this.ptRenderer.update();
-
-      if ( this.ptRenderer.samples < 1 ) {
-
-        this.renderer.render( this.scene3D, this.camera );
-
-      }
-
-      this.renderer.autoClear = false;
-      this.fsQuad.material.map = this.ptRenderer.target.texture;
-      this.fsQuad.render( this.renderer );
-      this.renderer.autoClear = true;
     };
 
     render();
@@ -418,7 +428,6 @@ export default class Scene3DViewer extends React.Component {
   }
 
   componentWillUnmount () {
-    console.log( 'unmount' );
     document.removeEventListener( 'keydown', this.update3DZoom );
     cancelAnimationFrame( this.renderingID );
 
