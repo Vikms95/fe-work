@@ -367,3 +367,5 @@ export const FONTS = "FONTS";
 export const T_REJILLATOTAL2D = "T/REJILLATOTAL2D";
 export const T_REJILLATOTAL3D = "REJILLATOTAL3D";
 
+// Valores 3D
+export const ENV_MAP_INTESITY = 0.30;

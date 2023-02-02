@@ -15,7 +15,7 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
-import { CubeCamera, MeshBasicMaterial, MeshStandardMaterial, PointLight, SpotLight } from 'three';
+import { CubeCamera, HalfFloatType, MeshBasicMaterial, MeshStandardMaterial, PointLight, SpotLight } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 import {
   PathTracingSceneGenerator,
@@ -69,6 +69,8 @@ export default class Scene3DViewer extends React.Component {
     this.updateSceneElements = this.updateSceneElements.bind( this );
     this.renderWithThree = this.renderWithThree.bind( this );
     this.renderWithPathTracing = this.renderWithPathTracing.bind( this );
+    this.removeGridFromRender = this.removeGridFromScene.bind( this );
+    this.addGridToScene = this.addGridToScene.bind( this );
     // this.transitionLight = this.transitionLight.bind( this );
   }
 
@@ -150,13 +152,14 @@ export default class Scene3DViewer extends React.Component {
     renderer.setClearColor( new THREE.Color( SharedStyle.COLORS.white ) );
     renderer.setSize( this.width, this.height );
     renderer.physicallyCorrectLights = false;
-    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setPixelRatio( Math.min( window.devicePixelRatio, 2 ) );
     renderer.encoding = THREE.sRGBEncoding;
 
   }
 
   addLightOnTop ( light, scene ) {
-    light.position.y += 350;
+    light.position.y += 351;
+    light.position.x -= 5;
 
     //todo showcase purposes
     if ( light.isPointLight ) {
@@ -200,21 +203,22 @@ export default class Scene3DViewer extends React.Component {
     this.ptRenderer.tiles.set( this.tilesX, this.tilesY );
 
     this.fsQuad = new FullScreenQuad( new MeshBasicMaterial( {
-      map: this.ptRenderer.target.texture
+      map: this.ptRenderer.target.texture,
+      blending: THREE.CustomBlending,
     } ) );
 
     this.scene3D.updateMatrixWorld();
 
     new RGBELoader()
+      .setDataType( HalfFloatType )
       .loadAsync(
         'https://raw.githubusercontent.com/gkjohnson/3d-demo-data/main/hdri/photo_studio_01_2k.hdr'
-      )
-      .then( ( texture ) => {
+
+      ).then( ( texture ) => {
         texture.mapping = THREE.EquirectangularReflectionMapping;
-        // this.scene3D.background = texture;
-        // this.scene3D.environment = texture;
         this.ptRenderer.material.envMapInfo.updateFrom( texture );
-      } ).then( () => {
+      }
+      ).then( () => {
 
         this.generator = new PathTracingSceneGenerator();
         const { bvh, textures, materials, lights } = this.generator.generate( this.scene3D );
@@ -222,8 +226,6 @@ export default class Scene3DViewer extends React.Component {
 
         this.ptMaterial.bvh.updateFrom( bvh );
 
-        // update bvh and geometry attribute textures
-        this.ptMaterial.bvh.updateFrom( bvh );
         this.ptMaterial.attributesArray.updateFrom(
           geometry.attributes.normal,
           geometry.attributes.tangent,
@@ -231,18 +233,16 @@ export default class Scene3DViewer extends React.Component {
           geometry.attributes.color,
         );
 
-        // update materials and texture arrays
         this.ptMaterial.materialIndexAttribute.updateFrom( geometry.attributes.materialIndex );
         this.ptMaterial.textures.setTextures( this.renderer, 2048, 2048, textures );
         this.ptMaterial.materials.updateFrom( materials, textures );
-        // update the lights
+
         this.ptMaterial.lights.updateFrom( lights );
 
         window.addEventListener( "resize", this.onResize );
 
         this.onResize();
-      }
-      );
+      } );
   };
 
   onResize () {
@@ -276,15 +276,44 @@ export default class Scene3DViewer extends React.Component {
 
   }
 
+  addGridToScene () {
+    let isGrid = false;
+
+    this.scene3D.traverse( child => {
+      if ( child.name === 'grid' ) {
+        isGrid = true;
+      }
+    } );
+
+    if ( !isGrid )
+      this.scene3D.add( this.planData.grid );
+  }
+
   renderWithThree () {
+
+    this.addGridToScene();
     cubeCamera.update( this.renderer, this.scene3D );
     return this.renderer.render( this.scene3D, this.camera );
+
+  }
+
+  removeGridFromScene () {
+
+    this.scene3D.traverse( child => {
+      if ( child.name === 'grid' ) {
+        child.removeFromParent();
+      }
+    } );
+
   }
 
   renderWithPathTracing () {
+
     if ( this.ptRenderer === null || this.ptMaterial === null ) {
       this.setupPathTracing();
     }
+
+    this.removeGridFromScene();
 
     if ( this.props.isPathTracing ) this.ptRenderer.update();
 
@@ -316,6 +345,16 @@ export default class Scene3DViewer extends React.Component {
     // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
     // this.scene3D.environment = pmremGenerator.fromScene( environment ).texture;
 
+    // new RGBELoader()
+    //   .loadAsync( 'https://raw.githubusercontent.com/gkjohnson/3d-demo-data/main/hdri/photo_studio_01_2k.hdr' )
+    //   .then( texture => {
+    //     texture.mapping = THREE.EquirectangularReflectionMapping;
+    //     console.log( 'texture' );
+    //     this.scene3D.environment = texture;
+    //     // this.scene3D.background = texture;
+    //   } );
+
+
     //** MAKE RENDERER HIGH QUALITY */
     this.configureRendererPBR( this.renderer );
     this.enableRendererShadows( this.renderer );
@@ -344,13 +383,12 @@ export default class Scene3DViewer extends React.Component {
       }
     } );
 
-
     //** AMBIENT LIGHT */
-    let light = new THREE.AmbientLight( 0xafafaf, 0.3 ); // soft white light
+    let light = new THREE.AmbientLight( 0xafafaf, AMBIENT_LIGHT_INTENSITY ); // soft white light
     this.scene3D.add( light );
 
 
-    //** ADD TEST LIGHT */
+    // //** ADD TEST LIGHT */
     this.addLightOnTop(
       new THREE.SpotLight( 'white', 0.5 ),
       // new THREE.PointLight( 'white', 0.5 ),
@@ -395,12 +433,12 @@ export default class Scene3DViewer extends React.Component {
     //   {
     //     textureWidth: REFLECTOR_RESOLUTION,
     //     textureHeight: REFLECTOR_RESOLUTION,
-    //     encoding: THREE.sRGBEncoding,
     //     recursive: 1,
-    //     multisample: 1
-
+    //     multisample: 1,
+    //     color: 'rgba(255,255,255,0.0)'
     //   }
     // );
+
     // reflector.position.z -= 161; //161
     // reflector.position.y += 36.5;
     // reflector.position.x += 45;

@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import { Box3, BoxHelper, Loader, MeshPhysicalMaterial, MeshStandardMaterial } from 'three';
-// import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
+import { Box3, MeshPhysicalMaterial, MeshStandardMaterial } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from './mtl-loader-new';
+// import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 // import OBJLoader from './obj-loader';
 // import { GLTFLoader } from './gltf-loader-new';
 import blueTextureFile from '../items/_Victor-Cubo-Azul-Mate/RAL 5017.jpg';
@@ -69,10 +69,9 @@ const addPorcelainLook = ( object, node ) => {
 
     const newMaterial = new MeshPhysicalMaterial( {
       envMap: cubeRenderTarget.texture,
-      roughness: 0.25,
+      roughness: 0.4,
       metalness: 0,
       clearcoat: 1,
-
     } );
 
     node.material = newMaterial;
@@ -82,7 +81,7 @@ const addPorcelainLook = ( object, node ) => {
 const addEnvMapIntensity = ( object ) => {
   object.traverse( child => {
     if ( child instanceof THREE.Mesh ) {
-      child.material.envMapIntensity = 0.25;
+      child.material.envMapIntensity = 0.50;
     }
   } );
 };
@@ -98,6 +97,7 @@ const enableMeshCastAndReceiveShadow = ( object ) => {
     }
   } );
 };
+
 
 const addGlassLook = ( object, node ) => {
   if ( node.material.name === 'Cristal' ) {
