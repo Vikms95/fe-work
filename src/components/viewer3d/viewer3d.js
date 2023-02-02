@@ -15,7 +15,7 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
-import { MeshBasicMaterial, MeshStandardMaterial, PointLight, SpotLight } from 'three';
+import { CubeCamera, MeshBasicMaterial, MeshStandardMaterial, PointLight, SpotLight } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 import {
   PathTracingSceneGenerator,
@@ -25,7 +25,7 @@ import {
 } from 'three-gpu-pathtracer';
 import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
-// import hdr from './royal_esplanade_2k.hdr';
+import { Reflector } from 'three/examples/jsm/objects/Reflector';
 
 const AMBIENT_LIGHT_INTENSITY = 0.3;
 const SPOT_LIGHT_INTENSITY = 0.25;
@@ -153,7 +153,7 @@ export default class Scene3DViewer extends React.Component {
   }
 
   addLightOnTop ( light, scene ) {
-    light.position.y += 300;
+    light.position.y += 350;
 
     //todo showcase purposes
     if ( light.isPointLight ) {
@@ -204,7 +204,7 @@ export default class Scene3DViewer extends React.Component {
 
     new RGBELoader()
       .loadAsync(
-        'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/equirectangular/royal_esplanade_1k.hdr'
+        'https://raw.githubusercontent.com/gkjohnson/3d-demo-data/main/hdri/photo_studio_01_2k.hdr'
       )
       .then( ( texture ) => {
         texture.mapping = THREE.EquirectangularReflectionMapping;
@@ -354,6 +354,25 @@ export default class Scene3DViewer extends React.Component {
     document.addEventListener( 'keydown', this.update3DZoom );
 
 
+    //todo da problemas con el PATH TRACING
+    // const reflector = new Reflector(
+    //   new THREE.PlaneGeometry( 61, 80 ),
+    //   {
+    //     textureWidth: REFLECTOR_RESOLUTION,
+    //     textureHeight: REFLECTOR_RESOLUTION,
+    //     encoding: THREE.sRGBEncoding,
+    //     recursive: 1,
+    //     multisample: 1
+
+    //   }
+    // );
+    // reflector.position.z -= 161.1; //161
+    // reflector.position.y += 36.5;
+    // reflector.position.x += 45;
+
+    // this.scene3D.add( reflector );
+
+
     let render = () => {
       this.renderingID = requestAnimationFrame( render );
 
@@ -367,6 +386,7 @@ export default class Scene3DViewer extends React.Component {
       }
 
       if ( !this.props.isPathTracing ) {
+        cubeCamera.update( this.renderer, this.scene3D );
         return this.renderer.render( this.scene3D, this.camera );
       }
 

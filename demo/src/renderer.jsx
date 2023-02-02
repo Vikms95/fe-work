@@ -1,7 +1,9 @@
 import React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { createRoot } from 'react-dom/client';
+// import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
+
 
 import ContainerDimensions from 'react-container-dimensions';
 import Immutable, { Map } from 'immutable';
@@ -179,8 +181,8 @@ const data = {
   }
 };
 
-const container = document.getElementById( 'app' );
-const root = createRoot( container );
+// const container = document.getElementById( 'app' );
+// const root = createRoot( container );
 const dispatch = store.dispatch;
 
 getState = ( state, action ) => {
@@ -193,7 +195,7 @@ getState = ( state, action ) => {
 };
 
 
-root.render( (
+ReactDOM.render( (
   <Provider store={ store }>
     <ContainerDimensions>
       { ( { width, height } ) =>
@@ -210,7 +212,7 @@ root.render( (
       }
     </ContainerDimensions>
   </Provider>
-) );
+), document.getElementById( 'app' ) );
 //} ).catch( error => {
   //alert( error.detail || error.statusText || error.status || error );
 //} );
