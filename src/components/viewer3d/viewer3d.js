@@ -15,17 +15,17 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
-import { MeshPhysicalMaterial, MeshBasicMaterial, MeshStandardMaterial, PlaneGeometry, PointLight, SpotLight } from 'three';
+import { MeshBasicMaterial, MeshStandardMaterial, PointLight, SpotLight } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
-import { Reflector } from 'three/examples/jsm/objects/Reflector';
 import {
   PathTracingSceneGenerator,
   PathTracingRenderer,
-  PhysicalPathTracingMaterial
+  PhysicalPathTracingMaterial,
+  DynamicPathTracingSceneGenerator,
 } from 'three-gpu-pathtracer';
-
 import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
+// import hdr from './royal_esplanade_2k.hdr';
 
 const AMBIENT_LIGHT_INTENSITY = 0.3;
 const SPOT_LIGHT_INTENSITY = 0.25;
@@ -38,20 +38,18 @@ export default class Scene3DViewer extends React.Component {
   constructor ( props ) {
     super( props );
     let rulerSize = 15; //px
+    this.renderingID = 0;
     this.lastMousePosition = {};
     this.width = props.width - rulerSize;
-
     this.height = props.height - rulerSize;
-    this.renderingID = 0;
 
+    //** VARIABLES THREE */
     window.__threeRenderer = this.renderer;
-
-    this.renderer = window.__threeRenderer || new THREE.WebGLRenderer( {
-      antialias: true
-    } );
+    this.renderer = window.__threeRenderer || new THREE.WebGLRenderer( { antialias: true } );
     this.camera = null;
     this.scene3D = null;
 
+    //** VARIABLES PATH TRACER */
     this.ptMaterial = null;
     this.ptRenderer = null;
     this.fsQuad = null;
@@ -67,6 +65,7 @@ export default class Scene3DViewer extends React.Component {
     this.configureRendererPBR = this.configureRendererPBR.bind( this );
     this.createAndAddCamera = this.createAndAddCamera.bind( this );
     this.addLightOnTop = this.addLightOnTop.bind( this );
+    this.setupPathTracing = this.setupPathTracing.bind( this );
     // this.transitionLight = this.transitionLight.bind( this );
   }
 
@@ -88,7 +87,7 @@ export default class Scene3DViewer extends React.Component {
     light.castShadow = true;
 
     if ( light.isSpotLight ) {
-      // light.shadow.bias = - 0.0005;
+      // light.shadow.bias = 0.0001;
     }
     if ( light.isPointLight ) {
       // light.shadow.bias = 0.0001;
@@ -98,7 +97,7 @@ export default class Scene3DViewer extends React.Component {
       // light.shadow.bias = 0.0001;
     }
 
-    if ( light.isDirectionalLight ) {
+    if ( !light.isSpotLight ) {
       light.shadow.radius = 10;
       light.shadow.camera.fov = 90;
 
@@ -120,7 +119,7 @@ export default class Scene3DViewer extends React.Component {
   enableRendererShadows ( renderer ) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.needsUpdate = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
   };
 
   enableMeshCastAndReceiveShadow ( mesh ) {
@@ -130,17 +129,17 @@ export default class Scene3DViewer extends React.Component {
 
   createAndAddCamera ( scene, planData ) {
     let aspectRatio = this.width / this.height;
-    let camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
-    scene.add( camera );
+    this.camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
+    scene.add( this.camera );
 
     let cameraPositionX = -( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 2;
     let cameraPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) / 2 * 10;
     let cameraPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 2;
 
-    camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
-    camera.up = new THREE.Vector3( 0, 1, 0 );
+    this.camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
+    this.camera.up = new THREE.Vector3( 0, 1, 0 );
 
-    return { camera, cameraPositionX, cameraPositionY, cameraPositionZ };
+    return { cameraPositionX, cameraPositionY, cameraPositionZ };
   }
 
   configureRendererPBR ( renderer ) {
@@ -148,7 +147,7 @@ export default class Scene3DViewer extends React.Component {
     renderer.setClearColor( new THREE.Color( SharedStyle.COLORS.white ) );
     renderer.setSize( this.width, this.height );
     renderer.physicallyCorrectLights = false;
-    renderer.setPixelRatio( Math.min( window.devicePixelRatio, 2 ) );
+    renderer.setPixelRatio( window.devicePixelRatio );
     renderer.encoding = THREE.sRGBEncoding;
 
   }
@@ -187,7 +186,11 @@ export default class Scene3DViewer extends React.Component {
 
   setupPathTracing () {
     this.ptMaterial = new PhysicalPathTracingMaterial();
+
     this.ptRenderer = new PathTracingRenderer( this.renderer );
+    this.ptRenderer.alpha = true;
+    this.ptMaterial.backgroundAlpha = 0.0;
+
     this.ptRenderer.setSize( window.innerWidth, window.innerHeight );
     this.ptRenderer.camera = this.camera;
     this.ptRenderer.material = this.ptMaterial;
@@ -201,41 +204,47 @@ export default class Scene3DViewer extends React.Component {
 
     new RGBELoader()
       .loadAsync(
-        "https://raw.githubusercontent.com/gkjohnson/3d-demo-data/master/hdri/chinese_garden_1k.hdr"
-      ).then( ( texture ) => {
+        'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/equirectangular/royal_esplanade_1k.hdr'
+      )
+      .then( ( texture ) => {
         texture.mapping = THREE.EquirectangularReflectionMapping;
+        this.scene3D.background = texture;
         this.scene3D.environment = texture;
         this.ptRenderer.material.envMapInfo.updateFrom( texture );
-      }
-      ).then( () => {
+      } ).then( () => {
+
         this.generator = new PathTracingSceneGenerator();
         const { bvh, textures, materials, lights } = this.generator.generate( this.scene3D );
         const geometry = bvh.geometry;
 
         this.ptMaterial.bvh.updateFrom( bvh );
 
+        // update bvh and geometry attribute textures
         this.ptMaterial.bvh.updateFrom( bvh );
         this.ptMaterial.attributesArray.updateFrom(
           geometry.attributes.normal,
           geometry.attributes.tangent,
           geometry.attributes.uv,
-          geometry.attributes.color
+          geometry.attributes.color,
         );
 
+        // update materials and texture arrays
         this.ptMaterial.materialIndexAttribute.updateFrom( geometry.attributes.materialIndex );
         this.ptMaterial.textures.setTextures( this.renderer, 2048, 2048, textures );
         this.ptMaterial.materials.updateFrom( materials, textures );
+        // update the lights
         this.ptMaterial.lights.updateFrom( lights );
 
         window.addEventListener( "resize", this.onResize );
 
         this.onResize();
-      } );
-  }
+      }
+      );
+  };
 
   onResize () {
     let resolutionScale = Math.max( 1 / window.devicePixelRatio, 0.5 );
-
+    // update rendering resolution
     const w = window.innerWidth;
     const h = window.innerHeight;
     const scale = resolutionScale;
@@ -252,7 +261,10 @@ export default class Scene3DViewer extends React.Component {
     this.camera.updateProjectionMatrix();
   }
 
+
+
   componentDidMount () {
+    let { state } = this.props;
 
     let actions = {
       areaActions: this.context.areaActions,
@@ -262,21 +274,12 @@ export default class Scene3DViewer extends React.Component {
       projectActions: this.context.projectActions
     };
 
-    let { state } = this.props;
-
-
-    this.renderer.sortObjects = true;
-    let ascendDirectional = false;
-    let data = state.scene;
-    let scene3D = new THREE.Scene();
+    this.scene3D = new THREE.Scene();
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
-
 
     // const environment = new RoomEnvironment();
     // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-    // scene3D.environment = pmremGenerator.fromScene( environment ).texture;
-    // scene3D.background = pmremGenerator.fromScene( environment ).texture;
-
+    // this.scene3D.environment = pmremGenerator.fromScene( environment ).texture;
 
     //** MAKE RENDERER HIGH QUALITY */
     this.configureRendererPBR( this.renderer );
@@ -285,51 +288,40 @@ export default class Scene3DViewer extends React.Component {
 
 
     //** PARSE CATALOG */
+    const data = state.scene;
     const planData = parseData( state, data, actions, this.context.catalog );
 
     let toIntersect = [ planData.plan ];
     let mouse = new THREE.Vector2();
     let raycaster = new THREE.Raycaster();
-    scene3D.add( planData.plan );
-    scene3D.add( planData.grid );
+    this.scene3D.add( planData.plan );
+    this.scene3D.add( planData.grid );
 
     //** CREATE CAMERA */
-    const { camera, cameraPositionX, cameraPositionY, cameraPositionZ } =
-      this.createAndAddCamera( scene3D, planData );
-
+    this.createAndAddCamera( this.scene3D, planData );
 
     //** ORBIT CONTROLS */
-    let orbitController = new OrbitControls( camera, this.renderer.domElement );
+    let orbitController = new OrbitControls( this.camera, this.renderer.domElement );
+
+    orbitController.addEventListener( "change", () => {
+      if ( this.ptRenderer && this.props.isPathTracing ) {
+        this.ptRenderer.reset();
+      }
+    } );
 
 
     //** AMBIENT LIGHT */
     let light = new THREE.AmbientLight( 0xafafaf, 0.3 ); // soft white light
-    scene3D.add( light );
+    this.scene3D.add( light );
 
 
     //** ADD TEST LIGHT */
     this.addLightOnTop(
-      new THREE.SpotLight( 'white', 0.40 ),
+      new THREE.SpotLight( 'white', 0.5 ),
       // new THREE.PointLight( 'white', 0.5 ),
       // new THREE.DirectionalLight( 'white', 0.5 ),
-      scene3D
+      this.scene3D
     );
-
-    // let spotLight1 = new THREE.SpotLight( 'white', 0.5 );
-    // spotLight1.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
-    // scene3D.add( spotLight1 );
-
-    // let spotLightTarget = new THREE.Object3D();
-
-    // spotLightTarget.name = 'spotLightTarget';
-
-    // // Sets spotlight position to the target of orbitControll
-    // spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
-
-    // spotLight1.target = spotLightTarget;
-    // scene3D.add( spotLightTarget );
-
-    console.log( 'test', scene3D );
 
     //** EVENT LISTENERS */
     this.mouseDownEvent = ( event ) => {
@@ -345,7 +337,7 @@ export default class Scene3DViewer extends React.Component {
 
       if ( Math.abs( mouse.x - this.lastMousePosition.x ) <= 0.02 && Math.abs( mouse.y - this.lastMousePosition.y ) <= 0.02 ) {
 
-        raycaster.setFromCamera( mouse, camera );
+        raycaster.setFromCamera( mouse, this.camera );
         let intersects = raycaster.intersectObjects( toIntersect, true );
 
         if ( intersects.length > 0 && !( isNaN( intersects[ 0 ].distance ) ) ) {
@@ -361,85 +353,52 @@ export default class Scene3DViewer extends React.Component {
     this.renderer.domElement.style.display = 'block';
     document.addEventListener( 'keydown', this.update3DZoom );
 
-    const reflector = new Reflector(
-      new PlaneGeometry( 61, 80 ),
-      {
-        textureWidth: REFLECTOR_RESOLUTION,
-        textureHeight: REFLECTOR_RESOLUTION,
-        encoding: THREE.sRGBEncoding,
-        recursive: 1,
-        multisample: 1
-
-      }
-    );
-    reflector.position.z -= 161.1; //161
-    reflector.position.y += 36.5;
-    reflector.position.x += 45;
-
-    scene3D.add( reflector );
-
-    // const reflector2 = new Reflector(
-    //   new PlaneGeometry( 61, 80 ),
-    //   {
-    //     textureWidth: REFLECTOR_RESOLUTION,
-    //     textureHeight: REFLECTOR_RESOLUTION,
-    //     encoding: THREE.sRGBEncoding,
-    //     recursive: 1,
-    //     multisample: 1
-
-    //   }
-    // );
-
-    // reflector2.rotation.y = Math.PI;
-    // scene3D.add( reflector2 );
-
-    //** TEST CUBES */
-    // const geo1 = new THREE.BoxGeometry( 100, 50, 50 );
-    // const mat1 = new THREE.MeshStandardMaterial();
-    // const mesh1 = new THREE.Mesh( geo1, mat1 );
-    // scene3D.add( mesh1 );
-
-    // const geo2 = new THREE.BoxGeometry( 100, 50, 50 );
-    // const mat2 = new THREE.MeshStandardMaterial();
-    // const mesh2 = new THREE.Mesh( geo2, mat2 );
-    // mesh2.position.y += 200;
-    // scene3D.add( mesh2 );
-
-
-    //** ENABLE SHADOWS */
-    // this.enableMeshCastAndReceiveShadow( mesh1 );
-    // this.enableMeshCastAndReceiveShadow( mesh2 );
-
 
     let render = () => {
-      // spotLight1.position.set( camera.position.x, camera.position.y, camera.position.z );
-      // spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
-
+      this.renderingID = requestAnimationFrame( render );
 
       //** UPDATE CAMERAS */
       orbitController.update();
-      camera.updateMatrix();
-      camera.updateMatrixWorld();
-      cubeCamera.update( this.renderer, scene3D );
-
+      this.camera.updateMatrix();
+      this.camera.updateMatrixWorld();
 
       for ( let elemID in planData.sceneGraph.LODs ) {
-        planData.sceneGraph.LODs[ elemID ].update( camera );
+        planData.sceneGraph.LODs[ elemID ].update( this.camera );
       }
 
-      this.renderer.render( scene3D, camera );
-      this.renderingID = requestAnimationFrame( render );
+      if ( !this.props.isPathTracing ) {
+        return this.renderer.render( this.scene3D, this.camera );
+      }
+
+
+      //** SEPARAR EN 2 FUNCIONES */
+
+      if ( this.ptRenderer === null || this.ptMaterial === null ) {
+        this.setupPathTracing();
+      }
+
+      if ( this.props.isPathTracing ) this.ptRenderer.update();
+
+      if ( this.ptRenderer.samples < 1 ) {
+
+        this.renderer.render( this.scene3D, this.camera );
+
+      }
+
+      this.renderer.autoClear = false;
+      this.fsQuad.material.map = this.ptRenderer.target.texture;
+      this.fsQuad.render( this.renderer );
+      this.renderer.autoClear = true;
     };
 
     render();
 
     this.orbitControls = orbitController;
-    this.camera = camera;
-    this.scene3D = scene3D;
     this.planData = planData;
   }
 
   componentWillUnmount () {
+    console.log( 'unmount' );
     document.removeEventListener( 'keydown', this.update3DZoom );
     cancelAnimationFrame( this.renderingID );
 
@@ -457,9 +416,11 @@ export default class Scene3DViewer extends React.Component {
     this.camera = null;
     this.orbitControls = null;
     this.renderer.renderLists.dispose();
+    this.renderer = null;
   }
 
   UNSAFE_componentWillReceiveProps ( nextProps ) {
+
     let { width, height } = nextProps;
 
     let actions = {
@@ -469,7 +430,6 @@ export default class Scene3DViewer extends React.Component {
       linesActions: this.context.linesActions,
       projectActions: this.context.projectActions
     };
-
 
     this.width = width;
     this.height = height;
@@ -520,3 +480,40 @@ Scene3DViewer.contextType = Context;
 
     // };
 
+
+        // let spotLight1 = new THREE.SpotLight( 'white', 0.5 );
+    // spotLight1.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
+    // scene3D.add( spotLight1 );
+
+    // let spotLightTarget = new THREE.Object3D();
+
+    // spotLightTarget.name = 'spotLightTarget';
+
+    // // Sets spotlight position to the target of orbitControll
+    // spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
+
+    // spotLight1.target = spotLightTarget;
+    // scene3D.add( spotLightTarget );
+
+
+
+
+    //** TEST CUBES */
+    // const geo1 = new THREE.BoxGeometry( 100, 50, 50 );
+    // const mat1 = new THREE.MeshStandardMaterial();
+    // const mesh1 = new THREE.Mesh( geo1, mat1 );
+    // scene3D.add( mesh1 );
+
+    // const geo2 = new THREE.BoxGeometry( 100, 50, 50 );
+    // const mat2 = new THREE.MeshStandardMaterial();
+    // const mesh2 = new THREE.Mesh( geo2, mat2 );
+    // mesh2.position.y += 200;
+    // scene3D.add( mesh2 );
+
+
+    //** ENABLE SHADOWS */
+    // this.enableMeshCastAndReceiveShadow( mesh1 );
+    // this.enableMeshCastAndReceiveShadow( mesh2 );
+
+          // spotLight1.position.set( camera.position.x, camera.position.y, camera.position.z );
+      // spotLightTarget.position.set( orbitController.target.x, orbitController.target.y, orbitController.target.z );
