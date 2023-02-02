@@ -355,22 +355,22 @@ export default class Scene3DViewer extends React.Component {
 
 
     //todo da problemas con el PATH TRACING
-    // const reflector = new Reflector(
-    //   new THREE.PlaneGeometry( 61, 80 ),
-    //   {
-    //     textureWidth: REFLECTOR_RESOLUTION,
-    //     textureHeight: REFLECTOR_RESOLUTION,
-    //     encoding: THREE.sRGBEncoding,
-    //     recursive: 1,
-    //     multisample: 1
+    const reflector = new Reflector(
+      new THREE.PlaneGeometry( 61, 80 ),
+      {
+        textureWidth: REFLECTOR_RESOLUTION,
+        textureHeight: REFLECTOR_RESOLUTION,
+        encoding: THREE.sRGBEncoding,
+        recursive: 1,
+        multisample: 1
 
-    //   }
-    // );
-    // reflector.position.z -= 161.1; //161
-    // reflector.position.y += 36.5;
-    // reflector.position.x += 45;
+      }
+    );
+    reflector.position.z -= 161; //161
+    reflector.position.y += 36.5;
+    reflector.position.x += 45;
 
-    // this.scene3D.add( reflector );
+    this.scene3D.add( reflector );
 
 
     let render = () => {
