@@ -27,8 +27,8 @@ import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 import { Reflector } from 'three/examples/jsm/objects/Reflector';
 
-const AMBIENT_LIGHT_INTENSITY = 0.3;
-const SPOT_LIGHT_INTENSITY = 0.25;
+const AMBIENT_LIGHT_INTENSITY = 0.75;
+const SPOT_LIGHT_INTENSITY = 0.5;
 const DIRECTIONAL_LIGHT_INTENSITY = 0.5;
 const REFLECTOR_RESOLUTION = 2048;
 const SHADOW_RESOLUTION = 2048;
@@ -153,7 +153,7 @@ export default class Scene3DViewer extends React.Component {
     renderer.setSize( this.width, this.height );
     renderer.physicallyCorrectLights = false;
     renderer.setPixelRatio( Math.min( window.devicePixelRatio, 2 ) );
-    renderer.encoding = THREE.sRGBEncoding;
+    // renderer.encoding = THREE.sRGBEncoding;
 
   }
 
@@ -331,6 +331,7 @@ export default class Scene3DViewer extends React.Component {
   componentDidMount () {
     let { state } = this.props;
 
+
     let actions = {
       areaActions: this.context.areaActions,
       holesActions: this.context.holesActions,
@@ -391,7 +392,7 @@ export default class Scene3DViewer extends React.Component {
 
     // //** ADD TEST LIGHT */
     this.addLightOnTop(
-      new THREE.SpotLight( 'white', 0.5 ),
+      new THREE.SpotLight( 'white', SPOT_LIGHT_INTENSITY ),
       // new THREE.PointLight( 'white', 0.5 ),
       // new THREE.DirectionalLight( 'white', 0.5 ),
       this.scene3D

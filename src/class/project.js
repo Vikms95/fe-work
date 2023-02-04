@@ -3,7 +3,9 @@ import {
   MODE_VIEWING_CATALOG,
   MODE_CONFIGURING_PROJECT,
   MODE_IDLE,
-  UNIDADMEDIDA
+  UNIDADMEDIDA,
+  MODE_DRAWING_LINE,
+  MODE_WAITING_DRAWING_LINE
 } from '../constants';
 import { State, Catalog } from '../models';
 import { history } from '../utils/export';
@@ -215,6 +217,8 @@ class Project {
       sceneHistory: history.historyPop( sceneHistory )
     } );
 
+    document.body.style.cursor = 'auto';
+
     return { updatedState: state };
   }
 
@@ -238,6 +242,8 @@ class Project {
       draggingSupport: new Map(),
       rotatingSupport: new Map(),
     } );
+
+    document.body.style.cursor = 'auto';
 
     return { updatedState: state };
   }
@@ -346,6 +352,10 @@ class Project {
   static setMode ( state, mode ) {
     state = state.set( 'mode', mode );
     state = this.setIsElementSelected( state ).updatedState;
+
+    if ( mode !== MODE_DRAWING_LINE || mode !== MODE_WAITING_DRAWING_LINE ) {
+      document.body.style.cursor = 'auto';
+    }
 
     return { updatedState: state };
   }

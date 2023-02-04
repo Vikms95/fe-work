@@ -421,6 +421,7 @@ export default function Viewer2D (
             className='ReactSVGPanZoom'
             toolbarPosition="none"
             miniaturePosition="none"
+            // SVGStyle={ {} }
             width={ width - rulerSize }
             tool={ mode2Tool( mode ) }
             height={ height - rulerSize }
@@ -467,6 +468,7 @@ export default function Viewer2D (
           onMouseUp={ onMouseUp }
           miniaturePosition="none"
           toolbarPosition="none"
+
         >
           <svg width={ getRejillaTotal2D( state ) / 10 } height={ getRejillaTotal2D( state ) / 10 }>
             <defs>

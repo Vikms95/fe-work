@@ -243,6 +243,7 @@ class Vertex {
     state = Layer.detectAndUpdateAreas( state, layerID ).updatedState;
     state = Layer.detectAndUpdatePerimeters( state, layerID ).updatedState;
 
+
     state = state.merge( {
       mode: draggingSupport.get( 'previousMode' ),
       draggingSupport: null,

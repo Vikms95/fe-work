@@ -1076,9 +1076,15 @@ export default class MenuRooms extends Component {
   UNSAFE_componentWillReceiveProps () {
     if ( this.props.state.getIn( [ 'react-planner', 'mode' ] ) === MODE_WAITING_DRAWING_LINE
       || this.props.state.getIn( [ 'react-planner', 'mode' ] ) === MODE_DRAWING_LINE ) {
+
       this.setState( { dibujar: true } );
+      document.body.style.cursor = 'crosshair';
+
     } else {
+
+      document.body.style.cursor = 'auto';
       this.setState( { dibujar: false } );
+
     }
   }
 
@@ -2190,7 +2196,6 @@ export default class MenuRooms extends Component {
         }
       };
     } else if ( roomName === 'Lderecha1' ) {
-      console.log( "hola" );
 
       roomSelected = {
         "unit": "mm",
@@ -2712,10 +2717,8 @@ export default class MenuRooms extends Component {
         }
       };
     } else if ( roomName === 'Lizquierda1' ) {
-      console.log( "hola" );
       roomSelected = { "unit": "cm", "layers": { "layer-1": { "id": "layer-1", "altitude": 0, "order": 0, "opacity": 1, "name": "default", "visible": true, "vertices": { "M1j2fOu0V81": { "id": "M1j2fOu0V81", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 1105, "y": 1902, "lines": [ "1yeT8oh2B", "3zklMmOgLwQ" ], "areas": [] }, "qf2PKq0EMC": { "id": "qf2PKq0EMC", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 398, "y": 1902, "lines": [ "1yeT8oh2B", "T81BnHW-U" ], "areas": [] }, "l78nLaVhPa2": { "id": "l78nLaVhPa2", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 1105, "y": 1541, "lines": [ "3zklMmOgLwQ", "qkwbQWGvPDq" ], "areas": [] }, "RXWhbgzwFa": { "id": "RXWhbgzwFa", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 398, "y": 1198, "lines": [ "S4DAubf66", "T81BnHW-U" ], "areas": [] }, "ZJnPB0o5sB": { "id": "ZJnPB0o5sB", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 748, "y": 1198, "lines": [ "-5Wdy4iW5", "S4DAubf66" ], "areas": [] }, "r3FmLG5V6W": { "id": "r3FmLG5V6W", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 748, "y": 1541, "lines": [ "-5Wdy4iW5", "qkwbQWGvPDq" ], "areas": [] } }, "lines": { "qkwbQWGvPDq": { "id": "qkwbQWGvPDq", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "r3FmLG5V6W", "l78nLaVhPa2" ], "holes": [] }, "3zklMmOgLwQ": { "id": "3zklMmOgLwQ", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "M1j2fOu0V81", "l78nLaVhPa2" ], "holes": [] }, "1yeT8oh2B": { "id": "1yeT8oh2B", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "qf2PKq0EMC", "M1j2fOu0V81" ], "holes": [] }, "T81BnHW-U": { "id": "T81BnHW-U", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "RXWhbgzwFa", "qf2PKq0EMC" ], "holes": [] }, "-5Wdy4iW5": { "id": "-5Wdy4iW5", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "ZJnPB0o5sB", "r3FmLG5V6W" ], "holes": [] }, "S4DAubf66": { "id": "S4DAubf66", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "RXWhbgzwFa", "ZJnPB0o5sB" ], "holes": [] } }, "holes": {}, "areas": { "herBcT0Ml-": { "id": "herBcT0Ml-", "type": "area", "prototype": "areas", "name": "Area", "misc": {}, "selected": false, "properties": { "patternColor": "#F5F4F4", "thickness": { "length": 0 }, "texture": "none" }, "visible": true, "vertices": [ "RXWhbgzwFa", "ZJnPB0o5sB", "r3FmLG5V6W", "l78nLaVhPa2", "M1j2fOu0V81", "qf2PKq0EMC" ], "holes": [] } }, "items": {}, "selected": { "vertices": [], "lines": [], "holes": [], "areas": [], "items": [] } } }, "grids": { "h1": { "id": "h1", "type": "horizontal-streak", "properties": { "step": 20, "colors": [ "#808080", "#ddd", "#ddd", "#ddd", "#ddd" ] } }, "v1": { "id": "v1", "type": "vertical-streak", "properties": { "step": 20, "colors": [ "#808080", "#ddd", "#ddd", "#ddd", "#ddd" ] } } }, "selectedLayer": "layer-1", "groups": {}, "width": 3000, "height": 2000, "meta": {}, "guides": { "horizontal": {}, "vertical": {}, "circular": {} } };
     } else if ( roomName === 'L1' ) {
-      console.log( "hola" );
       roomSelected = {
         "unit": "mm",
         "layers": {
@@ -3815,6 +3818,7 @@ export default class MenuRooms extends Component {
                 roomjson='cuadrada'
                 src={ rectangulo }
                 onClick={ ( e ) => {
+                  this.closeMenuRooms( e );
                   return this.loadProjectFromFile( e );
                 } }
                 style={ {
@@ -3836,6 +3840,7 @@ export default class MenuRooms extends Component {
                 src={ rectangulo }
                 style={ { marginLeft: '-1.3em', minHeight: '100%' } }
                 onClick={ ( e ) => {
+                  this.closeMenuRooms( e );
                   return this.loadProjectFromFile( e );
                 } }
               />
@@ -3852,6 +3857,7 @@ export default class MenuRooms extends Component {
                 src={ rectangulo }
                 style={ { marginLeft: '-1.5em', minHeight: '100%' } }
                 onClick={ ( e ) => {
+                  this.closeMenuRooms( e );
                   return this.loadProjectFromFile( e );
                 } }
               />
@@ -3868,6 +3874,7 @@ export default class MenuRooms extends Component {
                 src={ rectangulo }
                 style={ { marginLeft: '-1.3em', minHeight: '100%' } }
                 onClick={ ( e ) => {
+                  this.closeMenuRooms( e );
                   return this.loadProjectFromFile( e );
                 } }
               />
@@ -3884,6 +3891,7 @@ export default class MenuRooms extends Component {
                 src={ rectangulo }
                 style={ { marginLeft: '-1.5em', minHeight: '100%' } }
                 onClick={ ( e ) => {
+                  this.closeMenuRooms( e );
                   return this.loadProjectFromFile( e );
                 } }
               />
@@ -3895,6 +3903,7 @@ export default class MenuRooms extends Component {
           <div onClick={ () => {
             this.drawWalls();
             document.querySelector( '.rectangulo.dibujar' ).style.opacity = 0.2;
+            this.closeMenuRooms();
           } }
             style={ {
               cursor: 'pointer',

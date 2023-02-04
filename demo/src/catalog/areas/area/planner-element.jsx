@@ -17,8 +17,8 @@ let textures = {
   tile1: {
     name: 'Tile1',
     uri: require( './textures/tile1.jpg' ),
-    lengthRepeatScale: 0.00001,
-    heightRepeatScale: 0.00001,
+    lengthRepeatScale: 0.00002,
+    heightRepeatScale: 0.00002,
   },
   ceramic: {
     name: 'Ceramic Tile',

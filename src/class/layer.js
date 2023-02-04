@@ -10,6 +10,7 @@ import line from './line';
 import vertex from './vertex';
 import { func } from 'prop-types';
 import { getLayerValue, isMultipleSelection } from '../selectors/selectors';
+import { MODE_IDLE } from '../constants';
 
 const sameSet = ( set1, set2 ) => set1.size === set2.size && set1.isSuperset( set2 ) && set1.isSubset( set2 );
 const someList = ( list1, list2 ) => list1.some( e => list2.includes( e ) );
@@ -307,6 +308,7 @@ class Layer {
     state.getIn( [ 'scene', 'layers', layerID, 'areas' ] ).forEach( area => {
       let areaInUse = innerCyclesByVerticesID.some( vertices => sameSet( vertices, area.vertices ) );
       if ( !areaInUse ) {
+        console.log( "hola" );
         state = Area.remove( state, layerID, area.id ).updatedState;
       }
     } );
@@ -319,11 +321,14 @@ class Layer {
         areaIDs[ ind ] = areaInUse.id;
         state = state.setIn( [ 'scene', 'layers', layerID, 'areas', areaIDs[ ind ], 'holes' ], new List() );
       } else {
+
         let areaVerticesCoords = cycle.map( vertexID => state.getIn( [ 'scene', 'layers', layerID, 'vertices', vertexID ] ) );
         let resultAdd = Area.add( state, layerID, 'area', areaVerticesCoords, state.catalog );
 
         areaIDs[ ind ] = resultAdd.area.id;
         state = resultAdd.updatedState;
+        state = Layer.unselectAll( state, layerID ).updatedState;
+        state = state.set( 'mode', MODE_IDLE );
       }
     } );
 

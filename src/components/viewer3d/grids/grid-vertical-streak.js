@@ -7,7 +7,6 @@ import { showMeasure } from '../../../utils/changeUnit';
 import { BufferAttribute } from 'three';
 
 export default function ( state, width, height, grid, font ) {
-  /*let step = grid.properties.get('step');*/
   const step = ( ( state.getIn( [ 'prefs', 'T/REJILLA2D' ] ) / 10 ) / 5 );
 
   let colors = grid.properties.has( 'color' ) ? new List( [ grid.properties.get( 'color' ) ] ) : grid.properties.get( 'colors' );

@@ -165,7 +165,7 @@ const data = {
     "GUIA3D": true,
     "UNIDADMEDIDA": "mm",
     "VERANGULOS": true,
-    "C/LISOPARED2D": "#6386A1",
+    "C/LISOPARED2D": "#fcfeff",
     "C/LISOPARED3D": "#FFFFFF",
     "C/LINEASCOTA": "#aaaaaa",
     "C/COTA": "#aaaaaa",

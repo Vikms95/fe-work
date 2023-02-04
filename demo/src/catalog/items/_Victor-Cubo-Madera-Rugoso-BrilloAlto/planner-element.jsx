@@ -11,20 +11,19 @@ const glb = require( './Fussion_Chrome_800_2_cajones.glb' );
 
 const width =
 {
-  min: 100,  // cm
-  max: 184  // cm
+  min: 70,  // cm
+  max: 90  // cm
 };
 
-//todo pedir min y max del morph
 const depth = {
-  min: 50,
-  max: 100,
+  min: 90,
+  max: 200,
 };
 
 //todo idem
 const height = {
-  min: 50,
-  max: 100
+  min: 198,
+  max: 198
 };
 const glbInfo =
 {

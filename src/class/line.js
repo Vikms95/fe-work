@@ -475,6 +475,8 @@ class Line {
   }
 
   static selectToolDrawingLine ( state, sceneComponentType ) {
+    document.body.style.cursor = 'crosshair';
+
     state = state.merge( {
       mode: MODE_WAITING_DRAWING_LINE,
       drawingSupport: new Map( {
@@ -723,15 +725,21 @@ class Line {
           snapElements: new List(),
           activeSnapElement: null
         } );
+
         state = Line.beginDrawingLine( state, layerID, x, y ).updatedState;
-      }
-      else
+
+      } else {
+
+        document.body.style.cursor = 'auto';
+
         state = state.merge( {
           mode: MODE_IDLE,
           drawingSupport: new Map(),
           activeSnapElement: null,
           snapElements: new List()
         } );
+
+      }
     }
     else {
       state = state.merge( {
@@ -899,7 +907,6 @@ class Line {
     let newVertex1Y = draggingSupport.get( 'startVertex1Y' ) + diffY;
 
     if ( state.snapMask && !state.snapMask.isEmpty() ) {
-
       let curSnap0 = SnapUtils.nearestSnap( state.snapElements, newVertex0X, newVertex0Y, state.snapMask );
       let curSnap1 = SnapUtils.nearestSnap( state.snapElements, newVertex1X, newVertex1Y, state.snapMask );
 
