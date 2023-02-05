@@ -12,7 +12,7 @@ const glb = require( './Fussion_Chrome_800_2_cajones_2.glb' );
 const width =
 {
   min: 100,  // cm
-  max: 184  // cm
+  max: 184  //184 cm
 };
 
 const depth = {
@@ -139,7 +139,7 @@ export default {
     }
 
     if ( sizeParametricObject3d( mesh, element ) ) {
-      repeatTexturesOnMorph( mesh );
+      // repeatTexturesOnMorph( mesh );
       return Promise.resolve( mesh );
     }
 

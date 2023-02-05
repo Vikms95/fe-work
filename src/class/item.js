@@ -125,6 +125,7 @@ class Item {
     state = this.updateDrawingItem( state, layerID, x, y, catalog ).updatedState;
     state = Layer.unselectAll( state, layerID ).updatedState;
     state = state.merge( {
+      mode: MODE_IDLE,
       drawingSupport: Map( {
         type: state.drawingSupport.get( 'type' )
       } )

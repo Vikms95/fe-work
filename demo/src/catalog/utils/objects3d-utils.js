@@ -1,37 +1,64 @@
+import { Texture } from 'three';
 import { Box3, BoxHelper } from 'three';
 
 export let cacheLoadingObjects = new Map();
 export let cacheLoadedObjects = new Map();
 export let cacheLoadedTextures = {};
 
+
 export function getObject3d ( name, loadObj ) {
   let object = cacheLoadedObjects.get( name );
 
-  //todo this is returning when the texture is lost
   if ( object ) {
+    setTextures( name, object );
     return Promise.resolve( object.clone() );
+
   }
 
   let promise = cacheLoadingObjects.get( name );
 
   if ( promise == null ) {
+
     promise = loadObj().then( object => {
+      let textures = [];
+
+      object.traverse( child => {
+        if ( child.isMesh ) {
+          child.traverse( node => {
+            textures.push( node.material.map );
+          } );
+        }
+      } );
+
+      cacheLoadedTextures[ `${ name }` ] = textures;
       cacheLoadedObjects.set( name, object );
       cacheLoadingObjects.delete( name );
 
-      return object.clone();
 
+      return object.clone();
     } );
-  }
-  else {
+
+  } else {
     promise = promise.then( object => object.clone() );
+
   }
 
   cacheLoadingObjects.set( name, promise );
 
-
-
   return promise;
+}
+
+function setTextures ( name, object ) {
+  const textures = cacheLoadedTextures[ `${ name }` ];
+  let index = 0;
+
+  object.traverse( node => {
+    if ( node.isMesh ) {
+      node.material.map = textures[ index ];
+      index++;
+    }
+  } );
+
 }
 
 export function selectedObject3d ( object, selected ) {
@@ -109,8 +136,6 @@ export function repeatTexturesOnMorph ( mesh ) {
   targetMesh.castShadow = true; //default is false
   targetMesh.receiveShadow = true; //default
 
-  console.log( targetMesh );
-  console.log( 'prueba', texture.lengthRepeatScale );
 
   if ( targetMesh && texture ) {
     const morphValues = {

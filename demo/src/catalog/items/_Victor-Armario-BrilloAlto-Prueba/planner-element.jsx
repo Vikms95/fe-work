@@ -139,7 +139,7 @@ export default {
     }
 
     if ( sizeParametricObject3d( mesh, element ) ) {
-      repeatTexturesOnMorph( mesh );
+      // repeatTexturesOnMorph( mesh );
       return Promise.resolve( mesh );
     }
 

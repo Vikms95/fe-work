@@ -536,12 +536,12 @@ MTLLoader.MaterialCreator.prototype = {
 
     //todo Introducido por Oscar
     var texture = cacheTextures.get( url );
-    //
 
     if ( texture )
       return texture;
 
-    var loader = THREE.Loader.Handlers.get( url );
+    // var loader = THREE.Loader.Handlers.get( url );
+    var loader = null;
     var manager = ( this.manager !== undefined ) ? this.manager : THREE.DefaultLoadingManager;
 
     if ( loader === null ) {

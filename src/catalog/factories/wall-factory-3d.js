@@ -11,6 +11,7 @@ import {
 import CSG from '../../utils/csg-three';
 import { verticesDistance } from '../../utils/geometry';
 import * as SharedStyle from '../../shared-style';
+import { MeshStandardMaterial } from 'three';
 
 const halfPI = Math.PI / 2;
 
@@ -59,7 +60,7 @@ export function buildWall ( element, layer, scene, textures ) {
   let distance = verticesDistance( vertex0, vertex1 );
   let halfDistance = distance / 2;
 
-  let soulMaterial = new MeshBasicMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } );
+  let soulMaterial = new MeshStandardMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } );
   let soulGeometry = new BoxGeometry( distance, height, thickness );
   soulMaterial.name = 'wallMaterial';
   soulGeometry.name = 'wallGeometry';
@@ -111,8 +112,10 @@ export function buildWall ( element, layer, scene, textures ) {
 
   } );
 
-  let frontMaterial = new MeshBasicMaterial();
-  let backMaterial = new MeshBasicMaterial();
+  soulMesh.receiveShadow = true;
+
+  let frontMaterial = new MeshStandardMaterial();
+  let backMaterial = new MeshStandardMaterial();
 
   applyTexture( frontMaterial, textures[ element.properties.get( 'textureB' ) ], distance, height );
   applyTexture( backMaterial, textures[ element.properties.get( 'textureA' ) ], distance, height );
@@ -147,7 +150,8 @@ export function updatedWall ( element, layer, scene, textures, mesh, oldElement,
   let backFace = mesh.getObjectByName( 'backFace' );
 
   if ( differences[ 0 ] == 'selected' ) {
-    soulMesh.material = new MeshBasicMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } );
+    soulMesh.material = new MeshStandardMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } );
+    soulMesh.receiveShadow = true;
     soulMesh.material.name = 'updatedSoulMaterial';
   }
   else if ( differences[ 0 ] == 'properties' ) {

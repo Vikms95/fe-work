@@ -416,6 +416,7 @@ export default class FormNumberInput extends Component {
     this.getProperty = this.getProperty.bind( this );
     this.getAttribute = this.getAttribute.bind( this );
     this.resetAngleInput = this.resetAngleInput.bind( this );
+    this.isMorphAvailable = this.isMorphAvailable.bind( this );
     this.isDifferentPropsValue = this.isDifferentPropsValue.bind( this );
     this.resetInputOnSelection = this.resetInputOnSelection.bind( this );
     this.areArrayValuesDifferent = this.areArrayValuesDifferent.bind( this );
@@ -517,6 +518,14 @@ export default class FormNumberInput extends Component {
     return valuesArray;
   }
 
+  isMorphAvailable () {
+    if ( this.props.sourceElement[ `${ this.props.attributeName }` ] && this.props.sourceElement.prototype !== 'line' ) {
+      return this.props.sourceElement[ `${ this.props.attributeName }` ].min !== this.props.sourceElement[ `${ this.props.attributeName }` ].max;
+    }
+
+    return true;
+  }
+
   componentDidMount () {
     if ( this.isLengthInputWhileDrawing() ) {
       this.setState( { focus: true } );
@@ -553,10 +562,10 @@ export default class FormNumberInput extends Component {
   };
 
   componentDidUpdate ( nextProps ) {
+
     if ( document.activeElement === this.state.inputElement ) {
       if ( this.cursor.x !== this.props.stateRedux.getIn( [ 'mouse', 'x' ] )
         || this.cursor.y !== this.props.stateRedux.getIn( [ 'mouse', 'y' ] ) ) {
-        console.log( 'test selecting' );
         this.state.inputElement.select();
       }
     }
@@ -737,6 +746,7 @@ export default class FormNumberInput extends Component {
       ( this.props.mode === MODE_DRAWING_LINE )
     );
 
+
     return (
       <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
 
@@ -752,6 +762,7 @@ export default class FormNumberInput extends Component {
           onClick={ () => this.state.inputElement.select() }
           onFocus={ () => this.setState( { focus: true } ) }
           onBlur={ () => this.setState( { focus: false } ) }
+          disabled={ this.isMorphAvailable() ? false : true }
         />
 
       </div >

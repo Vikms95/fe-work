@@ -2,6 +2,11 @@
   outline: solid 1px green;
 } */
 
+input:disabled {
+  color: rgb(207 202 202) !important;
+  border-color: rgb(207 202 202) !important;
+}
+
 .react-tabs__tab-list {
   border-bottom: 1px solid #aaa;
   margin: 0 0 10px;

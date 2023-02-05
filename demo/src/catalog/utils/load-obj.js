@@ -2,10 +2,11 @@ import * as THREE from 'three';
 import { Box3, MeshPhysicalMaterial, MeshStandardMaterial } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-// import { MTLLoader } from './mtl-loader-new';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
-// import OBJLoader from './obj-loader';
-// import { GLTFLoader } from './gltf-loader-new';
+// import MTLLoader from './mtl-loader';
+
+import { cacheLoadedObjects } from './objects3d-utils';
+
 import blueTextureFile from '../items/_Victor-Cubo-Azul-Mate/RAL 5017.jpg';
 import woodTextureFile from '../items/_Victor-Cubo-Azul-Mate/34232 Arizona Pine s.jpg';
 import woodRoughnessFile from '../items/_Victor-Cubo-Azul-Mate/34232 Arizona Pine s bump.jpg';
@@ -173,7 +174,7 @@ const addMateLook = ( object, node ) => {
   }
 };
 
-const addBrilloLook = ( object, node ) => {
+const addBrightLook = ( object, node ) => {
   if ( object.name === 'Brillo' ) {
     object.traverse( child => {
       if ( child instanceof THREE.Mesh ) {
@@ -184,7 +185,7 @@ const addBrilloLook = ( object, node ) => {
   }
 };
 
-const addBrilloAltoLook = ( object, node ) => {
+const addHighBrightnessLook = ( object, node ) => {
   if ( object.name === 'BrilloAlto' ) {
     object.traverse( child => {
       if ( child instanceof THREE.Mesh ) {
@@ -264,7 +265,6 @@ export function loadGLTF ( input ) {
       let object = gltf.scene;
 
       object.traverse( node => {
-
         if ( node instanceof THREE.Mesh && node.material ) {
           // addEnvMapIntensity( object );
           enableMeshCastAndReceiveShadow( object );
@@ -272,8 +272,8 @@ export function loadGLTF ( input ) {
           addMirrorLook( object, node );
           addChromeLook( object, node );
           addPorcelainLook( object, node );
-          addBrilloLook( object, node );
-          addBrilloAltoLook( object, node );
+          addBrightLook( object, node );
+          addHighBrightnessLook( object, node );
           addRoughnessLook( object, node );
           // addEmissive( object, node );
 
@@ -282,7 +282,6 @@ export function loadGLTF ( input ) {
             object.scale.set( 100, 100, 100 );
           }
 
-          // todo solo para testear mueble armario
           // if ( input.scale )
           //   object.scale.set( input.scale.x, input.scale.y, input.scale.z );
 
