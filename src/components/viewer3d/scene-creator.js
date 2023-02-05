@@ -1,10 +1,9 @@
 import * as Three from 'three';
 import createGrid from './grid-creator';
 import { disposeObject } from './three-memory-cleaner';
-import { verticesDistance, angleVector } from '../../utils/geometry';
-import { Line } from '../../class/export';
 
 export function parseData ( state, sceneData, actions, catalog ) {
+
   let planData = {};
 
   planData.sceneGraph = {
@@ -84,6 +83,7 @@ function createLayerObjects ( layer, planData, sceneData, actions, catalog ) {
 }
 
 export function updateScene ( planData, sceneData, oldSceneData, diffArray, actions, catalog ) {
+
   let splitted = diffArray.map( el => { return { op: el.op, path: el.path.split( '/' ), value: el.value }; } );
   let filteredDiffs = filterDiffs( splitted, sceneData, oldSceneData );
 
@@ -446,7 +446,6 @@ function removeItem ( planData, layerId, itemID ) {
 
 //TODO generate an area's replace if vertex has been changed
 function addObject ( modifiedPath, layer, planData, actions, sceneData, oldSceneData, catalog ) {
-
   if ( modifiedPath.length === 5 ) {
     let addPromise = null, addAction = null;
 
@@ -478,55 +477,33 @@ function addHole ( sceneData, planData, layer, holeID, catalog, holesActions ) {
     let line = layer.getIn( [ 'lines', holeData.line ] );
 
     // First of all I need to find the vertices of this line
-    let v2First = line.v2First;
-    //let vertex0 = layer.vertices.get(line.vertices.get(0));
-    //let vertex1 = layer.vertices.get(line.vertices.get(1));
-    let vertex0 = layer.vertices.get( line.vertices.get( !v2First ? 0 : 1 ) );
-    let vertex1 = layer.vertices.get( line.vertices.get( !v2First ? 1 : 0 ) );
-    let thickness = line.properties.getIn( [ 'thickness', 'length' ] );
-    let { /*vv2, vv3,*/ vu } = Line.createVertexAndVectorsB( vertex0.x, vertex0.y, vertex1.x, vertex1.y, v2First, thickness );
-    let offset = !v2First ? holeData.offset : 1 - holeData.offset;
+    let vertex0 = layer.vertices.get( line.vertices.get( 0 ) );
+    let vertex1 = layer.vertices.get( line.vertices.get( 1 ) );
+    let offset = holeData.offset;
 
-    //if (vertex0.x > vertex1.x) {
-    //  let tmp = vertex0;
-    //  vertex0 = vertex1;
-    //  vertex1 = tmp;
-    //  offset = 1 - offset;
-    //}
+    if ( vertex0.x > vertex1.x ) {
+      let tmp = vertex0;
+      vertex0 = vertex1;
+      vertex1 = tmp;
+      offset = 1 - offset;
+    }
 
-    //let distance = Math.sqrt(Math.pow(vertex0.x - vertex1.x, 2) + Math.pow(vertex0.y - vertex1.y, 2));
-    //let alpha = Math.asin((vertex1.y - vertex0.y) / distance);
-    let distance = verticesDistance( vertex0, vertex1 );
-    let alpha = angleVector( vu );
+    let distance = Math.sqrt( Math.pow( vertex0.x - vertex1.x, 2 ) + Math.pow( vertex0.y - vertex1.y, 2 ) );
+    let alpha = Math.asin( ( vertex1.y - vertex0.y ) / distance );
 
-    /*
-     // Codigo obj O => center
-    let boundingBox = new Three.Box3().setFromObject(pivot);
+    let boundingBox = new Three.Box3().setFromObject( pivot );
     let center = [
-      (boundingBox.max.x - boundingBox.min.x) / 2 + boundingBox.min.x,
-      (boundingBox.max.y - boundingBox.min.y) / 2 + boundingBox.min.y,
-      (boundingBox.max.z - boundingBox.min.z) / 2 + boundingBox.min.z];
-      */
+      ( boundingBox.max.x - boundingBox.min.x ) / 2 + boundingBox.min.x,
+      ( boundingBox.max.y - boundingBox.min.y ) / 2 + boundingBox.min.y,
+      ( boundingBox.max.z - boundingBox.min.z ) / 2 + boundingBox.min.z ];
 
     let holeAltitude = holeData.properties.getIn( [ 'altitude', 'length' ] );
     let holeHeight = holeData.properties.getIn( [ 'height', 'length' ] );
 
     pivot.rotation.y = alpha;
-
-    /*
-     // Codigo obj O => center
-    pivot.position.x = vertex0.x + distance * offset * Math.cos(alpha) - center[2] * Math.sin(alpha);
-    pivot.position.y = holeAltitude + holeHeight / 2 - center[1] + layer.altitude;
-    //pivot.position.y = holeAltitude + holeHeight - center[1] + layer.altitude;
-    pivot.position.z = -vertex0.y - distance * offset * Math.sin(alpha) - center[2] * Math.cos(alpha);
-    */
-
-    //todo Posicionamiento objeto del hole
-    // Añado 5 para ajustarlo al agujero de momento
-    pivot.position.x = vertex0.x + distance * offset * Math.cos( alpha );
-    pivot.position.y = holeAltitude + layer.altitude;
-    // Resto 15 para ajustarlo al agujero de momento
-    pivot.position.z = -vertex0.y - distance * offset * Math.sin( alpha );
+    pivot.position.x = vertex0.x + distance * offset * Math.cos( alpha ) - center[ 2 ] * Math.sin( alpha );
+    pivot.position.y = holeAltitude + holeHeight / 2 - center[ 1 ] + layer.altitude;
+    pivot.position.z = -vertex0.y - distance * offset * Math.sin( alpha ) - center[ 2 ] * Math.cos( alpha );
 
     planData.plan.add( pivot );
     planData.sceneGraph.layers[ layer.id ].holes[ holeData.id ] = pivot;
@@ -566,17 +543,17 @@ function addLine ( sceneData, planData, layer, lineID, catalog, linesActions ) {
   let line = layer.getIn( [ 'lines', lineID ] );
 
   // First of all I need to find the vertices of this line
-  //let vertex0 = layer.vertices.get(line.vertices.get(0));
-  //let vertex1 = layer.vertices.get(line.vertices.get(1));
+  let vertex0 = layer.vertices.get( line.vertices.get( 0 ) );
+  let vertex1 = layer.vertices.get( line.vertices.get( 1 ) );
 
-  //if (vertex0.x > vertex1.x) {
-  //  let tmp = vertex0;
-  //  vertex0 = vertex1;
-  //  vertex1 = tmp;
-  //}
+  if ( vertex0.x > vertex1.x ) {
+    let tmp = vertex0;
+    vertex0 = vertex1;
+    vertex1 = tmp;
+  }
 
-  let v2First = line.v2First;
-  let vertex0 = layer.vertices.get( line.vertices.get( !v2First ? 0 : 1 ) );
+  //let v2First = line.v2First;
+  //let vertex0 = layer.vertices.get(line.vertices.get(!v2First ? 0 : 1));
   //let vertex1 = layer.vertices.get(line.vertices.get(!v2First ? 1 : 0));
 
   return catalog.getElement( line.type ).render3D( line, layer, sceneData ).then( line3D => {
@@ -681,7 +658,7 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
     pivot.add( item3D );
 
     pivot.rotation.y = item.rotation * Math.PI / 180;
-    pivot.position.x = item.x; // Items had a slight offset to the x axis
+    pivot.position.x = item.x;
     pivot.position.y = layer.altitude;
     pivot.position.z = -item.y;
 
@@ -704,7 +681,6 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
 }
 
 function updateItem ( sceneData, oldSceneData, planData, layer, itemID, differences, catalog, itemsActions, selfDestroy, selfBuild ) {
-
   let item = layer.getIn( [ 'items', itemID ] );
   let oldItem = oldSceneData.getIn( [ 'layers', layer.id, 'items', itemID ] );
   let mesh = planData.sceneGraph.layers[ layer.id ].items[ itemID ];
