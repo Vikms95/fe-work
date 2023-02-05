@@ -12,40 +12,38 @@ export function getObject3d ( name, loadObj ) {
   if ( object ) {
     setTextures( name, object );
     return Promise.resolve( object.clone() );
-
   }
 
   let promise = cacheLoadingObjects.get( name );
 
   if ( promise == null ) {
-
     promise = loadObj().then( object => {
-      let textures = [];
-
-      object.traverse( child => {
-        if ( child.isMesh ) {
-          child.traverse( node => {
-            textures.push( node.material.map );
-          } );
-        }
-      } );
-
-      cacheLoadedTextures[ `${ name }` ] = textures;
-      cacheLoadedObjects.set( name, object );
-      cacheLoadingObjects.delete( name );
-
-
+      cacheTextures( name, object );
       return object.clone();
     } );
-
   } else {
     promise = promise.then( object => object.clone() );
-
   }
 
   cacheLoadingObjects.set( name, promise );
 
   return promise;
+}
+
+function cacheTextures ( name, object ) {
+  let textures = [];
+
+  object.traverse( child => {
+    if ( child.isMesh ) {
+      child.traverse( node => {
+        textures.push( node.material.map );
+      } );
+    }
+  } );
+
+  cacheLoadedTextures[ `${ name }` ] = textures;
+  cacheLoadedObjects.set( name, object );
+  cacheLoadingObjects.delete( name );
 }
 
 function setTextures ( name, object ) {
@@ -58,7 +56,6 @@ function setTextures ( name, object ) {
       index++;
     }
   } );
-
 }
 
 export function selectedObject3d ( object, selected ) {
