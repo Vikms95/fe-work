@@ -15,7 +15,7 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
-import { CubeCamera, HalfFloatType, MeshBasicMaterial, MeshStandardMaterial, PointLight, SpotLight } from 'three';
+import { CubeCamera, HalfFloatType, MeshBasicMaterial, MeshStandardMaterial, PointLight, SpotLight, Vector3 } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 import {
   PathTracingSceneGenerator,
@@ -32,6 +32,7 @@ const SPOT_LIGHT_INTENSITY = 0.5;
 const DIRECTIONAL_LIGHT_INTENSITY = 0.5;
 const REFLECTOR_RESOLUTION = 2048;
 const SHADOW_RESOLUTION = 2048;
+let cacheCameraPosition = null;
 
 export default class Scene3DViewer extends React.Component {
 
@@ -133,18 +134,26 @@ export default class Scene3DViewer extends React.Component {
   };
 
   createAndAddCamera ( scene, planData ) {
-    let aspectRatio = this.width / this.height;
+    const aspectRatio = this.width / this.height;
     this.camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
+
+
+    if ( cacheCameraPosition instanceof Vector3 ) {
+      const { x, y, z } = cacheCameraPosition;
+      this.camera.position.set( x, y, z );
+
+    } else {
+
+      const cameraPositionX = - ( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 2;
+      const cameraPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) / 2 * 10;
+      const cameraPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 2;
+
+      this.camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
+      this.camera.up = new THREE.Vector3( 0, 1, 0 );
+
+    }
+
     scene.add( this.camera );
-
-    let cameraPositionX = -( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 2;
-    let cameraPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) / 2 * 10;
-    let cameraPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 2;
-
-    this.camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
-    this.camera.up = new THREE.Vector3( 0, 1, 0 );
-
-    return { cameraPositionX, cameraPositionY, cameraPositionZ };
   }
 
   configureRendererPBR ( renderer ) {
@@ -477,6 +486,13 @@ export default class Scene3DViewer extends React.Component {
     disposeScene( this.scene3D );
     this.scene3D.remove( this.planData.plan );
     this.scene3D.remove( this.planData.grid );
+
+    cacheCameraPosition = new Vector3();
+    cacheCameraPosition.set(
+      this.camera.position.x,
+      this.camera.position.y,
+      this.camera.position.z
+    );
 
     this.scene3D = null;
     this.planData = null;

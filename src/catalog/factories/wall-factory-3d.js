@@ -5,7 +5,8 @@ import {
   BoxGeometry,
   MeshBasicMaterial,
   Group,
-  Vector2
+  Vector2,
+  FrontSide
 } from 'three';
 
 import CSG from '../../utils/csg-three';
@@ -31,8 +32,6 @@ const applyTexture = ( material, texture, length, height ) => {
     material.map.wrapT = RepeatWrapping;
     material.map.repeat.set( length * texture.lengthRepeatScale, height * texture.heightRepeatScale );
     material.name = 'wallTexture';
-
-
   }
 };
 
@@ -64,6 +63,7 @@ export function buildWall ( element, layer, scene, textures ) {
   let soulGeometry = new BoxGeometry( distance, height, thickness );
   soulMaterial.name = 'wallMaterial';
   soulGeometry.name = 'wallGeometry';
+
 
   let soulMesh = new Mesh( soulGeometry, soulMaterial );
   soulMesh.name = 'soulMesh';
@@ -113,9 +113,13 @@ export function buildWall ( element, layer, scene, textures ) {
   } );
 
   soulMesh.receiveShadow = true;
+  soulMesh.material.side = FrontSide;
 
   let frontMaterial = new MeshStandardMaterial();
   let backMaterial = new MeshStandardMaterial();
+
+  frontMaterial.side = FrontSide;
+  backMaterial.side = FrontSide;
 
   applyTexture( frontMaterial, textures[ element.properties.get( 'textureB' ) ], distance, height );
   applyTexture( backMaterial, textures[ element.properties.get( 'textureA' ) ], distance, height );
@@ -152,6 +156,7 @@ export function updatedWall ( element, layer, scene, textures, mesh, oldElement,
   if ( differences[ 0 ] == 'selected' ) {
     soulMesh.material = new MeshStandardMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } );
     soulMesh.receiveShadow = true;
+    soulMesh.material.side = FrontSide;
     soulMesh.material.name = 'updatedSoulMaterial';
   }
   else if ( differences[ 0 ] == 'properties' ) {
