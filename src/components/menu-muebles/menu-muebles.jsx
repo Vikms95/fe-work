@@ -146,7 +146,10 @@ export default function MenuMuebles ( props ) {
     }
   };
 
+
+
   const closeMenuMuebles = () => {
+    setState( ( prevState ) => ( { ...prevState, currentShowElement: null, breadcrumb: null, hoverBreadcrumb: false } ) );
     document.getElementById( 'menuMuebles' ).style.display = 'none';
   };
 
@@ -218,7 +221,6 @@ export default function MenuMuebles ( props ) {
       currentShowElement: [ { image: img_23275, name: '23275', } ],
     } ) );
   };
-
 
   const selectMueblesBanyo = () => {
     // TODO: Cambiar idioma
@@ -310,7 +312,6 @@ export default function MenuMuebles ( props ) {
       currentShowElement: [ { image: img_24471, name: '24471', } ],
     } ) );
   };
-
 
   const selectCompakt = () => {
     // TODO: Cambiar idioma

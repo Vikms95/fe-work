@@ -14,6 +14,7 @@ import close from './../../assets/generalItems/deleteCross.png';
 import rectangulo from './../../assets/salgar/rectangulo.png';
 
 import { useDrawMode } from '../../hooks/useDrawMode';
+import { MenuProxy } from '../../proxies/menu';
 
 const STYLE = {
   backgroundColor: SharedStyle.COLORS.white,
@@ -3782,6 +3783,7 @@ export default class MenuRooms extends Component {
   };
 
   render () {
+
     return (
       <aside id='menuRooms' style={ STYLE }>
         {/* Barra Inicial */ }
