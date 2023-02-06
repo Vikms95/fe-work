@@ -8,6 +8,7 @@ import * as SharedStyle from '../../shared-style';
 import { RulerX, RulerY } from './export';
 import { getIsGuia2D, getViewer2D, getRejillaTotal2D, getUserZoom } from '../../selectors/selectors';
 import { Context } from '../../context/context';
+import { useZoom2D } from '../../hooks/useZoom2D';
 
 function mode2Tool ( mode ) {
   switch ( mode ) {
@@ -90,16 +91,15 @@ function extractElementData ( node ) {
   };
 }
 
-export default function Viewer2D (
-  {
-    state,
-    width,
-    height,
-    refViewer2D,
-    update2DView,
-    isFirstRender,
-    setIsFirstRender,
-  } ) {
+export default function Viewer2D ( {
+  state,
+  width,
+  height,
+  refViewer2D,
+  update2DView,
+  isFirstRender,
+  setIsFirstRender,
+} ) {
 
   const {
     catalog,
@@ -115,38 +115,8 @@ export default function Viewer2D (
 
   const { viewer2D, mode, scene } = state;
   const layerID = scene.selectedLayer;
-  let viewerState = useRef( null );
 
-
-  useEffect( () => {
-
-    if ( isFirstRender ) {
-      const userZoom = getUserZoom( state );
-      if ( !userZoom ) return;
-
-      //**startup */
-      const windowWidthRatio = window.innerWidth / 1000;
-      const finalZoom = constants.BASE_ZOOM / userZoom;
-
-      refViewer2D.current.setPointOnViewerCenter(
-        550,
-        568,
-        finalZoom * windowWidthRatio
-      );
-
-      setIsFirstRender( false );
-
-    } else {
-
-      refViewer2D.current = viewerState.current;
-
-    }
-
-    return () => viewerState.current = refViewer2D.current;
-
-  }, [ state ] );
-
-
+  useZoom2D( isFirstRender, setIsFirstRender, refViewer2D, state );
 
   useEffect( () => {
 
