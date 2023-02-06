@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { INITIAL_VALUE, fitSelection, ReactSVGPanZoom, TOOL_NONE, TOOL_PAN, TOOL_ZOOM_IN, TOOL_ZOOM_OUT, TOOL_AUTO } from 'react-svg-pan-zoom';
@@ -96,17 +96,9 @@ export default function Viewer2D (
     width,
     height,
     refViewer2D,
-    update2DView
-  },
-  {
-    // catalog,
-    // areaActions,
-    // itemsActions,
-    // linesActions,
-    // holesActions,
-    // projectActions,
-    // viewer2DActions,
-    // verticesActions,
+    update2DView,
+    isFirstRender,
+    setIsFirstRender,
   } ) {
 
   const {
@@ -118,35 +110,51 @@ export default function Viewer2D (
     projectActions,
     viewer2DActions,
     verticesActions,
-  } = useContext( Context );
+  }
+    = useContext( Context );
 
   const { viewer2D, mode, scene } = state;
   const layerID = scene.selectedLayer;
-  const [ isFirstRender, setIsFirstRender ] = useState( true );
+  let viewerState = useRef( null );
+
 
   useEffect( () => {
-    const userZoom = getUserZoom( state );
-    if ( !userZoom || !isFirstRender ) return;
 
-    const windowWidthRatio = window.innerWidth / 1000;
-    // const windowHeigthRatio = window.innerHeight / 1000;
-    const finalZoom = constants.BASE_ZOOM / userZoom;
+    if ( isFirstRender ) {
+      const userZoom = getUserZoom( state );
+      if ( !userZoom ) return;
 
+      //**startup */
+      const windowWidthRatio = window.innerWidth / 1000;
+      const finalZoom = constants.BASE_ZOOM / userZoom;
 
-    refViewer2D.current.setPointOnViewerCenter(
-      550, // initial width
-      568, // initial height  465.8
-      finalZoom * windowWidthRatio  // same zoom output for all monitor sizes
-    );
+      refViewer2D.current.setPointOnViewerCenter(
+        550,
+        568,
+        finalZoom * windowWidthRatio
+      );
 
-    setIsFirstRender( false );
+      setIsFirstRender( false );
+
+    } else {
+
+      refViewer2D.current = viewerState.current;
+
+    }
+
+    return () => viewerState.current = refViewer2D.current;
+
   }, [ state ] );
 
+
+
   useEffect( () => {
+
     document.addEventListener( 'keydown', onKeyDown );
     return () => document.removeEventListener( 'keydown', onKeyDown );
 
   }, [ state ] );
+
 
   const onKeyDown = ( event ) => {
     const viewer2DState = getViewer2D( state );
@@ -421,7 +429,6 @@ export default function Viewer2D (
             className='ReactSVGPanZoom'
             toolbarPosition="none"
             miniaturePosition="none"
-            // SVGStyle={ {} }
             width={ width - rulerSize }
             tool={ mode2Tool( mode ) }
             height={ height - rulerSize }

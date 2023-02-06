@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Viewer2D from './viewer2d/viewer2d';
 import Viewer3D from './viewer3d/viewer3d';
@@ -19,6 +19,9 @@ export default function Content (
     update2DView,
     isPathTracing
   } ) {
+
+  const [ isFirstRender, setIsFirstRender ] = useState( true );
+
 
   let mode = state.get( 'mode' );
   switch ( mode ) {
@@ -63,6 +66,8 @@ export default function Content (
         height={ height }
         refViewer2D={ refViewer2D }
         update2DView={ update2DView }
+        isFirstRender={ isFirstRender }
+        setIsFirstRender={ setIsFirstRender }
       />;
 
     case constants.MODE_CONFIGURING_PROJECT:
