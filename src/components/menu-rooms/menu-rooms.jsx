@@ -1636,8 +1636,8 @@ export default class MenuRooms extends Component {
             "name": "default",
             "visible": true,
             "vertices": {
-              "n0ZUgWVUN": {
-                "id": "n0ZUgWVUN",
+              "oto60Vc2tS": {
+                "id": "oto60Vc2tS",
                 "type": "",
                 "prototype": "vertices",
                 "name": "Vertex",
@@ -1647,17 +1647,16 @@ export default class MenuRooms extends Component {
                 "selected": false,
                 "properties": {},
                 "visible": true,
-                "x": 800.1662234042553,
-                "y": 1598.1195146276596,
+                "x": 709.9792220744681,
+                "y": 1651.207737699468,
                 "lines": [
-                  "vwAPO9_q4",
-                  "w7PlqnBZeS",
-                  "w7PlqnBZeS"
+                  "Vgrsygpuq",
+                  "7n_WfEon96"
                 ],
                 "areas": []
               },
-              "S_0WlfOS8": {
-                "id": "S_0WlfOS8",
+              "et7LXtFrM": {
+                "id": "et7LXtFrM",
                 "type": "",
                 "prototype": "vertices",
                 "name": "Vertex",
@@ -1667,17 +1666,17 @@ export default class MenuRooms extends Component {
                 "selected": false,
                 "properties": {},
                 "visible": true,
-                "x": 300.1662234042552,
-                "y": 1098.1195146276596,
+                "x": 699.979222074468,
+                "y": 1241.207737699468,
                 "lines": [
-                  "YcEdeqrdma",
-                  "Stv4O2LhFi",
-                  "Stv4O2LhFi"
+                  "7n_WfEon96",
+                  "dPqKTtks__",
+                  "dPqKTtks__"
                 ],
                 "areas": []
               },
-              "qNNteGMdUc": {
-                "id": "qNNteGMdUc",
+              "7t_jP0ZB7K": {
+                "id": "7t_jP0ZB7K",
                 "type": "",
                 "prototype": "vertices",
                 "name": "Vertex",
@@ -1687,16 +1686,16 @@ export default class MenuRooms extends Component {
                 "selected": false,
                 "properties": {},
                 "visible": true,
-                "x": 290.16622340425533,
-                "y": 1608.1195146276596,
+                "x": 709.979222074468,
+                "y": 1231.207737699468,
                 "lines": [
-                  "Stv4O2LhFi",
-                  "vwAPO9_q4"
+                  "7n_WfEon96",
+                  "dPqKTtks__"
                 ],
                 "areas": []
               },
-              "RKQ1a2O-Vy": {
-                "id": "RKQ1a2O-Vy",
+              "ZHPKquxXRj": {
+                "id": "ZHPKquxXRj",
                 "type": "",
                 "prototype": "vertices",
                 "name": "Vertex",
@@ -1706,16 +1705,17 @@ export default class MenuRooms extends Component {
                 "selected": false,
                 "properties": {},
                 "visible": true,
-                "x": 810.1662234042552,
-                "y": 1088.1195146276596,
+                "x": 299.9792220744681,
+                "y": 1641.207737699468,
                 "lines": [
-                  "w7PlqnBZeS",
-                  "YcEdeqrdma"
+                  "Vgrsygpuq",
+                  "Vgrsygpuq",
+                  "bI6CgyM0m0"
                 ],
                 "areas": []
               },
-              "TQEiLV9X4X": {
-                "id": "TQEiLV9X4X",
+              "h78ib04O3": {
+                "id": "h78ib04O3",
                 "type": "",
                 "prototype": "vertices",
                 "name": "Vertex",
@@ -1725,16 +1725,17 @@ export default class MenuRooms extends Component {
                 "selected": false,
                 "properties": {},
                 "visible": true,
-                "x": 810.1662234042553,
-                "y": 1608.1195146276596,
+                "x": 299.979222074468,
+                "y": 1241.207737699468,
                 "lines": [
-                  "vwAPO9_q4",
-                  "w7PlqnBZeS"
+                  "dPqKTtks__",
+                  "bI6CgyM0m0",
+                  "bI6CgyM0m0"
                 ],
                 "areas": []
               },
-              "uapkivD6Zl": {
-                "id": "uapkivD6Zl",
+              "kRYa8rg4Wl": {
+                "id": "kRYa8rg4Wl",
                 "type": "",
                 "prototype": "vertices",
                 "name": "Vertex",
@@ -1744,16 +1745,16 @@ export default class MenuRooms extends Component {
                 "selected": false,
                 "properties": {},
                 "visible": true,
-                "x": 290.1662234042552,
-                "y": 1088.1195146276596,
+                "x": 289.979222074468,
+                "y": 1231.207737699468,
                 "lines": [
-                  "YcEdeqrdma",
-                  "Stv4O2LhFi"
+                  "dPqKTtks__",
+                  "bI6CgyM0m0"
                 ],
                 "areas": []
               },
-              "VEudBPbSZ8": {
-                "id": "VEudBPbSZ8",
+              "HVQXDN4Z3": {
+                "id": "HVQXDN4Z3",
                 "type": "",
                 "prototype": "vertices",
                 "name": "Vertex",
@@ -1763,17 +1764,17 @@ export default class MenuRooms extends Component {
                 "selected": false,
                 "properties": {},
                 "visible": true,
-                "x": 300.16622340425533,
-                "y": 1598.1195146276596,
+                "x": 699.9792220744681,
+                "y": 1641.207737699468,
                 "lines": [
-                  "vwAPO9_q4",
-                  "vwAPO9_q4",
-                  "Stv4O2LhFi"
+                  "Vgrsygpuq",
+                  "7n_WfEon96",
+                  "7n_WfEon96"
                 ],
                 "areas": []
               },
-              "aogWCJXLv": {
-                "id": "aogWCJXLv",
+              "FN73bot9iQ": {
+                "id": "FN73bot9iQ",
                 "type": "",
                 "prototype": "vertices",
                 "name": "Vertex",
@@ -1783,19 +1784,18 @@ export default class MenuRooms extends Component {
                 "selected": false,
                 "properties": {},
                 "visible": true,
-                "x": 800.1662234042552,
-                "y": 1098.1195146276596,
+                "x": 289.9792220744681,
+                "y": 1651.207737699468,
                 "lines": [
-                  "w7PlqnBZeS",
-                  "YcEdeqrdma",
-                  "YcEdeqrdma"
+                  "bI6CgyM0m0",
+                  "Vgrsygpuq"
                 ],
                 "areas": []
               }
             },
             "lines": {
-              "vwAPO9_q4": {
-                "id": "vwAPO9_q4",
+              "Vgrsygpuq": {
+                "id": "Vgrsygpuq",
                 "type": "wall",
                 "prototype": "lines",
                 "name": "Wall",
@@ -1817,17 +1817,17 @@ export default class MenuRooms extends Component {
                 },
                 "visible": true,
                 "vertices": [
-                  "VEudBPbSZ8",
-                  "n0ZUgWVUN",
-                  "qNNteGMdUc",
-                  "TQEiLV9X4X"
+                  "ZHPKquxXRj",
+                  "HVQXDN4Z3",
+                  "FN73bot9iQ",
+                  "oto60Vc2tS"
                 ],
                 "holes": [],
-                "perimeter": "40z9RRVmJX",
+                "perimeter": "zZ6fOZowWD",
                 "v2First": false
               },
-              "w7PlqnBZeS": {
-                "id": "w7PlqnBZeS",
+              "7n_WfEon96": {
+                "id": "7n_WfEon96",
                 "type": "wall",
                 "prototype": "lines",
                 "name": "Wall",
@@ -1849,17 +1849,17 @@ export default class MenuRooms extends Component {
                 },
                 "visible": true,
                 "vertices": [
-                  "n0ZUgWVUN",
-                  "aogWCJXLv",
-                  "TQEiLV9X4X",
-                  "RKQ1a2O-Vy"
+                  "HVQXDN4Z3",
+                  "et7LXtFrM",
+                  "oto60Vc2tS",
+                  "7t_jP0ZB7K"
                 ],
                 "holes": [],
-                "perimeter": "40z9RRVmJX",
+                "perimeter": "zZ6fOZowWD",
                 "v2First": false
               },
-              "YcEdeqrdma": {
-                "id": "YcEdeqrdma",
+              "dPqKTtks__": {
+                "id": "dPqKTtks__",
                 "type": "wall",
                 "prototype": "lines",
                 "name": "Wall",
@@ -1881,17 +1881,17 @@ export default class MenuRooms extends Component {
                 },
                 "visible": true,
                 "vertices": [
-                  "aogWCJXLv",
-                  "S_0WlfOS8",
-                  "RKQ1a2O-Vy",
-                  "uapkivD6Zl"
+                  "et7LXtFrM",
+                  "h78ib04O3",
+                  "7t_jP0ZB7K",
+                  "kRYa8rg4Wl"
                 ],
                 "holes": [],
-                "perimeter": "40z9RRVmJX",
+                "perimeter": "zZ6fOZowWD",
                 "v2First": false
               },
-              "Stv4O2LhFi": {
-                "id": "Stv4O2LhFi",
+              "bI6CgyM0m0": {
+                "id": "bI6CgyM0m0",
                 "type": "wall",
                 "prototype": "lines",
                 "name": "Wall",
@@ -1913,20 +1913,20 @@ export default class MenuRooms extends Component {
                 },
                 "visible": true,
                 "vertices": [
-                  "S_0WlfOS8",
-                  "VEudBPbSZ8",
-                  "uapkivD6Zl",
-                  "qNNteGMdUc"
+                  "h78ib04O3",
+                  "ZHPKquxXRj",
+                  "kRYa8rg4Wl",
+                  "FN73bot9iQ"
                 ],
                 "holes": [],
-                "perimeter": "40z9RRVmJX",
+                "perimeter": "zZ6fOZowWD",
                 "v2First": false
               }
             },
             "holes": {},
             "areas": {
-              "VXDurqY3WW": {
-                "id": "VXDurqY3WW",
+              "zsfNv4DzlE": {
+                "id": "zsfNv4DzlE",
                 "type": "area",
                 "prototype": "areas",
                 "name": "Area",
@@ -1943,17 +1943,17 @@ export default class MenuRooms extends Component {
                 },
                 "visible": true,
                 "vertices": [
-                  "VEudBPbSZ8",
-                  "S_0WlfOS8",
-                  "aogWCJXLv",
-                  "n0ZUgWVUN"
+                  "HVQXDN4Z3",
+                  "ZHPKquxXRj",
+                  "h78ib04O3",
+                  "et7LXtFrM"
                 ],
                 "holes": []
               }
             },
             "perimeters": {
-              "40z9RRVmJX": {
-                "id": "40z9RRVmJX",
+              "zZ6fOZowWD": {
+                "id": "zZ6fOZowWD",
                 "type": "",
                 "prototype": "perimeter",
                 "name": "Perimeter",
@@ -1964,188 +1964,15 @@ export default class MenuRooms extends Component {
                 "properties": {},
                 "visible": true,
                 "lines": [
-                  "vwAPO9_q4",
-                  "w7PlqnBZeS",
-                  "YcEdeqrdma",
-                  "Stv4O2LhFi"
+                  "Vgrsygpuq",
+                  "7n_WfEon96",
+                  "dPqKTtks__",
+                  "bI6CgyM0m0"
                 ],
                 "isClosed": true
               }
             },
-            "items": {
-              "B867K2xUQ": {
-                "id": "B867K2xUQ",
-                "type": "Fussion_Chrome_800_2_cajones_6",
-                "prototype": "items",
-                "name": "Victor_Cubo_Madera_Brillo",
-                "description": "Mueble de entrada para pruebas",
-                "image": "catalog/items/_Víctor_Cubo-Madera-Brillo/Captura.JPG",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "width": {
-                    "length": 100,
-                    "unit": "cm"
-                  },
-                  "depth": {
-                    "length": 50,
-                    "unit": "cm"
-                  },
-                  "height": {
-                    "length": 50,
-                    "unit": "cm"
-                  }
-                },
-                "visible": true,
-                "x": 472.83078457446834,
-                "y": 1204.793384308511,
-                "rotation": 0,
-                "width": {
-                  "min": 100,
-                  "max": 184
-                },
-                "depth": {
-                  "min": 50,
-                  "max": 100
-                },
-                "height": {
-                  "min": 50,
-                  "max": 100
-                }
-              },
-              "k62gCf2n5": {
-                "id": "k62gCf2n5",
-                "type": "Fussion_Chrome_800_2_cajones_7",
-                "prototype": "items",
-                "name": "Victor_Cubo_Madera_BrilloAlto",
-                "description": "Mueble de entrada para pruebas",
-                "image": "catalog/items/_Víctor_Cubo-Madera-BrilloAlto/Captura.JPG",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "width": {
-                    "length": 100,
-                    "unit": "cm"
-                  }
-                },
-                "visible": true,
-                "x": 542.6446143617021,
-                "y": 1510.2288896276596,
-                "rotation": 0,
-                "width": {
-                  "min": 100,
-                  "max": 184
-                },
-                "depth": 45.2,
-                "height": 50
-              },
-              "mDdKT4WLk": {
-                "id": "mDdKT4WLk",
-                "type": "Fussion_Chrome_800_2_cajones_2",
-                "prototype": "items",
-                "name": "Victor_Armario_Brillo",
-                "description": "Mueble de entrada para pruebas",
-                "image": "catalog/items/_Victor-Armario-Brillo/Fussion_Chrome_800_2_cajones.jpg",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "width": {
-                    "length": 100,
-                    "unit": "cm"
-                  },
-                  "depth": {
-                    "length": 50,
-                    "unit": "cm"
-                  },
-                  "height": {
-                    "length": 50,
-                    "unit": "cm"
-                  }
-                },
-                "visible": true,
-                "x": 335.6964760638297,
-                "y": 1502.7488364361702,
-                "rotation": 0,
-                "width": {
-                  "min": 100,
-                  "max": 184
-                },
-                "depth": {
-                  "min": 45.2,
-                  "max": 100
-                },
-                "height": {
-                  "min": 45.2,
-                  "max": 100
-                }
-              },
-              "k8Nt5Sc-D": {
-                "id": "k8Nt5Sc-D",
-                "type": "Fussion_Chrome_800_2_cajones_5",
-                "prototype": "items",
-                "name": "Mampara_Victor",
-                "description": "Mueble de entrada para pruebas",
-                "image": "catalog/items/_Victor-Mampara/Fussion_Chrome_800_2_cajones.jpg",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "width": {
-                    "length": 100,
-                    "unit": "cm"
-                  }
-                },
-                "visible": true,
-                "x": 677.9089095744682,
-                "y": 1204.170046542553,
-                "rotation": 0,
-                "width": {
-                  "min": 100,
-                  "max": 184
-                },
-                "depth": 45.2,
-                "height": 50
-              },
-              "XFmMQbTLm": {
-                "id": "XFmMQbTLm",
-                "type": "Fussion_Chrome_800_2_cajones_6",
-                "prototype": "items",
-                "name": "Victor_Cubo_Madera_Brillo",
-                "description": "Mueble de entrada para pruebas",
-                "image": "catalog/items/_Víctor_Cubo-Madera-Brillo/Captura.JPG",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "width": {
-                    "length": 100,
-                    "unit": "cm"
-                  },
-                  "depth": {
-                    "length": 50,
-                    "unit": "cm"
-                  },
-                  "height": {
-                    "length": 50,
-                    "unit": "cm"
-                  }
-                },
-                "visible": true,
-                "x": 331.0388962765958,
-                "y": 1264.1294049202127,
-                "rotation": 0,
-                "width": {
-                  "min": 100,
-                  "max": 184
-                },
-                "depth": {
-                  "min": 50,
-                  "max": 100
-                },
-                "height": {
-                  "min": 50,
-                  "max": 100
-                }
-              }
-            },
+            "items": {},
             "selected": {
               "vertices": [],
               "lines": [],
@@ -2162,11 +1989,11 @@ export default class MenuRooms extends Component {
             "properties": {
               "step": 20,
               "colors": [
-                "#808080",
-                "#ddd",
-                "#ddd",
-                "#ddd",
-                "#ddd"
+                "#e0dede",
+                "#f2f2f2",
+                "#f2f2f2",
+                "#f2f2f2",
+                "#f2f2f2"
               ]
             }
           },
@@ -2176,1054 +2003,11 @@ export default class MenuRooms extends Component {
             "properties": {
               "step": 20,
               "colors": [
-                "#808080",
-                "#ddd",
-                "#ddd",
-                "#ddd",
-                "#ddd"
-              ]
-            }
-          }
-        },
-        "selectedLayer": "layer-1",
-        "groups": {},
-        "width": 3000,
-        "height": 2000,
-        "meta": {},
-        "guides": {
-          "horizontal": {},
-          "vertical": {},
-          "circular": {}
-        }
-      };
-    } else if ( roomName === 'Lderecha1' ) {
-
-      roomSelected = {
-        "unit": "mm",
-        "layers": {
-          "layer-1": {
-            "id": "layer-1",
-            "altitude": 0,
-            "order": 0,
-            "opacity": 1,
-            "name": "default",
-            "visible": true,
-            "vertices": {
-              "XO0Ip7rfsq": {
-                "id": "XO0Ip7rfsq",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 809.5428856382979,
-                "y": 1609.989527925532,
-                "lines": [
-                  "E-tp466FB",
-                  "gMXL-S1Uru"
-                ],
-                "areas": []
-              },
-              "5tAqPp1Yi": {
-                "id": "5tAqPp1Yi",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 299.5428856382978,
-                "y": 1099.989527925532,
-                "lines": [
-                  "QdgJ6xsvKd",
-                  "WtG_rYDeAY",
-                  "WtG_rYDeAY"
-                ],
-                "areas": []
-              },
-              "AgGQeZ-2kS": {
-                "id": "AgGQeZ-2kS",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 289.5428856382978,
-                "y": 1089.989527925532,
-                "lines": [
-                  "QdgJ6xsvKd",
-                  "WtG_rYDeAY"
-                ],
-                "areas": []
-              },
-              "KA7il2TDr": {
-                "id": "KA7il2TDr",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 799.5428856382978,
-                "y": 1099.989527925532,
-                "lines": [
-                  "gMXL-S1Uru",
-                  "QdgJ6xsvKd",
-                  "QdgJ6xsvKd"
-                ],
-                "areas": []
-              },
-              "EgPtR7QK3C": {
-                "id": "EgPtR7QK3C",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 809.5428856382978,
-                "y": 1089.989527925532,
-                "lines": [
-                  "gMXL-S1Uru",
-                  "QdgJ6xsvKd"
-                ],
-                "areas": []
-              },
-              "5abMKJCPc6": {
-                "id": "5abMKJCPc6",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 299.5428856382979,
-                "y": 1599.989527925532,
-                "lines": [
-                  "E-tp466FB",
-                  "E-tp466FB",
-                  "WtG_rYDeAY"
-                ],
-                "areas": []
-              },
-              "yN6QTUSOMv": {
-                "id": "yN6QTUSOMv",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 289.5428856382979,
-                "y": 1609.989527925532,
-                "lines": [
-                  "WtG_rYDeAY",
-                  "E-tp466FB"
-                ],
-                "areas": []
-              },
-              "L1ufpMAiV": {
-                "id": "L1ufpMAiV",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 799.5428856382979,
-                "y": 1599.989527925532,
-                "lines": [
-                  "E-tp466FB",
-                  "gMXL-S1Uru",
-                  "gMXL-S1Uru"
-                ],
-                "areas": []
-              }
-            },
-            "lines": {
-              "E-tp466FB": {
-                "id": "E-tp466FB",
-                "type": "wall",
-                "prototype": "lines",
-                "name": "Wall",
-                "description": "Wall with bricks or painted",
-                "image": "catalog/lines/wall/wall.png",
-                "misc": {
-                  "_unitLength": "mm"
-                },
-                "selected": false,
-                "properties": {
-                  "height": {
-                    "length": 250
-                  },
-                  "thickness": {
-                    "length": 10
-                  },
-                  "textureA": "bricks",
-                  "textureB": "bricks"
-                },
-                "visible": true,
-                "vertices": [
-                  "5abMKJCPc6",
-                  "L1ufpMAiV",
-                  "yN6QTUSOMv",
-                  "XO0Ip7rfsq"
-                ],
-                "holes": [],
-                "perimeter": "fqQmfYArak",
-                "v2First": false
-              },
-              "gMXL-S1Uru": {
-                "id": "gMXL-S1Uru",
-                "type": "wall",
-                "prototype": "lines",
-                "name": "Wall",
-                "description": "Wall with bricks or painted",
-                "image": "catalog/lines/wall/wall.png",
-                "misc": {
-                  "_unitLength": "mm"
-                },
-                "selected": false,
-                "properties": {
-                  "height": {
-                    "length": 250
-                  },
-                  "thickness": {
-                    "length": 10
-                  },
-                  "textureA": "bricks",
-                  "textureB": "bricks"
-                },
-                "visible": true,
-                "vertices": [
-                  "L1ufpMAiV",
-                  "KA7il2TDr",
-                  "XO0Ip7rfsq",
-                  "EgPtR7QK3C"
-                ],
-                "holes": [],
-                "perimeter": "fqQmfYArak",
-                "v2First": false
-              },
-              "QdgJ6xsvKd": {
-                "id": "QdgJ6xsvKd",
-                "type": "wall",
-                "prototype": "lines",
-                "name": "Wall",
-                "description": "Wall with bricks or painted",
-                "image": "catalog/lines/wall/wall.png",
-                "misc": {
-                  "_unitLength": "mm"
-                },
-                "selected": false,
-                "properties": {
-                  "height": {
-                    "length": 250
-                  },
-                  "thickness": {
-                    "length": 10
-                  },
-                  "textureA": "bricks",
-                  "textureB": "bricks"
-                },
-                "visible": true,
-                "vertices": [
-                  "KA7il2TDr",
-                  "5tAqPp1Yi",
-                  "EgPtR7QK3C",
-                  "AgGQeZ-2kS"
-                ],
-                "holes": [],
-                "perimeter": "fqQmfYArak",
-                "v2First": false
-              },
-              "WtG_rYDeAY": {
-                "id": "WtG_rYDeAY",
-                "type": "wall",
-                "prototype": "lines",
-                "name": "Wall",
-                "description": "Wall with bricks or painted",
-                "image": "catalog/lines/wall/wall.png",
-                "misc": {
-                  "_unitLength": "mm"
-                },
-                "selected": false,
-                "properties": {
-                  "height": {
-                    "length": 250
-                  },
-                  "thickness": {
-                    "length": 10
-                  },
-                  "textureA": "bricks",
-                  "textureB": "bricks"
-                },
-                "visible": true,
-                "vertices": [
-                  "5tAqPp1Yi",
-                  "5abMKJCPc6",
-                  "AgGQeZ-2kS",
-                  "yN6QTUSOMv"
-                ],
-                "holes": [],
-                "perimeter": "fqQmfYArak",
-                "v2First": false
-              }
-            },
-            "holes": {},
-            "areas": {
-              "0OdBCzO1xV": {
-                "id": "0OdBCzO1xV",
-                "type": "area",
-                "prototype": "areas",
-                "name": "Area",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "patternColor": "#F5F4F4",
-                  "thickness": {
-                    "length": 0
-                  },
-                  "texture": "none"
-                },
-                "visible": true,
-                "vertices": [
-                  "5abMKJCPc6",
-                  "5tAqPp1Yi",
-                  "KA7il2TDr",
-                  "L1ufpMAiV"
-                ],
-                "holes": []
-              }
-            },
-            "perimeters": {
-              "fqQmfYArak": {
-                "id": "fqQmfYArak",
-                "type": "",
-                "prototype": "perimeter",
-                "name": "Perimeter",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "lines": [
-                  "E-tp466FB",
-                  "gMXL-S1Uru",
-                  "QdgJ6xsvKd",
-                  "WtG_rYDeAY"
-                ],
-                "isClosed": true
-              }
-            },
-            "items": {
-              "p7bQyPMqI": {
-                "id": "p7bQyPMqI",
-                "type": "Fussion_Chrome_800_2_cajones_2321113",
-                "prototype": "items",
-                "name": "Armario_Mate",
-                "description": "Mueble de entrada para pruebas",
-                "image": "catalog/items/_Victor-Armario-Mate-Prueba/Fussion_Chrome_800_2_cajones.jpg",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "width": {
-                    "length": 100,
-                    "unit": "cm"
-                  },
-                  "depth": {
-                    "length": 50,
-                    "unit": "cm"
-                  },
-                  "height": {
-                    "length": 50,
-                    "unit": "cm"
-                  }
-                },
-                "visible": true,
-                "x": 330.0864361702128,
-                "y": 1392.4180518617022,
-                "rotation": 0,
-                "width": {
-                  "min": 100,
-                  "max": 184
-                },
-                "depth": {
-                  "min": 45.2,
-                  "max": 100
-                },
-                "height": {
-                  "min": 45.2,
-                  "max": 100
-                }
-              },
-              "5cgmXv4ip": {
-                "id": "5cgmXv4ip",
-                "type": "Fussion_Chrome_800_2_cajones_2323",
-                "prototype": "items",
-                "name": "Armario_Brillo",
-                "description": "Mueble de entrada para pruebas",
-                "image": "catalog/items/_Victor-Armario-Brillo-Prueba/Fussion_Chrome_800_2_cajones.jpg",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "width": {
-                    "length": 100,
-                    "unit": "cm"
-                  },
-                  "depth": {
-                    "length": 50,
-                    "unit": "cm"
-                  },
-                  "height": {
-                    "length": 50,
-                    "unit": "cm"
-                  }
-                },
-                "visible": true,
-                "x": 510.231050531915,
-                "y": 1457.2451795212764,
-                "rotation": 0,
-                "width": {
-                  "min": 100,
-                  "max": 184
-                },
-                "depth": {
-                  "min": 45.2,
-                  "max": 100
-                },
-                "height": {
-                  "min": 45.2,
-                  "max": 100
-                }
-              },
-              "6m1Wwxm_W": {
-                "id": "6m1Wwxm_W",
-                "type": "Fussion_Chrome_800_2_cajones_232111113",
-                "prototype": "items",
-                "name": "Armario_BrilloAlto",
-                "description": "Mueble de entrada para pruebas",
-                "image": "catalog/items/_Victor-Armario-BrilloAlto-Prueba/Fussion_Chrome_800_2_cajones.jpg",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "width": {
-                    "length": 100,
-                    "unit": "cm"
-                  },
-                  "depth": {
-                    "length": 50,
-                    "unit": "cm"
-                  },
-                  "height": {
-                    "length": 50,
-                    "unit": "cm"
-                  }
-                },
-                "visible": true,
-                "x": 649.2353723404257,
-                "y": 1376.834607712766,
-                "rotation": 0,
-                "width": {
-                  "min": 100,
-                  "max": 184
-                },
-                "depth": {
-                  "min": 45.2,
-                  "max": 100
-                },
-                "height": {
-                  "min": 45.2,
-                  "max": 100
-                }
-              }
-            },
-            "selected": {
-              "vertices": [],
-              "lines": [],
-              "holes": [],
-              "areas": [],
-              "items": []
-            }
-          }
-        },
-        "grids": {
-          "h1": {
-            "id": "h1",
-            "type": "horizontal-streak",
-            "properties": {
-              "step": 20,
-              "colors": [
-                "#808080",
-                "#ddd",
-                "#ddd",
-                "#ddd",
-                "#ddd"
-              ]
-            }
-          },
-          "v1": {
-            "id": "v1",
-            "type": "vertical-streak",
-            "properties": {
-              "step": 20,
-              "colors": [
-                "#808080",
-                "#ddd",
-                "#ddd",
-                "#ddd",
-                "#ddd"
-              ]
-            }
-          }
-        },
-        "selectedLayer": "layer-1",
-        "groups": {},
-        "width": 3000,
-        "height": 2000,
-        "meta": {},
-        "guides": {
-          "horizontal": {},
-          "vertical": {},
-          "circular": {}
-        }
-      };
-    } else if ( roomName === 'Lizquierda1' ) {
-      roomSelected = { "unit": "cm", "layers": { "layer-1": { "id": "layer-1", "altitude": 0, "order": 0, "opacity": 1, "name": "default", "visible": true, "vertices": { "M1j2fOu0V81": { "id": "M1j2fOu0V81", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 1105, "y": 1902, "lines": [ "1yeT8oh2B", "3zklMmOgLwQ" ], "areas": [] }, "qf2PKq0EMC": { "id": "qf2PKq0EMC", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 398, "y": 1902, "lines": [ "1yeT8oh2B", "T81BnHW-U" ], "areas": [] }, "l78nLaVhPa2": { "id": "l78nLaVhPa2", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 1105, "y": 1541, "lines": [ "3zklMmOgLwQ", "qkwbQWGvPDq" ], "areas": [] }, "RXWhbgzwFa": { "id": "RXWhbgzwFa", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 398, "y": 1198, "lines": [ "S4DAubf66", "T81BnHW-U" ], "areas": [] }, "ZJnPB0o5sB": { "id": "ZJnPB0o5sB", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 748, "y": 1198, "lines": [ "-5Wdy4iW5", "S4DAubf66" ], "areas": [] }, "r3FmLG5V6W": { "id": "r3FmLG5V6W", "type": "", "prototype": "vertices", "name": "Vertex", "misc": {}, "selected": false, "properties": {}, "visible": true, "x": 748, "y": 1541, "lines": [ "-5Wdy4iW5", "qkwbQWGvPDq" ], "areas": [] } }, "lines": { "qkwbQWGvPDq": { "id": "qkwbQWGvPDq", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "r3FmLG5V6W", "l78nLaVhPa2" ], "holes": [] }, "3zklMmOgLwQ": { "id": "3zklMmOgLwQ", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "M1j2fOu0V81", "l78nLaVhPa2" ], "holes": [] }, "1yeT8oh2B": { "id": "1yeT8oh2B", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "qf2PKq0EMC", "M1j2fOu0V81" ], "holes": [] }, "T81BnHW-U": { "id": "T81BnHW-U", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "RXWhbgzwFa", "qf2PKq0EMC" ], "holes": [] }, "-5Wdy4iW5": { "id": "-5Wdy4iW5", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "ZJnPB0o5sB", "r3FmLG5V6W" ], "holes": [] }, "S4DAubf66": { "id": "S4DAubf66", "type": "wall", "prototype": "lines", "name": "Wall", "misc": {}, "selected": false, "properties": { "height": { "length": 300 }, "thickness": { "length": 20 }, "textureA": "bricks", "textureB": "bricks" }, "visible": true, "vertices": [ "RXWhbgzwFa", "ZJnPB0o5sB" ], "holes": [] } }, "holes": {}, "areas": { "herBcT0Ml-": { "id": "herBcT0Ml-", "type": "area", "prototype": "areas", "name": "Area", "misc": {}, "selected": false, "properties": { "patternColor": "#F5F4F4", "thickness": { "length": 0 }, "texture": "none" }, "visible": true, "vertices": [ "RXWhbgzwFa", "ZJnPB0o5sB", "r3FmLG5V6W", "l78nLaVhPa2", "M1j2fOu0V81", "qf2PKq0EMC" ], "holes": [] } }, "items": {}, "selected": { "vertices": [], "lines": [], "holes": [], "areas": [], "items": [] } } }, "grids": { "h1": { "id": "h1", "type": "horizontal-streak", "properties": { "step": 20, "colors": [ "#808080", "#ddd", "#ddd", "#ddd", "#ddd" ] } }, "v1": { "id": "v1", "type": "vertical-streak", "properties": { "step": 20, "colors": [ "#808080", "#ddd", "#ddd", "#ddd", "#ddd" ] } } }, "selectedLayer": "layer-1", "groups": {}, "width": 3000, "height": 2000, "meta": {}, "guides": { "horizontal": {}, "vertical": {}, "circular": {} } };
-    } else if ( roomName === 'L1' ) {
-      roomSelected = {
-        "unit": "mm",
-        "layers": {
-          "layer-1": {
-            "id": "layer-1",
-            "altitude": 0,
-            "order": 0,
-            "opacity": 1,
-            "name": "default",
-            "visible": true,
-            "vertices": {
-              "RLROk17-bQ": {
-                "id": "RLROk17-bQ",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 290.16622340425533,
-                "y": 1608.7428523936169,
-                "lines": [
-                  "kdRzYWkBxi",
-                  "0MUa4czct"
-                ],
-                "areas": []
-              },
-              "HQmN6HKtZY": {
-                "id": "HQmN6HKtZY",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 810.1662234042553,
-                "y": 1608.7428523936169,
-                "lines": [
-                  "0MUa4czct",
-                  "zqpUU69CrP"
-                ],
-                "areas": []
-              },
-              "Zm4OaJlHy": {
-                "id": "Zm4OaJlHy",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 800.1662234042553,
-                "y": 1598.7428523936169,
-                "lines": [
-                  "0MUa4czct",
-                  "zqpUU69CrP",
-                  "zqpUU69CrP"
-                ],
-                "areas": []
-              },
-              "q3cr9qWmk5": {
-                "id": "q3cr9qWmk5",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 300.16622340425533,
-                "y": 1598.7428523936169,
-                "lines": [
-                  "0MUa4czct",
-                  "0MUa4czct",
-                  "kdRzYWkBxi"
-                ],
-                "areas": []
-              },
-              "daALUfnlTp": {
-                "id": "daALUfnlTp",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 810.1662234042552,
-                "y": 1088.7428523936169,
-                "lines": [
-                  "zqpUU69CrP",
-                  "CH51TvpFfR"
-                ],
-                "areas": []
-              },
-              "3mMkJ0h9b": {
-                "id": "3mMkJ0h9b",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 800.1662234042552,
-                "y": 1098.7428523936169,
-                "lines": [
-                  "zqpUU69CrP",
-                  "CH51TvpFfR",
-                  "CH51TvpFfR"
-                ],
-                "areas": []
-              },
-              "GEgKDI84z": {
-                "id": "GEgKDI84z",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 300.1662234042552,
-                "y": 1098.7428523936169,
-                "lines": [
-                  "CH51TvpFfR",
-                  "kdRzYWkBxi",
-                  "kdRzYWkBxi"
-                ],
-                "areas": []
-              },
-              "Nw_Ou6rsv6": {
-                "id": "Nw_Ou6rsv6",
-                "type": "",
-                "prototype": "vertices",
-                "name": "Vertex",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "x": 290.1662234042552,
-                "y": 1088.7428523936169,
-                "lines": [
-                  "CH51TvpFfR",
-                  "kdRzYWkBxi"
-                ],
-                "areas": []
-              }
-            },
-            "lines": {
-              "0MUa4czct": {
-                "id": "0MUa4czct",
-                "type": "wall",
-                "prototype": "lines",
-                "name": "Wall",
-                "description": "Wall with bricks or painted",
-                "image": "catalog/lines/wall/wall.png",
-                "misc": {
-                  "_unitLength": "mm"
-                },
-                "selected": false,
-                "properties": {
-                  "height": {
-                    "length": 250
-                  },
-                  "thickness": {
-                    "length": 10
-                  },
-                  "textureA": "bricks",
-                  "textureB": "bricks"
-                },
-                "visible": true,
-                "vertices": [
-                  "q3cr9qWmk5",
-                  "Zm4OaJlHy",
-                  "RLROk17-bQ",
-                  "HQmN6HKtZY"
-                ],
-                "holes": [],
-                "perimeter": "T-cH9FNi7w",
-                "v2First": false
-              },
-              "zqpUU69CrP": {
-                "id": "zqpUU69CrP",
-                "type": "wall",
-                "prototype": "lines",
-                "name": "Wall",
-                "description": "Wall with bricks or painted",
-                "image": "catalog/lines/wall/wall.png",
-                "misc": {
-                  "_unitLength": "mm"
-                },
-                "selected": false,
-                "properties": {
-                  "height": {
-                    "length": 250
-                  },
-                  "thickness": {
-                    "length": 10
-                  },
-                  "textureA": "bricks",
-                  "textureB": "bricks"
-                },
-                "visible": true,
-                "vertices": [
-                  "Zm4OaJlHy",
-                  "3mMkJ0h9b",
-                  "HQmN6HKtZY",
-                  "daALUfnlTp"
-                ],
-                "holes": [],
-                "perimeter": "T-cH9FNi7w",
-                "v2First": false
-              },
-              "CH51TvpFfR": {
-                "id": "CH51TvpFfR",
-                "type": "wall",
-                "prototype": "lines",
-                "name": "Wall",
-                "description": "Wall with bricks or painted",
-                "image": "catalog/lines/wall/wall.png",
-                "misc": {
-                  "_unitLength": "mm"
-                },
-                "selected": false,
-                "properties": {
-                  "height": {
-                    "length": 250
-                  },
-                  "thickness": {
-                    "length": 10
-                  },
-                  "textureA": "bricks",
-                  "textureB": "bricks"
-                },
-                "visible": true,
-                "vertices": [
-                  "3mMkJ0h9b",
-                  "GEgKDI84z",
-                  "daALUfnlTp",
-                  "Nw_Ou6rsv6"
-                ],
-                "holes": [],
-                "perimeter": "T-cH9FNi7w",
-                "v2First": false
-              },
-              "kdRzYWkBxi": {
-                "id": "kdRzYWkBxi",
-                "type": "wall",
-                "prototype": "lines",
-                "name": "Wall",
-                "description": "Wall with bricks or painted",
-                "image": "catalog/lines/wall/wall.png",
-                "misc": {
-                  "_unitLength": "mm"
-                },
-                "selected": false,
-                "properties": {
-                  "height": {
-                    "length": 250
-                  },
-                  "thickness": {
-                    "length": 10
-                  },
-                  "textureA": "bricks",
-                  "textureB": "bricks"
-                },
-                "visible": true,
-                "vertices": [
-                  "GEgKDI84z",
-                  "q3cr9qWmk5",
-                  "Nw_Ou6rsv6",
-                  "RLROk17-bQ"
-                ],
-                "holes": [],
-                "perimeter": "T-cH9FNi7w",
-                "v2First": false
-              }
-            },
-            "holes": {},
-            "areas": {
-              "ase-10RTsk": {
-                "id": "ase-10RTsk",
-                "type": "area",
-                "prototype": "areas",
-                "name": "Area",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "patternColor": "#F5F4F4",
-                  "thickness": {
-                    "length": 0
-                  },
-                  "texture": "none"
-                },
-                "visible": true,
-                "vertices": [
-                  "3mMkJ0h9b",
-                  "Zm4OaJlHy",
-                  "q3cr9qWmk5",
-                  "GEgKDI84z"
-                ],
-                "holes": []
-              }
-            },
-            "perimeters": {
-              "T-cH9FNi7w": {
-                "id": "T-cH9FNi7w",
-                "type": "",
-                "prototype": "perimeter",
-                "name": "Perimeter",
-                "description": "",
-                "image": "",
-                "misc": {},
-                "selected": false,
-                "properties": {},
-                "visible": true,
-                "lines": [
-                  "0MUa4czct",
-                  "zqpUU69CrP",
-                  "CH51TvpFfR",
-                  "kdRzYWkBxi"
-                ],
-                "isClosed": true
-              }
-            },
-            "items": {
-              "kGzSVrdRG": {
-                "id": "kGzSVrdRG",
-                "type": "Fussion_Chrome_800_2_cajones_2321113",
-                "prototype": "items",
-                "name": "Armario_Mate",
-                "description": "Mueble de entrada para pruebas",
-                "image": "catalog/items/_Victor-Armario-Mate-Prueba/Fussion_Chrome_800_2_cajones.jpg",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "width": {
-                    "length": 100,
-                    "unit": "cm"
-                  },
-                  "depth": {
-                    "length": 50,
-                    "unit": "cm"
-                  },
-                  "height": {
-                    "length": 50,
-                    "unit": "cm"
-                  }
-                },
-                "visible": true,
-                "x": 346.9165558510639,
-                "y": 1363.7445146276596,
-                "rotation": 0,
-                "width": {
-                  "min": 100,
-                  "max": 184
-                },
-                "depth": {
-                  "min": 45.2,
-                  "max": 100
-                },
-                "height": {
-                  "min": 45.2,
-                  "max": 100
-                }
-              },
-              "P2K-4MBk8": {
-                "id": "P2K-4MBk8",
-                "type": "Fussion_Chrome_800_2_cajones_2323",
-                "prototype": "items",
-                "name": "Armario_Brillo",
-                "description": "Mueble de entrada para pruebas",
-                "image": "catalog/items/_Victor-Armario-Brillo-Prueba/Fussion_Chrome_800_2_cajones.jpg",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "width": {
-                    "length": 100,
-                    "unit": "cm"
-                  },
-                  "depth": {
-                    "length": 50,
-                    "unit": "cm"
-                  },
-                  "height": {
-                    "length": 50,
-                    "unit": "cm"
-                  }
-                },
-                "visible": true,
-                "x": 505.24434840425533,
-                "y": 1452.2584773936169,
-                "rotation": 0,
-                "width": {
-                  "min": 100,
-                  "max": 184
-                },
-                "depth": {
-                  "min": 45.2,
-                  "max": 100
-                },
-                "height": {
-                  "min": 45.2,
-                  "max": 100
-                }
-              },
-              "8uQcG7Fbj": {
-                "id": "8uQcG7Fbj",
-                "type": "Fussion_Chrome_800_2_cajones_232111113",
-                "prototype": "items",
-                "name": "Armario_BrilloAlto",
-                "description": "Mueble de entrada para pruebas",
-                "image": "catalog/items/_Victor-Armario-BrilloAlto-Prueba/Fussion_Chrome_800_2_cajones.jpg",
-                "misc": {},
-                "selected": false,
-                "properties": {
-                  "width": {
-                    "length": 100,
-                    "unit": "cm"
-                  },
-                  "depth": {
-                    "length": 50,
-                    "unit": "cm"
-                  },
-                  "height": {
-                    "length": 50,
-                    "unit": "cm"
-                  }
-                },
-                "visible": true,
-                "x": 651.7287234042554,
-                "y": 1344.4210438829787,
-                "rotation": 0,
-                "width": {
-                  "min": 100,
-                  "max": 184
-                },
-                "depth": {
-                  "min": 45.2,
-                  "max": 100
-                },
-                "height": {
-                  "min": 45.2,
-                  "max": 100
-                }
-              }
-            },
-            "selected": {
-              "vertices": [],
-              "lines": [],
-              "holes": [],
-              "areas": [],
-              "items": []
-            }
-          }
-        },
-        "grids": {
-          "h1": {
-            "id": "h1",
-            "type": "horizontal-streak",
-            "properties": {
-              "step": 20,
-              "colors": [
-                "#808080",
-                "#ddd",
-                "#ddd",
-                "#ddd",
-                "#ddd"
-              ]
-            }
-          },
-          "v1": {
-            "id": "v1",
-            "type": "vertical-streak",
-            "properties": {
-              "step": 20,
-              "colors": [
-                "#808080",
-                "#ddd",
-                "#ddd",
-                "#ddd",
-                "#ddd"
+                "#e0dede",
+                "#f2f2f2",
+                "#f2f2f2",
+                "#f2f2f2",
+                "#f2f2f2"
               ]
             }
           }
