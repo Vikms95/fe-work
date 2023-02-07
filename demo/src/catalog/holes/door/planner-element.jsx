@@ -12,7 +12,7 @@ const STYLE_ARC_BASE = { stroke: '#000', strokeWidth: '3px', strokeDasharray: '5
 const STYLE_ARC_SELECTED = { stroke: '#0096fd', strokeWidth: '4px', strokeDasharray: '5,5', fill: 'none', cursor: 'move' };
 const EPSILON = 3;
 
-const glb = require( './Puerta morph.glb' );
+const glb = require( './Puerta derecha.glb' );
 
 // Escala : { 0.001, 0.001, 0.001 }
 // Ancho : { 0.8m - 1.4m }

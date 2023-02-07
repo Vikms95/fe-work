@@ -1,0 +1,26 @@
+.breadcrumb2 {
+  cursor: pointer;
+}
+
+  .breadcrumb2:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+
+/*.element:hover {
+  background-color: #d5d9e5;
+}*/
+
+.rectangulo {
+  opacity: 0%;
+  position: absolute;
+}
+
+  .rectangulo:hover {
+    opacity: 20%;
+  }
+
+  .rectangulo.active {
+    opacity: 20%;
+  }
