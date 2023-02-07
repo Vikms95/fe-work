@@ -146,20 +146,6 @@ function Toolbar ( {
           text={ 'Baño Salgar' }>
         </ToolbarButton>
     },
-    {
-      index: 3, condition: true,
-      dom:
-        <ToolbarButton
-          index={ 3 }
-          className='toolbar-button'
-          tooltip={ 'Electrodomésticos' }
-          onClick={ event => projectActions.openCatalog() }
-          img={ electros }
-          active={ false }
-          //TODO: Poner en el translator
-          text={ 'Electrodomésticos' }>
-        </ToolbarButton>
-    },
     // {
     //   index: 4, condition: true,
     //   dom: 

@@ -81,7 +81,7 @@ export default function ToolbarButton ( {
 
   const STYLE_IMG = {
     position: 'absolute',
-    marginTop: '-1em',
+    marginTop: '-1em', //-1em
     marginLeft: '-4.6em',
     opacity: ( active || propsActive ) ? 0.2 : 0
   };
