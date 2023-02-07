@@ -59,7 +59,7 @@ const STYLE_LYRICS = {
 
 export default function MainComponent () {
   const { projectActions } = useContext( Context );
-  const index = useSlideShow();
+  // const index = useSlideShow();
 
   const loadNewProject = ( e ) => {
     e.preventDefault();
@@ -111,7 +111,7 @@ export default function MainComponent () {
         style={ { position: 'relative', backgroundColor: 'white', width: '100%', height: '100%' } }
         onClick={ hideForms }
       >
-        <img
+        {/* <img
           className={ 'imageBG' }
           style={ {
             transition: 'opacity 2s ease',
@@ -122,9 +122,9 @@ export default function MainComponent () {
             width: '100%',
           } }
           src={ hogar }
-        />
+        /> */}
 
-        <img
+        {/* <img
           className={ 'imageBG' }
           style={ {
             transition: 'opacity 2s ease',
@@ -135,13 +135,13 @@ export default function MainComponent () {
             width: '100%',
           } }
           src={ cocina }
-        />
+        /> */}
 
         <img
           className={ 'imageBG' }
           style={ {
             transition: 'opacity 2s ease',
-            opacity: ( index === 2 ) ? 1 : 0,
+            // opacity: ( index === 2 ) ? 1 : 0,
             position: 'absolute',
             top: '0',
             height: '100%',
