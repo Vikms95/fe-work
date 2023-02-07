@@ -40,6 +40,7 @@ const STYLE_ASIDE = {
   borderRightColor: SharedStyle.PRIMARY_COLOR.master,
   overflowY: 'auto',
   overflowX: 'hidden',
+  paddingTop: '15px'
 };
 
 // TODO figure out the logic here
@@ -235,7 +236,7 @@ function Toolbar ( {
       }));*/
   return (
     <aside
-      style={ { ...STYLE_ASIDE, width: width, maxHeight: height } }
+      style={ { ...STYLE_ASIDE, minWidth: 120, maxHeight: height } }
       className='toolbar'
     >
       { sorter.sort( sortButtonsCb ).map( mapButtonsCb ) }

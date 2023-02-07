@@ -8,13 +8,13 @@ import rectangulo from './../../assets/salgar/rectangulo.png';
 
 let STYLE = {
   width: '100%',
-  height: '100%',
+  minHeight: '9.5em',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   fontSize: '13px',
   position: 'relative',
-  cursor: 'pointer'
+  cursor: 'pointer',
 };
 
 const STYLE_IMG = {
@@ -27,6 +27,7 @@ const STYLE_CONTAINER = {
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+
 };
 
 const STYLE_P = {
@@ -83,6 +84,8 @@ export default function ToolbarButton ( {
     position: 'absolute',
     marginTop: '-1em', //-1em
     marginLeft: '-4.6em',
+    maxHeight: '8.5em',
+    width: '9.5em',
     opacity: ( active || propsActive ) ? 0.2 : 0
   };
 
@@ -91,9 +94,10 @@ export default function ToolbarButton ( {
       onClick={ onClick }
       onMouseOver={ () => setActive( true ) }
       onMouseOut={ () => setActive( false ) }
-      style={ ( index === 0 )
-        ? { ...STYLE, paddingTop: '30px' }
-        : { ...STYLE }
+      //todo  ( index === 0 )
+      //todo  ? { ...STYLE, paddingTop:30px }
+      //todo  : { ...STYLE }
+      style={ { ...STYLE }
       }
     >
 
