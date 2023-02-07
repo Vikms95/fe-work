@@ -384,8 +384,6 @@ class ReactPlanner extends Component {
       projectActions.initCatalog( catalog );
     }
 
-    // This can go on its own useEffect(() => {}, [props])
-
     const delay = 500;
     const autosaveKey = 'react-planner_v0';
 

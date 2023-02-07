@@ -227,7 +227,361 @@ export class Group extends Record( {
 }
 
 export const DefaultLayers = new Map( {
-  'layer-1': new Layer( { id: 'layer-1', name: 'default' } )
+  // 'layer-1': new Layer( { id: 'layer-1', name: 'default' } )
+  //** Layer por defecto para demo */
+  'layer-1': new Layer( {
+    "id": "layer-1",
+    "altitude": 0,
+    "order": 0,
+    "opacity": 1,
+    "name": "default",
+    "visible": true,
+    "vertices": {
+      "oto60Vc2tS": {
+        "id": "oto60Vc2tS",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "description": "",
+        "image": "",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 709.9792220744681,
+        "y": 1651.207737699468,
+        "lines": [
+          "Vgrsygpuq",
+          "7n_WfEon96"
+        ],
+        "areas": []
+      },
+      "et7LXtFrM": {
+        "id": "et7LXtFrM",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "description": "",
+        "image": "",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 699.979222074468,
+        "y": 1241.207737699468,
+        "lines": [
+          "7n_WfEon96",
+          "dPqKTtks__",
+          "dPqKTtks__"
+        ],
+        "areas": []
+      },
+      "7t_jP0ZB7K": {
+        "id": "7t_jP0ZB7K",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "description": "",
+        "image": "",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 709.979222074468,
+        "y": 1231.207737699468,
+        "lines": [
+          "7n_WfEon96",
+          "dPqKTtks__"
+        ],
+        "areas": []
+      },
+      "ZHPKquxXRj": {
+        "id": "ZHPKquxXRj",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "description": "",
+        "image": "",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 299.9792220744681,
+        "y": 1641.207737699468,
+        "lines": [
+          "Vgrsygpuq",
+          "Vgrsygpuq",
+          "bI6CgyM0m0"
+        ],
+        "areas": []
+      },
+      "h78ib04O3": {
+        "id": "h78ib04O3",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "description": "",
+        "image": "",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 299.979222074468,
+        "y": 1241.207737699468,
+        "lines": [
+          "dPqKTtks__",
+          "bI6CgyM0m0",
+          "bI6CgyM0m0"
+        ],
+        "areas": []
+      },
+      "kRYa8rg4Wl": {
+        "id": "kRYa8rg4Wl",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "description": "",
+        "image": "",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 289.979222074468,
+        "y": 1231.207737699468,
+        "lines": [
+          "dPqKTtks__",
+          "bI6CgyM0m0"
+        ],
+        "areas": []
+      },
+      "HVQXDN4Z3": {
+        "id": "HVQXDN4Z3",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "description": "",
+        "image": "",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 699.9792220744681,
+        "y": 1641.207737699468,
+        "lines": [
+          "Vgrsygpuq",
+          "7n_WfEon96",
+          "7n_WfEon96"
+        ],
+        "areas": []
+      },
+      "FN73bot9iQ": {
+        "id": "FN73bot9iQ",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "description": "",
+        "image": "",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 289.9792220744681,
+        "y": 1651.207737699468,
+        "lines": [
+          "bI6CgyM0m0",
+          "Vgrsygpuq"
+        ],
+        "areas": []
+      }
+    },
+    "lines": {
+      "Vgrsygpuq": {
+        "id": "Vgrsygpuq",
+        "type": "wall",
+        "prototype": "lines",
+        "name": "Wall",
+        "description": "Wall with bricks or painted",
+        "image": "catalog/lines/wall/wall.png",
+        "misc": {
+          "_unitLength": "mm"
+        },
+        "selected": false,
+        "properties": {
+          "height": {
+            "length": 250
+          },
+          "thickness": {
+            "length": 10
+          },
+          "textureA": "bricks",
+          "textureB": "bricks"
+        },
+        "visible": true,
+        "vertices": [
+          "ZHPKquxXRj",
+          "HVQXDN4Z3",
+          "FN73bot9iQ",
+          "oto60Vc2tS"
+        ],
+        "holes": [],
+        "perimeter": "zZ6fOZowWD",
+        "v2First": false
+      },
+      "7n_WfEon96": {
+        "id": "7n_WfEon96",
+        "type": "wall",
+        "prototype": "lines",
+        "name": "Wall",
+        "description": "Wall with bricks or painted",
+        "image": "catalog/lines/wall/wall.png",
+        "misc": {
+          "_unitLength": "mm"
+        },
+        "selected": false,
+        "properties": {
+          "height": {
+            "length": 250
+          },
+          "thickness": {
+            "length": 10
+          },
+          "textureA": "bricks",
+          "textureB": "bricks"
+        },
+        "visible": true,
+        "vertices": [
+          "HVQXDN4Z3",
+          "et7LXtFrM",
+          "oto60Vc2tS",
+          "7t_jP0ZB7K"
+        ],
+        "holes": [],
+        "perimeter": "zZ6fOZowWD",
+        "v2First": false
+      },
+      "dPqKTtks__": {
+        "id": "dPqKTtks__",
+        "type": "wall",
+        "prototype": "lines",
+        "name": "Wall",
+        "description": "Wall with bricks or painted",
+        "image": "catalog/lines/wall/wall.png",
+        "misc": {
+          "_unitLength": "mm"
+        },
+        "selected": false,
+        "properties": {
+          "height": {
+            "length": 250
+          },
+          "thickness": {
+            "length": 10
+          },
+          "textureA": "bricks",
+          "textureB": "bricks"
+        },
+        "visible": true,
+        "vertices": [
+          "et7LXtFrM",
+          "h78ib04O3",
+          "7t_jP0ZB7K",
+          "kRYa8rg4Wl"
+        ],
+        "holes": [],
+        "perimeter": "zZ6fOZowWD",
+        "v2First": false
+      },
+      "bI6CgyM0m0": {
+        "id": "bI6CgyM0m0",
+        "type": "wall",
+        "prototype": "lines",
+        "name": "Wall",
+        "description": "Wall with bricks or painted",
+        "image": "catalog/lines/wall/wall.png",
+        "misc": {
+          "_unitLength": "mm"
+        },
+        "selected": false,
+        "properties": {
+          "height": {
+            "length": 250
+          },
+          "thickness": {
+            "length": 10
+          },
+          "textureA": "bricks",
+          "textureB": "bricks"
+        },
+        "visible": true,
+        "vertices": [
+          "h78ib04O3",
+          "ZHPKquxXRj",
+          "kRYa8rg4Wl",
+          "FN73bot9iQ"
+        ],
+        "holes": [],
+        "perimeter": "zZ6fOZowWD",
+        "v2First": false
+      }
+    },
+    "holes": {},
+    "areas": {
+      "zsfNv4DzlE": {
+        "id": "zsfNv4DzlE",
+        "type": "area",
+        "prototype": "areas",
+        "name": "Area",
+        "description": "",
+        "image": "",
+        "misc": {},
+        "selected": false,
+        "properties": {
+          "patternColor": "#F5F4F4",
+          "thickness": {
+            "length": 0
+          },
+          "texture": "tile1"
+        },
+        "visible": true,
+        "vertices": [
+          "HVQXDN4Z3",
+          "ZHPKquxXRj",
+          "h78ib04O3",
+          "et7LXtFrM"
+        ],
+        "holes": []
+      }
+    },
+    "perimeters": {
+      "zZ6fOZowWD": {
+        "id": "zZ6fOZowWD",
+        "type": "",
+        "prototype": "perimeter",
+        "name": "Perimeter",
+        "description": "",
+        "image": "",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "lines": [
+          "Vgrsygpuq",
+          "7n_WfEon96",
+          "dPqKTtks__",
+          "bI6CgyM0m0"
+        ],
+        "isClosed": true
+      }
+    },
+    "items": {},
+    "selected": {
+      "vertices": [],
+      "lines": [],
+      "holes": [],
+      "areas": [],
+      "items": []
+    }
+  } )
 } );
 
 export class Scene extends Record( {
@@ -246,6 +600,7 @@ export class Scene extends Record( {
 }, 'Scene' ) {
   constructor ( json = {} ) {
     let layers = safeLoadMapList( json.layers, Layer, DefaultLayers );
+    console.log( layers );
     super( {
       ...json,
       grids: safeLoadMapList( json.grids, Grid, DefaultGrids ),
