@@ -44,8 +44,8 @@ const STYLE_BODY = {
 
 const STYLE_BOX = {
   backgroundColor: '#6387a1',
-  width: '14.2em',
-  height: '14.6em',
+  width: '240px',
+  height: '240px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -123,9 +123,6 @@ export default function MainComponent () {
       >
         <div style={ {
           position: 'relative',
-          // display: 'flex',
-          // justifyContent: 'center',
-          // alignItems: 'center',
         } }>
           <img
             className={ 'imageBG' }
@@ -152,7 +149,7 @@ export default function MainComponent () {
               {
                 ...STYLE_BODY,
                 position: 'absolute',
-                bottom: '266px',
+                bottom: '262px',
                 left: '200px'
               } }>
 
