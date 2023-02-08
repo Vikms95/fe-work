@@ -6,6 +6,9 @@ import logo from './../../assets/topbar/FOR2HOME.png';
 import cocina from './../../assets/main/cocina.png';
 import lavabo from './../../assets/main/lavabo.png';
 import hogar from './../../assets/main/hogar.png';
+import salgar from './../../assets/main/ambiente-live-matt-monterrey-blue-night-1000_l.png';
+import f2hsalgar from './../../assets/main/FOR2HOME.png';
+import logoSalgar from './../../assets/main/Capa 1.png';
 import * as SharedStyle from '../../shared-style';
 import { useSlideShow } from '../../hooks/useSlideShow';
 import { Context } from '../../context/context';
@@ -34,15 +37,15 @@ const STYLE_LOGO = {
 
 const STYLE_BODY = {
   display: 'flex',
-  marginTop: '16%',
+  marginTop: '22.29%',
   justifyContent: 'center',
   backgroundRepeat: "no-repeat",
 };
 
 const STYLE_BOX = {
   backgroundColor: '#6387a1',
-  width: '14em',
-  height: '14em',
+  width: '16.5em',
+  height: '16.6em',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -52,14 +55,15 @@ const STYLE_BOX = {
 
 const STYLE_LYRICS = {
   color: '#a0a5aa',
-  fontSize: '1.3em',
-  marginTop: '1.3em',
+  fontSize: '1.75em',
+  marginTop: '1.4em',
   marginBottom: '1.3em',
+  fontWeight: '500'
 };
 
 export default function MainComponent () {
   const { projectActions } = useContext( Context );
-  // const index = useSlideShow();
+  const index = useSlideShow();
 
   const loadNewProject = ( e ) => {
     e.preventDefault();
@@ -103,65 +107,88 @@ export default function MainComponent () {
 
   return (
     <div id={ 'main' } style={ STYLE }>
-      <div style={ STYLE_TOPBAR } onClick={ hideForms }>
-        <img style={ STYLE_LOGO } src={ logo } />
-      </div>
+      {/*<div style={ STYLE_TOPBAR } onClick={ hideForms }>*/}
+      {/*  <img style={ STYLE_LOGO } src={ logo } />*/}
+      {/*</div>*/}
 
       <div
-        style={ { position: 'relative', backgroundColor: 'white', width: '100%', height: '100%' } }
+        style={ {
+          display: 'flex',
+          position: 'relative',
+          backgroundColor: 'white',
+          //width: '100%',
+          height: '100%',
+          justifyContent: 'center'
+        } }
         onClick={ hideForms }
       >
-        {/* <img
-          className={ 'imageBG' }
+        <img
+          src={ logoSalgar }
           style={ {
-            transition: 'opacity 2s ease',
-            opacity: ( index === 0 ) ? 1 : 0,
             position: 'absolute',
-            top: '0',
-            height: '100%',
-            width: '100%',
-          } }
-          src={ hogar }
-        /> */}
-
-        {/* <img
-          className={ 'imageBG' }
-          style={ {
-            transition: 'opacity 2s ease',
-            opacity: ( index === 1 ) ? 1 : 0,
+            zIndex: 2,
+            top: '30px',
+            left: '6.23%'
+          } } />
+        <img src={ f2hsalgar } style={
+          {
             position: 'absolute',
-            top: '0',
-            height: '100%',
-            width: '100%',
-          } }
-          src={ cocina }
-        /> */}
-
+            zIndex: 2,
+            bottom: '25px',
+            right: '40px'
+          }
+        } />
         <img
           className={ 'imageBG' }
           style={ {
             transition: 'opacity 2s ease',
-            // opacity: ( index === 2 ) ? 1 : 0,
+            //opacity: ( index === 0 ) ? 1 : 0,
             position: 'absolute',
             top: '0',
             height: '100%',
-            width: '100%',
+            //width: '100%',
           } }
-          src={ lavabo }
+          src={ salgar }
         />
+
+        {/*<img*/ }
+        {/*  className={ 'imageBG' }*/ }
+        {/*  style={ {*/ }
+        {/*    transition: 'opacity 2s ease',*/ }
+        {/*    opacity: ( index === 1 ) ? 1 : 0,*/ }
+        {/*    position: 'absolute',*/ }
+        {/*    top: '0',*/ }
+        {/*    height: '100%',*/ }
+        {/*    width: '100%',*/ }
+        {/*  } }*/ }
+        {/*  src={ cocina }*/ }
+        {/*/>*/ }
+
+        {/*<img*/ }
+        {/*  className={ 'imageBG' }*/ }
+        {/*  style={ {*/ }
+        {/*    transition: 'opacity 2s ease',*/ }
+        {/*    opacity: ( index === 2 ) ? 1 : 0,*/ }
+        {/*    position: 'absolute',*/ }
+        {/*    top: '0',*/ }
+        {/*    height: '100%',*/ }
+        {/*    width: '100%',*/ }
+        {/*  } }*/ }
+        {/*  src={ lavabo }*/ }
+        {/*/>*/}
 
 
         <div style={ { ...STYLE_BODY, position: 'absolute', top: '0', left: '0', bottom: '0', right: '0' } }>
           <div style={ STYLE_BOX } onClick={ loadNewProject }>
             <p style={ STYLE_LYRICS }>Nuevo Diseño</p>
-            <img src={ newProject } />
+            <img src={ newProject } style={ {height: '7em'} } />
           </div>
           <div
-            style={ { ...STYLE_BOX, marginLeft: '2em' } }
+            style={ { ...STYLE_BOX, marginLeft: '1.4em' } }
             onClick={ loadProjectFromFile }
           >
             <p style={ STYLE_LYRICS }>Diseño Existente</p>
-            <img src={ existingProject } />
+            <img src={ existingProject } style={ {height: '7em'} }  />
           </div>
         </div>
       </div>
