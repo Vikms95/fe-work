@@ -46,7 +46,7 @@ const STYLE_BODY = {
 
 const STYLE_BOX = {
   backgroundColor: '#6387a1',
-  height: '230px',
+  height: '26.9vh',
   width: '230px',
   // display: 'flex',
   // flexDirection: 'column',
