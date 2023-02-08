@@ -1,6 +1,6 @@
-* {
+/* * {
   outline: solid 1px green;
-}
+} */
 
 input:disabled {
   color: rgb(207 202 202) !important;

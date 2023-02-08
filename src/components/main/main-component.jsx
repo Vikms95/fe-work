@@ -37,14 +37,17 @@ const STYLE_LOGO = {
 
 const STYLE_BODY = {
   display: 'flex',
-  justifyContent: 'center',
+  // justifyContent: 'center',
   backgroundRepeat: "no-repeat",
+  position: 'absolute',
+  bottom: '30%',
+  left: '200px'
 };
 
 const STYLE_BOX = {
   backgroundColor: '#6387a1',
-  width: '240px',
   height: '240px',
+  width: '240px',
   // display: 'flex',
   // flexDirection: 'column',
   // alignItems: 'center',
@@ -148,9 +151,7 @@ export default function MainComponent () {
             <div style={
               {
                 ...STYLE_BODY,
-                position: 'absolute',
-                bottom: '262px',
-                left: '200px'
+
               } }>
 
               <div style={ STYLE_BOX } onClick={ loadNewProject }>
