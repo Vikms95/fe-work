@@ -114,6 +114,7 @@ export default function MainComponent () {
       <div
         style={ {
           display: 'flex',
+          position: 'relative',
           backgroundColor: 'white',
           height: '100%',
           justifyContent: 'center'
@@ -138,17 +139,18 @@ export default function MainComponent () {
                 left: '-270px',
                 height: '57.5px'
               } } />
-
-            <img src={ f2hsalgar } style={
-              {
-                position: 'absolute',
-                zIndex: 2,
-                bottom: '10px',
-                right: '40px'
-              }
-            } />
           </div>
         </div>
+
+        <img src={ f2hsalgar } style={
+          {
+            position: 'absolute',
+            zIndex: 2,
+            bottom: '20.5px',
+            right: '30.5px',
+            height: '20.75px',
+          }
+        } />
 
 
 
