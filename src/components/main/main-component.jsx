@@ -63,7 +63,7 @@ const STYLE_LYRICS = {
 
 export default function MainComponent () {
   const { projectActions } = useContext( Context );
-  const index = useSlideShow();
+  // const index = useSlideShow();
 
   const loadNewProject = ( e ) => {
     e.preventDefault();
@@ -116,21 +116,21 @@ export default function MainComponent () {
           display: 'flex',
           position: 'relative',
           backgroundColor: 'white',
-          //width: '100%',
           height: '100%',
           justifyContent: 'center'
         } }
         onClick={ hideForms }
       >
+
         <img
           src={ logoSalgar }
           style={ {
             position: 'absolute',
+            left: '4.5vw',
             zIndex: 2,
-            top: '3.2%',
-            left: '3.9%',
             height: '57.8px'
           } } />
+
         <img src={ f2hsalgar } style={
           {
             position: 'absolute',
@@ -139,13 +139,14 @@ export default function MainComponent () {
             right: '40px'
           }
         } />
+
         <img
           className={ 'imageBG' }
           style={ {
-            transition: 'opacity 2s ease',
+            // transition: 'opacity 2s ease',
             //opacity: ( index === 0 ) ? 1 : 0,
-            position: 'absolute',
-            top: '0',
+            // position: 'absolute',
+            // top: '0',
             height: '100%',
             width: '56.8%',
           } }
