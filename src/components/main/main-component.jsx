@@ -41,7 +41,7 @@ const STYLE_BODY = {
   backgroundRepeat: "no-repeat",
   position: 'absolute',
   bottom: '29.5%',
-  left: '22.9%'
+  left: '23%'
 };
 
 const STYLE_BOX = {
@@ -156,19 +156,15 @@ export default function MainComponent () {
 
               <div style={ STYLE_BOX } onClick={ loadNewProject }>
                 <p style={ STYLE_LYRICS }>Nuevo Diseño</p>
-                <img src={ newProject } style={ { height: '6em' } } />
+                <img src={ newProject } style={ { height: '93px' } } />
               </div>
 
               <div
-                style={ { ...STYLE_BOX, marginLeft: '1.1em' } }
+                style={ { ...STYLE_BOX, marginLeft: '1.2em' } }
                 onClick={ loadProjectFromFile }
               >
                 <p style={ STYLE_LYRICS }>Diseño Existente</p>
-                <img src={ existingProject }
-                  style={ {
-                    height: '6.5em',
-                    paddingTop: '10px'
-                  } } />
+                <img src={ existingProject } style={ { height: '93px' } } />
               </div>
 
             </div>
@@ -185,6 +181,10 @@ export default function MainComponent () {
             height: '20.75px',
           }
         } />
+
+
+
+
 
         {/*<img*/ }
         {/*  className={ 'imageBG' }*/ }
@@ -350,4 +350,3 @@ export default function MainComponent () {
 //     );
 //   }
 // }
-
