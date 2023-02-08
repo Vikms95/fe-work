@@ -41,7 +41,7 @@ const STYLE_BODY = {
   backgroundRepeat: "no-repeat",
   position: 'absolute',
   bottom: '29.5%',
-  left: '23%'
+  left: '22.9%'
 };
 
 const STYLE_BOX = {
@@ -160,11 +160,15 @@ export default function MainComponent () {
               </div>
 
               <div
-                style={ { ...STYLE_BOX, marginLeft: '1.2em' } }
+                style={ { ...STYLE_BOX, marginLeft: '1.1em' } }
                 onClick={ loadProjectFromFile }
               >
                 <p style={ STYLE_LYRICS }>Diseño Existente</p>
-                <img src={ existingProject } style={ { height: '93px' } } />
+                <img src={ existingProject }
+                  style={ {
+                    height: '100px',
+                    paddingTop: '10px'
+                  } } />
               </div>
 
             </div>
