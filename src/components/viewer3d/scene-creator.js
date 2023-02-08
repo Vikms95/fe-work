@@ -5,6 +5,7 @@ import { verticesDistance, angleVector } from '../../utils/geometry';
 import { Line, Hole } from '../../class/export';
 
 export function parseData ( state, sceneData, actions, catalog ) {
+  console.log( 'parsedata' );
   let planData = {};
 
   planData.sceneGraph = {
@@ -41,7 +42,7 @@ export function parseData ( state, sceneData, actions, catalog ) {
 }
 
 function createLayerObjects ( layer, planData, sceneData, actions, catalog ) {
-
+  console.log( 'createlayer' );
   let promises = [];
 
   planData.sceneGraph.layers[ layer.id ] = {
@@ -77,6 +78,7 @@ function createLayerObjects ( layer, planData, sceneData, actions, catalog ) {
 
   // Import items
   layer.items.forEach( item => {
+    console.log( 'additemcreatelayer' );
     promises.push( addItem( sceneData, planData, layer, item.id, catalog, actions.itemsActions ) );
   } );
 
@@ -84,6 +86,7 @@ function createLayerObjects ( layer, planData, sceneData, actions, catalog ) {
 }
 
 export function updateScene ( planData, sceneData, oldSceneData, diffArray, actions, catalog ) {
+  console.log( 'updatescene' );
   let splitted = diffArray.map( el => { return { op: el.op, path: el.path.split( '/' ), value: el.value }; } );
   let filteredDiffs = filterDiffs( splitted, sceneData, oldSceneData );
 
@@ -140,7 +143,6 @@ export function updateScene ( planData, sceneData, oldSceneData, diffArray, acti
 }
 
 function replaceObject ( modifiedPath, layer, planData, actions, sceneData, oldSceneData, catalog ) {
-
   let promises = [];
 
   switch ( modifiedPath[ 3 ] ) {
@@ -255,6 +257,7 @@ function replaceObject ( modifiedPath, layer, planData, actions, sceneData, oldS
       let item = layer.getIn( [ 'items', modifiedPath[ 4 ] ] );
 
       if ( catalog.getElement( item.type ).updateRender3D ) {
+        console.log( 'additemreplace1' );
         promises.push(
           updateItem(
             sceneData,
@@ -272,6 +275,7 @@ function replaceObject ( modifiedPath, layer, planData, actions, sceneData, oldS
       }
       else {
         removeItem( planData, layer.id, modifiedPath[ 4 ] );
+        console.log( 'additemreplace2' );
         promises.push( addItem( sceneData, planData, layer, modifiedPath[ 4 ], catalog, actions.itemsActions ) );
       }
       break;
@@ -446,10 +450,11 @@ function removeItem ( planData, layerId, itemID ) {
 
 //TODO generate an area's replace if vertex has been changed
 function addObject ( modifiedPath, layer, planData, actions, sceneData, oldSceneData, catalog ) {
+  console.log( 'addobject' );
 
   if ( modifiedPath.length === 5 ) {
     let addPromise = null, addAction = null;
-
+    console.log( 'additemaddobject' );
     switch ( modifiedPath[ 3 ] ) {
       case 'lines': addPromise = addLine; addAction = actions.linesActions; break;
       case 'areas': addPromise = addArea; addAction = actions.areaActions; break;
@@ -616,6 +621,7 @@ function updateLine ( sceneData, oldSceneData, planData, layer, lineID, differen
   let oldLine = oldSceneData.getIn( [ 'layers', layer.id, 'lines', lineID ] );
   let mesh = planData.sceneGraph.layers[ layer.id ].lines[ lineID ];
 
+  console.log( 'mesh', mesh );
   if ( !mesh ) return null;
 
   return catalog.getElement( line.type ).updateRender3D( line, layer, sceneData, mesh, oldLine, differences, selfDestroy, selfBuild );
@@ -669,6 +675,8 @@ function updateArea ( sceneData, oldSceneData, planData, layer, areaID, differen
 }
 
 function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
+  console.log( 'additem' );
+
 
   let item = layer.getIn( [ 'items', itemID ] );
   let itemAltitude = item.properties.getIn( [ 'altitude', 'length' ] );
@@ -689,6 +697,8 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
     pivot.position.x = item.x; // Items had a slight offset to the x axis
     pivot.position.y = itemAltitude + layer.altitude;
     pivot.position.z = -item.y;
+
+
 
     applyInteract( item3D, () => {
       itemsActions.selectItem( layer.id, item.id );

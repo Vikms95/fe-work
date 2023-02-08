@@ -13,16 +13,16 @@ const glb = require( './attila 800 3c mlea.glb' );
 const width =
 {
   min: 100,  // cm
-  max: 184  // cm
+  max: 100  // cm
 };
 
 const depth = {
-  min: 45.2,
+  min: 100,
   max: 100
 };
 
 const height = {
-  min: 45.2,
+  min: 100,
   max: 100
 };
 
@@ -82,7 +82,7 @@ export default {
       label: 'Altura Z',
       type: 'length-measure',
       defaultValue: {
-        length: 30,
+        length: 0,
         unit: 'cm'
       }
     },
@@ -105,7 +105,12 @@ export default {
   },
 
   updateRender3D: ( element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild ) => {
-    let noPerf = () => { selfDestroy(); return selfBuild(); };
+    let noPerf = () => {
+      console.log( "Hi" );
+      console.log( selfBuild );
+      selfDestroy();
+      return selfBuild();
+    };
 
     if ( differences.indexOf( 'rotation' ) !== -1 ) {
       mesh.rotation.y = element.rotation * Math.PI / 180;

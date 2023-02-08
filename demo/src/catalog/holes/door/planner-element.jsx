@@ -82,7 +82,7 @@ export default {
       label: 'Altura Z',
       type: 'length-measure',
       defaultValue: {
-        length: 30,
+        length: 0,
         unit: 'cm'
       }
     },

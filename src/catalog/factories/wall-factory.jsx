@@ -118,7 +118,6 @@ export default function WallFactory ( name, info, textures ) {
     },
 
     updateRender3D: ( element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild ) => {
-      console.log( selfBuild );
       return updatedWall( element, layer, scene, textures, mesh, oldElement, differences, selfDestroy, selfBuild );
     }
 

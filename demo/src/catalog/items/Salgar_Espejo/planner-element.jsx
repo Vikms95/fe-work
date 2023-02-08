@@ -13,16 +13,16 @@ const glb = require( './Espejo moon 1000.glb' );
 const width =
 {
   min: 100,  // cm
-  max: 184  // cm
+  max: 100  // cm
 };
 
 const depth = {
-  min: 45.2,
+  min: 100,
   max: 100
 };
 
 const height = {
-  min: 45.2,
+  min: 100,
   max: 100
 };
 
@@ -82,7 +82,7 @@ export default {
       label: 'Altura Z',
       type: 'length-measure',
       defaultValue: {
-        length: 30,
+        length: 0,
         unit: 'cm'
       }
     },
