@@ -130,7 +130,7 @@ export default function MainComponent () {
           <img
             className={ 'imageBG' }
             style={ {
-              height: '102%',
+              height: '102.5%',
               width: '874px'
             } }
             src={ salgar }
@@ -142,33 +142,35 @@ export default function MainComponent () {
               style={ {
                 position: 'absolute',
                 zIndex: 3,
-                top: '30px',
-                left: '-270px',
+                top: '27.5px',
+                left: '-269.9px',
                 height: '57.5px'
               } } />
           </div>
 
-          <div style={
-            {
-              ...STYLE_BODY,
-              position: 'absolute',
-              bottom: '266px',
-              left: '200px'
-            } }>
+          <div>
+            <div style={
+              {
+                ...STYLE_BODY,
+                position: 'absolute',
+                bottom: '266px',
+                left: '200px'
+              } }>
 
-            <div style={ STYLE_BOX } onClick={ loadNewProject }>
-              <p style={ STYLE_LYRICS }>Nuevo Diseño</p>
-              <img src={ newProject } style={ { height: '93px' } } />
+              <div style={ STYLE_BOX } onClick={ loadNewProject }>
+                <p style={ STYLE_LYRICS }>Nuevo Diseño</p>
+                <img src={ newProject } style={ { height: '93px' } } />
+              </div>
+
+              <div
+                style={ { ...STYLE_BOX, marginLeft: '1.3em' } }
+                onClick={ loadProjectFromFile }
+              >
+                <p style={ STYLE_LYRICS }>Diseño Existente</p>
+                <img src={ existingProject } style={ { height: '93px' } } />
+              </div>
+
             </div>
-
-            <div
-              style={ { ...STYLE_BOX, marginLeft: '1.3em' } }
-              onClick={ loadProjectFromFile }
-            >
-              <p style={ STYLE_LYRICS }>Diseño Existente</p>
-              <img src={ existingProject } style={ { height: '93px' } } />
-            </div>
-
           </div>
 
         </div>
