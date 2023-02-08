@@ -114,44 +114,45 @@ export default function MainComponent () {
       <div
         style={ {
           display: 'flex',
-          position: 'relative',
           backgroundColor: 'white',
           height: '100%',
           justifyContent: 'center'
         } }
         onClick={ hideForms }
       >
+        <div style={ { position: 'relative', width: '870px' } }>
+          <img
+            className={ 'imageBG' }
+            style={ {
+              height: '100%',
+            } }
+            src={ salgar }
+          />
+          <div>
+            <img
+              src={ logoSalgar }
+              style={ {
+                position: 'absolute',
+                zIndex: 3,
+                top: '30px',
+                left: '-270px',
+                height: '57.5px'
+              } } />
 
-        <img
-          src={ logoSalgar }
-          style={ {
-            position: 'absolute',
-            left: '4.5vw',
-            zIndex: 2,
-            height: '57.8px'
-          } } />
+            <img src={ f2hsalgar } style={
+              {
+                position: 'absolute',
+                zIndex: 2,
+                bottom: '10px',
+                right: '40px'
+              }
+            } />
+          </div>
+        </div>
 
-        <img src={ f2hsalgar } style={
-          {
-            position: 'absolute',
-            zIndex: 2,
-            bottom: '10px',
-            right: '40px'
-          }
-        } />
 
-        <img
-          className={ 'imageBG' }
-          style={ {
-            // transition: 'opacity 2s ease',
-            //opacity: ( index === 0 ) ? 1 : 0,
-            // position: 'absolute',
-            // top: '0',
-            height: '100%',
-            width: '56.9vw',
-          } }
-          src={ salgar }
-        />
+
+
 
         {/*<img*/ }
         {/*  className={ 'imageBG' }*/ }
