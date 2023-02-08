@@ -124,14 +124,15 @@ export default function MainComponent () {
         <div style={ {
           position: 'relative',
           display: 'flex',
-          alignItems: 'center'
-
+          justifyContent: 'center',
+          alignItems: 'center',
         } }>
           <img
             className={ 'imageBG' }
             style={ {
               height: '102.5%',
-              width: '874px'
+              // width: '874px'
+              width: 'max(875px, 50%)'
             } }
             src={ salgar }
           />
