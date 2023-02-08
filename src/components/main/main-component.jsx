@@ -37,7 +37,7 @@ const STYLE_LOGO = {
 
 const STYLE_BODY = {
   display: 'flex',
-  marginTop: '22.29%',
+  // marginTop: '22.29%',
   justifyContent: 'center',
   backgroundRepeat: "no-repeat",
 };
@@ -55,7 +55,7 @@ const STYLE_BOX = {
 
 const STYLE_LYRICS = {
   color: '#a0a5aa',
-  fontSize: '1.5em',
+  fontSize: '1.55em',
   marginTop: '1.4em',
   marginBottom: '1.3em',
   fontWeight: '500'
@@ -152,13 +152,13 @@ export default function MainComponent () {
             {
               ...STYLE_BODY,
               position: 'absolute',
-              top: '172px',
-              left: '193px'
+              bottom: '266px',
+              left: '200px'
             } }>
 
             <div style={ STYLE_BOX } onClick={ loadNewProject }>
               <p style={ STYLE_LYRICS }>Nuevo Diseño</p>
-              <img src={ newProject } style={ { height: '90px' } } />
+              <img src={ newProject } style={ { height: '93px' } } />
             </div>
 
             <div
@@ -166,7 +166,7 @@ export default function MainComponent () {
               onClick={ loadProjectFromFile }
             >
               <p style={ STYLE_LYRICS }>Diseño Existente</p>
-              <img src={ existingProject } style={ { height: '90px' } } />
+              <img src={ existingProject } style={ { height: '93px' } } />
             </div>
 
           </div>
