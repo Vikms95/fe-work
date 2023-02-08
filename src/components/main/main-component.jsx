@@ -127,14 +127,15 @@ export default function MainComponent () {
           style={ {
             position: 'absolute',
             zIndex: 2,
-            top: '30px',
-            left: '35px'
+            top: '3.2%',
+            left: '3.9%',
+            height: '57.8px'
           } } />
         <img src={ f2hsalgar } style={
           {
             position: 'absolute',
             zIndex: 2,
-            bottom: '25px',
+            bottom: '10px',
             right: '40px'
           }
         } />
@@ -146,7 +147,7 @@ export default function MainComponent () {
             position: 'absolute',
             top: '0',
             height: '100%',
-            //width: '100%',
+            width: '56.8%',
           } }
           src={ salgar }
         />
