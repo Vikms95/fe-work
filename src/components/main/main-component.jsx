@@ -40,14 +40,14 @@ const STYLE_BODY = {
   // justifyContent: 'center',
   backgroundRepeat: "no-repeat",
   position: 'absolute',
-  bottom: '30%',
-  left: '200px'
+  bottom: '29.5%',
+  left: '23%'
 };
 
 const STYLE_BOX = {
   backgroundColor: '#6387a1',
-  height: '240px',
-  width: '240px',
+  height: '233px',
+  width: '233px',
   // display: 'flex',
   // flexDirection: 'column',
   // alignItems: 'center',
