@@ -46,8 +46,8 @@ const STYLE_BODY = {
 
 const STYLE_BOX = {
   backgroundColor: '#6387a1',
-  height: '40%',
-  width: '40%',
+  height: '230px',
+  width: '230px',
   // display: 'flex',
   // flexDirection: 'column',
   // alignItems: 'center',
@@ -160,7 +160,7 @@ export default function MainComponent () {
               </div>
 
               <div
-                style={ { ...STYLE_BOX, marginLeft: '1.3em' } }
+                style={ { ...STYLE_BOX, marginLeft: '1.2em' } }
                 onClick={ loadProjectFromFile }
               >
                 <p style={ STYLE_LYRICS }>Diseño Existente</p>
