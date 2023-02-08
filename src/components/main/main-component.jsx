@@ -148,7 +148,7 @@ export default function MainComponent () {
             // position: 'absolute',
             // top: '0',
             height: '100%',
-            width: '56.8%',
+            width: '56.9vw',
           } }
           src={ salgar }
         />
