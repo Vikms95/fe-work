@@ -107,9 +107,9 @@ export default function MainComponent () {
 
   return (
     <div id={ 'main' } style={ STYLE }>
-      {/*<div style={ STYLE_TOPBAR } onClick={ hideForms }>*/}
-      {/*  <img style={ STYLE_LOGO } src={ logo } />*/}
-      {/*</div>*/}
+      {/*<div style={ STYLE_TOPBAR } onClick={ hideForms }>*/ }
+      {/*  <img style={ STYLE_LOGO } src={ logo } />*/ }
+      {/*</div>*/ }
 
       <div
         style={ {
@@ -128,7 +128,7 @@ export default function MainComponent () {
             position: 'absolute',
             zIndex: 2,
             top: '30px',
-            left: '6.23%'
+            left: '35px'
           } } />
         <img src={ f2hsalgar } style={
           {
@@ -175,20 +175,20 @@ export default function MainComponent () {
         {/*    width: '100%',*/ }
         {/*  } }*/ }
         {/*  src={ lavabo }*/ }
-        {/*/>*/}
+        {/*/>*/ }
 
 
         <div style={ { ...STYLE_BODY, position: 'absolute', top: '0', left: '0', bottom: '0', right: '0' } }>
           <div style={ STYLE_BOX } onClick={ loadNewProject }>
             <p style={ STYLE_LYRICS }>Nuevo Diseño</p>
-            <img src={ newProject } style={ {height: '7em'} } />
+            <img src={ newProject } style={ { height: '7em' } } />
           </div>
           <div
             style={ { ...STYLE_BOX, marginLeft: '1.4em' } }
             onClick={ loadProjectFromFile }
           >
             <p style={ STYLE_LYRICS }>Diseño Existente</p>
-            <img src={ existingProject } style={ {height: '7em'} }  />
+            <img src={ existingProject } style={ { height: '7em' } } />
           </div>
         </div>
       </div>
