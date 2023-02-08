@@ -156,7 +156,7 @@ export default function MainComponent () {
 
               <div style={ STYLE_BOX } onClick={ loadNewProject }>
                 <p style={ STYLE_LYRICS }>Nuevo Diseño</p>
-                <img src={ newProject } style={ { height: '93px' } } />
+                <img src={ newProject } style={ { height: '6em' } } />
               </div>
 
               <div
@@ -166,7 +166,7 @@ export default function MainComponent () {
                 <p style={ STYLE_LYRICS }>Diseño Existente</p>
                 <img src={ existingProject }
                   style={ {
-                    height: '100px',
+                    height: '6.5em',
                     paddingTop: '10px'
                   } } />
               </div>
@@ -185,10 +185,6 @@ export default function MainComponent () {
             height: '20.75px',
           }
         } />
-
-
-
-
 
         {/*<img*/ }
         {/*  className={ 'imageBG' }*/ }
