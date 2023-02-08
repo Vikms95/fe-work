@@ -1,0 +1,363 @@
+{
+  "asset": {
+    "generator": "Khronos glTF Blender I/O v1.8.19",
+    "version": "2.0"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "Mampara KAAIVI angular 700 901-1000",
+      "rotation": [
+        0.7071068286895752,
+        0,
+        0,
+        0.7071067094802856
+      ],
+      "scale": [
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "Perfil",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5881999731063843,
+          0.5881999731063843,
+          0.5881999731063843,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.8999999761581421
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "Cristal Mampara",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.9097999930381775,
+          0.7411999702453613,
+          0.5881999731063843,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.8999999761581421
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "extras": {
+        "targetNames": [
+          "Ancho",
+          "Fondo"
+        ]
+      },
+      "name": "Mampara KAAIVI angular 700 901-1000",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0,
+          "targets": [
+            {
+              "POSITION": 4,
+              "NORMAL": 5
+            },
+            {
+              "POSITION": 6,
+              "NORMAL": 7
+            }
+          ]
+        },
+        {
+          "attributes": {
+            "POSITION": 8,
+            "NORMAL": 9,
+            "TEXCOORD_0": 10
+          },
+          "indices": 11,
+          "material": 1,
+          "targets": [
+            {
+              "POSITION": 12,
+              "NORMAL": 13
+            },
+            {
+              "POSITION": 14,
+              "NORMAL": 15
+            }
+          ]
+        }
+      ],
+      "weights": [
+        0,
+        0
+      ]
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 71746,
+      "max": [
+        700.2265625,
+        900.8833618164062,
+        -0.49993896484375
+      ],
+      "min": [
+        0.18109130859375,
+        0.835099995136261,
+        -1905.5
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 71746,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 71746,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5125,
+      "count": 398592,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 71746,
+      "max": [
+        100.00006103515625,
+        0,
+        0
+      ],
+      "min": [
+        0,
+        0,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5126,
+      "count": 71746,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5126,
+      "count": 71746,
+      "max": [
+        0,
+        1100.0015869140625,
+        0.0003662109375
+      ],
+      "min": [
+        0,
+        0,
+        -0.0001220703125
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 7,
+      "componentType": 5126,
+      "count": 71746,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 8,
+      "componentType": 5126,
+      "count": 848,
+      "max": [
+        695.7362670898438,
+        896.3931274414062,
+        -0.5000389814376831
+      ],
+      "min": [
+        2.342010498046875,
+        2.996000051498413,
+        -1866.56591796875
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 9,
+      "componentType": 5126,
+      "count": 848,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 10,
+      "componentType": 5126,
+      "count": 848,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 11,
+      "componentType": 5123,
+      "count": 1296,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 12,
+      "componentType": 5126,
+      "count": 848,
+      "max": [
+        100.00006103515625,
+        0,
+        0
+      ],
+      "min": [
+        0,
+        0,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 13,
+      "componentType": 5126,
+      "count": 848,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 14,
+      "componentType": 5126,
+      "count": 848,
+      "max": [
+        0,
+        1100.0015869140625,
+        0.0003662109375
+      ],
+      "min": [
+        0,
+        0,
+        -0.0001220703125
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 15,
+      "componentType": 5126,
+      "count": 848,
+      "type": "VEC3"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 860952,
+      "byteOffset": 0
+    },
+    {
+      "buffer": 0,
+      "byteLength": 860952,
+      "byteOffset": 860952
+    },
+    {
+      "buffer": 0,
+      "byteLength": 573968,
+      "byteOffset": 1721904
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1594368,
+      "byteOffset": 2295872
+    },
+    {
+      "buffer": 0,
+      "byteLength": 860952,
+      "byteOffset": 3890240
+    },
+    {
+      "buffer": 0,
+      "byteLength": 860952,
+      "byteOffset": 4751192
+    },
+    {
+      "buffer": 0,
+      "byteLength": 860952,
+      "byteOffset": 5612144
+    },
+    {
+      "buffer": 0,
+      "byteLength": 860952,
+      "byteOffset": 6473096
+    },
+    {
+      "buffer": 0,
+      "byteLength": 10176,
+      "byteOffset": 7334048
+    },
+    {
+      "buffer": 0,
+      "byteLength": 10176,
+      "byteOffset": 7344224
+    },
+    {
+      "buffer": 0,
+      "byteLength": 6784,
+      "byteOffset": 7354400
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2592,
+      "byteOffset": 7361184
+    },
+    {
+      "buffer": 0,
+      "byteLength": 10176,
+      "byteOffset": 7363776
+    },
+    {
+      "buffer": 0,
+      "byteLength": 10176,
+      "byteOffset": 7373952
+    },
+    {
+      "buffer": 0,
+      "byteLength": 10176,
+      "byteOffset": 7384128
+    },
+    {
+      "buffer": 0,
+      "byteLength": 10176,
+      "byteOffset": 7394304
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Mampara KAAIVI_data.bin",
+      "byteLength": 7404480
+    }
+  ]
+}

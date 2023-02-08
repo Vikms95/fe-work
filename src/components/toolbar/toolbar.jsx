@@ -40,7 +40,6 @@ const STYLE_ASIDE = {
   borderRightColor: SharedStyle.PRIMARY_COLOR.master,
   overflowY: 'auto',
   overflowX: 'hidden',
-  paddingTop: '15px'
 };
 
 // TODO figure out the logic here
@@ -147,6 +146,20 @@ function Toolbar ( {
           text={ 'Baño Salgar' }>
         </ToolbarButton>
     },
+    {
+      index: 3, condition: true,
+      dom:
+        <ToolbarButton
+          index={ 3 }
+          className='toolbar-button'
+          tooltip={ 'Electrodomésticos' }
+          onClick={ event => projectActions.openCatalog() }
+          img={ electros }
+          active={ false }
+          //TODO: Poner en el translator
+          text={ 'Electrodomésticos' }>
+        </ToolbarButton>
+    },
     // {
     //   index: 4, condition: true,
     //   dom: 
@@ -236,7 +249,7 @@ function Toolbar ( {
       }));*/
   return (
     <aside
-      style={ { ...STYLE_ASIDE, minWidth: 120, maxHeight: height } }
+      style={ { ...STYLE_ASIDE, width: width, maxHeight: height } }
       className='toolbar'
     >
       { sorter.sort( sortButtonsCb ).map( mapButtonsCb ) }

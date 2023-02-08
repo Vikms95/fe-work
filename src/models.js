@@ -227,8 +227,6 @@ export class Group extends Record( {
 }
 
 export const DefaultLayers = new Map( {
-  // 'layer-1': new Layer( { id: 'layer-1', name: 'default' } )
-  //** Layer por defecto para demo */
   'layer-1': new Layer( {
     "id": "layer-1",
     "altitude": 0,
@@ -600,7 +598,6 @@ export class Scene extends Record( {
 }, 'Scene' ) {
   constructor ( json = {} ) {
     let layers = safeLoadMapList( json.layers, Layer, DefaultLayers );
-    console.log( layers );
     super( {
       ...json,
       grids: safeLoadMapList( json.grids, Grid, DefaultGrids ),

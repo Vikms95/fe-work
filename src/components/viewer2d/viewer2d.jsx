@@ -110,8 +110,7 @@ export default function Viewer2D ( {
     projectActions,
     viewer2DActions,
     verticesActions,
-  }
-    = useContext( Context );
+  } = useContext( Context );
 
   const { viewer2D, mode, scene } = state;
   const layerID = scene.selectedLayer;

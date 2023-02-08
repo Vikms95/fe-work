@@ -1,9 +1,32 @@
 import React from 'react';
 import * as Three from 'three';
-import { loadObjWithMaterial } from '../../utils/load-obj';
-import path from 'path';
+import { loadGLTF } from '../../utils/load-obj';
+import { getObject3d, selectedObject3d, sizeParametricObject3d } from '../../utils/objects3d-utils';
 
-let cached3DWindow = null;
+const glb = require( './Ventana.glb' );
+
+const width =
+{
+  min: 60,  // cm
+  max: 300 // cm
+};
+const depth = //11; // cm
+{
+  min: 11,  // cm
+  max: 11  // cm
+};
+const height =
+{
+  min: 80,  // cm
+  max: 300  // cm
+};
+
+const glbInfo =
+{
+  gltfFile: glb, width, height, depth, tocm: true, normalizeOrigin: false
+  //, rotation: { y: -90 }
+  , scale: { x: 100, y: 100, z: 100 }
+};
 
 export default {
   name: "window",
@@ -13,7 +36,10 @@ export default {
     title: "window",
     tag: [ 'window' ],
     description: "Window",
-    image: require( './window.png' )
+    image: require( './window.png' ),
+    width: width,
+    depth: depth,
+    height: height,
   },
 
   properties: {
@@ -21,28 +47,28 @@ export default {
       label: "Ancho",
       type: "length-measure",
       defaultValue: {
-        length: 90
+        length: 120
       }
     },
     height: {
       label: "Alto",
       type: "length-measure",
       defaultValue: {
-        length: 100
+        length: 120
       }
     },
     altitude: {
-      label: "Fondo",
+      label: "Altitud",
       type: "length-measure",
       defaultValue: {
         length: 90
       }
     },
     thickness: {
-      label: "Altura Z",
+      label: "Fondo",
       type: "length-measure",
       defaultValue: {
-        length: 10
+        length: 11
       }
     },
     altColocacion: {
@@ -76,43 +102,73 @@ export default {
   },
 
   render3D: function ( element, layer, scene ) {
-    let onLoadItem = ( object ) => {
-      let boundingBox = new Three.Box3().setFromObject( object );
+    let loadItem = () =>
+      loadGLTF( glbInfo );
 
-      let initialWidth = boundingBox.max.x - boundingBox.min.x;
-      let initialHeight = boundingBox.max.y - boundingBox.min.y;
-      let initialThickness = boundingBox.max.z - boundingBox.min.z;
+    return getObject3d( element.name, loadItem ).then( object => {
+      /*
+      let obj = new Object3D();
+      let bbox = new BoxHelper(object, 0x99c3fb);
 
-      if ( element.selected ) {
-        let box = new Three.BoxHelper( object, 0x99c3fb );
-        box.material.linewidth = 2;
-        box.material.depthTest = false;
-        box.renderOrder = 1000;
-        object.add( box );
-      }
+      bbox.material.linewidth = 100;
+      bbox.renderOrder = 1000;
+      bbox.material.depthTest = false;
+      obj.add(bbox);
+      obj.add(object);
+      //object.add(bbox);
 
-      let width = element.properties.get( 'width' ).get( 'length' );
-      let height = element.properties.get( 'height' ).get( 'length' );
-      let thickness = element.properties.get( 'thickness' ).get( 'length' );
+      //selectedObject3d(object, element.selected);
+      //sizeParametricObject3d(object, glbInfo, element);
 
-      object.scale.set( width / initialWidth, height / initialHeight,
-        thickness / initialThickness );
+      return obj;
+      */
+
+      sizeParametricObject3d( object, element );
 
       return object;
-    };
 
-    if ( cached3DWindow ) {
-      return Promise.resolve( onLoadItem( cached3DWindow.clone() ) );
+    } );
+  },
+
+  updateRender3D: ( element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild ) => {
+
+    let noPerf = () => { selfDestroy(); return selfBuild(); };
+
+    /*
+    if (differences.indexOf('selected') !== -1) {
+      if (element.selected) {
+        let bbox = new BoxHelper(mesh, 0x99c3fb);
+        bbox.material.linewidth = 5;
+        bbox.renderOrder = 1000;
+        bbox.material.depthTest = false;
+        mesh.add(bbox);
+
+        return Promise.resolve(mesh);
+      }
+    }
+    */
+
+    /*
+    if (differences.indexOf('selected') !== -1) {
+      //mesh.traverse((child) => {
+      //  if (child instanceof BoxHelper) {
+      //    child.visible = element.selected;
+      //  }
+      //});
+      selectedObject3d(mesh, element.selected);
+
+      return Promise.resolve(mesh);
+    }
+    */
+
+    if ( differences.indexOf( 'rotation' ) !== -1 ) {
+      mesh.rotation.y = element.rotation * Math.PI / 180;
+      return Promise.resolve( mesh );
     }
 
-    let mtl = require( './window.mtl' );
-    let obj = require( './window.obj' );
-    let img = require( './texture.png' );
+    if ( sizeParametricObject3d( mesh, element ) )
+      return Promise.resolve( mesh );
 
-    return loadObjWithMaterial( mtl, obj, path.dirname( img ) + '/' )
-      .then( object => {
-        cached3DWindow = object;
-        return onLoadItem( cached3DWindow.clone() );
-      } );
+    return noPerf();
   }
 };

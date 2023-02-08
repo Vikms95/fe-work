@@ -58,6 +58,32 @@ class Hole {
     }
   }
 
+  static getDepth ( hole, layer ) {
+    let depth = 0;
+    const holeThickness = hole.properties.getIn( [ 'thickness', 'length' ] );
+
+    if ( holeThickness ) {
+      depth = holeThickness;
+    }
+
+    if ( hole.depth ) {
+      let line = layer.getIn( [ 'lines', hole.line ] );
+      let thickness = line.properties.getIn( [ 'thickness', 'length' ] );
+
+      if ( thickness ) {
+        if ( hole.depth.min && hole.depth.max ) {
+          if ( hole.depth.min != hole.depth.max && thickness >= hole.depth.min && thickness <= hole.depth.max )
+            depth = thickness;
+        }
+        else {
+          depth = thickness;
+        }
+      }
+    }
+
+    return depth;
+  }
+
   static select ( state, layerID, holeID ) {
     state = Layer.select( state, layerID ).updatedState;
     state = Layer.selectElement( state, layerID, 'holes', holeID ).updatedState;

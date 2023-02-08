@@ -66,17 +66,21 @@ export function loadObjWithMaterial ( mtlFile, objFile, imgPath, mapImages, tocm
 
 
 const addPorcelainLook = ( object, node ) => {
-  if ( node.material.name === 'Porcelain_Glossy' ) {
+  switch ( node.material.name ) {
+    case 'Porcelain_Glossy':
+    case 'Porcelana.001':
+    case 'Blanco Brillo':
+    case 'Porcelana':
+    case 'SolidSurface':
+      const newMaterial = new MeshPhysicalMaterial( {
+        envMap: cubeRenderTarget.texture,
+        roughness: 0.4,
+        metalness: 0,
+        clearcoat: 1,
+      } );
+      node.material = newMaterial;
+  }
 
-    const newMaterial = new MeshPhysicalMaterial( {
-      envMap: cubeRenderTarget.texture,
-      roughness: 0.4,
-      metalness: 0,
-      clearcoat: 1,
-    } );
-
-    node.material = newMaterial;
-  };
 };
 
 const addEnvMapIntensity = ( object ) => {
@@ -90,7 +94,7 @@ const addEnvMapIntensity = ( object ) => {
 const enableMeshCastAndReceiveShadow = ( object ) => {
   object.traverse( child => {
     if ( child instanceof THREE.Mesh ) {
-      if ( child.material.name !== 'Cristal' ) {
+      if ( child.material.name !== 'Cristal Mampara' || child.material.name === 'Cristal' ) {
         child.material.side = THREE.FrontSide;
         child.castShadow = true;
         child.receiveShadow = true;
@@ -101,7 +105,7 @@ const enableMeshCastAndReceiveShadow = ( object ) => {
 
 
 const addGlassLook = ( object, node ) => {
-  if ( node.material.name === 'Cristal' ) {
+  if ( node.material.name === 'Cristal Mampara' || node.material.name === 'Cristal' ) {
     const newMaterial = new MeshStandardMaterial( {
       roughness: 0.25,
       metalness: 0,
@@ -125,7 +129,7 @@ const addEmissive = ( object, node ) => {
 
 
 const addChromeLook = ( object, node ) => {
-  if ( node.material.name === 'Cromado' ) {
+  if ( node.material.name === 'Cromado' || node.material.name === 'Perfil' ) {
     const newMaterial = new MeshStandardMaterial( {
       envMap: cubeRenderTarget.texture,
       roughness: 0,
@@ -266,6 +270,7 @@ export function loadGLTF ( input ) {
 
       object.traverse( node => {
         if ( node instanceof THREE.Mesh && node.material ) {
+          console.log( 'material is ', node );
           // addEnvMapIntensity( object );
           enableMeshCastAndReceiveShadow( object );
           addGlassLook( object, node );
@@ -277,6 +282,9 @@ export function loadGLTF ( input ) {
           addRoughnessLook( object, node );
           // addEmissive( object, node );
 
+          let boundingBox = new Box3().setFromObject( object );
+
+          console.log( input.gltfFile, { w: boundingBox.max.x - boundingBox.min.x, h: boundingBox.max.y - boundingBox.min.y, d: boundingBox.max.z - boundingBox.min.z } );
 
           if ( input.tocm ) {
             object.scale.set( 100, 100, 100 );

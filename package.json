@@ -13,7 +13,7 @@
     "build-es": "cross-env BABEL_ENV=es babel src --copy-files --out-dir es",
     "build": "npm run clean && npm run build-demo && npm run build-commonjs && npm run build-es",
     "add-build-to-vcs": "git add -A src/version.js && git add -A es && git add -A lib && git add -A demo/dist",
-    "clean": "rimraf ../wwwroot/*",
+    "clean": "move ../wwwroot/CatalogData .. && rimraf ../wwwroot/* && move ../CatalogData ../wwwroot",
     "website-update": "gh-pages -m 'Update gh-pages' -d ./demo/dist/",
     "update-version-file": "const-version ./package.json ./src/version.js",
     "version": "npm run update-version-file && npm run build && npm run add-build-to-vcs",
