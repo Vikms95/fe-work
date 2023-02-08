@@ -70,7 +70,7 @@ export default {
         length: 215
       }
     },
-    altitude: {
+    thickness: {
       label: 'Fondo',
       type: 'length-measure',
       defaultValue: {
@@ -78,7 +78,7 @@ export default {
         unit: 'cm'
       }
     },
-    thickness: {
+    altitude: {
       label: 'Altura Z',
       type: 'length-measure',
       defaultValue: {

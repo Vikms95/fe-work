@@ -78,6 +78,14 @@ export default {
         unit: 'cm'
       }
     },
+    altitude: {
+      label: 'Altura Z',
+      type: 'length-measure',
+      defaultValue: {
+        length: 30,
+        unit: 'cm'
+      }
+    },
   },
 
   render2D: function ( element, layer, scene ) {
