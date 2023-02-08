@@ -44,18 +44,18 @@ const STYLE_BODY = {
 
 const STYLE_BOX = {
   backgroundColor: '#6387a1',
-  width: '16.5em',
-  height: '16.6em',
+  width: '14.2em',
+  height: '14.6em',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  border: '2.5px solid #3b466e',
+  border: '2px solid #3b466e',
   cursor: 'pointer',
 };
 
 const STYLE_LYRICS = {
   color: '#a0a5aa',
-  fontSize: '1.75em',
+  fontSize: '1.5em',
   marginTop: '1.4em',
   marginBottom: '1.3em',
   fontWeight: '500'
@@ -117,18 +117,20 @@ export default function MainComponent () {
           position: 'relative',
           backgroundColor: 'white',
           height: '100%',
-          justifyContent: 'center'
+          justifyContent: 'center',
         } }
         onClick={ hideForms }
       >
-        <div style={ { position: 'relative', width: '870px' } }>
+        <div style={ { position: 'relative' } }>
           <img
             className={ 'imageBG' }
             style={ {
               height: '100%',
+              width: '875px'
             } }
             src={ salgar }
           />
+
           <div>
             <img
               src={ logoSalgar }
@@ -140,6 +142,30 @@ export default function MainComponent () {
                 height: '57.5px'
               } } />
           </div>
+
+          <div style={
+            {
+              ...STYLE_BODY,
+              position: 'absolute',
+              top: '172px',
+              left: '193px'
+            } }>
+
+            <div style={ STYLE_BOX } onClick={ loadNewProject }>
+              <p style={ STYLE_LYRICS }>Nuevo Diseño</p>
+              <img src={ newProject } style={ { height: '90px' } } />
+            </div>
+
+            <div
+              style={ { ...STYLE_BOX, marginLeft: '1.3em' } }
+              onClick={ loadProjectFromFile }
+            >
+              <p style={ STYLE_LYRICS }>Diseño Existente</p>
+              <img src={ existingProject } style={ { height: '90px' } } />
+            </div>
+
+          </div>
+
         </div>
 
         <img src={ f2hsalgar } style={
@@ -183,19 +209,7 @@ export default function MainComponent () {
         {/*/>*/ }
 
 
-        <div style={ { ...STYLE_BODY, position: 'absolute', top: '0', left: '0', bottom: '0', right: '0' } }>
-          <div style={ STYLE_BOX } onClick={ loadNewProject }>
-            <p style={ STYLE_LYRICS }>Nuevo Diseño</p>
-            <img src={ newProject } style={ { height: '7em' } } />
-          </div>
-          <div
-            style={ { ...STYLE_BOX, marginLeft: '1.4em' } }
-            onClick={ loadProjectFromFile }
-          >
-            <p style={ STYLE_LYRICS }>Diseño Existente</p>
-            <img src={ existingProject } style={ { height: '7em' } } />
-          </div>
-        </div>
+
       </div>
     </div >
   );
