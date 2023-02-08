@@ -121,12 +121,17 @@ export default function MainComponent () {
         } }
         onClick={ hideForms }
       >
-        <div style={ { position: 'relative' } }>
+        <div style={ {
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center'
+
+        } }>
           <img
             className={ 'imageBG' }
             style={ {
-              height: '100%',
-              width: '875px'
+              height: '102%',
+              width: '874px'
             } }
             src={ salgar }
           />
