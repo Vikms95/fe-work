@@ -37,7 +37,6 @@ const STYLE_LOGO = {
 
 const STYLE_BODY = {
   display: 'flex',
-  // marginTop: '22.29%',
   justifyContent: 'center',
   backgroundRepeat: "no-repeat",
 };
@@ -46,9 +45,10 @@ const STYLE_BOX = {
   backgroundColor: '#6387a1',
   width: '240px',
   height: '240px',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
+  // display: 'flex',
+  // flexDirection: 'column',
+  // alignItems: 'center',
+  textAlign: 'center',
   border: '2px solid #3b466e',
   cursor: 'pointer',
 };
