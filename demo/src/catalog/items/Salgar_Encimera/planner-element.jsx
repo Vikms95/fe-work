@@ -12,18 +12,18 @@ const glb = require( './encimera doble fondo.glb' );
 
 const width =
 {
-  min: 100,  // cm
-  max: 100  // cm
+  min: 0,  // cm
+  max: 0  // cm
 };
 
 const depth = {
-  min: 100,
-  max: 100
+  min: 0,
+  max: 0
 };
 
 const height = {
-  min: 100,
-  max: 100
+  min: 0,
+  max: 0
 };
 
 // const depth = 45.2;  // cm
