@@ -400,12 +400,12 @@ export default class Scene3DViewer extends React.Component {
 
 
     // //** ADD TEST LIGHT */
-    this.addLightOnTop(
-      new THREE.SpotLight( 'white', SPOT_LIGHT_INTENSITY ),
-      // new THREE.PointLight( 'white', 0.5 ),
-      // new THREE.DirectionalLight( 'white', 0.5 ),
-      this.scene3D
-    );
+    // this.addLightOnTop(
+    //   new THREE.SpotLight( 'white', SPOT_LIGHT_INTENSITY ),
+    //   // new THREE.PointLight( 'white', 0.5 ),
+    //   // new THREE.DirectionalLight( 'white', 0.5 ),
+    //   this.scene3D
+    // );
 
     //** EVENT LISTENERS */
     this.mouseDownEvent = ( event ) => {

@@ -12,18 +12,18 @@ const glb = require( './SOFIA 800.glb' );
 
 const width =
 {
-  min: 0,  // cm
-  max: 0  // cm
+  min: 80,  // cm
+  max: 240  // cm
 };
 
 const depth = {
-  min: 0,
-  max: 0
+  min: 460,
+  max: 460
 };
 
 const height = {
-  min: 0,
-  max: 0
+  min: 143,
+  max: 143
 };
 
 // const depth = 45.2;  // cm
@@ -115,6 +115,10 @@ export default {
     if ( differences.indexOf( 'rotation' ) !== -1 ) {
       mesh.rotation.y = element.rotation * Math.PI / 180;
       return Promise.resolve( mesh );
+    }
+
+    if ( differences.indexOf( 'altitude' ) !== -1 ) {
+      mesh.position.y = element.properties.getIn( [ 'altitude', 'length' ] );
     }
 
     if ( sizeParametricObject3d( mesh, element ) ) {

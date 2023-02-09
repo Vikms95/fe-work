@@ -12,18 +12,18 @@ const glb = require( './encimera doble fondo.glb' );
 
 const width =
 {
-  min: 0,  // cm
-  max: 0  // cm
+  min: 60,  // cm
+  max: 240  // cm
 };
 
 const depth = {
-  min: 0,
-  max: 0
+  min: 46,
+  max: 46
 };
 
 const height = {
-  min: 0,
-  max: 0
+  min: 12,
+  max: 12
 };
 
 // const depth = 45.2;  // cm
@@ -107,12 +107,17 @@ export default {
   updateRender3D: ( element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild ) => {
     let noPerf = () => { selfDestroy(); return selfBuild(); };
 
+    console.log( differences );
+
     if ( differences.indexOf( 'rotation' ) !== -1 ) {
       mesh.rotation.y = element.rotation * Math.PI / 180;
       return Promise.resolve( mesh );
     }
 
-    console.log( mesh, element );
+    if ( differences.indexOf( 'altitude' ) !== -1 ) {
+      mesh.position.y = element.properties.getIn( [ 'altitude', 'length' ] );
+    }
+
     if ( sizeParametricObject3d( mesh, element ) ) {
       // repeatTexturesOnMorph( mesh );
       return Promise.resolve( mesh );

@@ -12,18 +12,18 @@ const glb = require( './Mampara KAAIVI.glb' );
 
 const width =
 {
-  min: 0,  // cm
-  max: 0  // cm
+  min: 70,  // cm
+  max: 90  // cm
 };
 
 const depth = {
-  min: 0,
-  max: 0
+  min: 90,
+  max: 200
 };
 
 const height = {
-  min: 0,
-  max: 0
+  min: 28,
+  max: 28
 };
 
 // const depth = 45.2;  // cm
@@ -110,6 +110,10 @@ export default {
     if ( differences.indexOf( 'rotation' ) !== -1 ) {
       mesh.rotation.y = element.rotation * Math.PI / 180;
       return Promise.resolve( mesh );
+    }
+
+    if ( differences.indexOf( 'altitude' ) !== -1 ) {
+      mesh.position.y = element.properties.getIn( [ 'altitude', 'length' ] );
     }
 
     if ( sizeParametricObject3d( mesh, element ) ) {
