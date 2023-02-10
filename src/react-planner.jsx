@@ -26,9 +26,8 @@ import {
   MainComponent,
   MenuConstruccion,
   MenuMuebles,
-  MenuPreferencias,
+  MenuPreferencias
 } from './components/export';
-import { MenuOptions } from './components/menu-options/export';
 
 import { VERSION } from './version';
 import './styles/export';
@@ -515,7 +514,6 @@ class ReactPlanner extends Component {
 
             <div style={ { position: 'relative' } }>
 
-              {/* <MenuOptions ></MenuOptions> */ }
               <MenuRooms
                 state={ state }
                 { ...props }
