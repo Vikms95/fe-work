@@ -5,6 +5,13 @@ import AttributesEditor from './attributes-editor/attributes-editor';
 import { GeometryUtils, MathUtils } from '../../../utils/export';
 import * as SharedStyle from '../../../shared-style';
 import convert from 'convert-units';
+// import from '../../../assets/';
+import bloquearIco from '../../../assets/sidebar/Bloquear.jpg';
+import borrarIco from '../../../assets/sidebar/Borrar.jpg';
+import duplicarIco from '../../../assets/sidebar/Duplicar.jpg';
+import flechaIco from '../../../assets/sidebar/Flecha.jpg';
+import infoIco from '../../../assets/sidebar/Info.jpg';
+import likeIco from '../../../assets/sidebar/Like.jpg';
 
 import flecha from './../../../assets/generalItems/flecha.png';
 import puertas from './../../../assets/construccion/puertas.png';
@@ -15,8 +22,19 @@ import { getCacheAngulo, isMultipleSelection } from '../../../selectors/selector
 import { Context } from '../../../context/context';
 import { useFormData } from '../../../hooks/useFormData';
 import { useToggle } from '../../../hooks/useToggle';
+import MenuOptions from '../../menu-options/menu-options';
 
 const PRECISION = 2;
+
+const STYLE_ICONS_CONTAINER = {
+  display: 'flex',
+  alignSelf: 'center',
+  // justifyContent: 'center',
+  columnGap: '12px',
+  marginTop: '-22px',
+  marginBottom: '25px',
+  paddingLeft: '35px'
+};
 
 // const STYLE_ATTR_PROP_SEPARATOR = {
 //   margin: '0.5em 0.25em 0.5em 0',
@@ -201,6 +219,7 @@ export default class ElementEditor extends Component {
       isSelectAcabado: false,
       attributesFormData: this.initAttrData( this.props.element, this.props.layer, this.props.state ),
       propertiesFormData: this.initPropData( this.props.element, this.props.layer, this.props.state ),
+      isOptionsMenuActive: false
     };
 
     this.save = this.save.bind( this );
@@ -208,6 +227,7 @@ export default class ElementEditor extends Component {
     this.initPropData = this.initPropData.bind( this );
     this.updateAttribute = this.updateAttribute.bind( this );
     this.updateProperty = this.updateProperty.bind( this );
+    this.closeOptionsMenu = this.closeOptionsMenu.bind( this );
   }
 
   //FIXME this has been commented bc it was preventing the lower components from getting    
@@ -568,6 +588,10 @@ export default class ElementEditor extends Component {
   //  this.context.projectActions.pasteProperties();
   //}
 
+  closeOptionsMenu () {
+    this.setState( { isOptionsMenuActive: false } );
+  }
+
   render () {
     let mode = this.props.state.getIn( [ 'mode' ] );
     let {
@@ -601,6 +625,14 @@ export default class ElementEditor extends Component {
             { element.description }
 
           </p>
+        </div>
+
+        <div style={ STYLE_ICONS_CONTAINER }>
+          <img src={ borrarIco } />
+          <img src={ duplicarIco } />
+          <img src={ bloquearIco } />
+          <img src={ infoIco } />
+          <img src={ likeIco } />
         </div>
 
         {/* OTROS ATRIBUTOS */ }
@@ -677,53 +709,74 @@ export default class ElementEditor extends Component {
 
         <div style={ { marginTop: '6px' } }>
           <div>
-            <div
-              onClick={ showAndHideAcabado }
-              style={ { display: 'flex', justifyItems: 'center', height: '25px', width: '5.5em', cursor: 'pointer', paddingBottom: '34px' } }>
-              <p style={ {
-                margin: '0',
-                fontSize: '0.75em',
-                color: SharedStyle.PRIMARY_COLOR.master,
-              } }>Acabado</p>
-              <img style={ { height: '0.70em', marginLeft: '1.8em', marginTop: '1px' } } src={ flecha } />
-            </div>
+            {/* { element.prototype === 'lines' && ( */ }
+            <React.Fragment>
+              <div
+                onClick={ showAndHideAcabado }
+                style={ { display: 'flex', justifyItems: 'center', height: '25px', width: '5.5em', cursor: 'pointer', paddingBottom: '34px' } }>
+                <p style={ {
+                  margin: '0',
+                  fontSize: '0.75em',
+                  color: SharedStyle.PRIMARY_COLOR.master,
+                } }>Acabado</p>
+                <img style={ { height: '0.70em', marginLeft: '1.8em', marginTop: '1px' } } src={ flecha } />
+              </div>
+              <div id={ 'panelAcabado' }
+                style={ ( this.state.isSelectAcabado )
+                  ? { display: 'block', width: '100%', height: '100%', paddingBottom: '10px' }
+                  : { /*width: '100%', height: '100%', */ display: 'none' } }>
 
-            <div id={ 'panelAcabado' }
-              style={ ( this.state.isSelectAcabado )
-                ? { display: 'block', width: '100%', height: '100%', paddingBottom: '10px' }
-                : { /*width: '100%', height: '100%',*/ display: 'none' } }>
 
-              { propertiesFormData.entrySeq()
-                .map( ( [ propertyName, data ] ) => {
+                { propertiesFormData.entrySeq()
+                  .map( ( [ propertyName, data ] ) => {
 
-                  if ( propertyName.includes( 'texture' ) ) {
-                    let currentValue = data.get( 'currentValue' ), configs = data.get( 'configs' );
+                    if ( propertyName.includes( 'texture' ) ) {
+                      let currentValue = data.get( 'currentValue' ), configs = data.get( 'configs' );
 
-                    let { Editor } = catalog.getPropertyType( configs.type );
+                      let { Editor } = catalog.getPropertyType( configs.type );
 
-                    return <Editor
-                      state={ appState }
-                      configs={ configs }
-                      key={ propertyName }
-                      value={ currentValue }
-                      sourceElement={ element }
-                      internalState={ this.state }
-                      propertyName={ propertyName }
-                      onUpdate={ value => this.updateProperty( propertyName, value ) }
-                    />;
-                  }
-                } )
-              }
-            </div>
+                      return <Editor
+                        state={ appState }
+                        configs={ configs }
+                        key={ propertyName }
+                        value={ currentValue }
+                        sourceElement={ element }
+                        internalState={ this.state }
+                        propertyName={ propertyName }
+                        onUpdate={ value => this.updateProperty( propertyName, value ) }
+                      />;
+                    }
+                  } )
+                }
+              </div>
+            </React.Fragment>
+            {/* ) } */ }
 
-            <div style={ { display: 'flex', justifyItems: 'center', height: '25px', width: '5.5em', cursor: 'pointer' } }>
+
+            <div onClick={ () => {
+              this.setState( { isOptionsMenuActive: !this.state.isOptionsMenuActive } );
+            } }
+              style={ { display: 'flex', justifyItems: 'center', height: '25px', width: '5.5em', cursor: 'pointer' } }>
               <p style={ {
                 margin: '0',
                 fontSize: '0.75em',
                 color: SharedStyle.PRIMARY_COLOR.master,
               } }>Opciones</p>
+
+
+
               <img style={ { height: '0.70em', marginLeft: '1.6em', marginTop: '1px' } } src={ flecha } />
             </div>
+
+            { this.state.isOptionsMenuActive && (
+              <MenuOptions
+                state={ appState }
+                element={ element }
+                propertiesFormData={ propertiesFormData }
+                closeOptionsMenu={ this.closeOptionsMenu }
+                updateProperty={ this.updateProperty }
+              />
+            ) }
           </div>
         </div >
       </div >

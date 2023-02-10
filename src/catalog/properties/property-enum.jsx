@@ -4,29 +4,41 @@ import { Seq } from 'immutable';
 import { FormLabel, FormSelect } from '../../components/style/export';
 import PropertyStyle from './shared-property-style';
 
-export default function PropertyEnum({ value, onUpdate, configs, sourceElement, internalState, state }) {
+export default function PropertyEnum ( {
+  value,
+  onUpdate,
+  configs,
+  sourceElement,
+  internalState,
+  state
+} ) {
 
-  let update = (val) => {
+  let update = ( val ) => {
 
-    if (configs.hook) {
-      return configs.hook(val, sourceElement, internalState, state).then(_val => {
-        return onUpdate(_val);
-      });
+    if ( configs.hook ) {
+      return configs.hook( val, sourceElement, internalState, state ).then( _val => {
+        return onUpdate( _val );
+      } );
     }
 
-    return onUpdate(val);
+    return onUpdate( val );
   };
 
   return (
-    <table className="PropertyEnum" style={{ ...PropertyStyle.tableStyle, paddingBottom: '10px', marginLeft: '-3px' }}>
+    <table
+      className="PropertyEnum"
+      style={ { ...PropertyStyle.tableStyle, paddingBottom: '10px', marginLeft: '-3px' } }>
       <tbody>
         <tr>
-          <td style={PropertyStyle.firstTdStyle}><FormLabel>{configs.label}</FormLabel></td>
+          <td
+            style={ PropertyStyle.firstTdStyle }>
+            <FormLabel>{ configs.label }</FormLabel>
+          </td>
           <td>
-            <FormSelect value={value} onChange={event => update(event.target.value)}>
-              {Seq(configs.values)
+            <FormSelect value={ value } onChange={ event => update( event.target.value ) }>
+              { Seq( configs.values )
                 .entrySeq()
-                .map(([key, value]) => <option key={key} value={key}>{value}</option>)}
+                .map( ( [ key, value ] ) => <option key={ key } value={ key }>{ value }</option> ) }
             </FormSelect>
           </td>
         </tr>

@@ -82,11 +82,13 @@ export default {
       label: 'Altura Z',
       type: 'length-measure',
       defaultValue: {
-        length: 0,
+        length: 33,
         unit: 'cm'
       }
-    },
+    }
+
   },
+
 
   render2D: function ( element, layer, scene ) {
 

@@ -36,17 +36,20 @@ const STYLE_LOGO = {
 };
 
 const STYLE_BODY = {
-  display: 'flex',
+  // display: 'flex',
   // justifyContent: 'center',
-  backgroundRepeat: "no-repeat",
-  position: 'absolute',
-  bottom: '29.5%',
-  left: '23%'
+  // backgroundRepeat: "no-repeat",
+  // position: 'absolute',
+  // bottom: '29.5%',
+  // left: '23%'
+  display: 'flex',
+  marginTop: '22.75%',
+  justifyContent: 'center',
 };
 
 const STYLE_BOX = {
   backgroundColor: '#6387a1',
-  height: '26.9vh',
+  height: '13.5em',
   width: '13.5em',
   // display: 'flex',
   // flexDirection: 'column',
@@ -146,7 +149,7 @@ export default function MainComponent () {
                 height: '57.5px'
               } } />
           </div>
-
+          {/* 
           <div>
             <div style={
               {
@@ -168,7 +171,7 @@ export default function MainComponent () {
               </div>
 
             </div>
-          </div>
+          </div> */}
 
         </div>
 
@@ -182,6 +185,20 @@ export default function MainComponent () {
           }
         } />
 
+        <div style={ { ...STYLE_BODY, position: 'absolute' } }>
+          <div style={ STYLE_BOX } onClick={ loadNewProject }>
+            <p style={ STYLE_LYRICS }>Nuevo Diseño</p>
+            <img src={ newProject } />
+          </div>
+
+          <div
+            style={ { ...STYLE_BOX, marginLeft: '2em' } }
+            onClick={ loadProjectFromFile }
+          >
+            <p style={ STYLE_LYRICS }>Diseño Existente</p>
+            <img src={ existingProject } />
+          </div>
+        </div>
 
 
 

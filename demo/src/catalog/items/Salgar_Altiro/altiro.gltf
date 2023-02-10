@@ -1,0 +1,202 @@
+{
+  "asset": {
+    "generator": "Khronos glTF Blender I/O v1.8.19",
+    "version": "2.0"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Scene",
+      "nodes": [
+        0,
+        1
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "altiro.001",
+      "rotation": [
+        0.7071068286895752,
+        0,
+        0,
+        0.7071067094802856
+      ],
+      "scale": [
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513
+      ]
+    },
+    {
+      "mesh": 1,
+      "name": "grifo1.002",
+      "scale": [
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "Porcelana",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0,
+        "roughnessFactor": 0.5
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "Cromado",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5764709711074829,
+          0.5764709711074829,
+          0.5764709711074829,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.021425697952508926
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "altiro.003",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0
+        }
+      ]
+    },
+    {
+      "name": "grifo1.002",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 4,
+            "NORMAL": 5
+          },
+          "indices": 6,
+          "material": 1
+        }
+      ]
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 2882,
+      "max": [
+        389.966796875,
+        471.67559814453125,
+        -0.09960667788982391
+      ],
+      "min": [
+        0.0331878662109375,
+        81.74191284179688,
+        -140.099609375
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 2882,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 2882,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5123,
+      "count": 13728,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 2756,
+      "max": [
+        217.73602294921875,
+        292,
+        220
+      ],
+      "min": [
+        172.73602294921875,
+        0.0000152587890625,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5126,
+      "count": 2756,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5123,
+      "count": 11700,
+      "type": "SCALAR"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 34584,
+      "byteOffset": 0
+    },
+    {
+      "buffer": 0,
+      "byteLength": 34584,
+      "byteOffset": 34584
+    },
+    {
+      "buffer": 0,
+      "byteLength": 23056,
+      "byteOffset": 69168
+    },
+    {
+      "buffer": 0,
+      "byteLength": 27456,
+      "byteOffset": 92224
+    },
+    {
+      "buffer": 0,
+      "byteLength": 33072,
+      "byteOffset": 119680
+    },
+    {
+      "buffer": 0,
+      "byteLength": 33072,
+      "byteOffset": 152752
+    },
+    {
+      "buffer": 0,
+      "byteLength": 23400,
+      "byteOffset": 185824
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "altiro_data.bin",
+      "byteLength": 209224
+    }
+  ]
+}

@@ -28,7 +28,7 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 import { Reflector } from 'three/examples/jsm/objects/Reflector';
 
 const AMBIENT_LIGHT_INTENSITY = 1;
-const SPOT_LIGHT_INTENSITY = 0.5;
+const SPOT_LIGHT_INTENSITY = 0.25;
 const DIRECTIONAL_LIGHT_INTENSITY = 0.5;
 const REFLECTOR_RESOLUTION = 2048;
 const SHADOW_RESOLUTION = 2048;
@@ -167,7 +167,7 @@ export default class Scene3DViewer extends React.Component {
   }
 
   addLightOnTop ( light, scene ) {
-    light.position.y += 351;
+    light.position.y += 250;
     light.position.x -= 5;
 
     //todo showcase purposes
@@ -400,12 +400,12 @@ export default class Scene3DViewer extends React.Component {
 
 
     // //** ADD TEST LIGHT */
-    // this.addLightOnTop(
-    //   new THREE.SpotLight( 'white', SPOT_LIGHT_INTENSITY ),
-    //   // new THREE.PointLight( 'white', 0.5 ),
-    //   // new THREE.DirectionalLight( 'white', 0.5 ),
-    //   this.scene3D
-    // );
+    this.addLightOnTop(
+      new THREE.SpotLight( 'white', SPOT_LIGHT_INTENSITY, undefined, 180 ),
+      // new THREE.PointLight( 'white', 0.5 ),
+      // new THREE.DirectionalLight( 'white', 0.5 ),
+      this.scene3D
+    );
 
     //** EVENT LISTENERS */
     this.mouseDownEvent = ( event ) => {
