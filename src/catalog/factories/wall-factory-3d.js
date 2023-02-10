@@ -373,5 +373,8 @@ export function updatedWall ( element, layer, scene, textures, mesh, oldElement,
 
   if ( differences[ 0 ] == 'selected' ) {
     wall.material.fill( new MeshStandardMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } ), 0, 3 );
+    return;
   }
+
+  return noPerf();
 }
