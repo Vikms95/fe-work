@@ -115,12 +115,17 @@ export function sizeParametricObject3d ( object, element ) {
   let hasMorph = false;
 
   console.log( element );
-  console.log( object );
-  console.log( morph );
 
   morph.forEach( m => {
     if ( m.length >= m.min && m.length <= m.max ) {
-      let value = ( m.length - m.min ) / ( m.max - m.min );
+      let value;
+
+      if ( element.type === "Salgar_Encimera" )
+        value = 1 - ( m.length - m.min ) / ( m.max - m.min );
+      else
+        value = ( m.length - m.min ) / ( m.max - m.min );
+
+
       m.mesh.morphTargetInfluences[ m.idx ] = value;
       hasMorph = true;
     }

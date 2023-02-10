@@ -10,6 +10,9 @@ import { cacheLoadedObjects } from './objects3d-utils';
 import blueTextureFile from '../items/_Victor-Cubo-Azul-Mate/RAL 5017.jpg';
 import woodTextureFile from '../items/_Victor-Cubo-Azul-Mate/34232 Arizona Pine s.jpg';
 import woodRoughnessFile from '../items/_Victor-Cubo-Azul-Mate/34232 Arizona Pine s bump.jpg';
+import intenseTexture from '../items/Salgar_Pilar/textures/Intense.jpg';
+import pureTexture from '../items/Salgar_Pilar/textures/Pure.jpg';
+import realTexture from '../items/Salgar_Pilar/textures/Real.jpg';
 import { Reflector } from 'three/examples/jsm/objects/Reflector';
 
 
@@ -245,6 +248,17 @@ const addRoughnessLook = ( object ) => {
   }
 };
 
+const addTexture = ( object ) => {
+  object.traverse( node => {
+    if ( node.name === 'pilar_moment_1600_2p001' ) {
+      const loader = new THREE.TextureLoader();
+      const colorTexture = loader.load( pureTexture );
+      node.material.map = colorTexture;
+    }
+  } );
+
+};
+
 const mateValues = {
   roughness: 0.75,
   metalness: 0
@@ -280,6 +294,7 @@ export function loadGLTF ( input ) {
           addBrightLook( object, node );
           addHighBrightnessLook( object, node );
           addRoughnessLook( object, node );
+          addTexture( object );
           // addEmissive( object, node );
 
           let boundingBox = new Box3().setFromObject( object );
