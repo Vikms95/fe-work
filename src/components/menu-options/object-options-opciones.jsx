@@ -14,9 +14,54 @@ const STYLE_BREADCRUMB = {
   fontWeigth: '900'
 };
 
+const STYLE_BUTTON = {
+  boxSizing: 'border-box',
+  background: 'white',
+  borderTop: '1px solid' + SharedStyle.PRIMARY_COLOR.master,
+  borderBottom: '1px solid' + SharedStyle.PRIMARY_COLOR.master,
+  borderLeft: 'none',
+  borderRight: 'none',
+  textAlign: 'left',
+  padding: '0.6em 1.2em',
+  fontSize: '12px',
+  fontFamily: 'Calibri'
 
-export function ObjectOptionsOpciones () {
+};
+
+export function ObjectOptionsOpciones ( {
+  propertiesFormData
+} ) {
+
   return (
-    <div style={ { ...STYLE_TITLE_BAR, ...STYLE_BREADCRUMB } }>Opciones</div>
+    <React.Fragment>
+      <div style={ {
+        ...STYLE_TITLE_BAR, ...STYLE_BREADCRUMB
+      } }>
+        Opciones
+      </div>
+
+      { propertiesFormData.entrySeq().map( ( [ propertyName, data ] ) => {
+        if ( propertyName.includes( 'texture' ) ) {
+
+          let configs = data.get( 'configs' );
+
+          return (
+            <button
+              key={ propertyName }
+              className='part-button'
+              style={ {
+                ...STYLE_BUTTON,
+                // borderTop: isFirstKey ? 'none' : '1px solid' + SharedStyle.PRIMARY_COLOR.master,
+                // backgroundColor: selectedPart === propertyName ? 'rgb(220,220,220)' : 'white',
+              } }
+            >
+              { configs.label }
+            </button>
+          );
+        }
+      } )
+      }
+    </React.Fragment>
   );
 }
+

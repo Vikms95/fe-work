@@ -43,8 +43,9 @@ export default function MenuObjectThree ( {
 } ) {
 
   const { catalog } = useContext( Context );
-
   // const texture = textures[element.properties.get( 'textureA' )];
+
+  console.log( element );
 
   return (
     <div style={ STYLE_OBJECT_OPTIONS } >

@@ -4,7 +4,8 @@ import * as SharedStyle from '../../shared-style';
 
 // Imports de imagenes
 import menuIcon from './../../assets/topbar/list_options_menu_icon.png';
-import logoImage from './../../assets/topbar/FOR2HOME.png';
+// import logoImage from './../../assets/topbar/FOR2HOME.png';
+import logoImage from './../../assets/topbar/LogoSalgar.png';
 import profileUserIcon from './../../assets/topbar/account_profile_user_avatar_icon.png';
 import { useAuthenticateUser } from '../../hooks/useAuthenticateUser';
 import { Context } from '../../context/context';

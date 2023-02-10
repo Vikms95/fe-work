@@ -18,7 +18,7 @@ const STYLE_ELEMENT_CONTAINER = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  fontSize: '0.5em',
+  fontSize: '13px',
   rowGap: '0.5em'
 
 };

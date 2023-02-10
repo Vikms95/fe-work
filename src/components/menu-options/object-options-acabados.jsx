@@ -15,9 +15,69 @@ const STYLE_BREADCRUMB = {
   fontWeigth: '900'
 };
 
+const STYLE_BUTTON = {
+  boxSizing: 'border-box',
+  background: 'white',
+  borderTop: '1px solid' + SharedStyle.PRIMARY_COLOR.master,
+  borderBottom: '1px solid' + SharedStyle.PRIMARY_COLOR.master,
+  borderLeft: 'none',
+  borderRight: 'none',
+  textAlign: 'left',
+  padding: '0.6em 1.2em',
+  fontSize: '12px',
+  fontFamily: 'Calibri'
+};
+
 
 export function ObjectOptionsAcabados () {
   return (
-    <div style={ { ...STYLE_TITLE_BAR, ...STYLE_BREADCRUMB } }>Acabados</div>
+    <React.Fragment>
+      <div>
+        <div style={ { ...STYLE_TITLE_BAR, ...STYLE_BREADCRUMB } }>Acabados</div>
+      </div>
+
+      <button
+        className='part-button'
+        style={ {
+          ...STYLE_BUTTON,
+          // borderTop: isFirstKey ? 'none' : '1px solid' + SharedStyle.PRIMARY_COLOR.master,
+        } }
+      >
+        Universal Texturas
+      </button>
+
+      <button
+        className='part-button'
+        style={ {
+          ...STYLE_BUTTON,
+          // borderTop: isFirstKey ? 'none' : '1px solid' + SharedStyle.PRIMARY_COLOR.master,
+          paddingLeft: '2em'
+        } }
+      >
+        Colores Lisos
+      </button>
+
+      <button
+        className='part-button'
+        style={ {
+          ...STYLE_BUTTON,
+          // borderTop: isFirstKey ? 'none' : '1px solid' + SharedStyle.PRIMARY_COLOR.master,
+          paddingLeft: '4em'
+        } }
+      >
+        RAL
+      </button>
+
+      <button
+        className='part-button'
+        style={ {
+          ...STYLE_BUTTON,
+          // borderTop: isFirstKey ? 'none' : '1px solid' + SharedStyle.PRIMARY_COLOR.master,
+          paddingLeft: '4em'
+        } }
+      >
+        Pantone
+      </button>
+    </React.Fragment>
   );
 }

@@ -710,7 +710,7 @@ export default class ElementEditor extends Component {
         <div style={ { marginTop: '6px' } }>
           <div>
             {/* { element.prototype === 'lines' && ( */ }
-            <React.Fragment>
+            {/* <React.Fragment>
               <div
                 onClick={ showAndHideAcabado }
                 style={ { display: 'flex', justifyItems: 'center', height: '25px', width: '5.5em', cursor: 'pointer', paddingBottom: '34px' } }>
@@ -724,8 +724,7 @@ export default class ElementEditor extends Component {
               <div id={ 'panelAcabado' }
                 style={ ( this.state.isSelectAcabado )
                   ? { display: 'block', width: '100%', height: '100%', paddingBottom: '10px' }
-                  : { /*width: '100%', height: '100%', */ display: 'none' } }>
-
+                  : { width: '100%', height: '100%', display: 'none'; } }>
 
                 { propertiesFormData.entrySeq()
                   .map( ( [ propertyName, data ] ) => {
@@ -749,7 +748,7 @@ export default class ElementEditor extends Component {
                   } )
                 }
               </div>
-            </React.Fragment>
+            </React.Fragment> */}
             {/* ) } */ }
 
 
@@ -765,7 +764,12 @@ export default class ElementEditor extends Component {
 
 
 
-              <img style={ { height: '0.70em', marginLeft: '1.6em', marginTop: '1px' } } src={ flecha } />
+              <img style={ {
+                height: '0.4em',
+                marginLeft: '0.5em',
+                marginTop: '5px'
+              } }
+                src={ flechaIco } />
             </div>
 
             { this.state.isOptionsMenuActive && (

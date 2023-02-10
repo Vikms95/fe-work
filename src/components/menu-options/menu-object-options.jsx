@@ -46,7 +46,9 @@ const STYLE_BUTTON = {
   borderRight: 'none',
   textAlign: 'left',
   padding: '0.6em 1.2em',
-  fontSize: '8px'
+  fontSize: '12px',
+  fontFamily: 'Calibri'
+
 };
 
 export default function MenuObjectOptions ( {
@@ -73,12 +75,12 @@ export default function MenuObjectOptions ( {
 
           return (
             <button
+              key={ propertyName }
               className='part-button'
               style={ {
                 ...STYLE_BUTTON,
                 borderTop: isFirstKey ? 'none' : '1px solid' + SharedStyle.PRIMARY_COLOR.master,
-                backgroundColor: selectedPart === propertyName && 'rgb(220,220,220)',
-                fontFamily: 'Calibri'
+                backgroundColor: selectedPart === propertyName ? 'rgb(220,220,220)' : 'white',
               } }
               onClick={ () => setSelectedPart( propertyName ) }
             >
@@ -90,7 +92,9 @@ export default function MenuObjectOptions ( {
       } ) }
 
       <ObjectOptionsAcabados></ObjectOptionsAcabados>
-      <ObjectOptionsOpciones></ObjectOptionsOpciones>
+      <ObjectOptionsOpciones
+        propertiesFormData={ propertiesFormData }
+      />
 
 
     </div>
