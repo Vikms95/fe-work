@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as SharedStyle from '../../shared-style';
-import imageFurniture from './Fussion_Chrome_800_2_cajones.jpg';
 import { ObjectOptionsAcabados } from './object-options-acabados';
 import { ObjectOptionsOpciones } from './object-options-opciones';
+import { ObjectOptionsActions } from './object-options-actions';
 
 
 const STYLE_OBJECT_OPTIONS = {
@@ -91,10 +91,11 @@ export default function MenuObjectOptions ( {
         }
       } ) }
 
-      <ObjectOptionsAcabados></ObjectOptionsAcabados>
+      <ObjectOptionsAcabados />
       <ObjectOptionsOpciones
         propertiesFormData={ propertiesFormData }
       />
+      <ObjectOptionsActions />
 
 
     </div>

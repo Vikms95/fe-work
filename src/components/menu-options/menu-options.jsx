@@ -15,7 +15,7 @@ const STYLE_OPTIONS = {
   minHeight: '35em',
   minWidth: '60em',
   display: 'grid',
-  gridTemplateColumns: '1fr 4fr'
+  gridTemplateColumns: '1fr 3fr'
 };
 
 
@@ -36,27 +36,27 @@ export default function MenuOptions ( {
     } );
   }, [] );
 
-return (
-  <div id={ 'options' } style={ STYLE_WRAPPER }
-  >
-    <div style={ STYLE_OPTIONS }>
-      <MenuObjectOptions
-        name={ element.name }
-        image={ element.image }
-        propertiesFormData={ propertiesFormData }
-        selectedPart={ selectedPart }
-        setSelectedPart={ setSelectedPart }
-      />
+  return (
+    <div id={ 'options' } style={ STYLE_WRAPPER }
+    >
+      <div style={ STYLE_OPTIONS }>
+        <MenuObjectOptions
+          name={ element.name }
+          image={ element.image }
+          propertiesFormData={ propertiesFormData }
+          selectedPart={ selectedPart }
+          setSelectedPart={ setSelectedPart }
+        />
 
-      <MenuObjectThree
-        state={ state }
-        element={ element }
-        selectedPart={ selectedPart }
-        propertiesFormData={ propertiesFormData }
-        updateProperty={ updateProperty }
-        closeOptionsMenu={ closeOptionsMenu }
-      />
+        <MenuObjectThree
+          state={ state }
+          element={ element }
+          selectedPart={ selectedPart }
+          propertiesFormData={ propertiesFormData }
+          updateProperty={ updateProperty }
+          closeOptionsMenu={ closeOptionsMenu }
+        />
+      </div>
     </div>
-  </div>
-);
+  );
 };

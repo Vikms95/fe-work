@@ -7,7 +7,7 @@ import realTexture from './textures/Real.jpg';
 import intenseTexture from './textures/Intense.jpg';
 
 const STYLE_TEXTURES_THREE = {
-  margin: '2em',
+  margin: '2em 1.5em ',
   display: 'flex',
   // gridTemplateColumns: 'repeat(auto-fill, minmax(2rem, 1fr))'
   flexWrap: 'wrap',
@@ -26,8 +26,8 @@ const STYLE_ELEMENT_CONTAINER = {
 };
 
 const STYLE_THREE_ELEMENT = {
-  height: '165px',
-  width: '165px',
+  height: '125px',
+  width: '125px',
   outline: '1px solid black',
 };
 
