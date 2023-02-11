@@ -32,6 +32,34 @@ const STYLE_BUTTON_CLOSE = {
   cursor: 'pointer'
 };
 
+const STYLE_THREE_BUTTONS_CONTAINER = {
+  margin: '1.5em',
+  marginTop: 'auto',
+  display: 'flex',
+  gap: '20px',
+  justifyContent: 'flex-end',
+  alignSelf: 'flex-end'
+};
+
+const STYLE_CONFIRM_BUTTON = {
+  backgroundColor: SharedStyle.PRIMARY_COLOR.master,
+  color: 'white',
+  border: '1px solid transparent',
+  fontSize: '12px',
+  padding: '0.3em 2.5em',
+  fontWeight: '400',
+  cursor: 'pointer'
+};
+
+const STYLE_CANCEL_BUTTON = {
+  backgroundColor: 'white',
+  color: SharedStyle.PRIMARY_COLOR.master,
+  border: '1.25px solid ' + SharedStyle.PRIMARY_COLOR.master,
+  fontSize: '12px',
+  padding: '0.3em 2em',
+  fontWeight: '400',
+  cursor: 'pointer'
+};
 
 export default function MenuObjectThree ( {
   element,
@@ -52,21 +80,35 @@ export default function MenuObjectThree ( {
         <img style={ STYLE_BUTTON_CLOSE } src={ close } onClick={ closeOptionsMenu } />
       </div>
 
-      { propertiesFormData.entrySeq().map( ( [ propertyName, data ] ) => {
-        if ( propertyName === selectedPart ) {
-          return (
-            <MenuPropertyThree
-              key={ propertyName }
-              element={ element }
-              propertyName={ propertyName }
-              data={ data }
-              updateProperty={ updateProperty }
-            />
-          );
+      <div>
+        { propertiesFormData.entrySeq().map( ( [ propertyName, data ] ) => {
+          if ( propertyName === selectedPart ) {
+            return (
+              <MenuPropertyThree
+                key={ propertyName }
+                element={ element }
+                propertyName={ propertyName }
+                data={ data }
+                updateProperty={ updateProperty }
+              />
+            );
+          }
+        } ) }
+      </div>
 
+      <div style={ STYLE_THREE_BUTTONS_CONTAINER }>
+        <div>
+          <button
+            style={ STYLE_CONFIRM_BUTTON }
+            onClick={ closeOptionsMenu }
+          >OK</button>
 
-        }
-      } ) }
+          <button
+            style={ { ...STYLE_CANCEL_BUTTON, marginLeft: '1.5em' } }
+            onClick={ closeOptionsMenu }
+          >Cancelar</button>
+        </div>
+      </div>
 
     </div>
 

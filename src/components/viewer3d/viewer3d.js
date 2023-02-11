@@ -137,18 +137,17 @@ export default class Scene3DViewer extends React.Component {
     const aspectRatio = this.width / this.height;
     this.camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
 
-
     if ( cacheCameraPosition instanceof Vector3 ) {
       const { x, y, z } = cacheCameraPosition;
       this.camera.position.set( x, y, z );
 
     } else {
 
-      const cameraPositionX = - ( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 2;
-      const cameraPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) / 2 * 10;
-      const cameraPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 2;
+      const initialPositionX = - ( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 10;
+      const initialPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) * 300;
+      const initialPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 10;
 
-      this.camera.position.set( cameraPositionX, cameraPositionY, cameraPositionZ );
+      this.camera.position.set( initialPositionX, initialPositionY, initialPositionZ );
       this.camera.up = new THREE.Vector3( 0, 1, 0 );
 
     }
@@ -256,7 +255,7 @@ export default class Scene3DViewer extends React.Component {
 
   onResize () {
     let resolutionScale = Math.max( 1 / window.devicePixelRatio, 0.5 );
-    // update rendering resolution
+
     const w = window.innerWidth;
     const h = window.innerHeight;
     const scale = resolutionScale;

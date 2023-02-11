@@ -16,10 +16,10 @@ import realTexture from '../items/Salgar_Pilar/textures/Real.jpg';
 import { Reflector } from 'three/examples/jsm/objects/Reflector';
 
 
-const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256,
+const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 1024,
   {
-    generateMipmaps: true,
-    magFilter: THREE.NearestFilter,
+    // generateMipmaps: true,
+    // magFilter: THREE.NearestFilter,
     encoding: THREE.sRGBEncoding
   }
 );
@@ -74,12 +74,15 @@ const addPorcelainLook = ( object, node ) => {
     case 'Porcelana.001':
     case 'Blanco Brillo':
     case 'Porcelana':
+    case 'Sanitary_Bath-Spas_Roca_BEYOND-SURFEXR-oval-bathtub-with-dr_1':
     case 'SolidSurface':
+    case 'MineralMarmo':
       const newMaterial = new MeshPhysicalMaterial( {
         envMap: cubeRenderTarget.texture,
+        envMapIntensity: 0.1,
         roughness: 0.4,
         metalness: 0,
-        clearcoat: 1,
+        // clearcoat: 1,
       } );
       node.material = newMaterial;
   }
@@ -109,6 +112,7 @@ const enableMeshCastAndReceiveShadow = ( object ) => {
 
 const addGlassLook = ( object, node ) => {
   if ( node.material.name === 'Cristal Mampara' || node.material.name === 'Cristal' ) {
+    console.log( "hi" );
     const newMaterial = new MeshStandardMaterial( {
       roughness: 0.25,
       metalness: 0,
@@ -132,16 +136,32 @@ const addEmissive = ( object, node ) => {
 
 
 const addChromeLook = ( object, node ) => {
-  if ( node.material.name === 'Cromado' || node.material.name === 'Perfil' ) {
-    const newMaterial = new MeshStandardMaterial( {
-      envMap: cubeRenderTarget.texture,
-      roughness: 0,
-      metalness: 1,
+  switch ( node.material.name ) {
+    case 'Cromado':
+    case 'Sanitary_Bath-Spas_Roca_BEYOND-SURFEXR-oval-bathtub-with-dr_2': {
+      const newMaterial = new MeshStandardMaterial( {
+        envMap: cubeRenderTarget.texture,
+        roughness: 0.18,
+        metalness: 1,
 
-    } );
+      } );
+      node.material = newMaterial;
+      break;
+    }
+    case 'Perfil': {
+      const newMaterial = new MeshStandardMaterial( {
+        envMap: cubeRenderTarget.texture,
+        roughness: 0.13,
+        metalness: 1,
 
-    node.material = newMaterial;
+      } );
+      node.material = newMaterial;
+      break;
+    }
+    
+
   }
+
 };
 
 const addMirrorLook = ( object, node ) => {
