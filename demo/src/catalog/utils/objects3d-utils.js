@@ -114,7 +114,6 @@ export function sizeParametricObject3d ( object, element ) {
   let morph = getMorphObject3d( object, element );
   let hasMorph = false;
 
-  console.log( element );
 
   morph.forEach( m => {
     if ( m.length >= m.min && m.length <= m.max ) {

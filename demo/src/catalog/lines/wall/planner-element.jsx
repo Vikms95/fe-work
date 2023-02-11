@@ -1,5 +1,7 @@
 import { ElementsFactories } from 'react-planner';
 
+console.log( 'hola', ElementsFactories.WallFactory );
+
 const info = {
   title: 'wall',
   tag: [ 'wall' ],

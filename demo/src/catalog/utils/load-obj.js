@@ -294,7 +294,7 @@ export function loadGLTF ( input ) {
           addBrightLook( object, node );
           addHighBrightnessLook( object, node );
           addRoughnessLook( object, node );
-          addTexture( object );
+          // addTexture( object );
           // addEmissive( object, node );
 
           let boundingBox = new Box3().setFromObject( object );

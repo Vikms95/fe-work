@@ -86,7 +86,6 @@ function createLayerObjects ( layer, planData, sceneData, actions, catalog ) {
 }
 
 export function updateScene ( planData, sceneData, oldSceneData, diffArray, actions, catalog ) {
-  console.log( 'updatescene' );
   let splitted = diffArray.map( el => { return { op: el.op, path: el.path.split( '/' ), value: el.value }; } );
   let filteredDiffs = filterDiffs( splitted, sceneData, oldSceneData );
 
@@ -103,6 +102,7 @@ export function updateScene ( planData, sceneData, oldSceneData, diffArray, acti
 
       if ( path.length === 3 && op === 'remove' ) {
         removeLayer( path[ 2 ], planData );
+
       } else if ( path.length > 3 ) {
         switch ( op ) {
           case 'replace':
@@ -255,9 +255,9 @@ function replaceObject ( modifiedPath, layer, planData, actions, sceneData, oldS
       break;
     case 'items':
       let item = layer.getIn( [ 'items', modifiedPath[ 4 ] ] );
+      console.log( item );
 
       if ( catalog.getElement( item.type ).updateRender3D ) {
-        console.log( 'additemreplace1' );
         promises.push(
           updateItem(
             sceneData,
@@ -275,7 +275,6 @@ function replaceObject ( modifiedPath, layer, planData, actions, sceneData, oldS
       }
       else {
         removeItem( planData, layer.id, modifiedPath[ 4 ] );
-        console.log( 'additemreplace2' );
         promises.push( addItem( sceneData, planData, layer, modifiedPath[ 4 ], catalog, actions.itemsActions ) );
       }
       break;
@@ -294,7 +293,6 @@ function replaceObject ( modifiedPath, layer, planData, actions, sceneData, oldS
       }
 
       break;
-
     case 'opacity':
     case 'altitude':
       let layerGraph = planData.sceneGraph.layers[ layer.id ];
@@ -306,6 +304,7 @@ function replaceObject ( modifiedPath, layer, planData, actions, sceneData, oldS
       promises = promises.concat( createLayerObjects( layer, planData, sceneData, actions, catalog ) );
 
   }
+
   Promise.all( promises ).then( values => updateBoundingBox( planData ) );
 }
 
@@ -675,9 +674,6 @@ function updateArea ( sceneData, oldSceneData, planData, layer, areaID, differen
 }
 
 function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
-  console.log( 'additem' );
-
-
   let item = layer.getIn( [ 'items', itemID ] );
   let itemAltitude = item.properties.getIn( [ 'altitude', 'length' ] );
 

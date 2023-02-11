@@ -45,8 +45,6 @@ export default function MenuObjectThree ( {
   const { catalog } = useContext( Context );
   // const texture = textures[element.properties.get( 'textureA' )];
 
-  console.log( element );
-
   return (
     <div style={ STYLE_OBJECT_OPTIONS } >
       <div style={ { ...STYLE_TITLE_BAR, ...STYLE_BREADCRUMB } }>
@@ -58,6 +56,7 @@ export default function MenuObjectThree ( {
         if ( propertyName === selectedPart ) {
           return (
             <MenuPropertyThree
+              key={ propertyName }
               propertyName={ propertyName }
               data={ data }
               updateProperty={ updateProperty }

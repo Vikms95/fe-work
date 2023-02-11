@@ -1,12 +1,15 @@
-import { BoxHelper, Box3, ObjectLoader, Object3D, Mesh } from 'three';
+import { TextureLoader, RepeatWrapping, BoxHelper, Box3, ObjectLoader, Object3D, Mesh } from 'three';
 import { loadGLTF } from '../../utils/load-obj';
 import { getObject3d, selectedObject3d, sizeParametricObject3d, cacheLoadedObjects, cacheLoadingObjects, repeatTexturesOnMorph } from '../../utils/objects3d-utils';
 import path from 'path';
 import convert from 'convert-units';
 import { render2DSimple } from '../../utils/objects2d-utils';
 
+import pureTexture from './textures/Pure.jpg';
+import realTexture from './textures/Real.jpg';
+import intenseTexture from './textures/Intense.jpg';
+
 import React from 'react';
-import { object } from 'prop-types';
 
 const glb = require( './pilar moment 1600 2p.glb' );
 
@@ -85,6 +88,16 @@ export default {
         length: 33,
         unit: 'cm'
       }
+    },
+    texture: {
+      label: 'Textura',
+      type: 'enum',
+      defaultValue: './textures/Pure.jpg',
+      values: {
+        'pure': 'Pure',
+        'intense': 'Intense',
+        'real': 'Real',
+      }
     }
   },
 
@@ -108,6 +121,31 @@ export default {
   updateRender3D: ( element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild ) => {
     let noPerf = () => { selfDestroy(); return selfBuild(); };
 
+    if ( differences.indexOf( 'texture' ) !== -1 ) {
+      let texture;
+      const loader = new TextureLoader();
+      const textureProperty = element.getIn( [ 'properties', 'texture' ] );
+
+      switch ( textureProperty ) {
+        case 'real':
+          texture = loader.load( realTexture ); break;
+        case 'pure':
+          texture = loader.load( pureTexture ); break;
+        case 'intense':
+          texture = loader.load( intenseTexture ); break;
+      }
+
+      texture.wrapS = RepeatWrapping;
+      texture.wrapT = RepeatWrapping;
+
+      mesh.traverse( node => {
+        if ( node instanceof Mesh )
+          node.material.map = texture;
+      } );
+
+      return Promise.resolve( mesh );
+    }
+
     if ( differences.indexOf( 'rotation' ) !== -1 ) {
       mesh.rotation.y = element.rotation * Math.PI / 180;
       return Promise.resolve( mesh );
@@ -116,6 +154,7 @@ export default {
     if ( differences.indexOf( 'altitude' ) !== -1 ) {
       mesh.position.y = element.properties.getIn( [ 'altitude', 'length' ] );
     }
+
 
     if ( sizeParametricObject3d( mesh, element ) ) {
       // repeatTexturesOnMorph( mesh );
