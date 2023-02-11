@@ -2,7 +2,9 @@ import React from 'react';
 import * as SharedStyle from '../../shared-style';
 import bricks from './textures/bricks.jpg';
 import Mosaico from './textures/Mosaico Zen Blanco.jpg';
-// import painted from './RAL 5017.jpg';
+import pureTexture from './textures/Pure.jpg';
+import realTexture from './textures/Real.jpg';
+import intenseTexture from './textures/Intense.jpg';
 
 const STYLE_TEXTURES_THREE = {
   margin: '2em',
@@ -29,19 +31,34 @@ const STYLE_THREE_ELEMENT = {
   outline: '1px solid black',
 };
 
-const textures = [
+const wallTextures = [
   bricks,
   Mosaico,
 ];
 
+const areaTextures = [
+  bricks,
+  Mosaico,
+];
+
+const itemTextures = [
+  pureTexture,
+  intenseTexture,
+  realTexture,
+];
+
 export default function MenuPropertyThree ( {
   propertyName,
+  element,
   data,
   updateProperty
 } ) {
 
-  let configs = data.get( 'configs' );
-  let currentValue = data.get( 'currentValue' );
+  const proto = element.get( 'prototype' );
+  const configs = data.get( 'configs' );
+  const currentValue = data.get( 'currentValue' );
+
+  console.log( proto );
 
   return (
     <div style={ STYLE_TEXTURES_THREE } className='options-three'>
@@ -55,13 +72,44 @@ export default function MenuPropertyThree ( {
               } }
               onClick={ () => updateProperty( propertyName, value ) }
             >
-              <img
-                src={ textures[ index ] }
-                style={ {
-                  ...STYLE_THREE_ELEMENT,
-                  outline: value === currentValue && '5px solid' + SharedStyle.PRIMARY_COLOR.master
-                } }
-              />
+              { proto === 'items' && (
+                <img
+                  src={
+                    itemTextures[ index ]
+                  }
+                  style={ {
+                    ...STYLE_THREE_ELEMENT,
+                    outline: value === currentValue && '5px solid' + SharedStyle.PRIMARY_COLOR.master
+                  } }
+                />
+
+              ) }
+              { proto === 'lines' && (
+                <img
+                  src={
+                    wallTextures[ index ]
+                  }
+                  style={ {
+                    ...STYLE_THREE_ELEMENT,
+                    outline: value === currentValue && '5px solid' + SharedStyle.PRIMARY_COLOR.master
+                  } }
+                />
+
+              ) }
+              { proto === 'areas' && (
+                <img
+                  src={
+                    areaTextures[ index ]
+                  }
+                  style={ {
+                    ...STYLE_THREE_ELEMENT,
+                    outline: value === currentValue && '5px solid' + SharedStyle.PRIMARY_COLOR.master
+                  } }
+                />
+
+              ) }
+
+
               <div> { name } </div>
             </div>
           );

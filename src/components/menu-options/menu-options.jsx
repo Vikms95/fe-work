@@ -29,27 +29,34 @@ export default function MenuOptions ( {
 
   const [ selectedPart, setSelectedPart ] = useState();
 
-  return (
-    <div id={ 'options' } style={ STYLE_WRAPPER }
-    >
-      <div style={ STYLE_OPTIONS }>
-        <MenuObjectOptions
-          name={ element.name }
-          image={ element.image }
-          propertiesFormData={ propertiesFormData }
-          selectedPart={ selectedPart }
-          setSelectedPart={ setSelectedPart }
-        />
+  useEffect( () => {
+    propertiesFormData.entrySeq().forEach( ( [ propertyName, data ] ) => {
+      if ( propertyName.includes( 'texture' ) )
+        setSelectedPart( propertyName );
+    } );
+  }, [] );
 
-        <MenuObjectThree
-          state={ state }
-          element={ element }
-          selectedPart={ selectedPart }
-          propertiesFormData={ propertiesFormData }
-          updateProperty={ updateProperty }
-          closeOptionsMenu={ closeOptionsMenu }
-        />
-      </div>
+return (
+  <div id={ 'options' } style={ STYLE_WRAPPER }
+  >
+    <div style={ STYLE_OPTIONS }>
+      <MenuObjectOptions
+        name={ element.name }
+        image={ element.image }
+        propertiesFormData={ propertiesFormData }
+        selectedPart={ selectedPart }
+        setSelectedPart={ setSelectedPart }
+      />
+
+      <MenuObjectThree
+        state={ state }
+        element={ element }
+        selectedPart={ selectedPart }
+        propertiesFormData={ propertiesFormData }
+        updateProperty={ updateProperty }
+        closeOptionsMenu={ closeOptionsMenu }
+      />
     </div>
-  );
-}
+  </div>
+);
+};

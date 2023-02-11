@@ -286,6 +286,7 @@ export default class Scene3DViewer extends React.Component {
   }
 
   addGridToScene () {
+    if ( this.scene3D === null || this.scene3D === undefined ) return;
     let isGrid = false;
 
     this.scene3D.traverse( child => {
@@ -307,6 +308,7 @@ export default class Scene3DViewer extends React.Component {
   }
 
   removeGridFromScene () {
+    if ( this.scene3D === null || this.scene3D === undefined ) return;
 
     this.scene3D.traverse( child => {
       if ( child.name === 'grid' ) {
@@ -321,8 +323,8 @@ export default class Scene3DViewer extends React.Component {
     if ( this.ptRenderer === null || this.ptMaterial === null ) {
       this.setupPathTracing();
     }
-
     this.removeGridFromScene();
+
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
     if ( this.props.isPathTracing ) this.ptRenderer.update();

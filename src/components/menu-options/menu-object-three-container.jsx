@@ -57,6 +57,7 @@ export default function MenuObjectThree ( {
           return (
             <MenuPropertyThree
               key={ propertyName }
+              element={ element }
               propertyName={ propertyName }
               data={ data }
               updateProperty={ updateProperty }
