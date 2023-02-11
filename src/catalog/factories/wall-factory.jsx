@@ -131,6 +131,8 @@ export default function WallFactory ( name, info, textures ) {
       textureValues[ textureName ] = textures[ textureName ].name;
     }
 
+    console.log( 'textvalues', textureValues );
+
     wallElement.properties.textureA = {
       label: 'Textura' + ' A',
       type: 'enum',

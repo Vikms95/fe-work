@@ -95,7 +95,7 @@ export default {
     texture: {
       label: 'Textura',
       type: 'enum',
-      defaultValue: './textures/Pure.jpg',
+      defaultValue: { 'pure': 'Pure' },
       values: {
         'pure': 'Pure',
         'intense': 'Intense',

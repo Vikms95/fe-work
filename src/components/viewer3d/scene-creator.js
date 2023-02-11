@@ -3,9 +3,12 @@ import createGrid from './grid-creator';
 import { disposeObject } from './three-memory-cleaner';
 import { verticesDistance, angleVector } from '../../utils/geometry';
 import { Line, Hole } from '../../class/export';
+import pureTexture from './textures/Pure.jpg';
+import intenseTexture from './textures/Intense.jpg';
+import realTexture from './textures/Real.jpg';
+import { Map } from 'immutable';
 
 export function parseData ( state, sceneData, actions, catalog ) {
-  console.log( 'parsedata' );
   let planData = {};
 
   planData.sceneGraph = {
@@ -620,7 +623,6 @@ function updateLine ( sceneData, oldSceneData, planData, layer, lineID, differen
   let oldLine = oldSceneData.getIn( [ 'layers', layer.id, 'lines', lineID ] );
   let mesh = planData.sceneGraph.layers[ layer.id ].lines[ lineID ];
 
-  console.log( 'mesh', mesh );
   if ( !mesh ) return null;
 
   return catalog.getElement( line.type ).updateRender3D( line, layer, sceneData, mesh, oldLine, differences, selfDestroy, selfBuild );
@@ -675,42 +677,74 @@ function updateArea ( sceneData, oldSceneData, planData, layer, areaID, differen
 
 function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
   let item = layer.getIn( [ 'items', itemID ] );
-  let itemAltitude = item.properties.getIn( [ 'altitude', 'length' ] );
 
-  return catalog.getElement( item.type ).render3D( item, layer, sceneData ).then( item3D => {
+  return catalog.getElement( item.type )
+    .render3D( item, layer, sceneData )
+    .then( item3D => {
 
-    if ( item3D instanceof Three.LOD ) {
-      planData.sceneGraph.LODs[ itemID ] = item3D;
-    }
+      if ( item3D instanceof Three.LOD )
+        planData.sceneGraph.LODs[ itemID ] = item3D;
 
-    let pivot = new Three.Object3D();
-    pivot.name = 'pivot';
-    pivot.add( item3D );
-
-    //pivot.rotation.y = item.rotation * Math.PI / 180;
-    //pivot.rotation.y = item.rotation;
-    pivot.rotation.y = ( item.rotation == 0 ) ? item.rotation : item.rotation * Math.PI / 180;
-    pivot.position.x = item.x; // Items had a slight offset to the x axis
-    pivot.position.y = itemAltitude + layer.altitude;
-    pivot.position.z = -item.y;
+      let pivot = new Three.Object3D();
+      pivot.name = 'pivot';
+      pivot.add( item3D );
 
 
+      const altitudeProperty = item.properties.getIn( [ 'altitude', 'length' ] );
+      //pivot.rotation.y = item.rotation * Math.PI / 180;
+      //pivot.rotation.y = item.rotation;
+      pivot.rotation.y = ( item.rotation == 0 ) ? item.rotation : item.rotation * Math.PI / 180;
+      pivot.position.x = item.x;
+      pivot.position.y = altitudeProperty + layer.altitude;
+      pivot.position.z = -item.y;
 
-    applyInteract( item3D, () => {
-      itemsActions.selectItem( layer.id, item.id );
-    }
-    );
 
-    let opacity = layer.opacity;
-    if ( item.selected ) {
-      opacity = 1;
-    }
+      //** Añadido de texturas para la demo, refactorizar */
+      let textureValue;
+      textureValue = item.properties.get( 'texture' );
 
-    applyOpacity( pivot, opacity );
+      if ( Map.isMap( textureValue ) ) {
+        const { 0: text } = textureValue.keySeq().toArray();
+        textureValue = text;
+      }
 
-    planData.plan.add( pivot );
-    planData.sceneGraph.layers[ layer.id ].items[ item.id ] = pivot;
-  } );
+      if ( textureValue ) {
+        let texture;
+        const loader = new Three.TextureLoader();
+
+        switch ( textureValue ) {
+          case 'real':
+            texture = loader.load( realTexture ); break;
+          case 'pure':
+            texture = loader.load( pureTexture ); break;
+          case 'intense':
+            texture = loader.load( intenseTexture ); break;
+        }
+
+        texture.wrapS = Three.RepeatWrapping;
+        texture.wrapT = Three.RepeatWrapping;
+
+        pivot.traverse( node => {
+          if ( node instanceof Three.Mesh )
+            node.material.map = texture;
+        } );
+      }
+
+
+      applyInteract( item3D, () => {
+        itemsActions.selectItem( layer.id, item.id );
+      }
+      );
+
+      let opacity = layer.opacity;
+      if ( item.selected )
+        opacity = 1;
+
+      applyOpacity( pivot, opacity );
+
+      planData.plan.add( pivot );
+      planData.sceneGraph.layers[ layer.id ].items[ item.id ] = pivot;
+    } );
 
 }
 
