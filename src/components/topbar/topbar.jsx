@@ -30,8 +30,9 @@ const STYLE_MENU = {
 };
 
 const STYLE_LOGO = {
-  marginLeft: '11em',
-  marginBottom: '10px',
+  height: '30px',
+  marginLeft: '80px',
+  marginBottom: '13px',
 };
 
 const STYLE_USER = {
@@ -88,8 +89,10 @@ export default function Topbar ( { state } ) {
 
   return (
     <aside style={ STYLE_TOPBAR }>
-      <img onClick={ showMenuPreferencias } style={ STYLE_MENU } src={ menuIcon } />
-      <img style={ STYLE_LOGO } src={ logoImage } />
+      <div>
+        <img onClick={ showMenuPreferencias } style={ STYLE_MENU } src={ menuIcon } />
+        <img style={ STYLE_LOGO } src={ logoImage } />
+      </div>
       <div style={ STYLE_USER }>
         <p style={ STYLE_USER_NAME }>{ nombre }</p>
         <img style={ STYLE_USER_AVATAR } src={ profileUserIcon } onClick={ showLogin } />
@@ -147,8 +150,8 @@ export default function Topbar ( { state } ) {
 //     return (
 //       <aside style={ STYLE_TOPBAR }>
 //         <img onClick={ showMenuPreferenciar } style={ STYLE_MENU } src={ menuIcon } />
-//         <img style={ STYLE_LOGO } src={ logoImage } />
-//         <div style={ STYLE_USER }>
+//         <img style={ STYLE_LOGO } src
+//         <div style={ STYLE_USE80px }>
 //           <p style={ STYLE_USER_NAME }>{ this.state.nombre }</p>
 //           <img style={ STYLE_USER_AVATAR } src={ profileUserIcon } onClick={ showLogin } />
 //         </div>
