@@ -1,7 +1,5 @@
 import { ElementsFactories } from 'react-planner';
 
-console.log( 'hola', ElementsFactories.WallFactory );
-
 const info = {
   title: 'wall',
   tag: [ 'wall' ],
@@ -14,32 +12,97 @@ const info = {
 };
 
 const textures = {
-  bricks: {
-    name: 'Bricks',
-    uri: require( './textures/bricks.jpg' ),
-    lengthRepeatScale: 0.002,
-    heightRepeatScale: 0.009,
-    normal: {
-      //TODO buscar como aplicar esta propiedad al resto de objetos
-      uri: require( './textures/bricks-normal.jpg' ),
-      lengthRepeatScale: 0.02,
-      heightRepeatScale: 0.02,
-      normalScaleX: 0.4,
-      normalScaleY: 0.4
-    }
+  bohemianBlue: {
+    name: 'Bohemian Blue',
+    uri: require( './textures/Bohemian Blue.jpg' ),
+    lengthRepeatScale: 0.02,
+    heightRepeatScale: 0.02,
+    // normal: {
+    //   //TODO buscar como aplicar esta propiedad al resto de objetos
+    //   uri: require( './textures/bricks-normal.jpg' ),
+    //   lengthRepeatScale: 0.02,
+    //   heightRepeatScale: 0.02,
+    //   normalScaleX: 0.4,
+    //   normalScaleY: 0.4
+    // }
   },
-  painted: {
-    name: 'Painted',
-    uri: require( './textures/painted.jpg' ),
-    lengthRepeatScale: 0.07,
-    heightRepeatScale: 0.07,
-    normal: {
-      uri: require( './textures/painted-normal.jpg' ),
-      lengthRepeatScale: 0.005,
-      heightRepeatScale: 0.005,
-      normalScaleX: 0.4,
-      normalScaleY: 0.4
-    }
+  greenMosaic: {
+    name: 'Green Mosaic',
+    uri: require( './textures/Green Mosaic.jpg' ),
+    lengthRepeatScale: 0.02,
+    heightRepeatScale: 0.02,
+    // normal: {
+    //   uri: require( './textures/painted-normal.jpg' ),
+    //   lengthRepeatScale: 0.005,
+    //   heightRepeatScale: 0.005,
+    //   normalScaleX: 0.4,
+    //   normalScaleY: 0.4
+    // }
+  },
+  green: {
+    name: 'Green',
+    uri: require( './textures/Green.jpg' ),
+    lengthRepeatScale: 0.0075,
+    heightRepeatScale: 0.0075,
+    // normal: {
+    //   uri: require( './textures/painted-normal.jpg' ),
+    //   lengthRepeatScale: 0.005,
+    //   heightRepeatScale: 0.005,
+    //   normalScaleX: 0.4,
+    //   normalScaleY: 0.4
+    // }
+  },
+  marmol: {
+    name: 'Marmol',
+    uri: require( './textures/Marmol.jpg' ),
+    lengthRepeatScale: 0.004,
+    heightRepeatScale: 0.004,
+    // normal: {
+    //   uri: require( './textures/painted-normal.jpg' ),
+    //   lengthRepeatScale: 0.005,
+    //   heightRepeatScale: 0.005,
+    //   normalScaleX: 0.4,
+    //   normalScaleY: 0.4
+    // }
+  },
+  greenMosaic: {
+    name: 'Green Mosaic',
+    uri: require( './textures/Green Mosaic.jpg' ),
+    lengthRepeatScale: 0.02,
+    heightRepeatScale: 0.02,
+    // normal: {
+    //   uri: require( './textures/painted-normal.jpg' ),
+    //   lengthRepeatScale: 0.005,
+    //   heightRepeatScale: 0.005,
+    //   normalScaleX: 0.4,
+    //   normalScaleY: 0.4
+    // }
+  },
+  ral5010: {
+    name: 'RAL 5010',
+    uri: require( './textures/RAL 5010.jpg' ),
+    lengthRepeatScale: 0.02,
+    heightRepeatScale: 0.02,
+    // normal: {
+    //   uri: require( './textures/painted-normal.jpg' ),
+    //   lengthRepeatScale: 0.005,
+    //   heightRepeatScale: 0.005,
+    //   normalScaleX: 0.4,
+    //   normalScaleY: 0.4
+    // }
+  },
+  ral9016: {
+    name: 'RAL 9016',
+    uri: require( './textures/RAL 9016.jpg' ),
+    lengthRepeatScale: 0.02,
+    heightRepeatScale: 0.02,
+    // normal: {
+    //   uri: require( './textures/painted-normal.jpg' ),
+    //   lengthRepeatScale: 0.005,
+    //   heightRepeatScale: 0.005,
+    //   normalScaleX: 0.4,
+    //   normalScaleY: 0.4
+    // }
   },
 };
 

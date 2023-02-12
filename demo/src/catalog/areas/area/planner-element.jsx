@@ -8,36 +8,36 @@ let info = {
 };
 
 let textures = {
+  hidraulico: {
+    name: 'Hidraulico',
+    uri: require( './textures/Hidraulico 9.jpg' ),
+    lengthRepeatScale: 0.00002,
+    heightRepeatScale: 0.00002,
+  },
+  marmol: {
+    name: 'Marmol',
+    uri: require( './textures/Marmol blanco.jpg' ),
+    lengthRepeatScale: 0.00002,
+    heightRepeatScale: 0.00002,
+  },
   parquet: {
     name: 'Parquet',
-    uri: require( './textures/parquet.jpg' ),
-    lengthRepeatScale: 0.01,
-    heightRepeatScale: 0.01,
+    uri: require( './textures/Suelo (35).jpg' ),
+    lengthRepeatScale: 0.00002,
+    heightRepeatScale: 0.00002
   },
-  tile1: {
-    name: 'Tile1',
-    uri: require( './textures/tile1.jpg' ),
-    lengthRepeatScale: 0.000025,
-    heightRepeatScale: 0.000025,
-  },
-  ceramic: {
-    name: 'Ceramic Tile',
-    uri: require( './textures/ceramic-tile.jpg' ),
-    lengthRepeatScale: 0.02,
-    heightRepeatScale: 0.02
-  },
-  strand_porcelain: {
-    name: 'Strand Porcelain Tile',
-    uri: require( './textures/strand-porcelain.jpg' ),
-    lengthRepeatScale: 0.02,
-    heightRepeatScale: 0.02
-  },
-  grass: {
-    name: 'Grass',
-    uri: require( './textures/grass.jpg' ),
-    lengthRepeatScale: 0.01,
-    heightRepeatScale: 0.01,
-  }
+  // strand_porcelain: {
+  //   name: 'Strand Porcelain Tile',
+  //   uri: require( './textures/strand-porcelain.jpg' ),
+  //   lengthRepeatScale: 0.02,
+  //   heightRepeatScale: 0.02
+  // },
+  // grass: {
+  //   name: 'Grass',
+  //   uri: require( './textures/grass.jpg' ),
+  //   lengthRepeatScale: 0.01,
+  //   heightRepeatScale: 0.01,
+  // }
 };
 
 export default ElementsFactories.AreaFactory( 'area', info, textures );
