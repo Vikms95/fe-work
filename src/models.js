@@ -411,8 +411,8 @@ export const DefaultLayers = new Map( {
           "thickness": {
             "length": 10
           },
-          "textureA": "bricks",
-          "textureB": "bricks"
+          "textureA": "marmol",
+          "textureB": "marmol"
         },
         "visible": true,
         "vertices": [
@@ -443,8 +443,8 @@ export const DefaultLayers = new Map( {
           "thickness": {
             "length": 10
           },
-          "textureA": "bricks",
-          "textureB": "bricks"
+          "textureA": "marmol",
+          "textureB": "marmol"
         },
         "visible": true,
         "vertices": [
@@ -475,8 +475,8 @@ export const DefaultLayers = new Map( {
           "thickness": {
             "length": 10
           },
-          "textureA": "bricks",
-          "textureB": "bricks"
+          "textureA": "marmol",
+          "textureB": "marmol"
         },
         "visible": true,
         "vertices": [
@@ -507,8 +507,8 @@ export const DefaultLayers = new Map( {
           "thickness": {
             "length": 10
           },
-          "textureA": "bricks",
-          "textureB": "bricks"
+          "textureA": "marmol",
+          "textureB": "marmol"
         },
         "visible": true,
         "vertices": [
@@ -538,7 +538,7 @@ export const DefaultLayers = new Map( {
           "thickness": {
             "length": 0
           },
-          "texture": "tile1"
+          "texture": "hidraulico"
         },
         "visible": true,
         "vertices": [

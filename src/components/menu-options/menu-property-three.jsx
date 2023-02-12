@@ -1,10 +1,19 @@
 import React from 'react';
 import * as SharedStyle from '../../shared-style';
-import bricks from './textures/bricks.jpg';
-import Mosaico from './textures/Mosaico Zen Blanco.jpg';
+
 import pureTexture from './textures/Pure.jpg';
 import realTexture from './textures/Real.jpg';
 import intenseTexture from './textures/Intense.jpg';
+
+import bohemianTexture from './textures/Bohemian Blue.jpg';
+import greenMosaicTexture from './textures/Green Mosaic.jpg';
+import greenTexture from './textures/Green.jpg';
+import marmolTexture from './textures/Marmol.jpg';
+import ral5010 from './textures/RAL 5010.jpg';
+import ral9016 from './textures/RAL 9016.jpg';
+
+import hidraulicoTexture from './textures/Hidraulico 9.jpg';
+import sueloTexture from './textures/Suelo (35).jpg';
 
 const STYLE_TEXTURES_THREE = {
   margin: '2em 1.5em ',
@@ -32,13 +41,18 @@ const STYLE_THREE_ELEMENT = {
 };
 
 const wallTextures = [
-  bricks,
-  Mosaico,
+  bohemianTexture,
+  greenMosaicTexture,
+  greenTexture,
+  marmolTexture,
+  ral5010,
+  ral9016
 ];
 
 const areaTextures = [
-  bricks,
-  Mosaico,
+  hidraulicoTexture,
+  marmolTexture,
+  sueloTexture
 ];
 
 const itemTextures = [
@@ -87,7 +101,7 @@ export default function MenuPropertyThree ( {
               { proto === 'lines' && (
                 <img
                   src={
-                    wallTextures[ index ]
+                    wallTextures[ index - 1 ]
                   }
                   style={ {
                     ...STYLE_THREE_ELEMENT,
@@ -99,7 +113,7 @@ export default function MenuPropertyThree ( {
               { proto === 'areas' && (
                 <img
                   src={
-                    areaTextures[ index ]
+                    areaTextures[ index - 1 ]
                   }
                   style={ {
                     ...STYLE_THREE_ELEMENT,

@@ -95,11 +95,11 @@ export default {
     texture: {
       label: 'Textura',
       type: 'enum',
-      defaultValue: { 'pure': 'Pure' },
+      defaultValue: { pure: 'Pure' },
       values: {
-        'pure': 'Pure',
-        'intense': 'Intense',
-        'real': 'Real',
+        pure: 'Pure',
+        intense: 'Intense',
+        real: 'Real',
       }
     }
   },

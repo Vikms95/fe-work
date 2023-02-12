@@ -77,7 +77,7 @@ export default function AreaFactory ( name, info, textures ) {
     areaElement.properties.texture = {
       label: 'Textura',
       type: 'enum',
-      defaultValue: 'marmol',
+      defaultValue: textureValues.hidraulico,
       values: textureValues
     };
   }
