@@ -47,6 +47,7 @@ export default {
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
     description: 'ATTILA 800 3 C. Conjunto mueble de baño ATTILA 800 3 cajones + Lavabo + Espejo + Aplique',
+    price: 569,
     image: require( './90830.jpg' ),
     width: width,
     depth: depth,

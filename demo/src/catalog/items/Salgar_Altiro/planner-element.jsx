@@ -47,6 +47,7 @@ export default {
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
     description: 'ALTIRO',
+    price: 230,
     image: require( './24555.jpg' ),
     width: width,
     depth: depth,

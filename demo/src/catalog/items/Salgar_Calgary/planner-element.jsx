@@ -45,6 +45,7 @@ export default {
     title: '26765',
     tag: [ 'furnishings', 'leather' ],
     description: 'KIT CALGARY Kit de ducha con termostática',
+    price: 505,
     image: require( './26765.jpg' ),
     width: width,
     depth: depth,

@@ -50,6 +50,7 @@ export default {
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
     description: 'MOMENT 1600 2 P.',
+    price: 1695,
     image: require( './91429.jpg' ),
     width: width,
     depth: depth,

@@ -164,6 +164,7 @@ export class Area extends Record( {
 export class Item extends Record( {
   ...sharedAttributes,
   prototype: 'items',
+  price: 0,
   x: 0,
   y: 0,
   rotation: 0,

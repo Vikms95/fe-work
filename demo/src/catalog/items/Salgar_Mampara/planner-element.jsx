@@ -45,6 +45,7 @@ export default {
     title: '88354',
     tag: [ 'furnishings', 'leather' ],
     description: 'KAAIVI 700-900 CROMADO',
+    price: 787,
     image: require( './88354.jpg' ),
     width: width,
     depth: depth,

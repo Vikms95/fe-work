@@ -36,6 +36,14 @@ const STYLE_ICONS_CONTAINER = {
   paddingLeft: '35px'
 };
 
+const STYLE_PRICE = {
+  display: 'flex',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+  fontFamily: 'Calibri',
+  fontSize: '14px'
+};
+
 // const STYLE_ATTR_PROP_SEPARATOR = {
 //   margin: '0.5em 0.25em 0.5em 0',
 //   border: '2px solid ' + SharedStyle.SECONDARY_COLOR.alt,
@@ -219,7 +227,8 @@ export default class ElementEditor extends Component {
       isSelectAcabado: false,
       attributesFormData: this.initAttrData( this.props.element, this.props.layer, this.props.state ),
       propertiesFormData: this.initPropData( this.props.element, this.props.layer, this.props.state ),
-      isOptionsMenuActive: false
+      isOptionsMenuActive: false,
+      price: this.context.catalog.getElement( this.props.element.type ).info.price
     };
 
     this.save = this.save.bind( this );
@@ -360,6 +369,9 @@ export default class ElementEditor extends Component {
     let catalogElement = catalog.getElement( element.type );
 
     let mapped = {};
+
+    if ( catalogElement.info.price )
+      this.setState( { price: catalogElement.info.price } );
 
     for ( let name in catalogElement.properties ) {
       mapped[ name ] = new Map( {
@@ -592,6 +604,8 @@ export default class ElementEditor extends Component {
     this.setState( { isOptionsMenuActive: false } );
   }
 
+
+
   render () {
     let mode = this.props.state.getIn( [ 'mode' ] );
     let {
@@ -611,6 +625,12 @@ export default class ElementEditor extends Component {
 
     return (
       <div style={ { marginTop: '2em' } }>
+
+        { this.state.price && this.state.price !== 0 && (
+          <div style={ STYLE_PRICE }>{ this.state.price + ' €' } </div>
+        )
+        }
+
         {/* Imagen con nombre y descripcion, esto aparece siempre por defecto */ }
         {/* TODO: Hacerlo dinamico */ }
         <div style={ { display: 'flex', flexDirection: 'column', alignContent: 'center', alignItems: 'center', marginBottom: '45px' } }>

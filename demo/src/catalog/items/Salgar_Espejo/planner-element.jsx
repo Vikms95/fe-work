@@ -45,6 +45,7 @@ export default {
     title: '83964',
     tag: [ 'furnishings', 'leather' ],
     description: 'MOON 1000 Espejo MOON 1000 circular con luz d 1000 mm',
+    price: 352,
     image: require( './83964.jpg' ),
     width: width,
     depth: depth,

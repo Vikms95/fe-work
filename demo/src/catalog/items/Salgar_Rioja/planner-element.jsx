@@ -47,6 +47,7 @@ export default {
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
     description: 'RIOJA 700x900 Platos con superficie stone antideslizante',
+    price: 226,
     image: require( './23420.jpg' ),
     width: width,
     depth: depth,

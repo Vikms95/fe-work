@@ -51,6 +51,7 @@ export default {
     title: '91371',
     tag: [ 'furnishings', 'leather' ],
     description: 'MOMENT 800 2 C.',
+    price: 1059,
     image: require( './91371.jpg' ),
     width: width,
     depth: depth,

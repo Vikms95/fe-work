@@ -47,6 +47,7 @@ export default {
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
     description: 'LAVABO SOFIA A MEDIDA',
+    price: 942,
     image: require( './24403.jpg' ),
     width: width,
     depth: depth,
