@@ -44,16 +44,14 @@ const glbInfo =
 };
 
 export default {
-  name: 'Salgar_Moment',
+  name: '91371',
   prototype: 'items',
 
   info: {
-    title: 'Salgar_Moment',
-    // title: 'Fussion Chrome 800 2 cajones',
+    title: '91371',
     tag: [ 'furnishings', 'leather' ],
-    // description: 'Mueble attila Fussion Chrome 800 2 cajones',
-    description: 'Mueble de entrada para pruebas',
-    image: require( './Fussion_Chrome_800_2_cajones.jpg' ),
+    description: 'MOMENT 800 2 C.',
+    image: require( './91371.jpg' ),
     width: width,
     depth: depth,
     height: height,

@@ -41,16 +41,16 @@ const glbInfo =
 };
 
 export default {
-  name: 'Salgar_Pilar',
+  name: '91429',
   prototype: 'items',
 
   info: {
-    title: 'Salgar_Pilar',
+    title: '91429',
     // title: 'Fussion Chrome 800 2 cajones',
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
-    description: 'Mueble de entrada para pruebas',
-    image: require( './Fussion_Chrome_800_2_cajones.jpg' ),
+    description: 'MOMENT 1600 2 P.',
+    image: require( './91429.jpg' ),
     width: width,
     depth: depth,
     height: height,

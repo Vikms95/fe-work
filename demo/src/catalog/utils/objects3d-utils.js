@@ -119,7 +119,7 @@ export function sizeParametricObject3d ( object, element ) {
     if ( m.length >= m.min && m.length <= m.max ) {
       let value;
 
-      if ( element.type === "Salgar_Encimera" )
+      if ( element.type === '83964' )
         value = 1 - ( m.length - m.min ) / ( m.max - m.min );
       else
         value = ( m.length - m.min ) / ( m.max - m.min );

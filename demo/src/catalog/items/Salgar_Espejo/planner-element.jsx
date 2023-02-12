@@ -38,16 +38,14 @@ const glbInfo =
 };
 
 export default {
-  name: 'Salgar_Espejo',
+  name: '83964',
   prototype: 'items',
 
   info: {
-    title: 'Salgar_Espejo',
-    // title: 'Fussion Chrome 800 2 cajones',
+    title: '83964',
     tag: [ 'furnishings', 'leather' ],
-    // description: 'Mueble attila Fussion Chrome 800 2 cajones',
-    description: 'Mueble de entrada para pruebas',
-    image: require( './Fussion_Chrome_800_2_cajones.jpg' ),
+    description: 'MOON 1000 Espejo MOON 1000 circular con luz d 1000 mm',
+    image: require( './83964.jpg' ),
     width: width,
     depth: depth,
     height: height,

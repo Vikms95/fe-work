@@ -38,16 +38,14 @@ const glbInfo =
 };
 
 export default {
-  name: 'Salgar_Calgary',
+  name: '26765',
   prototype: 'items',
 
   info: {
-    title: 'Salgar_Calgary',
-    // title: 'Fussion Chrome 800 2 cajones',
+    title: '26765',
     tag: [ 'furnishings', 'leather' ],
-    // description: 'Mueble attila Fussion Chrome 800 2 cajones',
-    description: 'Mueble de entrada para pruebas',
-    image: require( './Fussion_Chrome_800_2_cajones.jpg' ),
+    description: 'KIT CALGARY Kit de ducha con termostática',
+    image: require( './26765.jpg' ),
     width: width,
     depth: depth,
     height: height,

@@ -38,16 +38,16 @@ const glbInfo =
 };
 
 export default {
-  name: 'Salgar_Atilla_800',
+  name: '90830',
   prototype: 'items',
 
   info: {
-    title: 'Salgar_Atilla_800',
+    title: '90830',
     // title: 'Fussion Chrome 800 2 cajones',
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
-    description: 'Mueble de entrada para pruebas',
-    image: require( './Fussion_Chrome_800_2_cajones.jpg' ),
+    description: 'ATTILA 800 3 C. Conjunto mueble de baño ATTILA 800 3 cajones + Lavabo + Espejo + Aplique',
+    image: require( './90830.jpg' ),
     width: width,
     depth: depth,
     height: height,

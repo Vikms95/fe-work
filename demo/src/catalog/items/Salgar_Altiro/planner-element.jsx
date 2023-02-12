@@ -38,16 +38,16 @@ const glbInfo =
 };
 
 export default {
-  name: 'Salgar_Altiro',
+  name: '24555',
   prototype: 'items',
 
   info: {
-    title: 'Salgar_Altiro',
+    title: '24555',
     // title: 'Fussion Chrome 800 2 cajones',
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
-    description: 'Mueble de entrada para pruebas',
-    image: require( './Fussion_Chrome_800_2_cajones.jpg' ),
+    description: 'ALTIRO',
+    image: require( './24555.jpg' ),
     width: width,
     depth: depth,
     height: height,

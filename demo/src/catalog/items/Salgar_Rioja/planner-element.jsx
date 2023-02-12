@@ -38,16 +38,16 @@ const glbInfo =
 };
 
 export default {
-  name: 'Salgar_Rioja',
+  name: '23420',
   prototype: 'items',
 
   info: {
-    title: 'Salgar_Rioja',
+    title: '23420',
     // title: 'Fussion Chrome 800 2 cajones',
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
-    description: 'Mueble de entrada para pruebas',
-    image: require( './Fussion_Chrome_800_2_cajones.jpg' ),
+    description: 'RIOJA 700x900 Platos con superficie stone antideslizante',
+    image: require( './23420.jpg' ),
     width: width,
     depth: depth,
     height: height,

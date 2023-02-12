@@ -38,16 +38,16 @@ const glbInfo =
 };
 
 export default {
-  name: 'Salgar_Bañera',
+  name: 'Bañera',
   prototype: 'items',
 
   info: {
-    title: 'Salgar_Bañera',
+    title: 'Bañera',
     // title: 'Fussion Chrome 800 2 cajones',
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
-    description: 'Mueble de entrada para pruebas',
-    image: require( './Fussion_Chrome_800_2_cajones.jpg' ),
+    description: 'Bañera',
+    image: require( './Bañera.jpg' ),
     width: width,
     depth: depth,
     height: height,

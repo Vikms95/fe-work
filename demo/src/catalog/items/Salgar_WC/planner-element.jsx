@@ -38,16 +38,16 @@ const glbInfo =
 };
 
 export default {
-  name: 'Salgar_WC',
+  name: 'WC',
   prototype: 'items',
 
   info: {
-    title: 'Salgar_WC',
+    title: 'WC',
     // title: 'Fussion Chrome 800 2 cajones',
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
-    description: 'Mueble de entrada para pruebas',
-    image: require( './Fussion_Chrome_800_2_cajones.jpg' ),
+    description: 'WC suspendido',
+    image: require( './wc.jpg' ),
     width: width,
     depth: depth,
     height: height,

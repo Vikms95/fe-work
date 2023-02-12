@@ -38,16 +38,14 @@ const glbInfo =
 };
 
 export default {
-  name: 'Salgar_Mampara',
+  name: '88354',
   prototype: 'items',
 
   info: {
-    title: 'Salgar_Mampara',
-    // title: 'Fussion Chrome 800 2 cajones',
+    title: '88354',
     tag: [ 'furnishings', 'leather' ],
-    // description: 'Mueble attila Fussion Chrome 800 2 cajones',
-    description: 'Mueble de entrada para pruebas',
-    image: require( './Fussion_Chrome_800_2_cajones.jpg' ),
+    description: 'KAAIVI 700-900 CROMADO',
+    image: require( './88354.jpg' ),
     width: width,
     depth: depth,
     height: height,

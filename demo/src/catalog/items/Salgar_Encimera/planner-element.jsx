@@ -38,16 +38,16 @@ const glbInfo =
 };
 
 export default {
-  name: 'Salgar_Encimera',
+  name: '87978',
   prototype: 'items',
 
   info: {
-    title: 'Salgar_Encimera',
+    title: '87978',
     // title: 'Fussion Chrome 800 2 cajones',
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
-    description: 'Mueble de entrada para pruebas',
-    image: require( './Fussion_Chrome_800_2_cajones.jpg' ),
+    description: 'ENCIMERA',
+    image: require( './87978.jpg' ),
     width: width,
     depth: depth,
     height: height,
