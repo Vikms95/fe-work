@@ -7,7 +7,6 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
 import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper';
 import OrbitControls from './libs/orbit-controls';
-// import { OrbitControls } from './libs/orbit-controls-new';
 import { parseData, updateScene } from './scene-creator';
 import { disposeScene } from './three-memory-cleaner';
 import diff from 'immutablediff';
@@ -21,7 +20,6 @@ import {
   PathTracingSceneGenerator,
   PathTracingRenderer,
   PhysicalPathTracingMaterial,
-  DynamicPathTracingSceneGenerator,
 } from 'three-gpu-pathtracer';
 import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
