@@ -18,7 +18,8 @@ const STYLE_TITLE_BAR = {
   backgroundColor: SharedStyle.PRIMARY_COLOR.master,
   color: SharedStyle.COLORS.white,
   padding: '0.25em 1em',
-  paddingRight: '0.2em'
+  paddingRight: '0.2em',
+  fontWeight: 'bold'
 };
 
 const STYLE_BREADCRUMB = {

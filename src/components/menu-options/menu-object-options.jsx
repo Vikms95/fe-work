@@ -18,7 +18,8 @@ const STYLE_TITLE_BAR = {
   justifyContent: 'space-between',
   backgroundColor: SharedStyle.PRIMARY_COLOR.master,
   color: SharedStyle.COLORS.white,
-  padding: '0.25em 1em'
+  padding: '0.25em 1em',
+  fontWeight: 'bold'
 };
 
 const STYLE_BREADCRUMB = {
@@ -27,14 +28,17 @@ const STYLE_BREADCRUMB = {
 };
 
 const STYLE_IMAGE_WRAPPER = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   border: '1.5px solid rgb(191, 191, 191)',
   margin: '0.75em'
 };
 
 const STYLE_IMAGE = {
-  minHeight: '5em',
+  minHeight: '6em',
   maxWidth: '9em',
-  padding: '0 2em'
+  // padding: '0 2em'
 };
 
 const STYLE_BUTTON = {

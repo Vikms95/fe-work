@@ -143,7 +143,7 @@ export default class Scene3DViewer extends React.Component {
 
     } else {
 
-      const initialPositionX = - ( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 11;
+      const initialPositionX = - ( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 150;
       const initialPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) * 10;
       const initialPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 11;
 

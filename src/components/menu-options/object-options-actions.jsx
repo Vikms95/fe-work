@@ -24,6 +24,7 @@ const STYLE_INPUT = {
   fontSize: '12px',
   fontFamily: 'Calibri',
   fontWidth: 'lighter',
+  padding: '0.3em'
 };
 
 const STYLE_ICON_CONTAINER = {

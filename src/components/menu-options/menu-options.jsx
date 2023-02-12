@@ -30,7 +30,7 @@ export default function MenuOptions ( {
   const [ selectedPart, setSelectedPart ] = useState();
 
   useEffect( () => {
-    propertiesFormData.entrySeq().forEach( ( [ propertyName, data ] ) => {
+    propertiesFormData.entrySeq().reverse().forEach( ( [ propertyName, data ] ) => {
       if ( propertyName.includes( 'texture' ) )
         setSelectedPart( propertyName );
     } );
