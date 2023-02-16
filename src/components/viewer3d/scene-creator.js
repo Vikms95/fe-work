@@ -734,7 +734,6 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
         texture.wrapS = Three.RepeatWrapping;
         texture.wrapT = Three.RepeatWrapping;
 
-        console.log( item3D.children[ 0 ].name );
         if ( item3D.children[ 0 ].name === 'attila_ok' ) {
           pivot.traverse( node => {
             if ( node.name === 'attila_ok_1' ) {

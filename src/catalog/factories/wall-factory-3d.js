@@ -376,5 +376,11 @@ export function updatedWall ( element, layer, scene, textures, mesh, oldElement,
     return;
   }
 
-  return noPerf();
+  else if ( differences[ 0 ] == 'properties' ) {
+    if ( differences[ 1 ].includes( 'texture' ) ) {
+      return noPerf();
+    }
+  }
+
+  // return noPerf();
 }

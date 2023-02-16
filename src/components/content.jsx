@@ -56,6 +56,8 @@ export default function Content ( {
     case constants.MODE_DRAWING_ITEM:
     case constants.MODE_DRAGGING_HOLE:
     case constants.MODE_ROTATING_ITEM:
+      //** Make viewer2D a wrapper that renders {children} */
+      //**If moderuler is enabled, use svg pan zoom with rulers or not */
       return <Viewer2D
         state={ state }
         width={ width }

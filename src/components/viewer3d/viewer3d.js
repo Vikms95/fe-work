@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
-import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper';
 import OrbitControls from './libs/orbit-controls';
 import { parseData, updateScene } from './scene-creator';
 import { disposeScene } from './three-memory-cleaner';
@@ -14,7 +13,7 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
-import { CubeCamera, HalfFloatType, MeshBasicMaterial, MeshStandardMaterial, PointLight, SpotLight, Vector3 } from 'three';
+import { HalfFloatType, MeshBasicMaterial, MeshStandardMaterial, PointLight, SpotLight, Vector3 } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 import {
   PathTracingSceneGenerator,
@@ -298,7 +297,7 @@ export default class Scene3DViewer extends React.Component {
 
   renderWithThree () {
     this.renderer.toneMapping = THREE.NoToneMapping;
-    this.addGridToScene();
+    // this.addGridToScene();
     cubeCamera.update( this.renderer, this.scene3D );
     return this.renderer.render( this.scene3D, this.camera );
 
@@ -319,9 +318,8 @@ export default class Scene3DViewer extends React.Component {
 
     if ( this.ptRenderer === null || this.ptMaterial === null ) {
       this.setupPathTracing();
+      // this.removeGridFromScene();
     }
-    this.removeGridFromScene();
-
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
     if ( this.props.isPathTracing ) this.ptRenderer.update();
@@ -338,7 +336,6 @@ export default class Scene3DViewer extends React.Component {
 
   componentDidMount () {
     let { state } = this.props;
-
 
     let actions = {
       areaActions: this.context.areaActions,

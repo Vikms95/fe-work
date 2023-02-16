@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
-import { INITIAL_VALUE, fitSelection, ReactSVGPanZoom, TOOL_NONE, TOOL_PAN, TOOL_ZOOM_IN, TOOL_ZOOM_OUT, TOOL_AUTO } from 'react-svg-pan-zoom';
+import { ReactSVGPanZoom, TOOL_NONE, TOOL_PAN, TOOL_ZOOM_IN, TOOL_ZOOM_OUT, TOOL_AUTO } from 'react-svg-pan-zoom';
 import * as constants from '../../constants';
 import State from './state';
-import * as SharedStyle from '../../shared-style';
-import { RulerX, RulerY } from './export';
-import { getIsGuia2D, getViewer2D, getRejillaTotal2D, getUserZoom } from '../../selectors/selectors';
+import { getIsGuia2D, getRejillaTotal2D } from '../../selectors/selectors';
 import { Context } from '../../context/context';
 import { useZoom2D } from '../../hooks/useZoom2D';
 import { useControls2D } from '../../hooks/useControls2D';
@@ -92,7 +90,6 @@ function extractElementData ( node ) {
     id: node.attributes.getNamedItem( 'data-id' ).value
   };
 }
-
 
 const rulerSize = 15; //px
 
