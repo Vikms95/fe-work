@@ -11,7 +11,7 @@ export default function AttributesEditor ( {
   state,
   element,
   onValid,
-  position,
+  attributeName,
   onUpdate,
   attributeFormData,
   ...rest
@@ -24,7 +24,7 @@ export default function AttributesEditor ( {
         element={ element }
         onUpdate={ onUpdate }
         onValid={ onValid }
-        position={ position }
+        attributeName={ attributeName }
         attributeFormData={ attributeFormData }
         { ...rest }
       />;
@@ -36,7 +36,7 @@ export default function AttributesEditor ( {
         element={ element }
         onValid={ onValid }
         onUpdate={ onUpdate }
-        position={ position }
+        attributeName={ attributeName }
         attributeFormData={ attributeFormData }
         { ...rest }
       />;

@@ -12,7 +12,7 @@ export default function LineAttributesEditor ( {
   unit,
   state,
   element,
-  position,
+  attributeName,
   onUpdate,
   projectActions,
   attributeFormData,
@@ -25,12 +25,8 @@ export default function LineAttributesEditor ( {
   //let vertexTwo = attributeFormData.has( 'vertexTwo' ) ? attributeFormData.get( 'vertexTwo' ) : null;
   let lineLength = attributeFormData.has( 'lineLength' ) ? attributeFormData.get( 'lineLength' ) : null;
   let lineAngle = attributeFormData.has( 'lineAngle' ) ? attributeFormData.get( 'lineAngle' ) : null;
-  const isLengthAttribute = () => position === 1;
-  const isAngleAttribute = () => position === 2;
 
-  // On element editor, line length was given position 1
-  // and angle was given position 2
-  if ( isLengthAttribute() ) {
+  if ( attributeName === 'lineLength' ) {
 
     return (
       <PropertyLengthMeasure
@@ -39,25 +35,26 @@ export default function LineAttributesEditor ( {
         stateRedux={ state }
         value={ lineLength }
         sourceElement={ element }
-        attributeName='lineLength'
+        attributeName={ attributeName }
         projectActions={ projectActions }
         attributeFormData={ attributeFormData }
         configs={ { label: 'Ancho', min: 0, max: Infinity, precision: 2 } }
-        onUpdate={ ( mapped, isEnter ) => onUpdate( 'lineLength', mapped, isEnter ) }
+        onUpdate={ ( mapped, isEnter ) => onUpdate( attributeName, mapped, isEnter ) }
       />
     );
-  } else if ( isAngleAttribute() ) {
+  } else if ( attributeName === 'lineAngle' ) {
+
     return (
       <PropertyNumber
         mode={ mode }
         state={ state }
         value={ lineAngle }
         sourceElement={ element }
-        attributeName='angulo'
+        attributeName={ attributeName }
         projectActions={ projectActions }
         attributeFormData={ attributeFormData }
         configs={ { label: 'Ángulo', min: 0, max: 360, precision: 0 } }
-        onUpdate={ ( value, isEnter ) => onUpdate( 'lineAngle', value, isEnter ) }
+        onUpdate={ ( value, isEnter ) => onUpdate( attributeName, value, isEnter ) }
         { ...rest }
       />
     );
