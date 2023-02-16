@@ -6,12 +6,6 @@ import { GeometryUtils, MathUtils } from '../../../utils/export';
 import * as SharedStyle from '../../../shared-style';
 import convert from 'convert-units';
 // import from '../../../assets/';
-import bloquearIco from '../../../assets/sidebar/Bloquear.jpg';
-import borrarIco from '../../../assets/sidebar/Borrar.jpg';
-import duplicarIco from '../../../assets/sidebar/Duplicar.jpg';
-import flechaIco from '../../../assets/sidebar/Flecha.jpg';
-import infoIco from '../../../assets/sidebar/Info.jpg';
-import likeIco from '../../../assets/sidebar/Like.jpg';
 
 import flecha from './../../../assets/generalItems/flecha.png';
 import puertas from './../../../assets/construccion/puertas.png';
@@ -24,6 +18,7 @@ import { useFormData } from '../../../hooks/useFormData';
 import { useToggle } from '../../../hooks/useToggle';
 import MenuOptions from '../../menu-options/menu-options';
 import areaIco from './area.png';
+import flechaIco from '../../../assets/sidebar/Flecha.jpg';
 
 import pureTexture from './textures/Pure.jpg';
 import realTexture from './textures/Real.jpg';
@@ -42,30 +37,11 @@ import ral9016 from './textures/RAL 9016.jpg';
 
 import hidraulicoTexture from './textures/Hidraulico 9.jpg';
 import sueloTexture from './textures/Suelo (35).jpg';
+import { ElementPrice } from './element-price';
+import { ElementEditorIcons } from './element-editor-icons';
 
 
 const PRECISION = 2;
-
-const STYLE_ICONS_CONTAINER = {
-  display: 'flex',
-  alignSelf: 'center',
-  // justifyContent: 'center',
-  columnGap: '12px',
-  marginTop: '-22px',
-  marginBottom: '25px',
-  paddingLeft: '35px'
-};
-
-const STYLE_PRICE = {
-  display: 'flex',
-  justifyContent: 'flex-end',
-  alignItems: 'center',
-  fontFamily: 'Calibri',
-  fontSize: '14px',
-  color: SharedStyle.PRIMARY_COLOR.master,
-  fontWeight: '900',
-  marginBottom: '10px'
-};
 
 const STYLE_IMG_ACABADO = {
   height: '50px',
@@ -782,17 +758,12 @@ export default class ElementEditor extends Component {
 
     return (
       <div style={ { marginTop: '2em' } }>
-
-        { this.state.price && this.state.price !== 0 && (
-          <div style={ STYLE_PRICE }>{ 'Precio ' + this.state.price + '.00 €' } </div>
-        )
-        }
+        <ElementPrice price={ this.state.price } />
 
         {/* Imagen con nombre y descripcion, esto aparece siempre por defecto */ }
-        {/* TODO: Hacerlo dinamico */ }
         <div style={ { display: 'flex', flexDirection: 'column', alignContent: 'center', alignItems: 'center', marginBottom: '45px' } }>
           <img style={ { height: '80px' } } src={ element.prototype !== 'areas' ? element.image : areaIco } />
-          <p style={ { margin: '0', padding: '10px 0', fontSize: '0.8em', textAlign: 'center', color: SharedStyle.PRIMARY_COLOR.master, /*fontWeight: 'bold'*/ } }>
+          <p style={ { margin: '0', padding: '10px 0', fontSize: '0.8em', textAlign: 'center', color: SharedStyle.PRIMARY_COLOR.master, } }>
 
             { element.name }
 
@@ -804,15 +775,8 @@ export default class ElementEditor extends Component {
           </p>
         </div>
 
-        <div style={ STYLE_ICONS_CONTAINER }>
-          <img src={ borrarIco } />
-          <img src={ duplicarIco } />
-          <img src={ bloquearIco } />
-          <img src={ infoIco } />
-          <img src={ likeIco } />
-        </div>
+        <ElementEditorIcons />
 
-        {/* OTROS ATRIBUTOS */ }
         <AttributesEditor
           mode={ mode }
           position={ 1 }
@@ -929,17 +893,16 @@ export default class ElementEditor extends Component {
             {/* ) } */ }
 
 
-            <div onClick={ () => {
-              this.setState( { isOptionsMenuActive: !this.state.isOptionsMenuActive } );
-            } }
+            <div
+              onClick={ () => {
+                this.setState( { isOptionsMenuActive: !this.state.isOptionsMenuActive } );
+              } }
               style={ { display: 'flex', justifyItems: 'center', height: '25px', width: '5.5em', cursor: 'pointer' } }>
               <p style={ {
                 margin: '0',
                 fontSize: '0.75em',
                 color: SharedStyle.PRIMARY_COLOR.master,
               } }>Opciones</p>
-
-
 
               <img style={ {
                 height: '0.4em',
@@ -959,6 +922,7 @@ export default class ElementEditor extends Component {
               />
             ) }
           </div>
+
           <div style={ {
             color: SharedStyle.PRIMARY_COLOR.master,
             fontWeight: '600',

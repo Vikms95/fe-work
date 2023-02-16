@@ -2,6 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import MenuObjectOptions from './menu-object-options';
 import MenuObjectThree from './menu-object-three-container';
 
+const STYLE_TRANSPARENCY_WRAPPER = {
+
+};
+
 const STYLE_WRAPPER = {
   display: 'block',
   position: 'fixed',
@@ -37,7 +41,7 @@ export default function MenuOptions ( {
   }, [] );
 
   return (
-    <div id={ 'options' } style={ STYLE_WRAPPER }
+    <div id='options' style={ STYLE_WRAPPER }
     >
       <div style={ STYLE_OPTIONS }>
         <MenuObjectOptions
@@ -59,5 +63,6 @@ export default function MenuOptions ( {
         />
       </div>
     </div>
+
   );
 };

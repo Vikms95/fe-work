@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-// import { createRoot } from 'react-dom/client';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+// import ReactDOM from 'react-dom';
 
 
 import ContainerDimensions from 'react-container-dimensions';
@@ -194,8 +194,9 @@ getState = ( state, action ) => {
   return state;
 };
 
+const root = createRoot( document.getElementById( 'app' ) );
 
-ReactDOM.render( (
+root.render(
   <Provider store={ store }>
     <ContainerDimensions>
       { ( { width, height } ) =>
@@ -212,7 +213,7 @@ ReactDOM.render( (
       }
     </ContainerDimensions>
   </Provider>
-), document.getElementById( 'app' ) );
+);
 //} ).catch( error => {
   //alert( error.detail || error.statusText || error.status || error );
 //} );
