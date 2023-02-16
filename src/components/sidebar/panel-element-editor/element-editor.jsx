@@ -601,6 +601,17 @@ export default class ElementEditor extends Component {
       state: { propertiesFormData, attributesFormData },
     } = this;
 
+
+    const showAndHideAcabado = () => {
+      if ( this.state.isSelectAcabado ) {
+        this.setState( { ...this.state, isSelectAcabado: false } );
+      } else {
+        this.setState( { ...this.state, isSelectAcabado: true } );
+      }
+    };
+
+
+
     return (
       <div style={ { marginTop: '2em' } }>
         <ElementPrice price={ this.state.price } />
@@ -610,8 +621,8 @@ export default class ElementEditor extends Component {
         <ElementEditorIcons />
 
         <AttributesEditor
-          attributeName='lineLength'
           mode={ mode }
+          position={ 1 }
           state={ appState }
           element={ element }
           onUpdate={ this.updateAttribute }
@@ -632,8 +643,8 @@ export default class ElementEditor extends Component {
         />
 
         <AttributesEditor
-          attributeName='lineAngle'
           mode={ mode }
+          position={ 2 }
           state={ appState }
           element={ element }
           onUpdate={ this.updateAttribute }
