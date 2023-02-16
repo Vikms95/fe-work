@@ -22,6 +22,7 @@ import { toFixedFloat } from '../../utils/math';
 import { GeometryUtils } from '../../utils/export';
 import { Context } from '../../context/context';
 import { usePrevProps } from '../../hooks/usePrevProps';
+import { Source } from 'three';
 
 
 const STYLE_INPUT = {
@@ -37,6 +38,11 @@ const STYLE_INPUT = {
   outline: 'none',
   textAlign: 'right',
   width: '100%',
+};
+
+const STYLE_MIN_MAX_MORPH = {
+  display: 'flex',
+  justifyContent: 'flex-end'
 };
 
 // export default function FormNumberInput ( props ) {
@@ -415,6 +421,7 @@ export default class FormNumberInput extends Component {
     this.isAttribute = this.isAttribute.bind( this );
     this.getProperty = this.getProperty.bind( this );
     this.getAttribute = this.getAttribute.bind( this );
+    this.isLimitOnItem = this.isLimitOnItem.bind( this );
     this.resetAngleInput = this.resetAngleInput.bind( this );
     this.isMorphAvailable = this.isMorphAvailable.bind( this );
     this.isDifferentPropsValue = this.isDifferentPropsValue.bind( this );
@@ -519,11 +526,22 @@ export default class FormNumberInput extends Component {
   }
 
   isMorphAvailable () {
-    if ( this.props.sourceElement[ `${ this.props.attributeName }` ] && this.props.sourceElement.prototype !== 'line' ) {
+    if ( this.props.sourceElement[ `${ this.props.attributeName }` ] && this.props.sourceElement.prototype !== 'lines' && this.props.sourceElement.prototype !== 'areas' ) {
       return this.props.sourceElement[ `${ this.props.attributeName }` ].min !== this.props.sourceElement[ `${ this.props.attributeName }` ].max;
     }
 
     return true;
+  }
+
+  isLimitOnItem () {
+    console.log( 'proto', this.props.sourceElement.prototype );
+    console.log( 'minmax', this.props.sourceElement[ `${ this.props.attributeName }` ] );
+
+    if ( this.props.sourceElement.prototype === 'items' )
+      if ( this.props.sourceElement[ `${ this.props.attributeName }` ] && this.props.sourceElement[ `${ this.props.attributeName }` ].min && this.props.sourceElement[ `${ this.props.attributeName }` ].max )
+        return true;
+
+    return false;
   }
 
   componentDidMount () {
@@ -684,6 +702,32 @@ export default class FormNumberInput extends Component {
           ? parseFloat( this.state.showedValue )
           : 0;
 
+      //**Ajusta valores a mínimo y máximo */
+      switch ( attributeName ) {
+        case 'width':
+          if ( parseFloat( this.state.showedValue ) <= sourceElement.width.min * 10 ) {
+            savedValue = sourceElement.width.min * 10;
+          } else if ( ( parseFloat( this.state.showedValue ) >= sourceElement.width.max * 10 ) ) {
+            savedValue = sourceElement.width.max * 10;
+          }
+          break;
+        case 'depth':
+          if ( parseFloat( this.state.showedValue ) <= sourceElement.depth.min * 10 ) {
+            savedValue = sourceElement.depth.min * 10;
+          } else if ( ( parseFloat( this.state.showedValue ) >= sourceElement.depth.max * 10 ) ) {
+            savedValue = sourceElement.depth.max * 10;
+          }
+          break;
+        case 'height':
+          if ( sourceElement.height )
+            if ( parseFloat( this.state.showedValue ) <= sourceElement.height.min * 10 ) {
+              savedValue = sourceElement.height.min * 10;
+            } else if ( ( parseFloat( this.state.showedValue ) >= sourceElement.height.max * 10 ) ) {
+              savedValue = sourceElement.height.max * 10;
+            }
+          break;
+      }
+
       if ( isElementLine() ) {
         cacheAttributes();
       }
@@ -746,7 +790,6 @@ export default class FormNumberInput extends Component {
       ( this.props.mode === MODE_DRAWING_LINE )
     );
 
-
     return (
       <div style={ { display: 'flex', flexDirection: 'row', width: '100%' } }>
 
@@ -764,7 +807,6 @@ export default class FormNumberInput extends Component {
           onBlur={ () => this.setState( { focus: false } ) }
           disabled={ this.isMorphAvailable() ? false : true }
         />
-
       </div >
     );
   };

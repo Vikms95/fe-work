@@ -47,7 +47,6 @@ export default function LineAttributesEditor ( {
       />
     );
   } else if ( isAngleAttribute() ) {
-
     return (
       <PropertyNumber
         mode={ mode }

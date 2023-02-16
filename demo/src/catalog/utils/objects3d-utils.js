@@ -66,15 +66,17 @@ export function selectedObject3d ( object, selected ) {
   } );
 }
 
-export function getMorphObject3d ( object, element ) {
+
+export function getMorphObject3d ( object, element, differences ) {
   let morph = [];
+
 
   object.traverse( o => {
     if ( o.isMesh && o.morphTargetInfluences ) {
       Object.keys( o.morphTargetDictionary ).forEach( key => {
-        if ( key.includes( "ANCHO" ) || key.includes( 'Ancho' ) || key.includes( "width" ) ) {
+
+        if ( key.includes( 'ANCHO' ) || key.includes( 'Ancho' ) || key.includes( 'width' ) ) {
           if ( element.properties.has( 'width' ) && element.width && element.width.min && element.width.max )
-            //
             morph.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ key ],
@@ -82,7 +84,76 @@ export function getMorphObject3d ( object, element ) {
               min: element.width.min,
               max: element.width.max
             } );
+          if ( differences && differences[ 1 ] === 'width' ) return morph;
         }
+
+
+        if ( key.includes( "Ancho derecha" ) ) {
+          if ( element.properties.has( 'widthRight' ) && element.width && element.width.min && element.width.max ) {
+            morph.push( {
+              mesh: o,
+              idx: o.morphTargetDictionary[ key ],
+              length: element.properties.get( 'width' ).get( 'length' ),
+              min: element.width.min,
+              max: element.width.max
+            } );
+            morph.push( {
+              mesh: o,
+              idx: o.morphTargetDictionary[ 'Ancho derecha' ],
+              length: element.properties.get( 'widthRight' ).get( 'length' ),
+              min: element.width.min,
+              max: element.width.max
+            } );
+
+            return morph;
+          }
+
+        }
+
+        if ( key.includes( "Ancho central" ) ) {
+          if ( element.properties.has( 'widthCenter' ) && element.width && element.width.min && element.width.max ) {
+            morph.push( {
+              mesh: o,
+              idx: o.morphTargetDictionary[ key ],
+              length: element.properties.get( 'width' ).get( 'length' ),
+              min: element.width.min,
+              max: element.width.max
+            } );
+            morph.push( {
+              mesh: o,
+              idx: o.morphTargetDictionary[ 'Ancho central' ],
+              length: element.properties.get( 'widthCenter' ).get( 'length' ),
+              min: element.width.min,
+              max: element.width.max
+            } );
+
+            return morph;
+          }
+
+        }
+
+        if ( key.includes( "Ancho izquierda" ) ) {
+          if ( element.properties.has( 'widthLeft' ) && element.width && element.width.min && element.width.max ) {
+            morph.push( {
+              mesh: o,
+              idx: o.morphTargetDictionary[ key ],
+              length: element.properties.get( 'width' ).get( 'length' ),
+              min: element.width.min,
+              max: element.width.max
+            } );
+            morph.push( {
+              mesh: o,
+              idx: o.morphTargetDictionary[ 'Ancho izquierda' ],
+              length: element.properties.get( 'widthLeft' ).get( 'length' ),
+              min: element.width.min,
+              max: element.width.max
+            } );
+
+            return morph;
+          }
+
+        }
+
         if ( key.includes( "ALTO" ) || key.includes( 'Alto' ) || key.includes( "height" ) ) {
           if ( element.properties.has( 'height' ) && element.height && element.height.min && element.height.max )
             morph.push( {
@@ -93,6 +164,7 @@ export function getMorphObject3d ( object, element ) {
               max: element.height.max
             } );
         }
+
         if ( key.includes( "FONDO" ) || key.includes( 'Fondo' ) || key.includes( "depth" ) ) {
           if ( element.properties.has( 'depth' ) && element.depth && element.depth.min && element.depth.max )
             morph.push( {
@@ -119,7 +191,7 @@ export function sizeParametricObject3d ( object, element ) {
     if ( m.length >= m.min && m.length <= m.max ) {
       let value;
 
-      if ( element.type === '83964' )
+      if ( element.type === '87978' )
         value = 1 - ( m.length - m.min ) / ( m.max - m.min );
       else
         value = ( m.length - m.min ) / ( m.max - m.min );

@@ -15,6 +15,19 @@ const internalTableStyle = { borderCollapse: 'collapse' };
 const secondTdStyle = { padding: 0 };
 const unitContainerStyle = { width: '5em' };
 
+const STYLE_MIN_MAX = {
+  display: 'flex',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+  color: 'grey',
+  fontSize: '12px',
+  marginTop: '-15px',
+  marginBottom: '5px',
+  marginRight: '-30px',
+  transform: 'scale(0.7)'
+
+};
+
 export default function PropertyLengthMeasure ( {
   unit,
   mode,
@@ -62,53 +75,69 @@ export default function PropertyLengthMeasure ( {
     return onUpdate( merged, isEnter );
   };
 
+  const isLimitOnItem = () => {
+
+    if ( sourceElement.prototype === 'items' )
+      if ( sourceElement[ `${ attributeName }` ] &&
+        sourceElement[ `${ attributeName }` ].min && sourceElement[ `${ attributeName }` ].max &&
+        sourceElement[ `${ attributeName }` ].min !== sourceElement[ `${ attributeName }` ].max
+      )
+        return true;
+
+    return false;
+  };
+
+  if ( attributeName === 'width' && sourceElement.name === '24403' ) return null;
+  if ( attributeName === 'width' && sourceElement.name === '87978' ) return null;
+
   return (
-    <table
-      className="PropertyLengthMeasure"
-      style={ { ...PropertyStyle.tableStyle, paddingBottom: '10px', marginLeft: '-3px' } }
-    >
-      <tbody>
-        <tr>
-          <td style={ PropertyStyle.firstTdStyle }>
-            <FormLabel>
-              { label }
-            </FormLabel>
-          </td>
-          <td style={ secondTdStyle }>
-            <table style={ internalTableStyle }>
-              <tbody>
-                <tr>
-                  <td>
-                    <FormNumberInput
-                      mode={ mode }
-                      unit={ _unit }
-                      state={ state }
-                      value={ _length }
-                      onValid={ onValid }
-                      stateRedux={ stateRedux }
-                      attributeName={ attributeName }
-                      sourceElement={ sourceElement }
-                      projectActions={ projectActions }
-                      attributeFormData={ attributeFormData }
-                      onChange={ event => update( event.target.value, _unit, event.target.isEnter ) }
-                      { ...configRest }
-                    />
-                  </td>
-                  {/* SELECT UNIDADES */ }
-                  {/* <td style={unitContainerStyle}>
-                      <FormSelect value={_unit} onChange={event => update(_length, event.target.value) }>
-                  {
-                    UNITS_LENGTH.map(el => <option key={el} value={el}>{el}</option>)
-                  }
-                </FormSelect>
-              </td> */}
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <React.Fragment>
+
+      <table
+        className="PropertyLengthMeasure"
+        style={ { ...PropertyStyle.tableStyle, paddingBottom: '10px', marginLeft: '-3px' } }
+      >
+        <tbody>
+          <tr>
+            <td style={ PropertyStyle.firstTdStyle }>
+              <FormLabel>
+                { label }
+              </FormLabel>
+            </td>
+            <td style={ secondTdStyle }>
+              <table style={ internalTableStyle }>
+                <tbody>
+                  <tr>
+                    <td>
+                      <FormNumberInput
+                        mode={ mode }
+                        unit={ _unit }
+                        state={ state }
+                        value={ _length }
+                        onValid={ onValid }
+                        stateRedux={ stateRedux }
+                        attributeName={ attributeName }
+                        sourceElement={ sourceElement }
+                        projectActions={ projectActions }
+                        attributeFormData={ attributeFormData }
+                        onChange={ event => update( event.target.value, _unit, event.target.isEnter ) }
+                        { ...configRest }
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      {
+        isLimitOnItem() && (
+          <div style={ STYLE_MIN_MAX }>{ sourceElement[ `${ attributeName }` ].min * 10 + ' x ' + sourceElement[ `${ attributeName }` ].max * 10 }</div>
+        )
+      }
+
+    </React.Fragment>
   );
 
 }

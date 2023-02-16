@@ -46,6 +46,7 @@ export default {
     // title: 'Fussion Chrome 800 2 cajones',
     tag: [ 'furnishings', 'leather' ],
     // description: 'Mueble attila Fussion Chrome 800 2 cajones',
+    price: null,
     description: 'Bañera',
     image: require( './Bañera.jpg' ),
     width: width,
@@ -58,7 +59,7 @@ export default {
       label: "Ancho",
       type: "length-measure",
       defaultValue: {
-        length: 100,
+        length: 159,
         unit: 'cm'
       }
     },
@@ -66,7 +67,7 @@ export default {
       label: "Fondo",
       type: "length-measure",
       defaultValue: {
-        length: 50,
+        length: 107,
         unit: 'cm'
       }
     },
@@ -74,12 +75,12 @@ export default {
       label: "Alto",
       type: "length-measure",
       defaultValue: {
-        length: 50,
+        length: 92,
         unit: 'cm'
       }
     },
     altitude: {
-      label: 'Altura Z',
+      label: 'Altura de colocación',
       type: 'length-measure',
       defaultValue: {
         length: 0,

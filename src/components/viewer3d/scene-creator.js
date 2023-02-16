@@ -3,9 +3,14 @@ import createGrid from './grid-creator';
 import { disposeObject } from './three-memory-cleaner';
 import { verticesDistance, angleVector } from '../../utils/geometry';
 import { Line, Hole } from '../../class/export';
+
 import pureTexture from './textures/Pure.jpg';
 import intenseTexture from './textures/Intense.jpg';
 import realTexture from './textures/Real.jpg';
+import blancoTexture from './textures/alto-blanco-brillo.jpg';
+import eternityTexture from './textures/roble-eternity.jpg';
+import ostippoTexture from './textures/roble-ostippo.jpg';
+
 import { Map } from 'immutable';
 
 export function parseData ( state, sceneData, actions, catalog ) {
@@ -719,15 +724,30 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
             texture = loader.load( pureTexture ); break;
           case 'intense':
             texture = loader.load( intenseTexture ); break;
+          case 'alto':
+            texture = loader.load( blancoTexture ); break;
+          case 'eternity':
+            texture = loader.load( eternityTexture ); break;
+          case 'ostippo':
+            texture = loader.load( ostippoTexture ); break;
         }
 
         texture.wrapS = Three.RepeatWrapping;
         texture.wrapT = Three.RepeatWrapping;
 
-        pivot.traverse( node => {
-          if ( node instanceof Three.Mesh )
-            node.material.map = texture;
-        } );
+        console.log( item3D.children[ 0 ].name );
+        if ( item3D.children[ 0 ].name === 'attila_ok' ) {
+          pivot.traverse( node => {
+            if ( node.name === 'attila_ok_1' ) {
+              node.material.map = texture;
+            }
+          } );
+        } else {
+          pivot.traverse( node => {
+            if ( node instanceof Three.Mesh )
+              node.material.map = texture;
+          } );
+        }
       }
 
 

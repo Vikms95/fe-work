@@ -1,0 +1,265 @@
+{
+  "asset": {
+    "generator": "Khronos glTF Blender I/O v1.8.19",
+    "version": "2.0"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Scene",
+      "nodes": [
+        0,
+        1
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "Sanitary_Bath-Spas_Roca_BEYOND-SURFEXR-oval-bathtub-with-dr",
+      "scale": [
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513
+      ],
+      "translation": [
+        0,
+        0,
+        0.19115957617759705
+      ]
+    },
+    {
+      "mesh": 1,
+      "name": "grifoba",
+      "scale": [
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513
+      ],
+      "translation": [
+        0.2162080705165863,
+        0,
+        0.017138447612524033
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "Porcelana",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.9803919792175293,
+          0.9803919792175293,
+          0.9803919792175293,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.9972413778305054
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "Cromado.001",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.47058799862861633,
+          0.47058799862861633,
+          0.47058799862861633,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.9799806475639343
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "Cromado",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5764709711074829,
+          0.5764709711074829,
+          0.5764709711074829,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.11031827330589294
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Sanitary_Bath-Spas_Roca_BEYOND-SURFEXR-oval-bathtub-with-dr",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1
+          },
+          "indices": 2,
+          "material": 0
+        },
+        {
+          "attributes": {
+            "POSITION": 3,
+            "NORMAL": 4
+          },
+          "indices": 5,
+          "material": 1
+        }
+      ]
+    },
+    {
+      "name": "grifoba",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 6,
+            "NORMAL": 7
+          },
+          "indices": 8,
+          "material": 2
+        }
+      ]
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 2436,
+      "max": [
+        1593.8731689453125,
+        580.0117797851562,
+        750.7554931640625
+      ],
+      "min": [
+        0.24212646484375,
+        0.000046672830649185926,
+        0.189208984375
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 2436,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5123,
+      "count": 11736,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 201,
+      "max": [
+        846.8555297851562,
+        150.99220275878906,
+        425.34356689453125
+      ],
+      "min": [
+        747.0890502929688,
+        142.39280700683594,
+        325.60113525390625
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 201,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5123,
+      "count": 360,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5126,
+      "count": 88896,
+      "max": [
+        252,
+        1079,
+        424
+      ],
+      "min": [
+        0,
+        0,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 7,
+      "componentType": 5126,
+      "count": 88896,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 8,
+      "componentType": 5125,
+      "count": 90036,
+      "type": "SCALAR"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 29232,
+      "byteOffset": 0
+    },
+    {
+      "buffer": 0,
+      "byteLength": 29232,
+      "byteOffset": 29232
+    },
+    {
+      "buffer": 0,
+      "byteLength": 23472,
+      "byteOffset": 58464
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2412,
+      "byteOffset": 81936
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2412,
+      "byteOffset": 84348
+    },
+    {
+      "buffer": 0,
+      "byteLength": 720,
+      "byteOffset": 86760
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1066752,
+      "byteOffset": 87480
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1066752,
+      "byteOffset": 1154232
+    },
+    {
+      "buffer": 0,
+      "byteLength": 360144,
+      "byteOffset": 2220984
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Bañera_data.bin",
+      "byteLength": 2581128
+    }
+  ]
+}

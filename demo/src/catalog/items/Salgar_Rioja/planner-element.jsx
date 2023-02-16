@@ -12,13 +12,13 @@ const glb = require( './Rioja.glb' );
 
 const width =
 {
-  min: 0,  // cm
-  max: 0  // cm
+  min: 80,  // cm
+  max: 200  // cm
 };
 
 const depth = {
-  min: 0,
-  max: 0
+  min: 70,
+  max: 90
 };
 
 const height = {
@@ -59,7 +59,7 @@ export default {
       label: "Ancho",
       type: "length-measure",
       defaultValue: {
-        length: 100,
+        length: 80,
         unit: 'cm'
       }
     },
@@ -67,7 +67,7 @@ export default {
       label: "Fondo",
       type: "length-measure",
       defaultValue: {
-        length: 50,
+        length: 70,
         unit: 'cm'
       }
     },
@@ -75,12 +75,12 @@ export default {
       label: "Alto",
       type: "length-measure",
       defaultValue: {
-        length: 50,
+        length: 2.8,
         unit: 'cm'
       }
     },
     altitude: {
-      label: 'Altura Z',
+      label: 'Altura de colocación',
       type: 'length-measure',
       defaultValue: {
         length: 0,

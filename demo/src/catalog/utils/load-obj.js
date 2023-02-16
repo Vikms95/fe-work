@@ -13,6 +13,7 @@ import woodRoughnessFile from '../items/_Victor-Cubo-Azul-Mate/34232 Arizona Pin
 import intenseTexture from '../items/Salgar_Pilar/textures/Intense.jpg';
 import pureTexture from '../items/Salgar_Pilar/textures/Pure.jpg';
 import realTexture from '../items/Salgar_Pilar/textures/Real.jpg';
+import riojaTexture from './Plato_Rioja_blanco.jpg';
 import { Reflector } from 'three/examples/jsm/objects/Reflector';
 
 
@@ -138,6 +139,8 @@ const addEmissive = ( object, node ) => {
 const addChromeLook = ( object, node ) => {
   switch ( node.material.name ) {
     case 'Cromado':
+    case 'grifo2.001':
+    case 'Cromado.001':
     case 'Sanitary_Bath-Spas_Roca_BEYOND-SURFEXR-oval-bathtub-with-dr_2': {
       const newMaterial = new MeshStandardMaterial( {
         envMap: cubeRenderTarget.texture,
@@ -158,7 +161,7 @@ const addChromeLook = ( object, node ) => {
       node.material = newMaterial;
       break;
     }
-    
+
 
   }
 
@@ -279,6 +282,16 @@ const addTexture = ( object ) => {
 
 };
 
+const addRioja = ( object ) => {
+  object.traverse( node => {
+    if ( node.name === 'rioja_2' ) {
+      const loader = new THREE.TextureLoader();
+      const colorTexture = loader.load( riojaTexture );
+      node.material.map = colorTexture;
+    }
+  } );
+};
+
 const mateValues = {
   roughness: 0.75,
   metalness: 0
@@ -306,6 +319,7 @@ export function loadGLTF ( input ) {
         if ( node instanceof THREE.Mesh && node.material ) {
           console.log( 'material is ', node );
           // addEnvMapIntensity( object );
+          addRioja( object );
           enableMeshCastAndReceiveShadow( object );
           addGlassLook( object, node );
           addMirrorLook( object, node );

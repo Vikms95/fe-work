@@ -41,6 +41,7 @@ export default function MenuOptions ( {
     >
       <div style={ STYLE_OPTIONS }>
         <MenuObjectOptions
+          element={ element }
           name={ element.name }
           image={ element.image }
           propertiesFormData={ propertiesFormData }

@@ -63,13 +63,6 @@ export default {
         length: 80
       }
     },
-    height: {
-      label: 'Alto',
-      type: 'length-measure',
-      defaultValue: {
-        length: 215
-      }
-    },
     thickness: {
       label: 'Fondo',
       type: 'length-measure',
@@ -78,8 +71,15 @@ export default {
         unit: 'cm'
       }
     },
+    height: {
+      label: 'Alto',
+      type: 'length-measure',
+      defaultValue: {
+        length: 215
+      }
+    },
     altitude: {
-      label: 'Altura Z',
+      label: 'Altura de colocación',
       type: 'length-measure',
       defaultValue: {
         length: 0,

@@ -57,7 +57,7 @@ export default {
       label: "Ancho",
       type: "length-measure",
       defaultValue: {
-        length: 100,
+        length: 41.1,
         unit: 'cm'
       }
     },
@@ -65,7 +65,7 @@ export default {
       label: "Fondo",
       type: "length-measure",
       defaultValue: {
-        length: 50,
+        length: 55.1,
         unit: 'cm'
       }
     },
@@ -73,12 +73,12 @@ export default {
       label: "Alto",
       type: "length-measure",
       defaultValue: {
-        length: 50,
+        length: 123.6,
         unit: 'cm'
       }
     },
     altitude: {
-      label: 'Altura Z',
+      label: 'Altura de colocación',
       type: 'length-measure',
       defaultValue: {
         length: 63,

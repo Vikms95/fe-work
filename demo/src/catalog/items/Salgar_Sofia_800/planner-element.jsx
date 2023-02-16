@@ -26,6 +26,16 @@ const height = {
   max: 143
 };
 
+const widthRight = {
+  min: 0,
+  max: 80
+};
+
+const widthLeft = {
+  min: 0,
+  max: 80
+};
+
 // const depth = 45.2;  // cm
 // const height = 50;  // cm
 
@@ -59,7 +69,23 @@ export default {
       label: "Ancho",
       type: "length-measure",
       defaultValue: {
-        length: 100,
+        length: 80,
+        unit: 'cm'
+      }
+    },
+    widthRight: {
+      label: 'Ancho Derecha',
+      type: "length-measure",
+      defaultValue: {
+        length: 0,
+        unit: 'cm'
+      }
+    },
+    widthLeft: {
+      label: 'Ancho Izquierda',
+      type: "length-measure",
+      defaultValue: {
+        length: 0,
         unit: 'cm'
       }
     },
@@ -67,7 +93,7 @@ export default {
       label: "Fondo",
       type: "length-measure",
       defaultValue: {
-        length: 50,
+        length: 46,
         unit: 'cm'
       }
     },
@@ -75,12 +101,12 @@ export default {
       label: "Alto",
       type: "length-measure",
       defaultValue: {
-        length: 50,
+        length: 14.3,
         unit: 'cm'
       }
     },
     altitude: {
-      label: 'Altura Z',
+      label: 'Altura de colocación',
       type: 'length-measure',
       defaultValue: {
         length: 87,

@@ -5,6 +5,10 @@ import pureTexture from './textures/Pure.jpg';
 import realTexture from './textures/Real.jpg';
 import intenseTexture from './textures/Intense.jpg';
 
+import blancoTexture from './textures/alto-blanco-brillo.jpg';
+import eternityTexture from './textures/roble-eternity.jpg';
+import ostippoTexture from './textures/roble-ostippo.jpg';
+
 import bohemianTexture from './textures/Bohemian Blue.jpg';
 import greenMosaicTexture from './textures/Green Mosaic.jpg';
 import greenTexture from './textures/Green.jpg';
@@ -61,6 +65,12 @@ const itemTextures = [
   realTexture,
 ];
 
+const atillaTextures = [
+  blancoTexture,
+  eternityTexture,
+  ostippoTexture
+];
+
 export default function MenuPropertyThree ( {
   propertyName,
   element,
@@ -72,7 +82,7 @@ export default function MenuPropertyThree ( {
   const configs = data.get( 'configs' );
   const currentValue = data.get( 'currentValue' );
 
-  console.log( proto );
+  console.log( element );
 
   return (
     <div style={ STYLE_TEXTURES_THREE } className='options-three'>
@@ -86,18 +96,28 @@ export default function MenuPropertyThree ( {
               } }
               onClick={ () => updateProperty( propertyName, value ) }
             >
-              { proto === 'items' && (
+              { element.name === '90830' ?
                 <img
                   src={
-                    itemTextures[ index ]
+                    atillaTextures[ index ]
                   }
                   style={ {
                     ...STYLE_THREE_ELEMENT,
                     outline: value === currentValue && '5px solid' + SharedStyle.PRIMARY_COLOR.master
                   } }
                 />
+                : proto === 'items' && (
+                  <img
+                    src={
+                      itemTextures[ index ]
+                    }
+                    style={ {
+                      ...STYLE_THREE_ELEMENT,
+                      outline: value === currentValue && '5px solid' + SharedStyle.PRIMARY_COLOR.master
+                    } }
+                  />
 
-              ) }
+                ) }
               { proto === 'lines' && (
                 <img
                   src={

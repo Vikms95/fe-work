@@ -59,7 +59,31 @@ export default {
       label: "Ancho",
       type: "length-measure",
       defaultValue: {
-        length: 100,
+        length: 60,
+        unit: 'cm'
+      }
+    },
+    widthCenter: {
+      label: 'Ancho Central',
+      type: "length-measure",
+      defaultValue: {
+        length: 0,
+        unit: 'cm'
+      },
+    },
+    widthLeft: {
+      label: 'Ancho Derecha',
+      type: "length-measure",
+      defaultValue: {
+        length: 0,
+        unit: 'cm'
+      }
+    },
+    widthRight: {
+      label: 'Ancho Izquierda',
+      type: "length-measure",
+      defaultValue: {
+        length: 0,
         unit: 'cm'
       }
     },
@@ -67,7 +91,7 @@ export default {
       label: "Fondo",
       type: "length-measure",
       defaultValue: {
-        length: 50,
+        length: 46,
         unit: 'cm'
       }
     },
@@ -75,12 +99,12 @@ export default {
       label: "Alto",
       type: "length-measure",
       defaultValue: {
-        length: 50,
+        length: 1.2,
         unit: 'cm'
       }
     },
     altitude: {
-      label: 'Altura Z',
+      label: 'Altura de colocación',
       type: 'length-measure',
       defaultValue: {
         length: 87,

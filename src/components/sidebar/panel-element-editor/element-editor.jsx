@@ -23,6 +23,26 @@ import { Context } from '../../../context/context';
 import { useFormData } from '../../../hooks/useFormData';
 import { useToggle } from '../../../hooks/useToggle';
 import MenuOptions from '../../menu-options/menu-options';
+import areaIco from './area.png';
+
+import pureTexture from './textures/Pure.jpg';
+import realTexture from './textures/Real.jpg';
+import intenseTexture from './textures/Intense.jpg';
+
+import blancoTexture from './textures/alto-blanco-brillo.jpg';
+import eternityTexture from './textures/roble-eternity.jpg';
+import ostippoTexture from './textures/roble-ostippo.jpg';
+
+import bohemianTexture from './textures/Bohemian Blue.jpg';
+import greenMosaicTexture from './textures/Green Mosaic.jpg';
+import greenTexture from './textures/Green.jpg';
+import marmolTexture from './textures/Marmol.jpg';
+import ral5010 from './textures/RAL 5010.jpg';
+import ral9016 from './textures/RAL 9016.jpg';
+
+import hidraulicoTexture from './textures/Hidraulico 9.jpg';
+import sueloTexture from './textures/Suelo (35).jpg';
+
 
 const PRECISION = 2;
 
@@ -41,7 +61,21 @@ const STYLE_PRICE = {
   justifyContent: 'flex-end',
   alignItems: 'center',
   fontFamily: 'Calibri',
-  fontSize: '14px'
+  fontSize: '14px',
+  color: SharedStyle.PRIMARY_COLOR.master,
+  fontWeight: '900',
+  marginBottom: '10px'
+};
+
+const STYLE_IMG_ACABADO = {
+  height: '50px',
+  width: '50px'
+};
+
+const STYLE_CONT = {
+  display: 'flex',
+  flexDirection: 'column',
+
 };
 
 // const STYLE_ATTR_PROP_SEPARATOR = {
@@ -623,18 +657,141 @@ export default class ElementEditor extends Component {
       }
     };
 
+    const returnAcabado = () => {
+      if ( element.name === '90830' ) {
+        console.log( element.properties.get( 'texture' ) );
+        if ( element.properties.get( 'texture' ) === 'eternity' ) {
+          return (
+            <div style={ STYLE_CONT }>
+              Eternity
+              <img src={ eternityTexture } style={ STYLE_IMG_ACABADO } />
+            </div>
+          );
+        }
+        if ( element.properties.get( 'texture' ) === 'alto' ) {
+          return (
+            <div style={ STYLE_CONT }>
+              Alto Blanco Brillo
+              <img src={ blancoTexture } style={ STYLE_IMG_ACABADO } />
+            </div>
+          );
+        }
+        if ( element.properties.get( 'texture' ) === 'ostippo' ) {
+          return (
+            <div style={ STYLE_CONT }>
+              Ostippo
+              <img src={ ostippoTexture } style={ STYLE_IMG_ACABADO } />
+            </div>
+          );
+        }
+      } else if ( element.prototype === 'items' ) {
+        switch ( element.properties.get( 'texture' ) ) {
+          case 'real':
+            return (
+              <div style={ STYLE_CONT }>
+                Real
+                <img src={ realTexture } style={ STYLE_IMG_ACABADO }></img>
+              </div>
+            );
+          case 'pure':
+            return (
+              <div style={ STYLE_CONT }>
+                Pure
+                <img src={ pureTexture } style={ STYLE_IMG_ACABADO }></img>
+              </div>
+            );
+          case 'intense':
+            return (
+              <div style={ STYLE_CONT }>
+                Intense
+                <img src={ intenseTexture } style={ STYLE_IMG_ACABADO }></img>
+              </div>
+            );
+        }
+      } else if ( element.prototype === 'lines' ) {
+        switch ( element.properties.get( 'textureA' ) ) {
+          case 'marmol':
+            return (
+              <div style={ STYLE_CONT }>
+                Mármol
+                <img src={ marmolTexture } style={ STYLE_IMG_ACABADO } />
+              </div>
+            );
+          case 'bohemianBlue':
+            return (
+              <div style={ STYLE_CONT }>
+                Bohemian Blue
+                <img src={ bohemianTexture } style={ STYLE_IMG_ACABADO } />
+              </div>
+            );
+          case 'greenMosaic':
+            return (
+              <div style={ STYLE_CONT }>
+                Green Mosaic
+                <img src={ greenMosaicTexture } style={ STYLE_IMG_ACABADO } />
+              </div>
+            );
+          case 'green':
+            return (
+              <div style={ STYLE_CONT }>
+                Green
+                <img src={ greenTexture } style={ STYLE_IMG_ACABADO } />
+              </div>
+            );
+          case 'ral5010':
+            return (
+              <div style={ STYLE_CONT }>
+                RAL 5010
+                <img src={ ral5010 } style={ STYLE_IMG_ACABADO } />
+              </div>
+            );
+          case 'ral9016':
+            return (
+              <div style={ STYLE_CONT }>
+                RAL 9016
+                <img src={ ral9016 } style={ STYLE_IMG_ACABADO } />
+              </div>
+            );
+        }
+      } else if ( element.prototype === 'areas' ) {
+        switch ( element.properties.get( 'texture' ) ) {
+          case 'marmol':
+            return (
+              <div style={ STYLE_CONT }>
+                Mármol
+                <img src={ marmolTexture } style={ STYLE_IMG_ACABADO } />
+              </div>
+            );
+          case 'hidraulico':
+            return (
+              <div style={ STYLE_CONT }>
+                Hidráulico
+                <img src={ hidraulicoTexture } style={ STYLE_IMG_ACABADO } />
+              </div>
+            );
+          case 'parquet':
+            return (
+              <div style={ STYLE_CONT }>
+                Parquet
+                <img src={ sueloTexture } style={ STYLE_IMG_ACABADO } />
+              </div>
+            );
+        }
+      }
+    };
+
     return (
       <div style={ { marginTop: '2em' } }>
 
         { this.state.price && this.state.price !== 0 && (
-          <div style={ STYLE_PRICE }>{ this.state.price + ' €' } </div>
+          <div style={ STYLE_PRICE }>{ 'Precio ' + this.state.price + '.00 €' } </div>
         )
         }
 
         {/* Imagen con nombre y descripcion, esto aparece siempre por defecto */ }
         {/* TODO: Hacerlo dinamico */ }
         <div style={ { display: 'flex', flexDirection: 'column', alignContent: 'center', alignItems: 'center', marginBottom: '45px' } }>
-          <img style={ { height: '80px', width: '80px', paddingTop: '10px' } } src={ element.image } />
+          <img style={ { height: '80px' } } src={ element.prototype !== 'areas' ? element.image : areaIco } />
           <p style={ { margin: '0', padding: '10px 0', fontSize: '0.8em', textAlign: 'center', color: SharedStyle.PRIMARY_COLOR.master, /*fontWeight: 'bold'*/ } }>
 
             { element.name }
@@ -801,6 +958,16 @@ export default class ElementEditor extends Component {
                 updateProperty={ this.updateProperty }
               />
             ) }
+          </div>
+          <div style={ {
+            color: SharedStyle.PRIMARY_COLOR.master,
+            fontWeight: '600',
+            fontSize: '15px',
+            marginLeft: '30px'
+          } }> Acabado
+            <div style={ {
+              fontWeight: '200'
+            } }>{ returnAcabado() }</div>
           </div>
         </div >
       </div >

@@ -3,6 +3,7 @@ import * as SharedStyle from '../../shared-style';
 import { ObjectOptionsAcabados } from './object-options-acabados';
 import { ObjectOptionsOpciones } from './object-options-opciones';
 import { ObjectOptionsActions } from './object-options-actions';
+import areaIco from './area.png';
 
 
 const STYLE_OBJECT_OPTIONS = {
@@ -56,6 +57,7 @@ const STYLE_BUTTON = {
 };
 
 export default function MenuObjectOptions ( {
+  element,
   image,
   name,
   propertiesFormData,
@@ -69,7 +71,7 @@ export default function MenuObjectOptions ( {
     <div style={ STYLE_OBJECT_OPTIONS }>
       <div style={ { ...STYLE_TITLE_BAR, ...STYLE_BREADCRUMB } }>Ref. { name }</div>
       <div style={ STYLE_IMAGE_WRAPPER }>
-        <img style={ STYLE_IMAGE } src={ image } />
+        <img style={ STYLE_IMAGE } src={ element.prototype !== 'areas' ? image : areaIco } />
       </div>
 
       { propertiesFormData.entrySeq().map( ( [ propertyName, data ] ) => {

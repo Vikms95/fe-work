@@ -28,6 +28,13 @@ export default function WallFactory ( name, info, textures ) {
       //    length: 0,
       //  }
       //},
+      thickness: {
+        label: 'Fondo',
+        type: 'length-measure',
+        defaultValue: {
+          length: 20
+        }
+      },
       height: {
         label: 'Alto',
         type: 'length-measure',
@@ -35,13 +42,7 @@ export default function WallFactory ( name, info, textures ) {
           length: 300,
         }
       },
-      thickness: {
-        label: 'Fondo',
-        type: 'length-measure',
-        defaultValue: {
-          length: 20
-        }
-      }
+
     },
 
     render2D: function ( element, layer, scene ) {

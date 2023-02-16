@@ -1,10 +1,11 @@
 import { ElementsFactories } from 'react-planner';
+import areaIco from './area.png';
 
 let info = {
   title: 'area',
   tag: [ 'area' ],
   description: 'Generic Room',
-  image: ''
+  image: areaIco
 };
 
 let textures = {
@@ -17,8 +18,8 @@ let textures = {
   marmol: {
     name: 'Marmol',
     uri: require( './textures/Marmol blanco.jpg' ),
-    lengthRepeatScale: 0.00002,
-    heightRepeatScale: 0.00002,
+    lengthRepeatScale: 0.00001,
+    heightRepeatScale: 0.00001,
   },
   parquet: {
     name: 'Parquet',

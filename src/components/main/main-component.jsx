@@ -49,8 +49,8 @@ const STYLE_BODY = {
 
 const STYLE_BOX = {
   backgroundColor: '#6387a1',
-  height: '13.5em',
-  width: '13.5em',
+  height: '15.5em',
+  width: '14.5em',
   // display: 'flex',
   // flexDirection: 'column',
   // alignItems: 'center',
