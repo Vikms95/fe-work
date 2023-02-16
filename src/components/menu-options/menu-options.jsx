@@ -28,8 +28,10 @@ export default function MenuOptions ( {
   state,
   propertiesFormData,
   updateProperty,
-  closeOptionsMenu
+  closeOptionsMenu,
+  isOptionsMenuActive
 } ) {
+  if ( !isOptionsMenuActive ) return;
 
   const [ selectedPart, setSelectedPart ] = useState();
 

@@ -18,42 +18,15 @@ import { useFormData } from '../../../hooks/useFormData';
 import { useToggle } from '../../../hooks/useToggle';
 import MenuOptions from '../../menu-options/menu-options';
 
-import flechaIco from '../../../assets/sidebar/Flecha.jpg';
-
-import pureTexture from './textures/Pure.jpg';
-import realTexture from './textures/Real.jpg';
-import intenseTexture from './textures/Intense.jpg';
-
-import blancoTexture from './textures/alto-blanco-brillo.jpg';
-import eternityTexture from './textures/roble-eternity.jpg';
-import ostippoTexture from './textures/roble-ostippo.jpg';
-
-import bohemianTexture from './textures/Bohemian Blue.jpg';
-import greenMosaicTexture from './textures/Green Mosaic.jpg';
-import greenTexture from './textures/Green.jpg';
-import marmolTexture from './textures/Marmol.jpg';
-import ral5010 from './textures/RAL 5010.jpg';
-import ral9016 from './textures/RAL 9016.jpg';
-
-import hidraulicoTexture from './textures/Hidraulico 9.jpg';
-import sueloTexture from './textures/Suelo (35).jpg';
 import { ElementPrice } from './element-price';
 import { ElementEditorIcons } from './element-editor-icons';
 import { ElementInfo } from './element-info';
+import { PropertiesEditor } from './properties-editor/properties-editor';
+import { PropertiesMenuButton } from './properties-editor/properties-menu-button';
+import { ElementTextureDisplay } from './properties-editor/element-texture-display';
 
 
 const PRECISION = 2;
-
-const STYLE_IMG_ACABADO = {
-  height: '50px',
-  width: '50px'
-};
-
-const STYLE_CONT = {
-  display: 'flex',
-  flexDirection: 'column',
-
-};
 
 // const STYLE_ATTR_PROP_SEPARATOR = {
 //   margin: '0.5em 0.25em 0.5em 0',
@@ -248,6 +221,7 @@ export default class ElementEditor extends Component {
     this.updateAttribute = this.updateAttribute.bind( this );
     this.updateProperty = this.updateProperty.bind( this );
     this.closeOptionsMenu = this.closeOptionsMenu.bind( this );
+    this.toggleOptionsMenu = this.toggleOptionsMenu.bind( this );
   }
 
   //FIXME this has been commented bc it was preventing the lower components from getting    
@@ -615,7 +589,9 @@ export default class ElementEditor extends Component {
     this.setState( { isOptionsMenuActive: false } );
   }
 
-
+  toggleOptionsMenu () {
+    this.setState( { isOptionsMenuActive: !this.state.isOptionsMenuActive } );
+  }
 
   render () {
     let mode = this.props.state.getIn( [ 'mode' ] );
@@ -634,128 +610,7 @@ export default class ElementEditor extends Component {
       }
     };
 
-    const returnAcabado = () => {
-      if ( element.name === '90830' ) {
-        console.log( element.properties.get( 'texture' ) );
-        if ( element.properties.get( 'texture' ) === 'eternity' ) {
-          return (
-            <div style={ STYLE_CONT }>
-              Eternity
-              <img src={ eternityTexture } style={ STYLE_IMG_ACABADO } />
-            </div>
-          );
-        }
-        if ( element.properties.get( 'texture' ) === 'alto' ) {
-          return (
-            <div style={ STYLE_CONT }>
-              Alto Blanco Brillo
-              <img src={ blancoTexture } style={ STYLE_IMG_ACABADO } />
-            </div>
-          );
-        }
-        if ( element.properties.get( 'texture' ) === 'ostippo' ) {
-          return (
-            <div style={ STYLE_CONT }>
-              Ostippo
-              <img src={ ostippoTexture } style={ STYLE_IMG_ACABADO } />
-            </div>
-          );
-        }
-      } else if ( element.prototype === 'items' ) {
-        switch ( element.properties.get( 'texture' ) ) {
-          case 'real':
-            return (
-              <div style={ STYLE_CONT }>
-                Real
-                <img src={ realTexture } style={ STYLE_IMG_ACABADO }></img>
-              </div>
-            );
-          case 'pure':
-            return (
-              <div style={ STYLE_CONT }>
-                Pure
-                <img src={ pureTexture } style={ STYLE_IMG_ACABADO }></img>
-              </div>
-            );
-          case 'intense':
-            return (
-              <div style={ STYLE_CONT }>
-                Intense
-                <img src={ intenseTexture } style={ STYLE_IMG_ACABADO }></img>
-              </div>
-            );
-        }
-      } else if ( element.prototype === 'lines' ) {
-        switch ( element.properties.get( 'textureA' ) ) {
-          case 'marmol':
-            return (
-              <div style={ STYLE_CONT }>
-                Mármol
-                <img src={ marmolTexture } style={ STYLE_IMG_ACABADO } />
-              </div>
-            );
-          case 'bohemianBlue':
-            return (
-              <div style={ STYLE_CONT }>
-                Bohemian Blue
-                <img src={ bohemianTexture } style={ STYLE_IMG_ACABADO } />
-              </div>
-            );
-          case 'greenMosaic':
-            return (
-              <div style={ STYLE_CONT }>
-                Green Mosaic
-                <img src={ greenMosaicTexture } style={ STYLE_IMG_ACABADO } />
-              </div>
-            );
-          case 'green':
-            return (
-              <div style={ STYLE_CONT }>
-                Green
-                <img src={ greenTexture } style={ STYLE_IMG_ACABADO } />
-              </div>
-            );
-          case 'ral5010':
-            return (
-              <div style={ STYLE_CONT }>
-                RAL 5010
-                <img src={ ral5010 } style={ STYLE_IMG_ACABADO } />
-              </div>
-            );
-          case 'ral9016':
-            return (
-              <div style={ STYLE_CONT }>
-                RAL 9016
-                <img src={ ral9016 } style={ STYLE_IMG_ACABADO } />
-              </div>
-            );
-        }
-      } else if ( element.prototype === 'areas' ) {
-        switch ( element.properties.get( 'texture' ) ) {
-          case 'marmol':
-            return (
-              <div style={ STYLE_CONT }>
-                Mármol
-                <img src={ marmolTexture } style={ STYLE_IMG_ACABADO } />
-              </div>
-            );
-          case 'hidraulico':
-            return (
-              <div style={ STYLE_CONT }>
-                Hidráulico
-                <img src={ hidraulicoTexture } style={ STYLE_IMG_ACABADO } />
-              </div>
-            );
-          case 'parquet':
-            return (
-              <div style={ STYLE_CONT }>
-                Parquet
-                <img src={ sueloTexture } style={ STYLE_IMG_ACABADO } />
-              </div>
-            );
-        }
-      }
-    };
+
 
     return (
       <div style={ { marginTop: '2em' } }>
@@ -775,53 +630,17 @@ export default class ElementEditor extends Component {
           projectActions={ this.context.projectActions }
           unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
         />
-        { propertiesFormData.entrySeq()
-          .map( ( [ propertyName, data ] ) => {
 
-            // For a line, this would be applied to height and thickness
-            if ( propertyName.includes( 'texture' ) === false ) {
-
-              const configs = data.get( 'configs' );
-              const currentValue = data.get( 'currentValue' );
-              const label = propertiesFormData.getIn( [ propertyName, 'configs' ] ).label;
-
-              // For a line, this still implied height and thickness
-              if ( configs.type === 'length-measure' ) {
-
-                return (
-                  <PropertyLengthMeasure
-                    mode={ mode }
-                    key={ propertyName }
-                    stateRedux={ appState }
-                    state={ propertiesFormData }
-                    sourceElement={ element }
-                    attributeName={ propertyName }
-                    projectActions={ projectActions }
-                    unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
-                    configs={ { label: label, min: 0, max: Infinity, precision: 2 } }
-                    value={ propertiesFormData.getIn( [ propertyName, "currentValue" ] ) }
-                    onUpdate={ ( value, isEnter ) => this.updateProperty( propertyName, value, isEnter ) }
-                  /> );
-
-              } else {
-                let { Editor } = catalog.getPropertyType( configs.type );
-
-                return <Editor
-                  configs={ configs }
-                  key={ propertyName }
-                  value={ currentValue }
-                  stateRedux={ appState }
-                  sourceElement={ element }
-                  internalState={ this.state }
-                  propertyName={ propertyName }
-                  unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
-                  onUpdate={ value => this.updateProperty( propertyName, value ) }
-                />;
-
-              }
-            }
-          } )
-        }
+        <PropertiesEditor
+          mode={ mode }
+          appState={ appState }
+          element={ element }
+          catalog={ catalog }
+          internalState={ this.state }
+          projectActions={ projectActions }
+          propertiesFormData={ propertiesFormData }
+          updateProperty={ this.updateProperty }
+        />
 
         <AttributesEditor
           mode={ mode }
@@ -834,93 +653,24 @@ export default class ElementEditor extends Component {
           unit={ appState.getIn( [ "prefs", "UNIDADMEDIDA" ] ) }
         />
 
-        {/** INPUTS DE ACABADO Y OPCIONES**/ }
-
         <div style={ { marginTop: '6px' } }>
-          <div>
-            {/* { element.prototype === 'lines' && ( */ }
-            {/* <React.Fragment>
-              <div
-                onClick={ showAndHideAcabado }
-                style={ { display: 'flex', justifyItems: 'center', height: '25px', width: '5.5em', cursor: 'pointer', paddingBottom: '34px' } }>
-                <p style={ {
-                  margin: '0',
-                  fontSize: '0.75em',
-                  color: SharedStyle.PRIMARY_COLOR.master,
-                } }>Acabado</p>
-                <img style={ { height: '0.70em', marginLeft: '1.8em', marginTop: '1px' } } src={ flecha } />
-              </div>
-              <div id={ 'panelAcabado' }
-                style={ ( this.state.isSelectAcabado )
-                  ? { display: 'block', width: '100%', height: '100%', paddingBottom: '10px' }
-                  : { width: '100%', height: '100%', display: 'none'; } }>
+          <PropertiesMenuButton
+            toggleOptionsMenu={ this.toggleOptionsMenu }
+          />
 
-                { propertiesFormData.entrySeq()
-                  .map( ( [ propertyName, data ] ) => {
+          <MenuOptions
+            state={ appState }
+            element={ element }
+            propertiesFormData={ propertiesFormData }
+            closeOptionsMenu={ this.closeOptionsMenu }
+            updateProperty={ this.updateProperty }
+            isOptionsMenuActive={ this.state.isOptionsMenuActive }
+          />
 
-                    if ( propertyName.includes( 'texture' ) ) {
-                      let currentValue = data.get( 'currentValue' ), configs = data.get( 'configs' );
+          <ElementTextureDisplay
+            element={ element }
+          />
 
-                      let { Editor } = catalog.getPropertyType( configs.type );
-
-                      return <Editor
-                        state={ appState }
-                        configs={ configs }
-                        key={ propertyName }
-                        value={ currentValue }
-                        sourceElement={ element }
-                        internalState={ this.state }
-                        propertyName={ propertyName }
-                        onUpdate={ value => this.updateProperty( propertyName, value ) }
-                      />;
-                    }
-                  } )
-                }
-              </div>
-            </React.Fragment> */}
-            {/* ) } */ }
-
-
-            <div
-              onClick={ () => {
-                this.setState( { isOptionsMenuActive: !this.state.isOptionsMenuActive } );
-              } }
-              style={ { display: 'flex', justifyItems: 'center', height: '25px', width: '5.5em', cursor: 'pointer' } }>
-              <p style={ {
-                margin: '0',
-                fontSize: '0.75em',
-                color: SharedStyle.PRIMARY_COLOR.master,
-              } }>Opciones</p>
-
-              <img style={ {
-                height: '0.4em',
-                marginLeft: '0.5em',
-                marginTop: '5px'
-              } }
-                src={ flechaIco } />
-            </div>
-
-            { this.state.isOptionsMenuActive && (
-              <MenuOptions
-                state={ appState }
-                element={ element }
-                propertiesFormData={ propertiesFormData }
-                closeOptionsMenu={ this.closeOptionsMenu }
-                updateProperty={ this.updateProperty }
-              />
-            ) }
-          </div>
-
-          <div style={ {
-            color: SharedStyle.PRIMARY_COLOR.master,
-            fontWeight: '600',
-            fontSize: '15px',
-            marginLeft: '30px'
-          } }> Acabado
-            <div style={ {
-              fontWeight: '200'
-            } }>{ returnAcabado() }</div>
-          </div>
         </div >
       </div >
     );
