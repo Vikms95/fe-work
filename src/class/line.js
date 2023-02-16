@@ -129,7 +129,7 @@ class Line {
       if ( l_angle != null )
         return {
           angle_rad: l_angle.angle_rad,
-          angle: l_angle.angle
+          angle: l_angle.a
         };
     }
 

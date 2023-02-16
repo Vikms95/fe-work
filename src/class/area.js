@@ -8,7 +8,7 @@ import {
 class Area {
 
   static add ( state, layerID, type, verticesCoords, catalog ) {
-
+    console.log( "CREATE AREA" );
     let area;
 
     let layer = state.getIn( [ 'scene', 'layers', layerID ] );
@@ -21,6 +21,8 @@ class Area {
       area = catalog.factoryElement( type, {
         id: areaID,
         name: NameGenerator.generateName( 'areas', catalog.getIn( [ 'elements', type, 'info', 'title' ] ) ),
+        description: state.catalog.getIn( [ 'elements', type, 'info', 'description' ] ),
+        image: state.catalog.getIn( [ 'elements', type, 'info', 'image' ] ),
         type,
         prototype: 'areas',
         vertices

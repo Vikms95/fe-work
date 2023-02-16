@@ -461,7 +461,6 @@ function addObject ( modifiedPath, layer, planData, actions, sceneData, oldScene
 
   if ( modifiedPath.length === 5 ) {
     let addPromise = null, addAction = null;
-    console.log( 'additemaddobject' );
     switch ( modifiedPath[ 3 ] ) {
       case 'lines': addPromise = addLine; addAction = actions.linesActions; break;
       case 'areas': addPromise = addArea; addAction = actions.areaActions; break;

@@ -10,14 +10,26 @@ const STYLE_ELEMENT_INFO = {
   marginBottom: '45px'
 };
 
-const STYLE_NAME = { margin: '0', padding: '10px 0', fontSize: '0.8em', textAlign: 'center', color: SharedStyle.PRIMARY_COLOR.master, };
-const STYLE_DESCRIPTION = { margin: '0', fontSize: '0.7em', textAlign: 'center' };
+const STYLE_NAME = {
+  margin: '0',
+  padding: '10px 0',
+  fontSize: '0.8em',
+  textAlign: 'center',
+  color: SharedStyle.PRIMARY_COLOR.master,
+};
+
+const STYLE_DESCRIPTION = {
+  margin: '0',
+  fontSize: '0.7em',
+  textAlign: 'center'
+};
 
 export function ElementInfo ( { element } ) {
+  console.log( element );
   return (
     <div style={ STYLE_ELEMENT_INFO }>
       <img
-        src={ element.prototype !== 'areas' ? element.image : areaIco }
+        src={ element.image }
         style={ { height: '80px' } }
       />
 

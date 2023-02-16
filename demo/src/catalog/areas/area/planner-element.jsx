@@ -1,14 +1,13 @@
 import { ElementsFactories } from 'react-planner';
-import areaIco from './area.png';
 
-let info = {
+const info = {
   title: 'area',
   tag: [ 'area' ],
-  description: 'Generic Room',
-  image: areaIco
+  description: 'Generic room',
+  image: require( './area.png' )
 };
 
-let textures = {
+const textures = {
   hidraulico: {
     name: 'Hidraulico',
     uri: require( './textures/Hidraulico 9.jpg' ),
@@ -26,19 +25,7 @@ let textures = {
     uri: require( './textures/Suelo (35).jpg' ),
     lengthRepeatScale: 0.00002,
     heightRepeatScale: 0.00002
-  },
-  // strand_porcelain: {
-  //   name: 'Strand Porcelain Tile',
-  //   uri: require( './textures/strand-porcelain.jpg' ),
-  //   lengthRepeatScale: 0.02,
-  //   heightRepeatScale: 0.02
-  // },
-  // grass: {
-  //   name: 'Grass',
-  //   uri: require( './textures/grass.jpg' ),
-  //   lengthRepeatScale: 0.01,
-  //   heightRepeatScale: 0.01,
-  // }
+  }
 };
 
 export default ElementsFactories.AreaFactory( 'area', info, textures );
