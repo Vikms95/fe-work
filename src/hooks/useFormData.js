@@ -125,7 +125,7 @@ export function useFormData ( props, context ) {
         setFormData( ( prevState ) => ( { ...prevState, attributesFormData } ) );
 
         if ( isEnter && !isMultipleSelection( props.state ) ) {
-          const cachedAngulo = document.querySelector( '.angulo' ).value;
+          const cachedAngulo = document.querySelector( '.lineAngle' ).value;
           context.linesActions.cacheAngulo( cachedAngulo );
         }
         break;

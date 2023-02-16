@@ -439,7 +439,7 @@ export default class FormNumberInput extends Component {
 
 
   isAttribute () {
-    return this.props.attributeName === 'angulo' || this.props.attributeName === 'lineLength';
+    return this.props.attributeName === 'lineAngle' || this.props.attributeName === 'lineLength';
   }
 
   isLengthInputWhileDrawing () {
@@ -455,11 +455,11 @@ export default class FormNumberInput extends Component {
   }
 
   isInputAnguloAndSingleSelection () {
-    return this.props.attributeName === 'angulo' && !isMultipleSelection();
+    return this.props.attributeName === 'lineAngle' && !isMultipleSelection();
   }
 
   isInputAnguloAndMultipleSelection () {
-    return this.props.attributeName === 'angulo' && isMultipleSelection();
+    return this.props.attributeName === 'lineAngle' && isMultipleSelection();
   }
 
   isElementsOfSamePrototype ( element ) {
@@ -735,7 +735,7 @@ export default class FormNumberInput extends Component {
       onChange( {
         target: {
           isEnter: keyCode == KEYBOARD_BUTTON_CODE.ENTER,
-          value: ( attributeName === 'angulo' )
+          value: ( attributeName === 'lineAngle' )
             ? savedValue
             : convertMeasureToOriginal( savedValue, this.props.unit )
         }

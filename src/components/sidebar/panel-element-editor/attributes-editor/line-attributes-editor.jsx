@@ -1,11 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { PropertyLengthMeasure, PropertyNumber } from '../../../../catalog/properties/export';
-import { Context } from '../../../../context/context';
 
-const tableStyle = { width: '100%' };
-const firstTdStyle = { width: '6em' };
-const inputStyle = { textAlign: 'left' };
 
 export default function LineAttributesEditor ( {
   mode,
@@ -19,19 +15,12 @@ export default function LineAttributesEditor ( {
   ...rest
 } ) {
 
-  const { translator } = useContext( Context );
-  //let name = attributeFormData.has( 'name' ) ? attributeFormData.get( 'name' ) : element.name;
-  //let vertexOne = attributeFormData.has( 'vertexOne' ) ? attributeFormData.get( 'vertexOne' ) : null;
-  //let vertexTwo = attributeFormData.has( 'vertexTwo' ) ? attributeFormData.get( 'vertexTwo' ) : null;
   let lineLength = attributeFormData.has( 'lineLength' ) ? attributeFormData.get( 'lineLength' ) : null;
   let lineAngle = attributeFormData.has( 'lineAngle' ) ? attributeFormData.get( 'lineAngle' ) : null;
-  const isLengthAttribute = () => position === 1;
-  const isAngleAttribute = () => position === 2;
+  const isLengthAttribute = position === 1;
+  const isAngleAttribute = position === 2;
 
-  // On element editor, line length was given position 1
-  // and angle was given position 2
-  if ( isLengthAttribute() ) {
-
+  if ( isLengthAttribute )
     return (
       <PropertyLengthMeasure
         mode={ mode }
@@ -46,14 +35,14 @@ export default function LineAttributesEditor ( {
         onUpdate={ ( mapped, isEnter ) => onUpdate( 'lineLength', mapped, isEnter ) }
       />
     );
-  } else if ( isAngleAttribute() ) {
+  else if ( isAngleAttribute )
     return (
       <PropertyNumber
         mode={ mode }
         state={ state }
         value={ lineAngle }
         sourceElement={ element }
-        attributeName='angulo'
+        attributeName='lineAngle'
         projectActions={ projectActions }
         attributeFormData={ attributeFormData }
         configs={ { label: 'Ángulo', min: 0, max: 360, precision: 0 } }
@@ -61,7 +50,6 @@ export default function LineAttributesEditor ( {
         { ...rest }
       />
     );
-  }
 
   return <div></div>;
 

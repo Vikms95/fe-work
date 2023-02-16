@@ -387,7 +387,7 @@ export default class ElementEditor extends Component {
         this.setState( { attributesFormData } );
 
         if ( isEnter && !isMultipleSelection( this.props.state ) ) {
-          const cachedAngulo = document.querySelector( '.angulo' ).value;
+          const cachedAngulo = document.querySelector( '.lineAngle' ).value;
           this.context.linesActions.cacheAngulo( cachedAngulo );
         }
         break;
