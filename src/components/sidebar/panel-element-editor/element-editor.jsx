@@ -17,7 +17,7 @@ import { Context } from '../../../context/context';
 import { useFormData } from '../../../hooks/useFormData';
 import { useToggle } from '../../../hooks/useToggle';
 import MenuOptions from '../../menu-options/menu-options';
-import areaIco from './area.png';
+
 import flechaIco from '../../../assets/sidebar/Flecha.jpg';
 
 import pureTexture from './textures/Pure.jpg';
@@ -39,6 +39,7 @@ import hidraulicoTexture from './textures/Hidraulico 9.jpg';
 import sueloTexture from './textures/Suelo (35).jpg';
 import { ElementPrice } from './element-price';
 import { ElementEditorIcons } from './element-editor-icons';
+import { ElementInfo } from './element-info';
 
 
 const PRECISION = 2;
@@ -760,20 +761,7 @@ export default class ElementEditor extends Component {
       <div style={ { marginTop: '2em' } }>
         <ElementPrice price={ this.state.price } />
 
-        {/* Imagen con nombre y descripcion, esto aparece siempre por defecto */ }
-        <div style={ { display: 'flex', flexDirection: 'column', alignContent: 'center', alignItems: 'center', marginBottom: '45px' } }>
-          <img style={ { height: '80px' } } src={ element.prototype !== 'areas' ? element.image : areaIco } />
-          <p style={ { margin: '0', padding: '10px 0', fontSize: '0.8em', textAlign: 'center', color: SharedStyle.PRIMARY_COLOR.master, } }>
-
-            { element.name }
-
-          </p>
-          <p style={ { margin: '0', fontSize: '0.7em', textAlign: 'center' } }>
-
-            { element.description }
-
-          </p>
-        </div>
+        <ElementInfo element={ element } />
 
         <ElementEditorIcons />
 
