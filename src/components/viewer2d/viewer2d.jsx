@@ -9,6 +9,8 @@ import { RulerX, RulerY } from './export';
 import { getIsGuia2D, getViewer2D, getRejillaTotal2D, getUserZoom } from '../../selectors/selectors';
 import { Context } from '../../context/context';
 import { useZoom2D } from '../../hooks/useZoom2D';
+import { useControls2D } from '../../hooks/useControls2D';
+import { RulerWrapper } from './ruler-wrapper';
 
 function mode2Tool ( mode ) {
   switch ( mode ) {
@@ -41,7 +43,7 @@ function mode2PointerEvents ( mode ) {
   }
 }
 
-function mode2Cursor ( mode ) {
+function mode2DCursor ( mode ) {
   switch ( mode ) {
     case constants.MODE_DRAGGING_HOLE:
     case constants.MODE_DRAGGING_LINE:
@@ -91,14 +93,15 @@ function extractElementData ( node ) {
   };
 }
 
+
+const rulerSize = 15; //px
+
 export default function Viewer2D ( {
   state,
   width,
   height,
   refViewer2D,
   update2DView,
-  isFirstRender,
-  setIsFirstRender,
 } ) {
 
   const {
@@ -115,20 +118,8 @@ export default function Viewer2D ( {
   const { viewer2D, mode, scene } = state;
   const layerID = scene.selectedLayer;
 
-  useZoom2D( isFirstRender, setIsFirstRender, refViewer2D, state );
-
-  useEffect( () => {
-
-    document.addEventListener( 'keydown', onKeyDown );
-    return () => document.removeEventListener( 'keydown', onKeyDown );
-
-  }, [ state ] );
-
-
-  const onKeyDown = ( event ) => {
-    const viewer2DState = getViewer2D( state );
-    update2DView( viewer2DState, event );
-  };
+  useZoom2D( refViewer2D, state );
+  useControls2D( state, update2DView );
 
   const mapCursorPosition = ( { x, y } ) => {
     return { x, y: -y + scene.height };
@@ -329,108 +320,52 @@ export default function Viewer2D ( {
     }
   };
 
-  let { e, f, SVGWidth, SVGHeight } = getViewer2D( state );
-
-  let rulerSize = 15; //px
-  let rulerUnitPixelSize = 100;
-  let rulerBgColor = SharedStyle.PRIMARY_COLOR.main;
-  let rulerFnColor = SharedStyle.COLORS.white;
-  let rulerMkColor = SharedStyle.SECONDARY_COLOR.main;
-  let sceneWidth = SVGWidth || state.getIn( [ 'scene', 'width' ] );
-  let sceneHeight = SVGHeight || state.getIn( [ 'scene', 'height' ] );
-  let sceneZoom = state.zoom || 1;
-  let rulerXElements = Math.ceil( sceneWidth / rulerUnitPixelSize ) + 1;
-  let rulerYElements = Math.ceil( sceneHeight / rulerUnitPixelSize ) + 1;
 
   if ( getIsGuia2D( state ) ) {
-    return <div style={ {
-      margin: 0,
-      padding: 0,
-      display: 'grid',
-      gridRowGap: '0',
-      gridColumnGap: '0',
-      position: 'relative',
-      gridTemplateColumns: `${ rulerSize }px ${ width - rulerSize }px`,
-      gridTemplateRows: `${ rulerSize }px ${ height - rulerSize }px`,
-    } }>
+    return (
+      <RulerWrapper
+        state={ state }
+        width={ width }
+        height={ height }
+      >
+        <ReactSVGPanZoom
+          ref={ refViewer2D }
+          className='ReactSVGPanZoom'
+          style={ { gridColumn: 2, gridRow: 2 } }
+          width={ width - rulerSize }
+          height={ height - rulerSize }
+          value={ viewer2D.isEmpty() ? null : viewer2D.toJS() }
+          onChangeValue={ update2DView }
+          tool={ mode2Tool( mode ) }
+          onChangeTool={ onChangeTool }
+          detectAutoPan={ mode2DetectAutopan( mode ) }
+          onMouseDown={ onMouseDown }
+          onMouseMove={ onMouseMove }
+          onMouseUp={ onMouseUp }
+          miniaturePosition="none"
+          toolbarPosition="none"
+        >
+          <svg width={ getRejillaTotal2D( state ) / 10 } height={ getRejillaTotal2D( state ) / 10 }>
+            <defs>
+              <pattern id="diagonalFill" patternUnits="userSpaceOnUse" width="4" height="4" fill="#FFF">
+                <rect x="0" y="0" width="4" height="4" fill="#FFF" />
+                <path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" style={ { stroke: '#8E9BA2', strokeWidth: 1 } } />
+              </pattern>
+            </defs>
+            <g style={ Object.assign( mode2DCursor( mode ), mode2PointerEvents( mode ) ) }>
+              <State state={ state } catalog={ catalog } />
+            </g>
+          </svg>
+        </ReactSVGPanZoom>
+      </RulerWrapper>
+    );
 
-      <div style={ { gridColumn: 1, gridRow: 1, backgroundColor: rulerBgColor } }></div>
-
-      <div style={ { gridRow: 1, gridColumn: 2, position: 'relative', overflow: 'hidden' } } id="rulerX">
-        { sceneWidth && (
-          <RulerX
-            state={ state }
-            zoom={ sceneZoom }
-            negativeUnitsNumber={ 0 }
-            fontColor={ rulerFnColor }
-            width={ width - rulerSize }
-            zeroLeftPosition={ e || 0 }
-            markerColor={ rulerMkColor }
-            backgroundColor={ rulerBgColor }
-            mouseX={ state.mouse.get( 'x' ) }
-            unitPixelSize={ rulerUnitPixelSize }
-            positiveUnitsNumber={ rulerXElements }
-          /> ) }
-      </div>
-
-      <div style={ { gridColumn: 1, gridRow: 2, position: 'relative', overflow: 'hidden' } } id="rulerY">
-        { sceneHeight && (
-          <RulerY
-            state={ state }
-            zoom={ sceneZoom }
-            negativeUnitsNumber={ 0 }
-            fontColor={ rulerFnColor }
-            markerColor={ rulerMkColor }
-            height={ height - rulerSize }
-            backgroundColor={ rulerBgColor }
-            mouseY={ state.mouse.get( 'y' ) }
-            unitPixelSize={ rulerUnitPixelSize }
-            positiveUnitsNumber={ rulerYElements }
-            zeroTopPosition={ ( ( sceneHeight * sceneZoom ) + f ) || 0 }
-          /> ) }
-      </div>
-
-      <div>
-        <div>
-          {/*//TODO Arreglar duplicado de HTML con un HOC*/ }
-          <ReactSVGPanZoom
-            ref={ refViewer2D }
-            className='ReactSVGPanZoom'
-            toolbarPosition="none"
-            miniaturePosition="none"
-            width={ width - rulerSize }
-            tool={ mode2Tool( mode ) }
-            height={ height - rulerSize }
-            style={ { gridColumn: 2, gridRow: 2 } }
-            detectAutoPan={ mode2DetectAutopan( mode ) }
-            value={ viewer2D.isEmpty() ? null : viewer2D.toJS() }
-            onMouseUp={ onMouseUp }
-            onMouseMove={ onMouseMove }
-            onMouseDown={ onMouseDown }
-            onChangeTool={ onChangeTool }
-            onChangeValue={ update2DView }
-          >
-            <svg width={ getRejillaTotal2D( state ) / 10 } height={ getRejillaTotal2D( state ) / 10 }>
-              <defs>
-                <pattern id="diagonalFill" patternUnits="userSpaceOnUse" width="4" height="4" fill="#FFF">
-                  <rect x="0" y="0" width="4" height="4" fill="#FFF" />
-                  <path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" style={ { stroke: '#8E9BA2', strokeWidth: 1 } } />
-                </pattern>
-              </defs>
-              <g style={ Object.assign( mode2Cursor( mode ), mode2PointerEvents( mode ) ) }>
-                <State state={ state } catalog={ catalog } />
-              </g>
-            </svg>
-          </ReactSVGPanZoom>
-        </div>
-      </div >
-    </div >;
-  }
-  else {
-    return <div>
+  } else {
+    return (
       <div>
         <ReactSVGPanZoom
           ref={ refViewer2D }
+          className='ReactSVGPanZoom'
           style={ { gridColumn: 2, gridRow: 2 } }
           width={ width - rulerSize }
           height={ height - rulerSize }
@@ -453,13 +388,13 @@ export default function Viewer2D ( {
                 <path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" style={ { stroke: '#8E9BA2', strokeWidth: 1 } } />
               </pattern>
             </defs>
-            <g style={ Object.assign( mode2Cursor( mode ), mode2PointerEvents( mode ) ) }>
+            <g style={ Object.assign( mode2DCursor( mode ), mode2PointerEvents( mode ) ) }>
               <State state={ state } catalog={ catalog } />
             </g>
           </svg>
         </ReactSVGPanZoom>
       </div>
-    </div >;
+    );
   }
 
 }
@@ -469,14 +404,3 @@ Viewer2D.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
 };
-
-// Viewer2D.contextTypes = {
-//   viewer2DActions: PropTypes.object.isRequired,
-//   linesActions: PropTypes.object.isRequired,
-//   holesActions: PropTypes.object.isRequired,
-//   verticesActions: PropTypes.object.isRequired,
-//   itemsActions: PropTypes.object.isRequired,
-//   areaActions: PropTypes.object.isRequired,
-//   projectActions: PropTypes.object.isRequired,
-//   catalog: PropTypes.object.isRequired,
-// };

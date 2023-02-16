@@ -224,27 +224,10 @@ export default class ElementEditor extends Component {
     this.toggleOptionsMenu = this.toggleOptionsMenu.bind( this );
   }
 
-  //FIXME this has been commented bc it was preventing the lower components from getting    
-  //the updated state
-
-  // shouldComponentUpdate ( nextProps, nextState ) {
-  //   return (
-  //     this.state.isSelectAcabado !== nextState.isSelectAcabado ||
-  //     this.props.state.isElementSelected !== nextProps.state.isElementSelected ||
-  //     this.state.attributesFormData.hashCode() !== nextState.attributesFormData.hashCode() ||
-  //     this.state.propertiesFormData.hashCode() !== nextState.propertiesFormData.hashCode() ||
-  //     this.props.state.clipboardProperties.hashCode() !== nextProps.state.clipboardProperties.hashCode()
-  //   );
-  // }
-
   UNSAFE_componentWillReceiveProps ( { element, layer, state } ) {
-    let { prototype, id } = element;
     let scene = this.props.state.get( 'scene' );
     let selectedLayer = scene.getIn( [ 'layers', scene.get( 'selectedLayer' ) ] );
-    let selected = selectedLayer.getIn( [ prototype, id ] );
 
-    /* //TODO Figure out what's the logic behind checking whether the
-     layer passed as props is different from the selected ones */
     if ( selectedLayer.hashCode() !== layer.hashCode() ) {
       this.setState( {
         attributesFormData: this.initAttrData( element, layer, state ),
@@ -255,40 +238,14 @@ export default class ElementEditor extends Component {
 
 
   initAttrData ( element, layer ) {
-
     element = ( typeof element.misc === 'object' )
       ? element.set( 'misc', new Map( element.misc ) )
       : element;
 
     switch ( element.prototype ) {
-      case 'items': {
+      case 'items':
         return new Map( { element } );
-        // let depth = element.depth;
-        // let height = element.depth;
-        // let _unit = element.misc.get( '_unitLength' ) || this.context.catalog.unit;
-        // let _depthLength = convert( depth ).from( this.context.catalog.unit ).to( _unit );
-        // let _depthHeight = convert( height ).from( this.context.catalog.unit ).to( _unit );
 
-        // console.log( element );
-        // return new Map( {
-        //   id: element.id,
-        //   type: element.type,
-        //   prototype: element.prototype,
-        //   name: element.name,
-        //   description: element.description,
-        //   image: element.image,
-        //   misc: element.misc,
-        //   selected: element.selected,
-        //   properties: element.properties,
-        //   visible: element.visible,
-        //   x: element.x,
-        //   y: element.y,
-        //   rotation: element.rotation,
-        //   width: element.width,
-        //   depth: new Map( { length: depth, _length: _depthLength, _unit } ),
-        //   height: new Map( { length: height, _length: _depthHeight, _unit } ),
-        // } );
-      }
       case 'lines': {
 
         let v2First = element.v2First;
@@ -300,8 +257,6 @@ export default class ElementEditor extends Component {
         let _length = convert( distance ).from( this.context.catalog.unit ).to( _unit );
         let _angleLine = Line.getAngleV0_pcl( layer, element );
 
-        //TODO test when pressing enter and creating a new line
-        // use the cached angulo for this new line 
         if ( distance === 0 && getCacheAngulo( this.props.state ) ) {
           _angleLine.angle = getCacheAngulo( this.props.state );
         }
@@ -391,37 +346,6 @@ export default class ElementEditor extends Component {
           this.context.linesActions.cacheAngulo( cachedAngulo );
         }
         break;
-
-      //case 'lineLength':
-      //  {
-      //    let v_0 = attributesFormData.get('vertexOne');
-      //    let v_1 = attributesFormData.get('vertexTwo');
-
-      //    let [v_a, v_b] = GeometryUtils.orderVertices([v_0, v_1]);
-
-      //    let v_b_new = GeometryUtils.extendLine(v_a.x, v_a.y, v_b.x, v_b.y, value.get('length'), PRECISION);
-
-      //    attributesFormData = attributesFormData.withMutations(attr => {
-      //      attr.set(v_0 === v_a ? 'vertexTwo' : 'vertexOne', v_b.merge(v_b_new));
-      //      attr.set('lineLength', value);
-      //    });
-      //    break;
-      //  }
-      //case 'vertexOne':
-      //case 'vertexTwo':
-      //  {
-      //    attributesFormData = attributesFormData.withMutations(attr => {
-      //      attr.set(attributeName, attr.get(attributeName).merge(value));
-
-      //      let newDistance = GeometryUtils.verticesDistance(attr.get('vertexOne'), attr.get('vertexTwo'));
-
-      //      attr.mergeIn(['lineLength'], attr.get('lineLength').merge({
-      //        'length': newDistance,
-      //        '_length': convert(newDistance).from(this.context.catalog.unit).to(attr.get('lineLength').get('_unit'))
-      //      }));
-      //    });
-      //    break;
-      //  }
       case 'holes': {
         switch ( attributeName ) {
           case 'offsetA':
@@ -541,8 +465,7 @@ export default class ElementEditor extends Component {
 
   }
 
-
-  // Here the values taken from the form data are saved in state
+  //** Guardar valores de los inputs al estado de Redux
   save ( { propertiesFormData, attributesFormData, isEnter } ) {
     if ( propertiesFormData ) {
       let properties = propertiesFormData.map( data => {
@@ -568,7 +491,6 @@ export default class ElementEditor extends Component {
         }
       }
     }
-
     if ( this.props.state.mode == MODE_DRAWING_LINE && isEnter )
       this.context.projectActions.next_Drawing_Item();
   }
@@ -595,22 +517,12 @@ export default class ElementEditor extends Component {
 
   render () {
     let mode = this.props.state.getIn( [ 'mode' ] );
+
     let {
       props: { state: appState, element },
       context: { projectActions, catalog },
       state: { propertiesFormData, attributesFormData },
     } = this;
-
-
-    const showAndHideAcabado = () => {
-      if ( this.state.isSelectAcabado ) {
-        this.setState( { ...this.state, isSelectAcabado: false } );
-      } else {
-        this.setState( { ...this.state, isSelectAcabado: true } );
-      }
-    };
-
-
 
     return (
       <div style={ { marginTop: '2em' } }>

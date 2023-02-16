@@ -8,22 +8,18 @@ import ProjectConfigurator from './configurator/project-configurator';
 
 import * as constants from '../constants';
 
-//
-export default function Content (
-  {
-    width,
-    height,
-    state,
-    customContents,
-    refViewer2D,
-    update2DView,
-    isPathTracing
-  } ) {
+export default function Content ( {
+  width,
+  height,
+  state,
+  customContents,
+  refViewer2D,
+  update2DView,
+  isPathTracing
+} ) {
 
-  const [ isFirstRender, setIsFirstRender ] = useState( true );
+  const mode = state.get( 'mode' );
 
-
-  let mode = state.get( 'mode' );
   switch ( mode ) {
     case constants.MODE_3D_VIEW:
       return <Viewer3D
@@ -66,8 +62,6 @@ export default function Content (
         height={ height }
         refViewer2D={ refViewer2D }
         update2DView={ update2DView }
-        isFirstRender={ isFirstRender }
-        setIsFirstRender={ setIsFirstRender }
       />;
 
     case constants.MODE_CONFIGURING_PROJECT:
