@@ -26,7 +26,7 @@ export default function ( state, width, height, grid, font ) {
 
     geometry.setAttribute(
       'position',
-      new Three.BufferAttribute( positions, positionNumComponent )
+      new BufferAttribute( positions, positionNumComponent )
     );
 
     let color = colors.get( counter % colors.size );
@@ -40,7 +40,7 @@ export default function ( state, width, height, grid, font ) {
           font: font
         } );
 
-        let wrapper = new Three.MeshBasicMaterial( { color: COLORS.black } );
+        let wrapper = new Three.LineBasicMaterial( { color: COLORS.black } );
         let words = new Three.Mesh( shape, wrapper );
 
         words.rotation.x -= Math.PI / 2;

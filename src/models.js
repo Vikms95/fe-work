@@ -164,6 +164,7 @@ export class Area extends Record( {
 export class Item extends Record( {
   ...sharedAttributes,
   prototype: 'items',
+  price: 0,
   x: 0,
   y: 0,
   rotation: 0,
@@ -235,6 +236,25 @@ export const DefaultLayers = new Map( {
     "name": "default",
     "visible": true,
     "vertices": {
+      "oto60Vc2tS": {
+        "id": "oto60Vc2tS",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "description": "",
+        "image": "",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 709.9792220744681,
+        "y": 1651.207737699468,
+        "lines": [
+          "Vgrsygpuq",
+          "7n_WfEon96"
+        ],
+        "areas": []
+      },
       "et7LXtFrM": {
         "id": "et7LXtFrM",
         "type": "",
@@ -249,12 +269,14 @@ export const DefaultLayers = new Map( {
         "x": 699.979222074468,
         "y": 1241.207737699468,
         "lines": [
+          "7n_WfEon96",
+          "dPqKTtks__",
           "dPqKTtks__"
         ],
         "areas": []
       },
-      "a_NmF6Ogz7": {
-        "id": "a_NmF6Ogz7",
+      "7t_jP0ZB7K": {
+        "id": "7t_jP0ZB7K",
         "type": "",
         "prototype": "vertices",
         "name": "Vertex",
@@ -264,30 +286,11 @@ export const DefaultLayers = new Map( {
         "selected": false,
         "properties": {},
         "visible": true,
-        "x": 708.719945680546,
-        "y": 1192.5711912754286,
+        "x": 709.979222074468,
+        "y": 1231.207737699468,
         "lines": [
-          "GALn8E6uQh",
-          "zBT7EgxxV0"
-        ],
-        "areas": []
-      },
-      "sRJruXR-oM": {
-        "id": "sRJruXR-oM",
-        "type": "",
-        "prototype": "vertices",
-        "name": "Vertex",
-        "description": "",
-        "image": "",
-        "misc": {},
-        "selected": false,
-        "properties": {},
-        "visible": true,
-        "x": 798.7199456805461,
-        "y": 1619.2401815395024,
-        "lines": [
-          "BZn4ad-gNG",
-          "BZn4ad-gNG"
+          "7n_WfEon96",
+          "dPqKTtks__"
         ],
         "areas": []
       },
@@ -305,25 +308,9 @@ export const DefaultLayers = new Map( {
         "x": 299.9792220744681,
         "y": 1641.207737699468,
         "lines": [
-          "Vgrsygpuq"
-        ],
-        "areas": []
-      },
-      "COOpMqMZya": {
-        "id": "COOpMqMZya",
-        "type": "",
-        "prototype": "vertices",
-        "name": "Vertex",
-        "description": "",
-        "image": "",
-        "misc": {},
-        "selected": false,
-        "properties": {},
-        "visible": true,
-        "x": 298.719945680546,
-        "y": 1599.2401815395024,
-        "lines": [
-          "R4Svih9Zz"
+          "Vgrsygpuq",
+          "Vgrsygpuq",
+          "bI6CgyM0m0"
         ],
         "areas": []
       },
@@ -341,12 +328,14 @@ export const DefaultLayers = new Map( {
         "x": 299.979222074468,
         "y": 1241.207737699468,
         "lines": [
+          "dPqKTtks__",
+          "bI6CgyM0m0",
           "bI6CgyM0m0"
         ],
         "areas": []
       },
-      "_k5TjseNH": {
-        "id": "_k5TjseNH",
+      "kRYa8rg4Wl": {
+        "id": "kRYa8rg4Wl",
         "type": "",
         "prototype": "vertices",
         "name": "Vertex",
@@ -356,12 +345,11 @@ export const DefaultLayers = new Map( {
         "selected": false,
         "properties": {},
         "visible": true,
-        "x": 298.71994568054595,
-        "y": 1202.5711912754286,
+        "x": 289.979222074468,
+        "y": 1231.207737699468,
         "lines": [
-          "zBT7EgxxV0",
-          "yS6IFoIrB8",
-          "yS6IFoIrB8"
+          "dPqKTtks__",
+          "bI6CgyM0m0"
         ],
         "areas": []
       },
@@ -379,12 +367,14 @@ export const DefaultLayers = new Map( {
         "x": 699.9792220744681,
         "y": 1641.207737699468,
         "lines": [
+          "Vgrsygpuq",
+          "7n_WfEon96",
           "7n_WfEon96"
         ],
         "areas": []
       },
-      "lTPpT1XpL": {
-        "id": "lTPpT1XpL",
+      "FN73bot9iQ": {
+        "id": "FN73bot9iQ",
         "type": "",
         "prototype": "vertices",
         "name": "Vertex",
@@ -394,165 +384,18 @@ export const DefaultLayers = new Map( {
         "selected": false,
         "properties": {},
         "visible": true,
-        "x": 798.7199456805461,
-        "y": 1599.2401815395024,
+        "x": 289.9792220744681,
+        "y": 1651.207737699468,
         "lines": [
-          "BZn4ad-gNG",
-          "BZn4ad-gNG"
-        ],
-        "areas": []
-      },
-      "-tyijzCKfG": {
-        "id": "-tyijzCKfG",
-        "type": "",
-        "prototype": "vertices",
-        "name": "Vertex",
-        "description": "",
-        "image": "",
-        "misc": {},
-        "selected": false,
-        "properties": {},
-        "visible": true,
-        "x": 708.7199456805461,
-        "y": 1612.5711912754286,
-        "lines": [
-          "U_4RlCsOo",
-          "GALn8E6uQh"
-        ],
-        "areas": []
-      },
-      "w08RU3Zh0": {
-        "id": "w08RU3Zh0",
-        "type": "",
-        "prototype": "vertices",
-        "name": "Vertex",
-        "description": "",
-        "image": "",
-        "misc": {},
-        "selected": false,
-        "properties": {},
-        "visible": true,
-        "x": 698.719945680546,
-        "y": 1202.5711912754286,
-        "lines": [
-          "GALn8E6uQh",
-          "zBT7EgxxV0",
-          "zBT7EgxxV0"
-        ],
-        "areas": []
-      },
-      "YpPRq5ST3h": {
-        "id": "YpPRq5ST3h",
-        "type": "",
-        "prototype": "vertices",
-        "name": "Vertex",
-        "description": "",
-        "image": "",
-        "misc": {},
-        "selected": false,
-        "properties": {},
-        "visible": true,
-        "x": 288.719945680546,
-        "y": 1612.5711912754286,
-        "lines": [
-          "yS6IFoIrB8",
-          "U_4RlCsOo"
-        ],
-        "areas": []
-      },
-      "gJs0xzkMB9": {
-        "id": "gJs0xzkMB9",
-        "type": "",
-        "prototype": "vertices",
-        "name": "Vertex",
-        "description": "",
-        "image": "",
-        "misc": {},
-        "selected": false,
-        "properties": {},
-        "visible": true,
-        "x": 288.71994568054595,
-        "y": 1192.5711912754286,
-        "lines": [
-          "zBT7EgxxV0",
-          "yS6IFoIrB8"
-        ],
-        "areas": []
-      },
-      "1rA0Jg4OE": {
-        "id": "1rA0Jg4OE",
-        "type": "",
-        "prototype": "vertices",
-        "name": "Vertex",
-        "description": "",
-        "image": "",
-        "misc": {},
-        "selected": false,
-        "properties": {},
-        "visible": true,
-        "x": 698.7199456805461,
-        "y": 1602.5711912754286,
-        "lines": [
-          "U_4RlCsOo",
-          "GALn8E6uQh",
-          "GALn8E6uQh"
-        ],
-        "areas": []
-      },
-      "9PL2AYZ_M2": {
-        "id": "9PL2AYZ_M2",
-        "type": "",
-        "prototype": "vertices",
-        "name": "Vertex",
-        "description": "",
-        "image": "",
-        "misc": {},
-        "selected": false,
-        "properties": {},
-        "visible": true,
-        "x": 298.719945680546,
-        "y": 1602.5711912754286,
-        "lines": [
-          "U_4RlCsOo",
-          "U_4RlCsOo",
-          "yS6IFoIrB8"
+          "bI6CgyM0m0",
+          "Vgrsygpuq"
         ],
         "areas": []
       }
     },
     "lines": {
-      "BZn4ad-gNG": {
-        "id": "BZn4ad-gNG",
-        "type": "wall",
-        "prototype": "lines",
-        "name": "Wall",
-        "description": "Wall with bricks or painted",
-        "image": "catalog/lines/wall/wall.png",
-        "misc": {},
-        "selected": false,
-        "properties": {
-          "thickness": {
-            "length": 10
-          },
-          "height": {
-            "length": 250
-          },
-          "textureA": "ral5016",
-          "textureB": "ral5016"
-        },
-        "visible": true,
-        "vertices": [
-          "lTPpT1XpL",
-          "lTPpT1XpL",
-          "sRJruXR-oM",
-          "sRJruXR-oM"
-        ],
-        "holes": [],
-        "perimeter": null,
-        "v2First": false
-      },
-      "U_4RlCsOo": {
-        "id": "U_4RlCsOo",
+      "Vgrsygpuq": {
+        "id": "Vgrsygpuq",
         "type": "wall",
         "prototype": "lines",
         "name": "Wall",
@@ -563,28 +406,28 @@ export const DefaultLayers = new Map( {
         },
         "selected": false,
         "properties": {
-          "thickness": {
-            "length": 10
-          },
           "height": {
             "length": 250
           },
-          "textureA": "ral5016",
-          "textureB": "ral5016"
+          "thickness": {
+            "length": 10
+          },
+          "textureA": "marmol",
+          "textureB": "marmol"
         },
         "visible": true,
         "vertices": [
-          "9PL2AYZ_M2",
-          "1rA0Jg4OE",
-          "YpPRq5ST3h",
-          "-tyijzCKfG"
+          "ZHPKquxXRj",
+          "HVQXDN4Z3",
+          "FN73bot9iQ",
+          "oto60Vc2tS"
         ],
         "holes": [],
-        "perimeter": "QnpTfv9_lo",
+        "perimeter": "zZ6fOZowWD",
         "v2First": false
       },
-      "GALn8E6uQh": {
-        "id": "GALn8E6uQh",
+      "7n_WfEon96": {
+        "id": "7n_WfEon96",
         "type": "wall",
         "prototype": "lines",
         "name": "Wall",
@@ -595,28 +438,28 @@ export const DefaultLayers = new Map( {
         },
         "selected": false,
         "properties": {
-          "thickness": {
-            "length": 10
-          },
           "height": {
             "length": 250
           },
-          "textureA": "ral5016",
-          "textureB": "ral5016"
+          "thickness": {
+            "length": 10
+          },
+          "textureA": "marmol",
+          "textureB": "marmol"
         },
         "visible": true,
         "vertices": [
-          "1rA0Jg4OE",
-          "w08RU3Zh0",
-          "-tyijzCKfG",
-          "a_NmF6Ogz7"
+          "HVQXDN4Z3",
+          "et7LXtFrM",
+          "oto60Vc2tS",
+          "7t_jP0ZB7K"
         ],
         "holes": [],
-        "perimeter": "QnpTfv9_lo",
+        "perimeter": "zZ6fOZowWD",
         "v2First": false
       },
-      "zBT7EgxxV0": {
-        "id": "zBT7EgxxV0",
+      "dPqKTtks__": {
+        "id": "dPqKTtks__",
         "type": "wall",
         "prototype": "lines",
         "name": "Wall",
@@ -627,28 +470,28 @@ export const DefaultLayers = new Map( {
         },
         "selected": false,
         "properties": {
-          "thickness": {
-            "length": 10
-          },
           "height": {
             "length": 250
           },
-          "textureA": "ral5016",
-          "textureB": "ral5016"
+          "thickness": {
+            "length": 10
+          },
+          "textureA": "marmol",
+          "textureB": "marmol"
         },
         "visible": true,
         "vertices": [
-          "w08RU3Zh0",
-          "_k5TjseNH",
-          "a_NmF6Ogz7",
-          "gJs0xzkMB9"
+          "et7LXtFrM",
+          "h78ib04O3",
+          "7t_jP0ZB7K",
+          "kRYa8rg4Wl"
         ],
         "holes": [],
-        "perimeter": "QnpTfv9_lo",
+        "perimeter": "zZ6fOZowWD",
         "v2First": false
       },
-      "yS6IFoIrB8": {
-        "id": "yS6IFoIrB8",
+      "bI6CgyM0m0": {
+        "id": "bI6CgyM0m0",
         "type": "wall",
         "prototype": "lines",
         "name": "Wall",
@@ -659,36 +502,36 @@ export const DefaultLayers = new Map( {
         },
         "selected": false,
         "properties": {
-          "thickness": {
-            "length": 10
-          },
           "height": {
             "length": 250
           },
-          "textureA": "ral5016",
-          "textureB": "ral5016"
+          "thickness": {
+            "length": 10
+          },
+          "textureA": "marmol",
+          "textureB": "marmol"
         },
         "visible": true,
         "vertices": [
-          "_k5TjseNH",
-          "9PL2AYZ_M2",
-          "gJs0xzkMB9",
-          "YpPRq5ST3h"
+          "h78ib04O3",
+          "ZHPKquxXRj",
+          "kRYa8rg4Wl",
+          "FN73bot9iQ"
         ],
         "holes": [],
-        "perimeter": "QnpTfv9_lo",
+        "perimeter": "zZ6fOZowWD",
         "v2First": false
       }
     },
     "holes": {},
     "areas": {
-      "lSkz7TMewH": {
-        "id": "lSkz7TMewH",
+      "zsfNv4DzlE": {
+        "id": "zsfNv4DzlE",
         "type": "area",
         "prototype": "areas",
         "name": "Area",
-        "description": "Generic room",
-        "image": "catalog/areas/area/area.png",
+        "description": "",
+        "image": "",
         "misc": {},
         "selected": false,
         "properties": {
@@ -700,17 +543,17 @@ export const DefaultLayers = new Map( {
         },
         "visible": true,
         "vertices": [
-          "w08RU3Zh0",
-          "1rA0Jg4OE",
-          "9PL2AYZ_M2",
-          "_k5TjseNH"
+          "HVQXDN4Z3",
+          "ZHPKquxXRj",
+          "h78ib04O3",
+          "et7LXtFrM"
         ],
         "holes": []
       }
     },
     "perimeters": {
-      "QnpTfv9_lo": {
-        "id": "QnpTfv9_lo",
+      "zZ6fOZowWD": {
+        "id": "zZ6fOZowWD",
         "type": "",
         "prototype": "perimeter",
         "name": "Perimeter",
@@ -721,10 +564,10 @@ export const DefaultLayers = new Map( {
         "properties": {},
         "visible": true,
         "lines": [
-          "yS6IFoIrB8",
-          "U_4RlCsOo",
-          "GALn8E6uQh",
-          "zBT7EgxxV0"
+          "Vgrsygpuq",
+          "7n_WfEon96",
+          "dPqKTtks__",
+          "bI6CgyM0m0"
         ],
         "isClosed": true
       }
@@ -736,46 +579,6 @@ export const DefaultLayers = new Map( {
       "holes": [],
       "areas": [],
       "items": []
-    },
-    "grids": {
-      "h1": {
-        "id": "h1",
-        "type": "horizontal-streak",
-        "properties": {
-          "step": 20,
-          "colors": [
-            "#e0dede",
-            "#f2f2f2",
-            "#f2f2f2",
-            "#f2f2f2",
-            "#f2f2f2"
-          ]
-        }
-      },
-      "v1": {
-        "id": "v1",
-        "type": "vertical-streak",
-        "properties": {
-          "step": 20,
-          "colors": [
-            "#e0dede",
-            "#f2f2f2",
-            "#f2f2f2",
-            "#f2f2f2",
-            "#f2f2f2"
-          ]
-        }
-      }
-    },
-    "selectedLayer": "layer-1",
-    "groups": {},
-    "width": 3000,
-    "height": 2000,
-    "meta": {},
-    "guides": {
-      "horizontal": {},
-      "vertical": {},
-      "circular": {}
     }
   } )
 } );
@@ -918,6 +721,5 @@ export class State extends Record( {
     } );
   }
 }
-
 
 

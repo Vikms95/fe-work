@@ -42,6 +42,7 @@ export default class Scene3DViewer extends React.Component {
     this.width = props.width - rulerSize;
     this.height = props.height - rulerSize;
 
+
     //** VARIABLES THREE */
     // window.__threeRenderer = this.renderer;
     this.renderer = window.__threeRenderer || new THREE.WebGLRenderer( { antialias: true } );
@@ -380,7 +381,8 @@ export default class Scene3DViewer extends React.Component {
     let mouse = new THREE.Vector2();
     let raycaster = new THREE.Raycaster();
     this.scene3D.add( planData.plan );
-    // this.scene3D.add( planData.grid );
+    this.scene3D.add( planData.grid );
+
 
     //** CREATE CAMERA */
     this.createAndAddCamera( this.scene3D, planData );
@@ -456,7 +458,6 @@ export default class Scene3DViewer extends React.Component {
 
 
     const render = () => {
-
       this.renderingID = requestAnimationFrame( render );
       this.updateSceneElements( orbitController, planData );
 

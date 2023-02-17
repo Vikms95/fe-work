@@ -11,7 +11,6 @@ export default function ( state, width, height, grid, font ) {
   /*step = 50*/
   /*console.log(grid.properties.get('step'))*/
 
-  /*  console.log('prefs', state.getIn(['prefs', ]))*/
   const medidaTotalRejilla = ( state.getIn( [ 'prefs', 'T/REJILLATOTAL3D' ] ) / 10 );
   const unit = state.getIn( [ 'prefs', 'UNIDADMEDIDA' ] );
 
@@ -44,11 +43,13 @@ export default function ( state, width, height, grid, font ) {
           font
         } );
 
-        let wrapper = new Three.MeshBasicMaterial( { color: COLORS.black } );
+
+        let wrapper = new Three.LineBasicMaterial( { color: COLORS.black } );
         let words = new Three.Mesh( shape, wrapper );
 
         words.rotation.x -= Math.PI / 2;
         words.position.set( -90, 0, -i );
+
         streak.add( words );
       }
     }

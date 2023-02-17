@@ -521,7 +521,7 @@ export default class ElementEditor extends Component {
     let {
       props: { state: appState, element },
       context: { projectActions, catalog },
-      state: { propertiesFormData, attributesFormData },
+      state: { propertiesFormData, attributesFormData, isOptionsMenuActive },
     } = this;
 
     return (
@@ -570,14 +570,16 @@ export default class ElementEditor extends Component {
             toggleOptionsMenu={ this.toggleOptionsMenu }
           />
 
-          <MenuOptions
-            state={ appState }
-            element={ element }
-            propertiesFormData={ propertiesFormData }
-            closeOptionsMenu={ this.closeOptionsMenu }
-            updateProperty={ this.updateProperty }
-            isOptionsMenuActive={ this.state.isOptionsMenuActive }
-          />
+          { isOptionsMenuActive && (
+            <MenuOptions
+              state={ appState }
+              element={ element }
+              propertiesFormData={ propertiesFormData }
+              closeOptionsMenu={ this.closeOptionsMenu }
+              updateProperty={ this.updateProperty }
+              isOptionsMenuActive={ this.state.isOptionsMenuActive }
+            />
+          ) }
 
           <ElementTextureDisplay
             element={ element }

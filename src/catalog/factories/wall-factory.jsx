@@ -135,14 +135,14 @@ export default function WallFactory ( name, info, textures ) {
     wallElement.properties.textureA = {
       label: 'Frontal',
       type: 'enum',
-      defaultValue: textureValues.marmol ? 'ral5010' : 'none',
+      defaultValue: textureValues.marmol ? 'marmol' : 'none',
       values: textureValues
     };
 
     wallElement.properties.textureB = {
       label: 'Trasera',
       type: 'enum',
-      defaultValue: textureValues.marmol ? 'ral5010' : 'none',
+      defaultValue: textureValues.marmol ? 'marmol' : 'none',
       values: textureValues
     };
 
