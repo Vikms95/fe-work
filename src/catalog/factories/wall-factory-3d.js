@@ -15,7 +15,8 @@ import {
   DoubleSide,
   FrontSide,
   BackSide,
-  SceneUtils
+  SceneUtils,
+  LoadingManager
 } from 'three';
 
 import ThreeBSP from '../../utils/threeCSG.es6';
@@ -37,8 +38,9 @@ const halfPI = Math.PI / 2;
  */
 
 const applyTexture = ( material, texture, length, height ) => {
-  let loader = new TextureLoader();
-  console.log( 'Cambiando textura' );
+  const manager = new LoadingManager();
+  const loader = new TextureLoader( manager );
+
   if ( texture ) {
     material.map = loader.load( texture.uri );
     material.needsUpdate = true;
@@ -333,6 +335,7 @@ function buildWall0 ( element, layer, scene, textures ) {
   backFace.name = 'backFace';
 
   let merged = new Group();
+  merged.isFrustumCulled = false;
   merged.add( soul, frontFace, backFace );
   //merged.add(soul2, frontFace, backFace);
 
@@ -366,21 +369,28 @@ function buildWall0 ( element, layer, scene, textures ) {
 }
 
 export function updatedWall ( element, layer, scene, textures, mesh, oldElement, differences, selfDestroy, selfBuild ) {
-  let noPerf = () => { selfDestroy(); return selfBuild(); };
-  let wall = mesh.getObjectByName( "wall" );
+  const noPerf = () => {
+    selfDestroy();
+    return selfBuild();
+  };
+
+  const wall = mesh.getObjectByName( "wall" );
   wall.receiveShadow = true;
   // wall.castShadow = true;
 
   if ( differences[ 0 ] == 'selected' ) {
-    wall.material.fill( new MeshStandardMaterial( { color: ( element.selected ? SharedStyle.MESH_SELECTED : 0xD3D3D3 ) } ), 0, 3 );
+    wall.material.fill( new MeshStandardMaterial( {
+      color: ( element.selected
+        ? SharedStyle.MESH_SELECTED
+        : 0xD3D3D3 )
+    } ), 0, 3 );
+
     return;
   }
 
-  else if ( differences[ 0 ] == 'properties' ) {
+  if ( differences[ 0 ] == 'properties' ) {
     if ( differences[ 1 ].includes( 'texture' ) ) {
       return noPerf();
     }
   }
-
-  // return noPerf();
 }

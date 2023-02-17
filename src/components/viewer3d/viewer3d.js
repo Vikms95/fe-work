@@ -30,6 +30,7 @@ const DIRECTIONAL_LIGHT_INTENSITY = 0.5;
 const REFLECTOR_RESOLUTION = 2048;
 const SHADOW_RESOLUTION = 2048;
 let cacheCameraPosition = null;
+let cacheCameraRotation = null;
 
 export default class Scene3DViewer extends React.Component {
 
@@ -42,7 +43,7 @@ export default class Scene3DViewer extends React.Component {
     this.height = props.height - rulerSize;
 
     //** VARIABLES THREE */
-    window.__threeRenderer = this.renderer;
+    // window.__threeRenderer = this.renderer;
     this.renderer = window.__threeRenderer || new THREE.WebGLRenderer( { antialias: true } );
     this.camera = null;
     this.scene3D = null;
@@ -135,8 +136,11 @@ export default class Scene3DViewer extends React.Component {
     this.camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
 
     if ( cacheCameraPosition instanceof Vector3 ) {
-      const { x, y, z } = cacheCameraPosition;
-      this.camera.position.set( x, y, z );
+      const { x: x_p, y: y_p, z: z_p } = cacheCameraPosition;
+      const { x: x_r, y: y_r, z: z_r } = cacheCameraRotation;
+
+      this.camera.position.set( x_p, y_p, z_p );
+      this.camera.rotation.set( x_r, y_r, z_r );
 
     } else {
 
@@ -376,7 +380,7 @@ export default class Scene3DViewer extends React.Component {
     let mouse = new THREE.Vector2();
     let raycaster = new THREE.Raycaster();
     this.scene3D.add( planData.plan );
-    this.scene3D.add( planData.grid );
+    // this.scene3D.add( planData.grid );
 
     //** CREATE CAMERA */
     this.createAndAddCamera( this.scene3D, planData );
@@ -484,10 +488,18 @@ export default class Scene3DViewer extends React.Component {
     this.scene3D.remove( this.planData.grid );
 
     cacheCameraPosition = new Vector3();
+    cacheCameraRotation = new Vector3();
+
     cacheCameraPosition.set(
       this.camera.position.x,
       this.camera.position.y,
       this.camera.position.z
+    );
+
+    cacheCameraRotation.set(
+      this.camera.rotation.x,
+      this.camera.rotation.y,
+      this.camera.rotation.z,
     );
 
     this.scene3D = null;

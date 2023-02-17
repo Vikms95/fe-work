@@ -317,7 +317,7 @@ export function loadGLTF ( input ) {
 
       object.traverse( node => {
         if ( node instanceof THREE.Mesh && node.material ) {
-          console.log( 'material is ', node );
+          // node.frustumCulled = false;
           // addEnvMapIntensity( object );
           addRioja( object );
           enableMeshCastAndReceiveShadow( object );
