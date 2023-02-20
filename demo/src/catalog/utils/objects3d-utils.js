@@ -10,6 +10,7 @@ export function getObject3d ( name, loadObj ) {
 
   if ( object ) {
     setTextures( name, object );
+
     return Promise.resolve( object.clone() );
   }
 
@@ -18,6 +19,7 @@ export function getObject3d ( name, loadObj ) {
   if ( promise == null ) {
     promise = loadObj().then( object => {
       cacheTextures( name, object );
+
       return object.clone();
     } );
   } else {
@@ -65,6 +67,10 @@ export function selectedObject3d ( object, selected ) {
   } );
 }
 
+const isMorphLimitsValid = ( morphKey ) => (
+  morphKey.min || morphKey.min === 0 && morphKey.max
+);
+
 const pushHeightMorphs = ( key, element, object, morphs ) => {
   if ( element.properties.has( 'height' ) && element.width && element.width.min && element.width.max )
     morphs.push( {
@@ -74,8 +80,9 @@ const pushHeightMorphs = ( key, element, object, morphs ) => {
       min: element.height.min,
       max: element.height.max
     } );
-};
 
+  return morphs;
+};
 
 const pushDepthMorphs = ( key, element, object, morphs ) => {
   if ( element.properties.has( 'depth' ) && element.width && element.width.min && element.width.max )
@@ -113,20 +120,18 @@ const pushWidthMorphs = ( key, element, object, morphs ) => {
       return morphs;
   }
 
-  if ( element.properties.has( individualMorph ) && element.width && element.width.min && element.width.max )
-    morphs.push( {
-      mesh: object,
-      idx: object.morphTargetDictionary[ key ],
-      length: element.properties.get( individualMorph ).get( 'length' ),
-      min: element[ individualMorph ].min,
-      max: element[ individualMorph ].max
-    } );
+  if ( element.properties.has( individualMorph ) && element[ individualMorph ] )
+    if ( isMorphLimitsValid( element[ individualMorph ] ) )
+      morphs.push( {
+        mesh: object,
+        idx: object.morphTargetDictionary[ key ],
+        length: element.properties.get( individualMorph ).get( 'length' ),
+        min: element[ individualMorph ].min,
+        max: element[ individualMorph ].max
+      } );
 
   return morphs;
 };
-
-
-
 
 export function getMorphObject3d ( object, element, differences ) {
   let morphs = [];

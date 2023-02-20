@@ -77,7 +77,7 @@ export default function PropertyLengthMeasure ( {
 
   const isLimitOnItem = () => {
     const elementProto = sourceElement.prototype;
-    const elementAttr = sourceElement[ `${ attributeName }` ];
+    const elementAttr = sourceElement[ attributeName ];
 
     if ( elementAttr && elementProto === 'items' )
       if ( elementAttr.min || elementAttr.min === 0 && elementAttr.max )
