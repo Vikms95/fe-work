@@ -79,7 +79,6 @@ export default function PropertyLengthMeasure ( {
     const elementProto = sourceElement.prototype;
     const elementAttr = sourceElement[ `${ attributeName }` ];
 
-    debugger;
     if ( elementAttr && elementProto === 'items' )
       if ( elementAttr.min || elementAttr.min === 0 && elementAttr.max )
         if ( elementAttr.min !== elementAttr.max )

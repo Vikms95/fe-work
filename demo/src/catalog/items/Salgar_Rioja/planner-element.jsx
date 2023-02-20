@@ -117,7 +117,7 @@ export default {
       mesh.position.y = element.properties.getIn( [ 'altitude', 'length' ] );
     }
 
-    if ( sizeParametricObject3d( mesh, element ) ) {
+    if ( sizeParametricObject3d( mesh, element, differences ) ) {
       // repeatTexturesOnMorph( mesh );
       return Promise.resolve( mesh );
     }
