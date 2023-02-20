@@ -34,6 +34,9 @@ class Item {
       width: getLength( 'width', 200 ),
       depth: getLength( 'depth', 10 ),
       height: getLength( 'height', 100 ),
+      widthRight: getLength( 'widthRight', 0 ),
+      widthCenter: getLength( 'widthCenter', 0 ),
+      widthLeft: getLength( 'widthLeft', 0 ),
       x,
       y,
       rotation
@@ -50,7 +53,7 @@ class Item {
     function getLength ( name, _default ) {
       let l = info.get( name );
 
-      if ( l.has )
+      if ( l && l.has )
         return { min: l.get( 'min' ), max: l.get( 'max' ) };
 
       return l || _default;

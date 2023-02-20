@@ -1,5 +1,4 @@
-import { Texture } from 'three';
-import { Box3, BoxHelper } from 'three';
+import { BoxHelper } from 'three';
 
 export let cacheLoadingObjects = new Map();
 export let cacheLoadedObjects = new Map();
@@ -66,97 +65,101 @@ export function selectedObject3d ( object, selected ) {
   } );
 }
 
-
 export function getMorphObject3d ( object, element, differences ) {
-  let morph = [];
+  let morphs = [];
 
+  //** Los GLB generales tienen que desenvolverse en todos los casos de Morph en una dirección */
+  //** Hay que determinar el mínimo y máximo de cada uno de los morph */
 
   object.traverse( o => {
     if ( o.isMesh && o.morphTargetInfluences ) {
       Object.keys( o.morphTargetDictionary ).forEach( key => {
 
+        //** Si 'differences' incluye solo el valor de ancho */
         if ( key.includes( 'ANCHO' ) || key.includes( 'Ancho' ) || key.includes( 'width' ) ) {
           if ( element.properties.has( 'width' ) && element.width && element.width.min && element.width.max )
-            morph.push( {
+            morphs.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ key ],
               length: element.properties.get( 'width' ).get( 'length' ),
               min: element.width.min,
               max: element.width.max
             } );
-          if ( differences && differences[ 1 ] === 'width' ) return morph;
+          if ( differences && differences[ 1 ] === 'width' ) return morphs;
         }
 
-
+        //** Si 'differences' incluye el valor de la derecha */
+        // if ( differences && differences[ 1 ] === 'widthRight' )
         if ( key.includes( "Ancho derecha" ) ) {
           if ( element.properties.has( 'widthRight' ) && element.width && element.width.min && element.width.max ) {
-            morph.push( {
+            morphs.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ key ],
               length: element.properties.get( 'width' ).get( 'length' ),
               min: element.width.min,
               max: element.width.max
             } );
-            morph.push( {
+            morphs.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ 'Ancho derecha' ],
               length: element.properties.get( 'widthRight' ).get( 'length' ),
-              min: element.width.min,
-              max: element.width.max
+              min: element.widthRight.min,
+              max: element.widthRight.max
             } );
 
-            return morph;
+            return morphs;
           }
 
         }
 
+        // if ( differences && differences[ 1 ] === 'widthCenter' )
         if ( key.includes( "Ancho central" ) ) {
           if ( element.properties.has( 'widthCenter' ) && element.width && element.width.min && element.width.max ) {
-            morph.push( {
+            morphs.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ key ],
               length: element.properties.get( 'width' ).get( 'length' ),
               min: element.width.min,
               max: element.width.max
             } );
-            morph.push( {
+            morphs.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ 'Ancho central' ],
               length: element.properties.get( 'widthCenter' ).get( 'length' ),
-              min: element.width.min,
-              max: element.width.max
+              min: element.widthCenter.min,
+              max: element.widthCenter.max
             } );
 
-            return morph;
+            return morphs;
           }
-
         }
 
+        // if ( differences && differences[ 1 ] === 'widthLeft' )
         if ( key.includes( "Ancho izquierda" ) ) {
           if ( element.properties.has( 'widthLeft' ) && element.width && element.width.min && element.width.max ) {
-            morph.push( {
+            morphs.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ key ],
               length: element.properties.get( 'width' ).get( 'length' ),
               min: element.width.min,
               max: element.width.max
             } );
-            morph.push( {
+            morphs.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ 'Ancho izquierda' ],
               length: element.properties.get( 'widthLeft' ).get( 'length' ),
-              min: element.width.min,
-              max: element.width.max
+              min: element.widthLeft.min,
+              max: element.widthLeft.max
             } );
 
-            return morph;
+            return morphs;
           }
 
         }
 
         if ( key.includes( "ALTO" ) || key.includes( 'Alto' ) || key.includes( "height" ) ) {
           if ( element.properties.has( 'height' ) && element.height && element.height.min && element.height.max )
-            morph.push( {
+            morphs.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ key ],
               length: element.properties.get( 'height' ).get( 'length' ),
@@ -167,7 +170,7 @@ export function getMorphObject3d ( object, element, differences ) {
 
         if ( key.includes( "FONDO" ) || key.includes( 'Fondo' ) || key.includes( "depth" ) ) {
           if ( element.properties.has( 'depth' ) && element.depth && element.depth.min && element.depth.max )
-            morph.push( {
+            morphs.push( {
               mesh: o,
               idx: o.morphTargetDictionary[ key ],
               length: element.properties.get( 'depth' ).get( 'length' ),
@@ -179,7 +182,7 @@ export function getMorphObject3d ( object, element, differences ) {
     }
   } );
 
-  return morph;
+  return morphs;
 }
 
 export function sizeParametricObject3d ( object, element ) {

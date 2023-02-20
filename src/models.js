@@ -172,6 +172,9 @@ export class Item extends Record( {
   width: 200,
   depth: 10,
   height: 100,
+  widthRight: 0,
+  widthLeft: 0,
+  widthCenter: 0
 }, 'Item' ) {
   constructor ( json = {} ) {
     super( {

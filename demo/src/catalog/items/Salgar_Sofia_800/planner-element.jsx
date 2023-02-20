@@ -2,11 +2,7 @@ import { BoxHelper, Box3, ObjectLoader, Object3D, Mesh } from 'three';
 import { loadGLTF } from '../../utils/load-obj';
 import { getObject3d, selectedObject3d, sizeParametricObject3d, cacheLoadedObjects, cacheLoadingObjects, repeatTexturesOnMorph } from '../../utils/objects3d-utils';
 import path from 'path';
-import convert from 'convert-units';
 import { render2DSimple } from '../../utils/objects2d-utils';
-
-import React from 'react';
-import { object } from 'prop-types';
 
 const glb = require( './SOFIA 800.glb' );
 
@@ -36,15 +32,13 @@ const widthLeft = {
   max: 80
 };
 
-// const depth = 45.2;  // cm
-// const height = 50;  // cm
-
 const glbInfo =
 {
   gltfFile: glb, width, height, depth,
+  widthRight,
+  widthLeft,
   tocm: true,
   normalizeOrigin: false,
-  // rotation: { y: 180 }
 };
 
 export default {
@@ -53,15 +47,15 @@ export default {
 
   info: {
     title: '24403',
-    // title: 'Fussion Chrome 800 2 cajones',
     tag: [ 'furnishings', 'leather' ],
-    // description: 'Mueble attila Fussion Chrome 800 2 cajones',
     description: 'LAVABO SOFIA A MEDIDA',
     price: 942,
     image: require( './24403.jpg' ),
     width: width,
     depth: depth,
     height: height,
+    widthRight: widthRight,
+    widthLeft: widthLeft
   },
 
   properties: {
@@ -133,11 +127,13 @@ export default {
 
   updateRender3D: ( element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild ) => {
     let noPerf = () => {
-      console.log( "Hi" );
       console.log( selfBuild );
       selfDestroy();
       return selfBuild();
     };
+
+    console.log( 'element', element );
+    console.log( 'mesh', mesh );
 
     if ( differences.indexOf( 'rotation' ) !== -1 ) {
       mesh.rotation.y = element.rotation * Math.PI / 180;

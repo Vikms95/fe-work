@@ -690,25 +690,35 @@ export default class FormNumberInput extends Component {
       this.props.sourceElement.get( 'prototype' ) === 'lines'
     );
 
-    const saveFn = ( e, keyCode ) => {
-      e.stopPropagation();
-      if ( this.state.valid === false ) return;
-      if ( this.state.showedValue === null ) return;
+    const modifyValueWithinLimit = ( savedValue ) => {
 
-      let savedValue;
-
-      savedValue =
-        ( this.state.showedValue !== '' && this.state.showedValue !== '-' )
-          ? parseFloat( this.state.showedValue )
-          : 0;
-
-      //**Ajusta valores a mínimo y máximo */
       switch ( attributeName ) {
         case 'width':
           if ( parseFloat( this.state.showedValue ) <= sourceElement.width.min * 10 ) {
             savedValue = sourceElement.width.min * 10;
           } else if ( ( parseFloat( this.state.showedValue ) >= sourceElement.width.max * 10 ) ) {
             savedValue = sourceElement.width.max * 10;
+          }
+          break;
+        case 'widthLeft':
+          if ( parseFloat( this.state.showedValue ) <= sourceElement.widthLeft.min * 10 ) {
+            savedValue = sourceElement.widthLeft.min * 10;
+          } else if ( ( parseFloat( this.state.showedValue ) >= sourceElement.widthLeft.max * 10 ) ) {
+            savedValue = sourceElement.widthLeft.max * 10;
+          }
+          break;
+        case 'widthCenter':
+          if ( parseFloat( this.state.showedValue ) <= sourceElement.widthCenter.min * 10 ) {
+            savedValue = sourceElement.widthCenter.min * 10;
+          } else if ( ( parseFloat( this.state.showedValue ) >= sourceElement.widthCenter.max * 10 ) ) {
+            savedValue = sourceElement.widthCenter.max * 10;
+          }
+          break;
+        case 'widthRight':
+          if ( parseFloat( this.state.showedValue ) <= sourceElement.widthRight.min * 10 ) {
+            savedValue = sourceElement.widthRight.min * 10;
+          } else if ( ( parseFloat( this.state.showedValue ) >= sourceElement.widthRight.max * 10 ) ) {
+            savedValue = sourceElement.widthRight.max * 10;
           }
           break;
         case 'depth':
@@ -727,6 +737,24 @@ export default class FormNumberInput extends Component {
             }
           break;
       }
+
+      return savedValue;
+
+    };
+
+    const saveFn = ( e, keyCode ) => {
+      e.stopPropagation();
+      if ( this.state.valid === false ) return;
+      if ( this.state.showedValue === null ) return;
+
+      let savedValue;
+
+      savedValue =
+        ( this.state.showedValue !== '' && this.state.showedValue !== '-' )
+          ? parseFloat( this.state.showedValue )
+          : 0;
+
+      savedValue = modifyValueWithinLimit( savedValue );
 
       if ( isElementLine() ) {
         cacheAttributes();

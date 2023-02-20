@@ -1,12 +1,7 @@
 import { BoxHelper, Box3, ObjectLoader, Object3D, Mesh } from 'three';
 import { loadGLTF } from '../../utils/load-obj';
 import { getObject3d, selectedObject3d, sizeParametricObject3d, cacheLoadedObjects, cacheLoadingObjects, repeatTexturesOnMorph } from '../../utils/objects3d-utils';
-import path from 'path';
-import convert from 'convert-units';
 import { render2DSimple } from '../../utils/objects2d-utils';
-
-import React from 'react';
-import { object } from 'prop-types';
 
 const glb = require( './encimera doble fondo.glb' );
 
@@ -26,12 +21,24 @@ const height = {
   max: 12
 };
 
-// const depth = 45.2;  // cm
-// const height = 50;  // cm
+const widthRight = {
+  min: 0,
+  max: 60
+};
+
+const widthCenter = {
+  min: 60,
+  max: 120
+};
+
+const widthLeft = {
+  min: 0,
+  max: 60
+};
 
 const glbInfo =
 {
-  gltfFile: glb, width, height, depth,
+  gltfFile: glb, width, height, depth, widthLeft, widthCenter, widthRight,
   tocm: true,
   normalizeOrigin: false,
   // rotation: { y: 180 }
@@ -52,6 +59,9 @@ export default {
     width: width,
     depth: depth,
     height: height,
+    widthLeft: widthLeft,
+    widthCenter: widthCenter,
+    widthRight: widthRight,
   },
 
   properties: {
@@ -67,7 +77,7 @@ export default {
       label: 'Ancho Central',
       type: "length-measure",
       defaultValue: {
-        length: 0,
+        length: 60,
         unit: 'cm'
       },
     },

@@ -15,7 +15,7 @@ import pureTexture from '../items/Salgar_Pilar/textures/Pure.jpg';
 import realTexture from '../items/Salgar_Pilar/textures/Real.jpg';
 import riojaTexture from './Plato_Rioja_blanco.jpg';
 import { Reflector } from 'three/examples/jsm/objects/Reflector';
-
+import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader';
 
 const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 1024,
   {
@@ -90,10 +90,10 @@ const addPorcelainLook = ( object, node ) => {
 
 };
 
-const addEnvMapIntensity = ( object ) => {
+const applyPropToAllMesh = ( object ) => {
   object.traverse( child => {
     if ( child instanceof THREE.Mesh ) {
-      child.material.envMapIntensity = 0.50;
+      // child.material.envMapIntensity = 0.50;
     }
   } );
 };
@@ -271,17 +271,6 @@ const addRoughnessLook = ( object ) => {
   }
 };
 
-const addTexture = ( object ) => {
-  object.traverse( node => {
-    if ( node.name === 'pilar_moment_1600_2p001' ) {
-      const loader = new THREE.TextureLoader();
-      const colorTexture = loader.load( pureTexture );
-      node.material.map = colorTexture;
-    }
-  } );
-
-};
-
 const addRioja = ( object ) => {
   object.traverse( node => {
     if ( node.name === 'rioja_2' ) {
@@ -307,18 +296,18 @@ const brilloAltoValues = {
   metalness: 0
 };
 
-//todo input == glbInfo
 export function loadGLTF ( input ) {
+
   let gltfLoader = new GLTFLoader();
 
   return new Promise( ( resolve, reject ) => {
     gltfLoader.load( input.gltfFile, gltf => {
       let object = gltf.scene;
 
+      console.log( 'object', object );
       object.traverse( node => {
         if ( node instanceof THREE.Mesh && node.material ) {
-          // node.frustumCulled = false;
-          // addEnvMapIntensity( object );
+          // applyPropToAllMeshes( object );
           addRioja( object );
           enableMeshCastAndReceiveShadow( object );
           addGlassLook( object, node );
@@ -328,8 +317,6 @@ export function loadGLTF ( input ) {
           addBrightLook( object, node );
           addHighBrightnessLook( object, node );
           addRoughnessLook( object, node );
-          // addTexture( object );
-          // addEmissive( object, node );
 
           let boundingBox = new Box3().setFromObject( object );
 

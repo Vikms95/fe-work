@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component, useContext, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { instanceOf } from 'prop-types';
 import ReactDOM from 'react-dom';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
@@ -13,7 +13,7 @@ import * as SharedStyle from '../../shared-style';
 import { dispatch3DZoomIn, dispatch3DZoomOut } from '../../utils/dispatch-event';
 import { getIsElementSelected } from '../../selectors/selectors';
 import { Context } from '../../context/context';
-import { HalfFloatType, MeshBasicMaterial, MeshStandardMaterial, PointLight, SpotLight, Vector3 } from 'three';
+import { Camera, HalfFloatType, MeshBasicMaterial, MeshStandardMaterial, PointLight, SpotLight, Vector3 } from 'three';
 import { cubeCamera } from '../../../demo/src/catalog/utils/load-obj';
 import {
   PathTracingSceneGenerator,
@@ -29,8 +29,10 @@ const SPOT_LIGHT_INTENSITY = 0.25;
 const DIRECTIONAL_LIGHT_INTENSITY = 0.5;
 const REFLECTOR_RESOLUTION = 2048;
 const SHADOW_RESOLUTION = 2048;
+
 let cacheCameraPosition = null;
 let cacheCameraRotation = null;
+let cacheControllerTarget = null;
 
 export default class Scene3DViewer extends React.Component {
 
@@ -44,8 +46,8 @@ export default class Scene3DViewer extends React.Component {
 
 
     //** VARIABLES THREE */
-    // window.__threeRenderer = this.renderer;
     this.renderer = window.__threeRenderer || new THREE.WebGLRenderer( { antialias: true } );
+    window.__threeRenderer = this.renderer;
     this.camera = null;
     this.scene3D = null;
 
@@ -135,7 +137,6 @@ export default class Scene3DViewer extends React.Component {
   createAndAddCamera ( scene, planData ) {
     const aspectRatio = this.width / this.height;
     this.camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
-
     if ( cacheCameraPosition instanceof Vector3 ) {
       const { x: x_p, y: y_p, z: z_p } = cacheCameraPosition;
       const { x: x_r, y: y_r, z: z_r } = cacheCameraRotation;
@@ -340,6 +341,7 @@ export default class Scene3DViewer extends React.Component {
   }
 
   componentDidMount () {
+
     let { state } = this.props;
 
     let actions = {
@@ -351,6 +353,22 @@ export default class Scene3DViewer extends React.Component {
     };
 
     this.scene3D = new THREE.Scene();
+
+    //** PARSE CATALOG */
+    const data = state.scene;
+    const planData = parseData( state, data, actions, this.context.catalog );
+
+    //** CREATE CAMERA */
+    this.createAndAddCamera( this.scene3D, planData );
+
+    //** ORBIT CONTROLS */
+    let orbitController = new OrbitControls( this.camera, this.renderer.domElement );
+
+    if ( cacheControllerTarget instanceof Vector3 ) {
+      const { x, y, z } = cacheControllerTarget;
+      orbitController.target.set( x, y, z );
+    }
+
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
 
     // const environment = new RoomEnvironment();
@@ -372,23 +390,10 @@ export default class Scene3DViewer extends React.Component {
     this.enableRendererShadows( this.renderer );
     canvasWrapper.appendChild( this.renderer.domElement );
 
-
-    //** PARSE CATALOG */
-    const data = state.scene;
-    const planData = parseData( state, data, actions, this.context.catalog );
-
     let toIntersect = [ planData.plan ];
     let mouse = new THREE.Vector2();
     let raycaster = new THREE.Raycaster();
     this.scene3D.add( planData.plan );
-    this.scene3D.add( planData.grid );
-
-
-    //** CREATE CAMERA */
-    this.createAndAddCamera( this.scene3D, planData );
-
-    //** ORBIT CONTROLS */
-    let orbitController = new OrbitControls( this.camera, this.renderer.domElement );
 
     orbitController.addEventListener( "change", () => {
       if ( this.ptRenderer && this.props.isPathTracing ) {
@@ -486,10 +491,11 @@ export default class Scene3DViewer extends React.Component {
 
     disposeScene( this.scene3D );
     this.scene3D.remove( this.planData.plan );
-    this.scene3D.remove( this.planData.grid );
+    // this.scene3D.remove( this.planData.grid );
 
     cacheCameraPosition = new Vector3();
     cacheCameraRotation = new Vector3();
+    cacheControllerTarget = new Vector3();
 
     cacheCameraPosition.set(
       this.camera.position.x,
@@ -501,6 +507,12 @@ export default class Scene3DViewer extends React.Component {
       this.camera.rotation.x,
       this.camera.rotation.y,
       this.camera.rotation.z,
+    );
+
+    cacheControllerTarget.set(
+      this.orbitControls.target.x,
+      this.orbitControls.target.y,
+      this.orbitControls.target.z,
     );
 
     this.scene3D = null;

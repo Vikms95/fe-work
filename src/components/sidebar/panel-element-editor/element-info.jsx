@@ -25,7 +25,6 @@ const STYLE_DESCRIPTION = {
 };
 
 export function ElementInfo ( { element } ) {
-  console.log( element );
   return (
     <div style={ STYLE_ELEMENT_INFO }>
       <img
