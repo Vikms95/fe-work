@@ -526,8 +526,8 @@ export default class FormNumberInput extends Component {
   }
 
   isMorphAvailable () {
-    if ( this.props.sourceElement[ `${ this.props.attributeName }` ] && this.props.sourceElement.prototype !== 'lines' && this.props.sourceElement.prototype !== 'areas' ) {
-      return this.props.sourceElement[ `${ this.props.attributeName }` ].min !== this.props.sourceElement[ `${ this.props.attributeName }` ].max;
+    if ( this.props.sourceElement[ this.props.attributeName ] && this.props.sourceElement.prototype !== 'lines' && this.props.sourceElement.prototype !== 'areas' ) {
+      return this.props.sourceElement[ this.props.attributeName ].min !== this.props.sourceElement[ this.props.attributeName ].max;
     }
 
     return true;

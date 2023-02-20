@@ -133,7 +133,7 @@ export default function PropertyLengthMeasure ( {
       </table>
       {
         isLimitOnItem() && (
-          <div style={ STYLE_MIN_MAX }>{ sourceElement[ `${ attributeName }` ].min * 10 + ' x ' + sourceElement[ `${ attributeName }` ].max * 10 }</div>
+          <div style={ STYLE_MIN_MAX }>{ sourceElement[ attributeName ].min * 10 + ' x ' + sourceElement[ attributeName ].max * 10 }</div>
         )
       }
 
