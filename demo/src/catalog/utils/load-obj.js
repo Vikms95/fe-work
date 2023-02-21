@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Box3, MeshPhysicalMaterial, MeshStandardMaterial } from 'three';
+import { Box3, Matrix3, Matrix4, MeshPhysicalMaterial, MeshStandardMaterial, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
@@ -277,6 +277,8 @@ const addAltiroToAtilla = ( object, node, loader ) => {
   const meshName = 'attila_ok_8';
 
   if ( object.children[ 0 ].name === sceneName ) {
+    console.debug( 'NEW MESH', object.children[ 0 ] );
+
 
     object.children[ 0 ].traverse( child => {
       if ( child.isMesh && child.name === meshName ) {
@@ -284,37 +286,37 @@ const addAltiroToAtilla = ( object, node, loader ) => {
 
         loader.load( glb, gltf => {
           const glbObject = gltf.scene;
-          const objectToReplaceParams = child.clone();
 
+          // object.children[ 0 ].getWorldQuaternion(
+          //   glbObject.children[ 0 ].quaternion
+          // );
 
-          glbObject.children[ 0 ].scale.x = 0.11;
-          glbObject.children[ 0 ].scale.y = 0.11;
-          glbObject.children[ 0 ].scale.z = 0.11;
-          glbObject.children[ 0 ].position.y += 75;
-          glbObject.children[ 0 ].position.x += 20;
-          // glbObject.children[ 0 ].rotation.copy( objectToReplaceParams.copy );
+          object.children[ 0 ].getWorldScale(
+            glbObject.children[ 0 ].scale
+          );
+
+          const vec = new Vector3();
+          const box = new THREE.Box3().setFromObject( child );
+          glbObject.children[ 0 ].position.copy( box.getCenter( vec ) );
+
           let isFirst = true;
 
           if ( isFirst )
             object.children[ 0 ].children.forEach( n => {
-              console.log( n );
               if ( n.name === 'attila_ok_8' ) {
                 isFirst = false;
-                console.log( typeof object.children[ 0 ].children );
                 object.children[ 0 ].attach( glbObject.children[ 0 ] );
-                console.log( 'PUSHED' );
               }
             } );
 
           child.removeFromParent();
-          console.log( 'END', object.children[ 0 ] );
         } );
       }
 
     } );
   }
 
-  console.log( 'test', node );
+  console.debug( 'OLD MESH', node );
 
 };
 
