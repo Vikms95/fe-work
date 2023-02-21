@@ -32,7 +32,7 @@ const SHADOW_RESOLUTION = 2048;
 
 let cacheCameraPosition = null;
 let cacheCameraRotation = null;
-let cacheControllerTarget = null;
+// let cacheControllerTarget = null;
 
 export default class Scene3DViewer extends React.Component {
 
@@ -137,6 +137,8 @@ export default class Scene3DViewer extends React.Component {
   createAndAddCamera ( scene, planData ) {
     const aspectRatio = this.width / this.height;
     this.camera = new THREE.PerspectiveCamera( 45, aspectRatio, 1, 300000 );
+
+    console.time( 'camera' );
     if ( cacheCameraPosition instanceof Vector3 ) {
       const { x: x_p, y: y_p, z: z_p } = cacheCameraPosition;
       const { x: x_r, y: y_r, z: z_r } = cacheCameraRotation;
@@ -145,7 +147,6 @@ export default class Scene3DViewer extends React.Component {
       this.camera.rotation.set( x_r, y_r, z_r );
 
     } else {
-
       const initialPositionX = - ( planData.boundingBox.max.x - planData.boundingBox.min.x ) / 150;
       const initialPositionY = ( planData.boundingBox.max.y - planData.boundingBox.min.y ) * 10;
       const initialPositionZ = ( planData.boundingBox.max.z - planData.boundingBox.min.z ) / 11;
@@ -154,6 +155,7 @@ export default class Scene3DViewer extends React.Component {
       this.camera.up = new THREE.Vector3( 0, 1, 0 );
 
     }
+    console.timeEnd( 'camera' );
 
     scene.add( this.camera );
   }
@@ -364,10 +366,10 @@ export default class Scene3DViewer extends React.Component {
     //** ORBIT CONTROLS */
     let orbitController = new OrbitControls( this.camera, this.renderer.domElement );
 
-    if ( cacheControllerTarget instanceof Vector3 ) {
-      const { x, y, z } = cacheControllerTarget;
-      orbitController.target.set( x, y, z );
-    }
+    // if ( cacheControllerTarget instanceof Vector3 ) {
+    //   const { x, y, z } = cacheControllerTarget;
+    //   orbitController.target.set( x, y, z );
+    // }
 
     let canvasWrapper = ReactDOM.findDOMNode( this.refs.canvasWrapper );
 
@@ -463,6 +465,7 @@ export default class Scene3DViewer extends React.Component {
 
 
     const render = () => {
+
       this.renderingID = requestAnimationFrame( render );
       this.updateSceneElements( orbitController, planData );
 
@@ -491,11 +494,10 @@ export default class Scene3DViewer extends React.Component {
 
     disposeScene( this.scene3D );
     this.scene3D.remove( this.planData.plan );
-    // this.scene3D.remove( this.planData.grid );
 
     cacheCameraPosition = new Vector3();
     cacheCameraRotation = new Vector3();
-    cacheControllerTarget = new Vector3();
+    // cacheControllerTarget = new Vector3();
 
     cacheCameraPosition.set(
       this.camera.position.x,
@@ -509,11 +511,11 @@ export default class Scene3DViewer extends React.Component {
       this.camera.rotation.z,
     );
 
-    cacheControllerTarget.set(
-      this.orbitControls.target.x,
-      this.orbitControls.target.y,
-      this.orbitControls.target.z,
-    );
+    // cacheControllerTarget.set(
+    //   this.orbitControls.target.x,
+    //   this.orbitControls.target.y,
+    //   this.orbitControls.target.z,
+    // );
 
     this.scene3D = null;
     this.planData = null;

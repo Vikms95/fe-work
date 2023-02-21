@@ -3,6 +3,7 @@ import { Box3, MeshPhysicalMaterial, MeshStandardMaterial } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 // import MTLLoader from './mtl-loader';
 
 import { cacheLoadedObjects } from './objects3d-utils';
@@ -93,7 +94,7 @@ const addPorcelainLook = ( object, node ) => {
 const applyPropToAllMesh = ( object ) => {
   object.traverse( child => {
     if ( child instanceof THREE.Mesh ) {
-      // child.material.envMapIntensity = 0.50;
+      // child.material.wireframe = true;
     }
   } );
 };
@@ -271,14 +272,50 @@ const addRoughnessLook = ( object ) => {
   }
 };
 
-const addRioja = ( object ) => {
-  object.traverse( node => {
-    if ( node.name === 'rioja_2' ) {
-      const loader = new THREE.TextureLoader();
-      const colorTexture = loader.load( riojaTexture );
-      node.material.map = colorTexture;
-    }
-  } );
+const addAltiroToAtilla = ( object, node, loader ) => {
+  const sceneName = 'attila_ok';
+  const meshName = 'attila_ok_8';
+
+  if ( object.children[ 0 ].name === sceneName ) {
+
+    object.children[ 0 ].traverse( child => {
+      if ( child.isMesh && child.name === meshName ) {
+        const glb = require( './altiro.glb' );
+
+        loader.load( glb, gltf => {
+          const glbObject = gltf.scene;
+          const objectToReplaceParams = child.clone();
+
+
+          glbObject.children[ 0 ].scale.x = 0.11;
+          glbObject.children[ 0 ].scale.y = 0.11;
+          glbObject.children[ 0 ].scale.z = 0.11;
+          glbObject.children[ 0 ].position.y += 75;
+          glbObject.children[ 0 ].position.x += 20;
+          // glbObject.children[ 0 ].rotation.copy( objectToReplaceParams.copy );
+          let isFirst = true;
+
+          if ( isFirst )
+            object.children[ 0 ].children.forEach( n => {
+              console.log( n );
+              if ( n.name === 'attila_ok_8' ) {
+                isFirst = false;
+                console.log( typeof object.children[ 0 ].children );
+                object.children[ 0 ].attach( glbObject.children[ 0 ] );
+                console.log( 'PUSHED' );
+              }
+            } );
+
+          child.removeFromParent();
+          console.log( 'END', object.children[ 0 ] );
+        } );
+      }
+
+    } );
+  }
+
+  console.log( 'test', node );
+
 };
 
 const mateValues = {
@@ -298,17 +335,15 @@ const brilloAltoValues = {
 
 export function loadGLTF ( input ) {
 
-  let gltfLoader = new GLTFLoader();
+  const gltfLoader = new GLTFLoader();
 
   return new Promise( ( resolve, reject ) => {
     gltfLoader.load( input.gltfFile, gltf => {
       let object = gltf.scene;
 
-      console.log( 'object', object );
+
       object.traverse( node => {
         if ( node instanceof THREE.Mesh && node.material ) {
-          // applyPropToAllMeshes( object );
-          addRioja( object );
           enableMeshCastAndReceiveShadow( object );
           addGlassLook( object, node );
           addMirrorLook( object, node );
@@ -317,17 +352,16 @@ export function loadGLTF ( input ) {
           addBrightLook( object, node );
           addHighBrightnessLook( object, node );
           addRoughnessLook( object, node );
+          addAltiroToAtilla( object, node, gltfLoader );
+          applyPropToAllMesh( object );
 
-          let boundingBox = new Box3().setFromObject( object );
+          const boundingBox = new Box3().setFromObject( object );
 
           console.log( input.gltfFile, { w: boundingBox.max.x - boundingBox.min.x, h: boundingBox.max.y - boundingBox.min.y, d: boundingBox.max.z - boundingBox.min.z } );
 
           if ( input.tocm ) {
             object.scale.set( 100, 100, 100 );
           }
-
-          // if ( input.scale )
-          //   object.scale.set( input.scale.x, input.scale.y, input.scale.z );
 
           if ( input.rotation ) {
             if ( input.rotation.x )
@@ -339,9 +373,9 @@ export function loadGLTF ( input ) {
           }
 
           if ( input.normalizeOrigin ) {
-            let boundingBox = new Box3().setFromObject( object );
+            const boundingBox = new Box3().setFromObject( object );
 
-            let center = [
+            const center = [
               ( boundingBox.max.x - boundingBox.min.x ) / 2 + boundingBox.min.x,
               ( boundingBox.max.y - boundingBox.min.y ) / 2 + boundingBox.min.y,
               ( boundingBox.max.z - boundingBox.min.z ) / 2 + boundingBox.min.z ];

@@ -96,8 +96,7 @@ export default {
   },
 
   render3D: function ( element, layer, scene ) {
-    let loadItem = () =>
-      loadGLTF( glbInfo );
+    const loadItem = () => loadGLTF( glbInfo );
 
     return getObject3d( element.name, loadItem ).then( object => {
       sizeParametricObject3d( object, element );

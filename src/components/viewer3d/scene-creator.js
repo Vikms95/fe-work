@@ -695,8 +695,6 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
 
 
       const altitudeProperty = item.properties.getIn( [ 'altitude', 'length' ] );
-      //pivot.rotation.y = item.rotation * Math.PI / 180;
-      //pivot.rotation.y = item.rotation;
       pivot.rotation.y = ( item.rotation == 0 ) ? item.rotation : item.rotation * Math.PI / 180;
       pivot.position.x = item.x;
       pivot.position.y = altitudeProperty + layer.altitude;
