@@ -272,44 +272,43 @@ const addRoughnessLook = ( object ) => {
   }
 };
 
-const addAltiroToAtilla = ( object, loader ) => {
-  const sceneName = 'attila_ok';
-  const meshName = 'attila_ok_8';
+const addCallToGLBTest = ( object, loader ) => {
+  const sceneName = "Moment_800_2c";
+  console.log( 'test', object );
+
+  if ( !sceneName ) return;
+
   const parentObject = object.getObjectByName( sceneName );
-  const childObject = parentObject.getObjectByName( meshName );
 
-  const glb = require( './altiro.glb' );
+  const glbSofia = require( './SOFIA 800.glb' );
+  const glbMoon = require( './Espejo moon 1000.glb' );
 
-  loader.load( glb, gltf => {
-    const glbObject = gltf.scene.children[ 0 ];
+  const objectCallees = [
+    {
+      glb: glbSofia,
+      z: -330 // medida sofia
+    },
+    {
+      glb: glbMoon,
+      z: -1050
+    }
+  ];
 
-    parentObject.getWorldScale( glbObject.scale );
+  objectCallees.forEach( calee => {
+    loader.load( calee.glb, gltf => {
+      const objectToAdd = gltf.scene.children[ 0 ];
 
-    // const box1 = new THREE.Box3().setFromObject( childObject );
-    // childObject.size = box1.getSize( new THREE.Vector3() );
+      console.log( 'test', gltf );
 
-    // const box2 = new THREE.Box3().setFromObject( glbObject );
-    // glbObject.size = box2.getSize( new THREE.Vector3() );
+      parentObject.getWorldScale( objectToAdd.scale );
 
-    // // console.debug( 'REPLACEE SIZE', childObject.size );
-    // // console.debug( 'REPLACER SIZE', glbObject.size );
+      objectToAdd.translateZ( calee.z );
+      parentObject.attach( objectToAdd );
+      // childObject.removeFromParent();
 
-
-    // const meshCenter = box1.getCenter( new Vector3() );
-
-    // const offsetX = ( childObject.size.x - glbObject.size.x );
-    // const offsetY = ( childObject.size.y - glbObject.size.y );
-    // const offsetZ = ( childObject.size.z - glbObject.size.z );
-
-    // meshCenter.x *= offsetX;
-    // meshCenter.z *= offsetZ;
-
-    // glbObject.position.copy( meshCenter );
-
-    parentObject.attach( glbObject );
-    childObject.removeFromParent();
-
+    } );
   } );
+
 };
 
 const mateValues = {
@@ -335,7 +334,7 @@ export function loadGLTF ( input ) {
     gltfLoader.load( input.gltfFile, gltf => {
       let object = gltf.scene;
 
-      addAltiroToAtilla( object, gltfLoader );
+      addCallToGLBTest( object, gltfLoader );
 
       object.traverse( node => {
         if ( node instanceof THREE.Mesh && node.material ) {
