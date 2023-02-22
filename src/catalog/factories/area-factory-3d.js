@@ -51,7 +51,6 @@ const applyTexture = ( material, texture, length, height ) => {
 
     if ( texture.displacement ) {
       material.displacementMap = loader.load( texture.displacement.uri );
-      material.displacementScale = 0.1;
     }
 
   }

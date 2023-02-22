@@ -11,7 +11,11 @@ import blancoTexture from './textures/alto-blanco-brillo.jpg';
 import eternityTexture from './textures/roble-eternity.jpg';
 import ostippoTexture from './textures/roble-ostippo.jpg';
 
+import glbAltiro from './altiro.glb';
+import glbSofia from './SOFIA 800.glb';
+
 import { Map } from 'immutable';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export function parseData ( state, sceneData, actions, catalog ) {
   let planData = {};
@@ -746,6 +750,35 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
         }
       }
 
+
+      //** Añadido partes mueble para pruebas, refactorizar */
+
+      let linkValue;
+      linkValue = item.properties.get( 'link1' );
+
+      if ( Map.isMap( linkValue ) ) {
+        const { 0: text } = linkValue.keySeq().toArray();
+        linkValue = text;
+      }
+
+      if ( linkValue ) {
+        let link;
+        const loader = new GLTFLoader();
+
+        switch ( linkValue ) {
+          case 'altiro':
+            loader.load( glbAltiro, ( { scene } ) => {
+              console.log( 'ALTIRO', scene );
+
+            } );
+            break;
+          case 'sofia':
+            loader.load( glbSofia, ( { scene } ) => {
+              console.log( 'SOFIA', scene );
+            } );
+            break;
+        }
+      }
 
       applyInteract( item3D, () => {
         itemsActions.selectItem( layer.id, item.id );

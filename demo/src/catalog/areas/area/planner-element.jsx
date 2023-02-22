@@ -39,7 +39,11 @@ const textures = {
       normalScaleY: 0.4
     },
     roughness: {
-      uri: require( './textures/WoodFloor034_4K_Roughness.jpg' )
+      uri: require( './textures/WoodFloor034_4K_Roughness.jpg' ),
+      lengthRepeatScale: 0.02,
+      heightRepeatScale: 0.02,
+      normalScaleX: 0.4,
+      normalScaleY: 0.4
     },
     displacement: {
       uri: require( './textures/WoodFloor034_4K_Displacement.jpg' )

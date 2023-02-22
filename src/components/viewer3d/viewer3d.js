@@ -465,6 +465,8 @@ export default class Scene3DViewer extends React.Component {
 
 
     const render = () => {
+      // console.log( 'test', this.scene3D );
+
 
       this.renderingID = requestAnimationFrame( render );
       this.updateSceneElements( orbitController, planData );

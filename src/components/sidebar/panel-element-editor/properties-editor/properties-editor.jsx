@@ -18,7 +18,7 @@ export function PropertiesEditor ( {
         .map( ( [ propertyName, data ] ) => {
 
           // For a line, this would be applied to height and thickness
-          if ( propertyName.includes( 'texture' ) === false ) {
+          if ( !propertyName.includes( 'texture' ) ) {
 
             const configs = data.get( 'configs' );
             const currentValue = data.get( 'currentValue' );

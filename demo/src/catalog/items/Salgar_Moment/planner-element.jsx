@@ -100,6 +100,16 @@ export default {
         intense: 'Intense',
         real: 'Real',
       }
+    },
+    link1: {
+      label: 'Enlace 1',
+      type: 'enum',
+      defaultValue: { altiro: 'Altiro' },
+      values: {
+        none: 'None',
+        sofia: 'Sofia',
+        altiro: 'Altiro'
+      }
     }
   },
 

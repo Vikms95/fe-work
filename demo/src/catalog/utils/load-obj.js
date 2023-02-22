@@ -1,10 +1,11 @@
 import * as THREE from 'three';
-import { Box3, Matrix3, Matrix4, MeshPhysicalMaterial, MeshStandardMaterial, Vector3 } from 'three';
+import { Box3, Mesh, Matrix3, Matrix4, MeshPhysicalMaterial, MeshStandardMaterial, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 // import MTLLoader from './mtl-loader';
+// import glbAltiro from '/altiro.glb';
 
 import { cacheLoadedObjects } from './objects3d-utils';
 
@@ -17,6 +18,9 @@ import realTexture from '../items/Salgar_Pilar/textures/Real.jpg';
 import riojaTexture from './Plato_Rioja_blanco.jpg';
 import { Reflector } from 'three/examples/jsm/objects/Reflector';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader';
+import { LoadingManager } from 'three';
+import { object } from 'prop-types';
+import { Group } from 'three';
 
 const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 1024,
   {
@@ -76,7 +80,7 @@ const addPorcelainLook = ( object, node ) => {
     case 'Porcelana.001':
     case 'Blanco Brillo':
     case 'Porcelana':
-    case 'Sanitary_Bath-Spas_Roca_BEYOND-SURFEXR-oval-bathtub-with-dr_1':
+    case 'Sanitary_Bath-Spas_Roca_BEYOND-SURFEXR-oval-bathtub-  th-dr_1':
     case 'SolidSurface':
     case 'MineralMarmo':
       const newMaterial = new MeshPhysicalMaterial( {
@@ -272,41 +276,58 @@ const addRoughnessLook = ( object ) => {
   }
 };
 
-const addCallToGLBTest = ( object, loader ) => {
-  const sceneName = "Moment_800_2c";
-  console.log( 'test', object );
+const normalizeScale = ( objectToAdd, parentObject ) => {
+  objectToAdd.traverse( child => {
+    if ( child.isMesh )
+      parentObject.getWorldScale( child.scale );
 
-  if ( !sceneName ) return;
+    else if ( child.isGroup )
+      child.scale.set( 1, 1, 1 );
+  } );
 
-  const parentObject = object.getObjectByName( sceneName );
+};
 
-  const glbSofia = require( './SOFIA 800.glb' );
-  const glbMoon = require( './Espejo moon 1000.glb' );
+const addCallToGLBTest = ( parentGroup, loader ) => {
+  const parentObject = parentGroup.getObjectByName( "Moment_800_2c" );
+  if ( !parentObject ) return;
+
+  const glbAltiro = require( './altiro.glb' );
+  // const glbSofia = require( '/SOFIA 800.glb' );
+  // const glbMoon = require( '/Espejo moon 1000.glb' );
+  // const glbBañera = require( '/Bañera.glb' );
+  // const glbRioja = require( '/Rioja.glb' );
+  // const glbCalgary = require( '/calgary.glb' );
+
 
   const objectCallees = [
-    {
-      glb: glbSofia,
-      y: 33
-    },
-    {
-      glb: glbMoon,
-      y: 105,
-      x: -10
-    }
+    // { glb: glbSofia, y: 54, section: '1' },
+    { glb: glbAltiro, y: 55.2, section: '1' },
+    // { glb: glbBañera, y: 55.2 },
+    // { glb: glbRioja, y: 55.2 },
+    // { glb: glbAttila, y: 74 },
+    // { glb: glbMoon, y: 74, x: -10, section: '2' },
   ];
 
-  objectCallees.forEach( calee => {
-    loader.load( calee.glb, gltf => {
-      const objectToAdd = gltf.scene.children[ 0 ];
+  //**Mirar si hay algún GLB del GLB destinatario que tenga la sección del GLB entrante */
+  //**Si es el caso, descanlar ese GLB del GLB destinatario */
+  //**Anclar el GLB entrante en el GLB destinatario con la referencia de la sección en el nombre */
+  //**Ajustar posición de acuerdo con las posiciones que vendrán con GLB entrante */
 
-      console.log( 'test', gltf );
+  objectCallees.forEach( callee => {
+    loader.load( callee.glb, ( { scene: objectToAdd } ) => {
 
-      parentObject.getWorldScale( objectToAdd.scale );
+      normalizeScale( objectToAdd, parentObject );
 
-      objectToAdd.position.y = calee.y || 0;
-      objectToAdd.position.x = calee.x || 0;
-      objectToAdd.position.z = calee.x || 0;
+      objectToAdd.position.x = callee.x || objectToAdd.position.x;
+      objectToAdd.position.y = callee.y || objectToAdd.position.y;
+      objectToAdd.position.z = callee.z || objectToAdd.position.z;
+      // objectToAdd.name += ' 1 ';
+
+      //**replace any item inside
       parentObject.attach( objectToAdd );
+
+      //**put the object in relation to the old one */
+      // object.attach( objectToAdd );
       // childObject.removeFromParent();
 
     } );
@@ -334,7 +355,7 @@ export function loadGLTF ( input ) {
   const gltfLoader = new GLTFLoader();
 
   return new Promise( ( resolve, reject ) => {
-    gltfLoader.load( input.gltfFile, gltf => {
+    gltfLoader.load( input.gltfFile, ( gltf ) => {
       let object = gltf.scene;
 
       addCallToGLBTest( object, gltfLoader );
