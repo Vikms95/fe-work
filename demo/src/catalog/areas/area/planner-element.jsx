@@ -29,8 +29,8 @@ const textures = {
   parquet4K: {
     name: 'Parquet HQ',
     uri: require( './textures/WoodFloor034_4K_Color.jpg' ),
-    lengthRepeatScale: 0.00001,
-    heightRepeatScale: 0.00001,
+    lengthRepeatScale: 0.00002,
+    heightRepeatScale: 0.00002,
     normal: {
       uri: require( './textures/WoodFloor034_4K_NormalGL.jpg' ),
       lengthRepeatScale: 0.02,

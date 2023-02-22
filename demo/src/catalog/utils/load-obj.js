@@ -285,29 +285,27 @@ const addAltiroToAtilla = ( object, loader ) => {
 
     parentObject.getWorldScale( glbObject.scale );
 
-    const box1 = new THREE.Box3().setFromObject( childObject );
-    childObject.size = box1.getSize( new THREE.Vector3() );
+    // const box1 = new THREE.Box3().setFromObject( childObject );
+    // childObject.size = box1.getSize( new THREE.Vector3() );
 
-    const box2 = new THREE.Box3().setFromObject( glbObject );
-    glbObject.size = box2.getSize( new THREE.Vector3() );
+    // const box2 = new THREE.Box3().setFromObject( glbObject );
+    // glbObject.size = box2.getSize( new THREE.Vector3() );
 
-    console.debug( 'REPLACEE SIZE', childObject.size );
-    console.debug( 'REPLACER SIZE', glbObject.size );
-
-
-    const meshCenter = box1.getCenter( new Vector3() );
-
-    const scalar = 100;
-    const offsetX = ( childObject.size.x - glbObject.size.x ) / scalar;
-    const offsetY = ( childObject.size.y - glbObject.size.y ) / scalar;
-    const offsetZ = ( childObject.size.z - glbObject.size.z ) / scalar;
+    // // console.debug( 'REPLACEE SIZE', childObject.size );
+    // // console.debug( 'REPLACER SIZE', glbObject.size );
 
 
-    meshCenter.x *= offsetX;
-    meshCenter.z *= offsetZ;
+    // const meshCenter = box1.getCenter( new Vector3() );
 
+    // const offsetX = ( childObject.size.x - glbObject.size.x );
+    // const offsetY = ( childObject.size.y - glbObject.size.y );
+    // const offsetZ = ( childObject.size.z - glbObject.size.z );
 
-    glbObject.position.copy( meshCenter );
+    // meshCenter.x *= offsetX;
+    // meshCenter.z *= offsetZ;
+
+    // glbObject.position.copy( meshCenter );
+
     parentObject.attach( glbObject );
     childObject.removeFromParent();
 
