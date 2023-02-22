@@ -291,6 +291,10 @@ const addAltiroToAtilla = ( object, loader ) => {
     const box2 = new THREE.Box3().setFromObject( glbObject );
     glbObject.size = box2.getSize( new THREE.Vector3() );
 
+    console.debug( 'REPLACEE SIZE', childObject.size );
+    console.debug( 'REPLACER SIZE', glbObject.size );
+
+
     const meshCenter = box1.getCenter( new Vector3() );
 
     const scalar = 100;

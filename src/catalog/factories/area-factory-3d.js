@@ -42,6 +42,18 @@ const applyTexture = ( material, texture, length, height ) => {
       material.normalMap.wrapT = RepeatWrapping;
       material.normalMap.repeat.set( length * texture.normal.lengthRepeatScale, height * texture.normal.heightRepeatScale );
     }
+
+    if ( texture.roughness )
+      material.roughnessMap = loader.load( texture.roughness.uri );
+
+    if ( texture.ao )
+      material.aoMap = loader.load( texture.ao.uri );
+
+    if ( texture.displacement ) {
+      material.displacementMap = loader.load( texture.displacement.uri );
+      material.displacementScale = 0.1;
+    }
+
   }
 };
 
@@ -135,7 +147,8 @@ export function createArea ( element, layer, scene, textures ) {
 
   let areaMaterial = new MeshStandardMaterial( {
     side: DoubleSide,
-    color
+    color,
+    roughness: 0
   } );
 
   /* Create holes for the area */

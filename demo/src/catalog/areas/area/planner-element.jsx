@@ -25,6 +25,26 @@ const textures = {
     uri: require( './textures/Suelo (35).jpg' ),
     lengthRepeatScale: 0.00002,
     heightRepeatScale: 0.00002
+  },
+  parquet4K: {
+    name: 'Parquet HQ',
+    uri: require( './textures/WoodFloor034_4K_Color.jpg' ),
+    lengthRepeatScale: 0.00001,
+    heightRepeatScale: 0.00001,
+    normal: {
+      uri: require( './textures/WoodFloor034_4K_NormalGL.jpg' ),
+      lengthRepeatScale: 0.02,
+      heightRepeatScale: 0.02,
+      normalScaleX: 0.4,
+      normalScaleY: 0.4
+    },
+    roughness: {
+      uri: require( './textures/WoodFloor034_4K_Roughness.jpg' )
+    },
+    displacement: {
+      uri: require( './textures/WoodFloor034_4K_Displacement.jpg' )
+
+    }
   }
 };
 
