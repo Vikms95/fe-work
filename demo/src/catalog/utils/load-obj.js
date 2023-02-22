@@ -286,11 +286,12 @@ const addCallToGLBTest = ( object, loader ) => {
   const objectCallees = [
     {
       glb: glbSofia,
-      z: -330 // medida sofia
+      y: 33
     },
     {
       glb: glbMoon,
-      z: -1050
+      y: 105,
+      x: -10
     }
   ];
 
@@ -302,7 +303,9 @@ const addCallToGLBTest = ( object, loader ) => {
 
       parentObject.getWorldScale( objectToAdd.scale );
 
-      objectToAdd.translateZ( calee.z );
+      objectToAdd.position.y = calee.y || 0;
+      objectToAdd.position.x = calee.x || 0;
+      objectToAdd.position.z = calee.x || 0;
       parentObject.attach( objectToAdd );
       // childObject.removeFromParent();
 
