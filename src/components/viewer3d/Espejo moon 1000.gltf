@@ -1,0 +1,128 @@
+{
+  "asset": {
+    "generator": "Khronos glTF Blender I/O v1.8.19",
+    "version": "2.0"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Scene Section-2",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "Espejo Moon 1000.002",
+      "rotation": [
+        0.7071068286895752,
+        0,
+        0,
+        0.7071067094802856
+      ],
+      "scale": [
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "Espejo",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.8077999949455261,
+          0.847100019454956,
+          0.5881999731063843,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.8999999761581421
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Espejo Moon 1000.002",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0
+        }
+      ]
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 964,
+      "max": [
+        1000,
+        37,
+        -0.0000016292068494294654
+      ],
+      "min": [
+        -0.000030517578125,
+        3,
+        -1000
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 964,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 964,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5123,
+      "count": 2856,
+      "type": "SCALAR"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 11568,
+      "byteOffset": 0
+    },
+    {
+      "buffer": 0,
+      "byteLength": 11568,
+      "byteOffset": 11568
+    },
+    {
+      "buffer": 0,
+      "byteLength": 7712,
+      "byteOffset": 23136
+    },
+    {
+      "buffer": 0,
+      "byteLength": 5712,
+      "byteOffset": 30848
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Espejo moon 1000_data.bin",
+      "byteLength": 36560
+    }
+  ]
+}

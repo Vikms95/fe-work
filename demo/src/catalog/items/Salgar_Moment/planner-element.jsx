@@ -110,7 +110,18 @@ export default {
         none: 'None',
         sofia: 'Sofia',
       }
-    }
+    },
+    link2: {
+      label: 'Enlace 2',
+      type: 'enum',
+      defaultValue: { moon: 'Moon' },
+      values: {
+        moon: 'Moon',
+        bañera: 'Bañera',
+        none: 'None',
+      }
+    },
+
   },
 
   render2D: function ( element, layer, scene ) {

@@ -13,6 +13,8 @@ import ostippoTexture from './textures/roble-ostippo.jpg';
 
 import glbAltiro from './altiro.glb';
 import glbSofia from './SOFIA 800.glb';
+import glbMoon from './Espejo moon 1000.glb';
+import glbBañera from './Bañera.glb';
 import { normalizeScale } from '../../../demo/src/catalog/utils/load-obj';
 
 import { Map } from 'immutable';
@@ -751,37 +753,39 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
         }
       }
 
+      const altiroOffset = {
+        x: 250,
+        y: 552,
+        z: 0
+      };
 
       //** Añadido partes mueble para pruebas, refactorizar */
 
-      let linkValue;
-      linkValue = item.properties.get( 'link1' );
+      let linkValue1;
+      linkValue1 = item.properties.get( 'link1' );
 
-      if ( Map.isMap( linkValue ) ) {
-        const { 0: text } = linkValue.keySeq().toArray();
-        linkValue = text;
+      if ( Map.isMap( linkValue1 ) ) {
+        const { 0: text } = linkValue1.keySeq().toArray();
+        linkValue1 = text;
       }
 
-      if ( linkValue ) {
+      if ( linkValue1 ) {
         const loader = new GLTFLoader();
 
-        switch ( linkValue ) {
+        switch ( linkValue1 ) {
           case 'altiro':
             loader.load( glbAltiro, ( { scene: objectToAdd } ) => {
               pivot.traverse( objectToRemove => {
                 if ( objectToRemove.name === 'Scene' ) {
                   objectToRemove.traverse( ( child => {
-                    if ( child.name === 'Scene_Section-1' ) {
+                    if ( child.name === 'Scene_Section-1' )
                       child.removeFromParent();
-                    }
                   } ) );
-                  // normalizeScale( objectToAdd, pivot );
-                  objectToAdd.position.y = 0.552;
+                  objectToAdd.position.y = altiroOffset.y / 1000;
                   objectToRemove.add( objectToAdd );
                 } else {
                   const objectToRemove = pivot.getObjectByName( 'Scene' );
-                  // normalizeScale( objectToAdd, pivot );
-                  objectToAdd.position.y = 0.552;
+                  objectToAdd.position.y = altiroOffset.y / 1000;
                   objectToRemove.add( objectToAdd );
                 }
               } );
@@ -792,18 +796,65 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
               pivot.traverse( objectToRemove => {
                 if ( objectToRemove.name === 'Scene' ) {
                   objectToRemove.traverse( ( child => {
-                    if ( child.name === 'Scene_Section-1' ) {
+                    if ( child.name === 'Scene_Section-1' )
                       child.removeFromParent();
-                    }
                   } ) );
-                  // normalizeScale( objectToAdd, pivot );
                   objectToRemove.add( objectToAdd );
                   objectToAdd.position.y = 0.54;
                 } else {
                   const objectToRemove = pivot.getObjectByName( 'Scene' );
-                  // normalizeScale( objectToAdd, pivot );
                   objectToRemove.add( objectToAdd );
                   objectToAdd.position.y = 0.54;
+                }
+              } );
+            } );
+            break;
+        }
+      }
+      let linkValue2;
+      linkValue2 = item.properties.get( 'link2' );
+
+      if ( Map.isMap( linkValue2 ) ) {
+        const { 0: text } = linkValue2.keySeq().toArray();
+        linkValue2 = text;
+      }
+
+      if ( linkValue2 ) {
+        const loader = new GLTFLoader();
+
+        switch ( linkValue2 ) {
+          case 'moon':
+            loader.load( glbMoon, ( { scene: objectToAdd } ) => {
+              pivot.traverse( objectToRemove => {
+                if ( objectToRemove.name === 'Scene' ) {
+                  objectToRemove.traverse( ( child => {
+                    if ( child.name === 'Scene_Section-2' )
+                      child.removeFromParent();
+                  } ) );
+                  objectToRemove.add( objectToAdd );
+                  objectToAdd.position.y = 0.75;
+                } else {
+                  const objectToRemove = pivot.getObjectByName( 'Scene' );
+                  objectToRemove.add( objectToAdd );
+                  objectToAdd.position.y = 0.75;
+                }
+              } );
+            } );
+            break;
+          case 'bañera':
+            loader.load( glbBañera, ( { scene: objectToAdd } ) => {
+              pivot.traverse( objectToRemove => {
+                if ( objectToRemove.name === 'Scene' ) {
+                  objectToRemove.traverse( ( child => {
+                    if ( child.name === 'Scene_Section-2' )
+                      child.removeFromParent();
+                  } ) );
+                  objectToRemove.add( objectToAdd );
+                  objectToAdd.position.y = 0.75;
+                } else {
+                  const objectToRemove = pivot.getObjectByName( 'Scene' );
+                  objectToRemove.add( objectToAdd );
+                  objectToAdd.position.y = 0.75;
                 }
               } );
             } );
