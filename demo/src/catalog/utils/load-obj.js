@@ -276,13 +276,16 @@ const addRoughnessLook = ( object ) => {
   }
 };
 
-const normalizeScale = ( objectToAdd, parentObject ) => {
+export const normalizeScale = ( objectToAdd, parentObject ) => {
+  console.log( 'test', objectToAdd );
+  console.log( 'test', parentObject );
+
   objectToAdd.traverse( child => {
     if ( child.isMesh )
       parentObject.getWorldScale( child.scale );
 
-    else if ( child.isGroup )
-      child.scale.set( 1, 1, 1 );
+    // else if ( child.isGroup )
+    //   child.scale.set( 1, 1, 1 );
   } );
 
 };
@@ -358,7 +361,7 @@ export function loadGLTF ( input ) {
     gltfLoader.load( input.gltfFile, ( gltf ) => {
       let object = gltf.scene;
 
-      addCallToGLBTest( object, gltfLoader );
+      // addCallToGLBTest( object, gltfLoader );
 
       object.traverse( node => {
         if ( node instanceof THREE.Mesh && node.material ) {

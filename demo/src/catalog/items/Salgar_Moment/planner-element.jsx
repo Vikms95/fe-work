@@ -106,9 +106,9 @@ export default {
       type: 'enum',
       defaultValue: { altiro: 'Altiro' },
       values: {
+        altiro: 'Altiro',
         none: 'None',
         sofia: 'Sofia',
-        altiro: 'Altiro'
       }
     }
   },
@@ -132,6 +132,8 @@ export default {
   updateRender3D: ( element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild ) => {
     let noPerf = () => { selfDestroy(); return selfBuild(); };
 
+
+    console.log( 'difs', differences );
 
     if ( differences.indexOf( 'texture' ) !== -1 ) {
       let texture;

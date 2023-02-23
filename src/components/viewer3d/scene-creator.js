@@ -13,6 +13,7 @@ import ostippoTexture from './textures/roble-ostippo.jpg';
 
 import glbAltiro from './altiro.glb';
 import glbSofia from './SOFIA 800.glb';
+import { normalizeScale } from '../../../demo/src/catalog/utils/load-obj';
 
 import { Map } from 'immutable';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -762,23 +763,56 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
       }
 
       if ( linkValue ) {
-        let link;
         const loader = new GLTFLoader();
 
         switch ( linkValue ) {
           case 'altiro':
-            loader.load( glbAltiro, ( { scene } ) => {
-              console.log( 'ALTIRO', scene );
-
+            loader.load( glbAltiro, ( { scene: objectToAdd } ) => {
+              pivot.traverse( objectToRemove => {
+                if ( objectToRemove.name === 'Scene' ) {
+                  objectToRemove.traverse( ( child => {
+                    if ( child.name === 'Scene_Section-1' ) {
+                      child.removeFromParent();
+                    }
+                  } ) );
+                  // normalizeScale( objectToAdd, pivot );
+                  objectToAdd.position.y = 0.552;
+                  objectToRemove.add( objectToAdd );
+                } else {
+                  const objectToRemove = pivot.getObjectByName( 'Scene' );
+                  // normalizeScale( objectToAdd, pivot );
+                  objectToAdd.position.y = 0.552;
+                  objectToRemove.add( objectToAdd );
+                }
+              } );
             } );
             break;
           case 'sofia':
-            loader.load( glbSofia, ( { scene } ) => {
-              console.log( 'SOFIA', scene );
+            loader.load( glbSofia, ( { scene: objectToAdd } ) => {
+              pivot.traverse( objectToRemove => {
+                if ( objectToRemove.name === 'Scene' ) {
+                  objectToRemove.traverse( ( child => {
+                    if ( child.name === 'Scene_Section-1' ) {
+                      child.removeFromParent();
+                    }
+                  } ) );
+                  // normalizeScale( objectToAdd, pivot );
+                  objectToRemove.add( objectToAdd );
+                  objectToAdd.position.y = 0.54;
+                } else {
+                  const objectToRemove = pivot.getObjectByName( 'Scene' );
+                  // normalizeScale( objectToAdd, pivot );
+                  objectToRemove.add( objectToAdd );
+                  objectToAdd.position.y = 0.54;
+                }
+              } );
             } );
             break;
         }
       }
+
+      console.log( 'test', planData.plan );
+
 
       applyInteract( item3D, () => {
         itemsActions.selectItem( layer.id, item.id );
