@@ -121,7 +121,12 @@ export default {
         none: 'None',
       }
     },
-
+    unlinked1: {
+      label: 'Unlink 1',
+      type: 'toggle',
+      defaultValue: false,
+      actionName: 'Unlink 1'
+    }
   },
 
   render2D: function ( element, layer, scene ) {
@@ -142,9 +147,6 @@ export default {
 
   updateRender3D: ( element, layer, scene, mesh, oldElement, differences, selfDestroy, selfBuild ) => {
     let noPerf = () => { selfDestroy(); return selfBuild(); };
-
-
-    console.log( 'difs', differences );
 
     if ( differences.indexOf( 'texture' ) !== -1 ) {
       let texture;

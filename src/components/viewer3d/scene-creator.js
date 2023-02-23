@@ -19,6 +19,7 @@ import { normalizeScale } from '../../../demo/src/catalog/utils/load-obj';
 
 import { Map } from 'immutable';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { Object3D } from 'three';
 
 export function parseData ( state, sceneData, actions, catalog ) {
   let planData = {};
@@ -707,7 +708,6 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
       pivot.position.y = altitudeProperty + layer.altitude;
       pivot.position.z = -item.y;
 
-
       //** Añadido de texturas para la demo, refactorizar */
       let textureValue;
       textureValue = item.properties.get( 'texture' );
@@ -769,27 +769,73 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
         linkValue1 = text;
       }
 
+      const unlinkAndReturn = ( pivot ) => {
+        let objectToReturn;
+        pivot.traverse( objectToUnlink => {
+          console.log( 'test', objectToUnlink );
+          if ( objectToUnlink.name === 'Scene_Section-1' ) {
+            objectToReturn = objectToUnlink;
+          }
+        } );
+
+        return objectToReturn;
+      };
+
       if ( linkValue1 ) {
         const loader = new GLTFLoader();
 
         switch ( linkValue1 ) {
           case 'altiro':
-            loader.load( glbAltiro, ( { scene: objectToAdd } ) => {
-              pivot.traverse( objectToRemove => {
-                if ( objectToRemove.name === 'Scene' ) {
-                  objectToRemove.traverse( ( child => {
-                    if ( child.name === 'Scene_Section-1' )
-                      child.removeFromParent();
-                  } ) );
-                  objectToAdd.position.y = altiroOffset.y / 1000;
-                  objectToRemove.add( objectToAdd );
-                } else {
-                  const objectToRemove = pivot.getObjectByName( 'Scene' );
-                  objectToAdd.position.y = altiroOffset.y / 1000;
-                  objectToRemove.add( objectToAdd );
-                }
+            new Promise( ( resolve, reject ) => {
+              loader.load( glbAltiro, ( { scene: objectToAdd } ) => {
+                pivot.traverse( objectToRemove => {
+                  if ( objectToRemove.name === 'Scene' ) {
+                    objectToRemove.traverse( ( child => {
+                      if ( child.name === 'Scene_Section-1' )
+                        child.removeFromParent();
+                    } ) );
+                    objectToAdd.position.y = altiroOffset.y / 1000;
+                    objectToRemove.add( objectToAdd );
+                  } else {
+                    const objectToRemove = pivot.getObjectByName( 'Scene' );
+                    objectToAdd.position.y = altiroOffset.y / 1000;
+                    objectToRemove.add( objectToAdd );
+                  }
+                } );
+                return resolve( pivot );
               } );
-            } );
+            } )
+              .then( () => {
+                let unlinked1Value;
+                unlinked1Value = item.properties.get( 'unlinked1' );
+
+                if ( Map.isMap( unlinked1Value ) ) {
+                  const { 0: text } = unlinked1Value.keySeq().toArray();
+                  unlinked1Value = text;
+                }
+
+                if ( unlinked1Value ) {
+                  let objectToRemove;
+
+                  objectToRemove = unlinkAndReturn( pivot );
+                  let objectToAddToScene = objectToRemove.clone();
+                  let object3d = new Object3D().attach( objectToAddToScene );
+                  object3d.name = 'pivot';
+                  object3d.position.set( 0, 0, 0 );
+                  object3d.scale.set( 100, 100, 100 );
+
+                  objectToRemove.removeFromParent();
+
+                  itemsActions.selectToolDrawingItem( '24555' );
+                  itemsActions.updateDrawingItem( layer, 500, 1500 );
+                  itemsActions.endDrawingItem( layer, 500, 1500 );
+                  planData.plan.attach( object3d );
+
+                  console.log( 'test', object3d );
+
+                }
+
+              } );
             break;
           case 'sofia':
             loader.load( glbSofia, ( { scene: objectToAdd } ) => {
@@ -811,6 +857,7 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
             break;
         }
       }
+
       let linkValue2;
       linkValue2 = item.properties.get( 'link2' );
 
@@ -858,17 +905,15 @@ function addItem ( sceneData, planData, layer, itemID, catalog, itemsActions ) {
                 }
               } );
             } );
+
             break;
         }
       }
 
-      console.log( 'test', planData.plan );
-
 
       applyInteract( item3D, () => {
         itemsActions.selectItem( layer.id, item.id );
-      }
-      );
+      } );
 
       let opacity = layer.opacity;
       if ( item.selected )

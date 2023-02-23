@@ -110,10 +110,7 @@ class Item {
         y
       } ) );
     } else {
-      let {
-        updatedState: stateI,
-        item
-      } = this.create( state, layerID, state.getIn( [ 'drawingSupport', 'type' ] ), x, y, 0 );
+      let { updatedState: stateI, item } = this.create( state, layerID, state.getIn( [ 'drawingSupport', 'type' ] ), x, y, 0 );
       state = Item.select( stateI, layerID, item.id ).updatedState;
       state = state.setIn( [ 'drawingSupport', 'currentID' ], item.id );
     }
